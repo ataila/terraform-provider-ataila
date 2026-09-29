@@ -28,7 +28,9 @@ variables:
   RUNNER_TAG: shell
   GO_VERSION: "1.27.1"
   GOTOOLCHAIN: local
-  GOFLAGS: -mod=readonly
+  # -modcacherw: Go makes its module cache read-only by default, and the
+  # runner's `git clean` between jobs then cannot delete .cache/.
+  GOFLAGS: -mod=readonly -modcacherw
   GOPROXY: https://proxy.golang.org,direct
   GOMODCACHE: $CI_PROJECT_DIR/.cache/gomod
   GOCACHE: $CI_PROJECT_DIR/.cache/gobuild
@@ -42,6 +44,11 @@ variables:
 default:
   tags: [$RUNNER_TAG]
   interruptible: true
+  hooks:
+    # A build directory left by an older job may hold a read-only module
+    # cache; make it deletable before the runner cleans the directory.
+    pre_get_sources_script:
+      - if [ -d "$CI_PROJECT_DIR/.cache" ]; then chmod -R u+w "$CI_PROJECT_DIR/.cache"; fi
 
 .go:
   cache:
