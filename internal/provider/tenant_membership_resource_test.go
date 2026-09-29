@@ -159,3 +159,73 @@ resource "ataila_tenant_membership" "test" {
 		}},
 	})
 }
+
+// The legacy role developer: an imported membership holding it shows no
+// difference while the configuration leaves role out or says developer;
+// planning to set it, on a new or an existing membership, fails the plan.
+func TestAccTenantMembershipResource_LegacyDeveloperRole(t *testing.T) {
+	m := newMock(t)
+	dev := m.AddUser("legacy.dev@example.com")
+	other := m.AddUser("new.dev@example.com")
+	var tenant string
+	withRole := func(user, roleLine string) string {
+		return tenantHCL(false, "example-builds") + fmt.Sprintf(`
+resource "ataila_tenant_membership" "test" {
+  tenant_id = ataila_tenant.test.id
+  user_id   = %q
+%s
+}
+`, user, roleLine)
+	}
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: protoV6,
+		Steps: []resource.TestStep{
+			{
+				Config: tenantHCL(false, "example-builds"),
+				Check:  stateAttr(tenantAddr, "id", &tenant),
+			},
+			{
+				// A legacy membership, made outside the provider.
+				PreConfig:          func() { m.SetMembership(tenant, dev, "developer") },
+				Config:             withRole(dev, ""),
+				ResourceName:       membershipAddr,
+				ImportState:        true,
+				ImportStateIdFunc:  func(*terraform.State) (string, error) { return tenant + "/" + dev, nil },
+				ImportStatePersist: true,
+			},
+			{
+				// Role left out: no difference, the legacy role stays.
+				Config:   withRole(dev, ""),
+				PlanOnly: true,
+			},
+			{
+				Config:   withRole(dev, `  role      = "developer"`),
+				PlanOnly: true,
+			},
+			{
+				// Moving away from developer is an ordinary change.
+				Config: withRole(dev, `  role      = "member"`),
+				Check:  role(m.MembershipRole, &tenant, dev, "member"),
+			},
+			{
+				// Back to developer: refused at plan time.
+				Config:      withRole(dev, `  role      = "developer"`),
+				PlanOnly:    true,
+				ExpectError: words("The role developer can no longer be set"),
+			},
+			{
+				// A new membership (another user, so a replacement) cannot be developer either.
+				Config:      withRole(other, `  role      = "developer"`),
+				PlanOnly:    true,
+				ExpectError: words("The role developer can no longer be set"),
+			},
+			{
+				// A new membership needs a role.
+				Config:      withRole(other, ""),
+				PlanOnly:    true,
+				ExpectError: words("A new membership needs a role"),
+			},
+			{PreConfig: allowDestroyEverywhere(m), Config: tenantHCL(true, "example-builds")},
+		},
+	})
+}

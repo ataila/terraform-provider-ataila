@@ -28,14 +28,14 @@ output "example_status" {
 
 ### Optional
 
-- `gitlab_group` (String) GitLab group of the customer, `^[a-z][a-z0-9-]{1,30}$`; also the slug of its primary tenant. No customer's group may be a hyphen-prefix of another's (`example` and `example-labs`). **Frozen.** Set it to look the customer up by GitLab group.
+- `gitlab_group` (String) GitLab group of the customer, `^[a-z][a-z0-9-]{1,29}$` (2-30 characters); also the slug of its primary tenant, so the tenant slug rule applies. No customer's group may be a hyphen-prefix of another's (`example` and `example-labs`). **Frozen.** Set it to look the customer up by GitLab group.
 - `id` (String) Customer id, assigned by the platform. Set it to look the customer up by id.
 - `short_name` (String) Short name, `^[A-Z][A-Z0-9]{1,15}$`, for example `EXAMPLE`. **Frozen.** Set it to look the customer up by short name.
 
 ### Read-Only
 
 - `billing_tier` (String) `INTERNAL` (the default) or `PAYING`.
-- `created_at` (String) When the customer was created, as the platform reports it.
+- `created_at` (String) When the customer was created: RFC 3339 in UTC, compared as an instant (another representation of the same time is not a change).
 - `customer_index` (Number) The customer's index, 1-999, used in derived names and address plans. Omit it and the platform allocates the next free one (one above the highest ever used, never below 2). **Frozen.**
 - `default_email_tier` (Number) Default mailbox tier for the customer: 1, 2 or 3 (the default).
 - `edition` (String) `sp` (service provider, the default) or `enterprise`. **Frozen.**

@@ -210,9 +210,10 @@ func TestDestroyErrors(t *testing.T) {
 	}
 
 	err = problemErr(t, 409, map[string]any{"type": "t", "title": "Conflict", "status": 409,
-		"code": "customer_has_projects", "detail": "The customer still has 3 project(s).", "project_count": 3})
+		"code": "customer_has_projects", "detail": "The customer still has 3 project(s).",
+		"blockers": map[string]any{"projects": 3}})
 	d = destroyError("ataila_customer", "customer", "EXAMPLE (id 1)", err)
-	if !strings.Contains(d.Summary(), "archive the customer (customer_has_projects)") || !strings.Contains(d.Detail(), "project_count: 3") {
+	if !strings.Contains(d.Summary(), "archive the customer (customer_has_projects)") || !strings.Contains(d.Detail(), "blockers: projects=3") {
 		t.Errorf("customer 409: %s\n%s", d.Summary(), d.Detail())
 	}
 }

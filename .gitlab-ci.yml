@@ -137,9 +137,11 @@ acceptance:
       - acceptance.log
     expire_in: 1 week
 
-# State written by one CLI must be read by the other without a diff: Terraform
-# applies and OpenTofu plans with -detailed-exitcode, then the other way round
-# (TestCrossCLIState). Run for the oldest and for the newest supported pair.
+# One state, both CLIs, both orders (TestCrossCLIState), with the provider
+# built and installed through dev_overrides as a user installs it: OpenTofu
+# reads a Terraform state unaided; Terraform refuses an OpenTofu state until
+# `terraform state replace-provider`, then reads it without a diff. Run for
+# the oldest and for the newest supported pair.
 cross-cli-state:
   stage: test
   extends: .go
@@ -156,12 +158,14 @@ cross-cli-state:
     - export ATAILA_CROSS_CLI_TOFU="$CLI_PATH"
     - go test ./internal/provider/ -run '^TestCrossCLIState$' -count=1 -v -timeout 10m > cross-cli.log 2>&1 || { cat cross-cli.log; exit 1; }
     - cat cross-cli.log
-    # A run in which the check silently skipped is a failure.
+    # A run in which the check, or either order, silently skipped is a failure.
     - |
-      if ! grep -q '^--- PASS: TestCrossCLIState' cross-cli.log; then
-        echo "The cross-CLI state check did not run."
-        exit 1
-      fi
+      for order in terraform-first opentofu-first; do
+        if ! grep -q "^    --- PASS: TestCrossCLIState/$order" cross-cli.log; then
+          echo "The cross-CLI state check did not run the $order order."
+          exit 1
+        fi
+      done
   artifacts:
     when: always
     paths:

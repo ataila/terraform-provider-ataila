@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/oapi-codegen/runtime"
 	openapi_types "github.com/oapi-codegen/runtime/types"
@@ -125,6 +126,24 @@ func (e CustomerCreateEdition) Valid() bool {
 	case CustomerCreateEditionEnterprise:
 		return true
 	case CustomerCreateEditionSp:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerCreateStatus.
+const (
+	CustomerCreateStatusActive    CustomerCreateStatus = "active"
+	CustomerCreateStatusSuspended CustomerCreateStatus = "suspended"
+)
+
+// Valid indicates whether the value is a known member of the CustomerCreateStatus enum.
+func (e CustomerCreateStatus) Valid() bool {
+	switch e {
+	case CustomerCreateStatusActive:
+		return true
+	case CustomerCreateStatusSuspended:
 		return true
 	default:
 		return false
@@ -334,23 +353,27 @@ type ApiWarning struct {
 // Customer defines model for Customer.
 type Customer struct {
 	BillingTier      CustomerBillingTier `json:"billing_tier"`
-	CreatedAt        string              `json:"created_at"`
+	CreatedAt        time.Time           `json:"created_at"`
 	CustomerIndex    int                 `json:"customer_index"`
 	DefaultEmailTier int                 `json:"default_email_tier"`
 	Edition          CustomerEdition     `json:"edition"`
 	GitlabGroup      string              `json:"gitlab_group"`
 
 	// GitlabStatus Only with `?include=gitlab_status` on a read; null when GitLab could not be asked (a warning then says why).
-	GitlabStatus        *GitLabGroupStatus `json:"gitlab_status,omitempty"`
-	Id                  string             `json:"id"`
-	LongName            string             `json:"long_name"`
-	Notes               *string            `json:"notes,omitempty"`
-	PrimaryContactEmail string             `json:"primary_contact_email"`
-	PrimaryContactName  string             `json:"primary_contact_name"`
-	PrimaryTenantId     string             `json:"primary_tenant_id"`
-	ShortName           string             `json:"short_name"`
-	Status              CustomerStatus     `json:"status"`
-	Warnings            *[]ApiWarning      `json:"warnings,omitempty"`
+	GitlabStatus *GitLabGroupStatus `json:"gitlab_status,omitempty"`
+	Id           string             `json:"id"`
+	LongName     string             `json:"long_name"`
+	Notes        *string            `json:"notes,omitempty"`
+
+	// PrimaryContactEmail An e-mail address. Stored and returned normalised: the domain is lower-cased (and internationalised domains are converted to their canonical form), the local part (before `@`) keeps its case exactly as sent, surrounding whitespace is dropped, and a `Name <address>` form is reduced to the address. `Pat@Example.COM` is therefore returned as `Pat@example.com`; compare with the domain case-folded to avoid a perpetual diff.
+	PrimaryContactEmail string `json:"primary_contact_email"`
+	PrimaryContactName  string `json:"primary_contact_name"`
+	PrimaryTenantId     string `json:"primary_tenant_id"`
+	ShortName           string `json:"short_name"`
+
+	// Status `archived` is set only by `DELETE /customers/{id}` and is final: v1 has no way to restore an archived customer.
+	Status   CustomerStatus `json:"status"`
+	Warnings *[]ApiWarning  `json:"warnings,omitempty"`
 }
 
 // CustomerBillingTier defines model for Customer.BillingTier.
@@ -359,7 +382,7 @@ type CustomerBillingTier string
 // CustomerEdition defines model for Customer.Edition.
 type CustomerEdition string
 
-// CustomerStatus defines model for Customer.Status.
+// CustomerStatus `archived` is set only by `DELETE /customers/{id}` and is final: v1 has no way to restore an archived customer.
 type CustomerStatus string
 
 // CustomerCreate defines model for CustomerCreate.
@@ -371,15 +394,20 @@ type CustomerCreate struct {
 	DefaultEmailTier *CustomerCreateDefaultEmailTier `json:"default_email_tier,omitempty"`
 	Edition          *CustomerCreateEdition          `json:"edition,omitempty"`
 
-	// GitlabGroup ^[a-z][a-z0-9-]{1,30}$ — also the primary tenant's slug.
-	GitlabGroup         string              `json:"gitlab_group"`
-	LongName            string              `json:"long_name"`
-	Notes               *string             `json:"notes,omitempty"`
+	// GitlabGroup Also the primary tenant's slug, so the tenant slug rule applies: Lowercase letters, digits and '-', starting with a letter, 2-30 characters. Frozen after create.
+	GitlabGroup string  `json:"gitlab_group"`
+	LongName    string  `json:"long_name"`
+	Notes       *string `json:"notes,omitempty"`
+
+	// PrimaryContactEmail An e-mail address. Stored and returned normalised: the domain is lower-cased (and internationalised domains are converted to their canonical form), the local part (before `@`) keeps its case exactly as sent, surrounding whitespace is dropped, and a `Name <address>` form is reduced to the address. `Pat@Example.COM` is therefore returned as `Pat@example.com`; compare with the domain case-folded to avoid a perpetual diff.
 	PrimaryContactEmail openapi_types.Email `json:"primary_contact_email"`
 	PrimaryContactName  string              `json:"primary_contact_name"`
 
 	// ShortName ^[A-Z][A-Z0-9]{1,15}$
 	ShortName string `json:"short_name"`
+
+	// Status `active` (default) or `suspended`.
+	Status *CustomerCreateStatus `json:"status,omitempty"`
 }
 
 // CustomerCreateBillingTier defines model for CustomerCreate.BillingTier.
@@ -391,14 +419,19 @@ type CustomerCreateDefaultEmailTier int
 // CustomerCreateEdition defines model for CustomerCreate.Edition.
 type CustomerCreateEdition string
 
+// CustomerCreateStatus `active` (default) or `suspended`.
+type CustomerCreateStatus string
+
 // CustomerPage defines model for CustomerPage.
 type CustomerPage struct {
 	Items      []Customer `json:"items"`
 	NextCursor *string    `json:"next_cursor,omitempty"`
 }
 
-// CustomerPatch Only the fields present are changed. “archived“ is not a settable
-// status: archiving is “DELETE /customers/{id}“.
+// CustomerPatch A JSON Merge Patch (RFC 7396): an omitted member is left unchanged; an
+// explicit “null“ clears “notes“ and is refused for every other field.
+// “archived“ is not a settable status: archiving is
+// “DELETE /customers/{id}“.
 type CustomerPatch struct {
 	BillingTier *CustomerPatchBillingTier `json:"billing_tier,omitempty"`
 
@@ -410,9 +443,13 @@ type CustomerPatch struct {
 	Edition *CustomerPatchEdition `json:"edition,omitempty"`
 
 	// GitlabGroup Frozen.
-	GitlabGroup         *string              `json:"gitlab_group,omitempty"`
-	LongName            *string              `json:"long_name,omitempty"`
-	Notes               *string              `json:"notes,omitempty"`
+	GitlabGroup *string `json:"gitlab_group,omitempty"`
+	LongName    *string `json:"long_name,omitempty"`
+
+	// Notes null clears it.
+	Notes *string `json:"notes,omitempty"`
+
+	// PrimaryContactEmail An e-mail address. Stored and returned normalised: the domain is lower-cased (and internationalised domains are converted to their canonical form), the local part (before `@`) keeps its case exactly as sent, surrounding whitespace is dropped, and a `Name <address>` form is reduced to the address. `Pat@Example.COM` is therefore returned as `Pat@example.com`; compare with the domain case-folded to avoid a perpetual diff.
 	PrimaryContactEmail *openapi_types.Email `json:"primary_contact_email,omitempty"`
 	PrimaryContactName  *string              `json:"primary_contact_name,omitempty"`
 
@@ -449,13 +486,15 @@ type LicenceSummary struct {
 
 // Membership defines model for Membership.
 type Membership struct {
-	CreatedAt *string        `json:"created_at,omitempty"`
-	Role      MembershipRole `json:"role"`
-	TenantId  string         `json:"tenant_id"`
-	UserId    string         `json:"user_id"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+
+	// Role `developer` can be read (legacy rows hold it) but not written: `PUT` accepts only `owner`, `admin`, `member` and `viewer`.
+	Role     MembershipRole `json:"role"`
+	TenantId string         `json:"tenant_id"`
+	UserId   string         `json:"user_id"`
 }
 
-// MembershipRole defines model for Membership.Role.
+// MembershipRole `developer` can be read (legacy rows hold it) but not written: `PUT` accepts only `owner`, `admin`, `member` and `viewer`.
 type MembershipRole string
 
 // MembershipPage defines model for MembershipPage.
@@ -484,7 +523,7 @@ type Meta struct {
 
 // Operation defines model for Operation.
 type Operation struct {
-	CreatedAt    *string                 `json:"created_at,omitempty"`
+	CreatedAt    *time.Time              `json:"created_at,omitempty"`
 	Error        *map[string]interface{} `json:"error,omitempty"`
 	Id           string                  `json:"id"`
 	Kind         string                  `json:"kind"`
@@ -492,7 +531,7 @@ type Operation struct {
 	ResourceId   *string                 `json:"resource_id,omitempty"`
 	ResourceType *string                 `json:"resource_type,omitempty"`
 	Status       OperationStatus         `json:"status"`
-	UpdatedAt    *string                 `json:"updated_at,omitempty"`
+	UpdatedAt    *time.Time              `json:"updated_at,omitempty"`
 }
 
 // OperationStatus defines model for Operation.Status.
@@ -513,21 +552,23 @@ type Problem struct {
 
 // Tenant defines model for Tenant.
 type Tenant struct {
-	CreatedAt *string `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"created_at"`
 
-	// CustomerId Null only for a legacy tenant that no customer owns.
+	// CustomerId The owning customer's id. Null only for a legacy tenant that no customer owns; such a tenant can be read but never created through v1, where customer_id is required.
 	CustomerId      *string `json:"customer_id"`
 	DefaultRouterId *string `json:"default_router_id,omitempty"`
 	Description     *string `json:"description,omitempty"`
 	Id              string  `json:"id"`
 
 	// IsPrimary The customer's primary tenant; it can never be deleted.
-	IsPrimary    bool    `json:"is_primary"`
-	MemberCount  int     `json:"member_count"`
-	Name         string  `json:"name"`
-	ProjectCount int     `json:"project_count"`
-	Slug         string  `json:"slug"`
-	UpdatedAt    *string `json:"updated_at,omitempty"`
+	IsPrimary    bool   `json:"is_primary"`
+	MemberCount  int    `json:"member_count"`
+	Name         string `json:"name"`
+	ProjectCount int    `json:"project_count"`
+	Slug         string `json:"slug"`
+
+	// UpdatedAt The last change; equal to `created_at` until the tenant is first changed, so it is never null.
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 // TenantCreate defines model for TenantCreate.
@@ -537,7 +578,7 @@ type TenantCreate struct {
 	Description     *string `json:"description,omitempty"`
 	Name            string  `json:"name"`
 
-	// Slug Lowercase, 2-30 characters; frozen after create.
+	// Slug Lowercase letters, digits and '-', starting with a letter, 2-30 characters. Frozen after create.
 	Slug string `json:"slug"`
 }
 
@@ -547,16 +588,19 @@ type TenantPage struct {
 	NextCursor *string  `json:"next_cursor,omitempty"`
 }
 
-// TenantPatch Only the fields present are changed; “description: null“ clears it,
-// an omitted description is left alone.
+// TenantPatch A JSON Merge Patch (RFC 7396): an omitted member is left unchanged;
+// “description: null“ and “default_router_id: null“ clear those fields,
+// “name: null“ is refused.
 type TenantPatch struct {
 	// CustomerId Frozen.
 	CustomerId *string `json:"customer_id,omitempty"`
 
 	// DefaultRouterId null clears it.
 	DefaultRouterId *string `json:"default_router_id,omitempty"`
-	Description     *string `json:"description,omitempty"`
-	Name            *string `json:"name,omitempty"`
+
+	// Description null clears it.
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
 
 	// Slug Frozen.
 	Slug *string `json:"slug,omitempty"`
@@ -565,7 +609,7 @@ type TenantPatch struct {
 // Whoami defines model for Whoami.
 type Whoami struct {
 	AuthKind  string          `json:"auth_kind"`
-	ExpiresAt *string         `json:"expires_at,omitempty"`
+	ExpiresAt *time.Time      `json:"expires_at,omitempty"`
 	Principal WhoamiPrincipal `json:"principal"`
 	Scopes    []string        `json:"scopes"`
 	Token     *WhoamiToken    `json:"token,omitempty"`
@@ -646,11 +690,17 @@ type CustomersCreateJSONRequestBody = CustomerCreate
 // CustomersUpdateJSONRequestBody defines body for CustomersUpdate for application/json ContentType.
 type CustomersUpdateJSONRequestBody = CustomerPatch
 
+// CustomersUpdateApplicationMergePatchPlusJSONRequestBody defines body for CustomersUpdate for application/merge-patch+json ContentType.
+type CustomersUpdateApplicationMergePatchPlusJSONRequestBody = CustomerPatch
+
 // TenantsCreateJSONRequestBody defines body for TenantsCreate for application/json ContentType.
 type TenantsCreateJSONRequestBody = TenantCreate
 
 // TenantsUpdateJSONRequestBody defines body for TenantsUpdate for application/json ContentType.
 type TenantsUpdateJSONRequestBody = TenantPatch
+
+// TenantsUpdateApplicationMergePatchPlusJSONRequestBody defines body for TenantsUpdate for application/merge-patch+json ContentType.
+type TenantsUpdateApplicationMergePatchPlusJSONRequestBody = TenantPatch
 
 // TenantMembershipsPutJSONRequestBody defines body for TenantMembershipsPut for application/json ContentType.
 type TenantMembershipsPutJSONRequestBody = MembershipPut
@@ -886,9 +936,10 @@ type ClientInterface interface {
 
 	// CustomersCreateWithBody Register a customer
 	//
-	// Creates the customer and its primary tenant in one transaction, then
-	// creates or adopts its GitLab group. A GitLab failure does not fail the
-	// request: the customer exists, and `warnings` says what is missing.
+	// Creates the customer (with `status` `active` unless `suspended` is asked
+	// for) and its primary tenant in one transaction, then creates or adopts its
+	// GitLab group. A GitLab failure does not fail the request: the customer exists,
+	// and `warnings` says what is missing.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -897,9 +948,10 @@ type ClientInterface interface {
 
 	// CustomersCreate Register a customer
 	//
-	// Creates the customer and its primary tenant in one transaction, then
-	// creates or adopts its GitLab group. A GitLab failure does not fail the
-	// request: the customer exists, and `warnings` says what is missing.
+	// Creates the customer (with `status` `active` unless `suspended` is asked
+	// for) and its primary tenant in one transaction, then creates or adopts its
+	// GitLab group. A GitLab failure does not fail the request: the customer exists,
+	// and `warnings` says what is missing.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -910,6 +962,8 @@ type ClientInterface interface {
 	//
 	// Archives the customer (F8): the row, its keys, its tenants and its GitLab
 	// group stay. Archiving an archived customer succeeds and changes nothing.
+	// Archiving is final through v1: no operation restores an archived customer,
+	// and its `customer_index`, `short_name` and `gitlab_group` stay taken.
 	//
 	// Corresponds with DELETE /customers/{customer_id} (the `CustomersDelete` operationId).
 	CustomersDelete(ctx context.Context, customerId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -921,8 +975,9 @@ type ClientInterface interface {
 
 	// CustomersUpdateWithBody Change a customer
 	//
-	// Only the fields in the body change. `customer_index`, `short_name`,
-	// `gitlab_group` and `edition` are frozen.
+	// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -931,13 +986,25 @@ type ClientInterface interface {
 
 	// CustomersUpdate Change a customer
 	//
-	// Only the fields in the body change. `customer_index`, `short_name`,
-	// `gitlab_group` and `edition` are frozen.
+	// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
 	// Takes a body of the `application/json` content type.
 	//
 	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 	CustomersUpdate(ctx context.Context, customerId string, body CustomersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomersUpdateWithApplicationMergePatchPlusJSONBody Change a customer
+	//
+	// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type.
+	//
+	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+	CustomersUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// MetaGet API and platform facts
 	//
@@ -970,9 +1037,7 @@ type ClientInterface interface {
 
 	// TenantsDelete Delete an empty tenant
 	//
-	// Deletes the tenant only when nothing but memberships hangs off it — no
-	// project of any status, no contract, no helpdesk record. Its memberships go
-	// with it, and its Keycloak /tenants/<slug> groups are removed.
+	// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource. Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 	//
 	// Corresponds with DELETE /tenants/{tenant_id} (the `TenantsDelete` operationId).
 	TenantsDelete(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -984,7 +1049,9 @@ type ClientInterface interface {
 
 	// TenantsUpdateWithBody Change a tenant
 	//
-	// Only the fields in the body change. `customer_id` and `slug` are frozen.
+	// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -993,12 +1060,25 @@ type ClientInterface interface {
 
 	// TenantsUpdate Change a tenant
 	//
-	// Only the fields in the body change. `customer_id` and `slug` are frozen.
+	// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
 	// Takes a body of the `application/json` content type.
 	//
 	// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
 	TenantsUpdate(ctx context.Context, tenantId string, body TenantsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantsUpdateWithApplicationMergePatchPlusJSONBody Change a tenant
+	//
+	// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type.
+	//
+	// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+	TenantsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, tenantId string, body TenantsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// TenantMembershipsList A tenant's memberships
 	//
@@ -1006,6 +1086,8 @@ type ClientInterface interface {
 	TenantMembershipsList(ctx context.Context, tenantId string, params *TenantMembershipsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// TenantMembershipsDelete Remove a member
+	//
+	// Removes the user's membership of the tenant and re-syncs their Keycloak groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 	//
 	// Corresponds with DELETE /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsDelete` operationId).
 	TenantMembershipsDelete(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -1056,9 +1138,10 @@ func (c *Client) CustomersList(ctx context.Context, params *CustomersListParams,
 
 // CustomersCreateWithBody Register a customer
 //
-// Creates the customer and its primary tenant in one transaction, then
-// creates or adopts its GitLab group. A GitLab failure does not fail the
-// request: the customer exists, and `warnings` says what is missing.
+// Creates the customer (with `status` `active` unless `suspended` is asked
+// for) and its primary tenant in one transaction, then creates or adopts its
+// GitLab group. A GitLab failure does not fail the request: the customer exists,
+// and `warnings` says what is missing.
 //
 // Takes any type of body and a specified content type.
 //
@@ -1077,9 +1160,10 @@ func (c *Client) CustomersCreateWithBody(ctx context.Context, contentType string
 
 // CustomersCreate Register a customer
 //
-// Creates the customer and its primary tenant in one transaction, then
-// creates or adopts its GitLab group. A GitLab failure does not fail the
-// request: the customer exists, and `warnings` says what is missing.
+// Creates the customer (with `status` `active` unless `suspended` is asked
+// for) and its primary tenant in one transaction, then creates or adopts its
+// GitLab group. A GitLab failure does not fail the request: the customer exists,
+// and `warnings` says what is missing.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -1100,6 +1184,8 @@ func (c *Client) CustomersCreate(ctx context.Context, body CustomersCreateJSONRe
 //
 // Archives the customer (F8): the row, its keys, its tenants and its GitLab
 // group stay. Archiving an archived customer succeeds and changes nothing.
+// Archiving is final through v1: no operation restores an archived customer,
+// and its `customer_index`, `short_name` and `gitlab_group` stay taken.
 //
 // Corresponds with DELETE /customers/{customer_id} (the `CustomersDelete` operationId).
 func (c *Client) CustomersDelete(ctx context.Context, customerId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -1131,8 +1217,9 @@ func (c *Client) CustomersGet(ctx context.Context, customerId string, params *Cu
 
 // CustomersUpdateWithBody Change a customer
 //
-// Only the fields in the body change. `customer_index`, `short_name`,
-// `gitlab_group` and `edition` are frozen.
+// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
 // Takes any type of body and a specified content type.
 //
@@ -1151,14 +1238,36 @@ func (c *Client) CustomersUpdateWithBody(ctx context.Context, customerId string,
 
 // CustomersUpdate Change a customer
 //
-// Only the fields in the body change. `customer_index`, `short_name`,
-// `gitlab_group` and `edition` are frozen.
+// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
 // Takes a body of the `application/json` content type.
 //
 // Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 func (c *Client) CustomersUpdate(ctx context.Context, customerId string, body CustomersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCustomersUpdateRequest(c.Server, customerId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomersUpdateWithApplicationMergePatchPlusJSONBody Change a customer
+//
+// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type.
+//
+// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+func (c *Client) CustomersUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomersUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, customerId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1250,9 +1359,7 @@ func (c *Client) TenantsCreate(ctx context.Context, body TenantsCreateJSONReques
 
 // TenantsDelete Delete an empty tenant
 //
-// Deletes the tenant only when nothing but memberships hangs off it — no
-// project of any status, no contract, no helpdesk record. Its memberships go
-// with it, and its Keycloak /tenants/<slug> groups are removed.
+// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource. Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 //
 // Corresponds with DELETE /tenants/{tenant_id} (the `TenantsDelete` operationId).
 func (c *Client) TenantsDelete(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -1284,7 +1391,9 @@ func (c *Client) TenantsGet(ctx context.Context, tenantId string, reqEditors ...
 
 // TenantsUpdateWithBody Change a tenant
 //
-// Only the fields in the body change. `customer_id` and `slug` are frozen.
+// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
 // Takes any type of body and a specified content type.
 //
@@ -1303,13 +1412,36 @@ func (c *Client) TenantsUpdateWithBody(ctx context.Context, tenantId string, con
 
 // TenantsUpdate Change a tenant
 //
-// Only the fields in the body change. `customer_id` and `slug` are frozen.
+// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
 // Takes a body of the `application/json` content type.
 //
 // Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
 func (c *Client) TenantsUpdate(ctx context.Context, tenantId string, body TenantsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewTenantsUpdateRequest(c.Server, tenantId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantsUpdateWithApplicationMergePatchPlusJSONBody Change a tenant
+//
+// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type.
+//
+// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+func (c *Client) TenantsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, tenantId string, body TenantsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantsUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, tenantId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1336,6 +1468,8 @@ func (c *Client) TenantMembershipsList(ctx context.Context, tenantId string, par
 }
 
 // TenantMembershipsDelete Remove a member
+//
+// Removes the user's membership of the tenant and re-syncs their Keycloak groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 //
 // Corresponds with DELETE /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsDelete` operationId).
 func (c *Client) TenantMembershipsDelete(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -1666,6 +1800,17 @@ func NewCustomersUpdateRequest(server string, customerId string, body CustomersU
 	return NewCustomersUpdateRequestWithBody(server, customerId, "application/json", bodyReader)
 }
 
+// NewCustomersUpdateRequestWithApplicationMergePatchPlusJSONBody calls the generic CustomersUpdate builder with application/merge-patch+json body
+func NewCustomersUpdateRequestWithApplicationMergePatchPlusJSONBody(server string, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCustomersUpdateRequestWithBody(server, customerId, "application/merge-patch+json", bodyReader)
+}
+
 // NewCustomersUpdateRequestWithBody constructs an http.Request for the CustomersUpdate method, with any body, and a specified content type
 func NewCustomersUpdateRequestWithBody(server string, customerId string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
@@ -1970,6 +2115,17 @@ func NewTenantsUpdateRequest(server string, tenantId string, body TenantsUpdateJ
 	}
 	bodyReader = bytes.NewReader(buf)
 	return NewTenantsUpdateRequestWithBody(server, tenantId, "application/json", bodyReader)
+}
+
+// NewTenantsUpdateRequestWithApplicationMergePatchPlusJSONBody calls the generic TenantsUpdate builder with application/merge-patch+json body
+func NewTenantsUpdateRequestWithApplicationMergePatchPlusJSONBody(server string, tenantId string, body TenantsUpdateApplicationMergePatchPlusJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewTenantsUpdateRequestWithBody(server, tenantId, "application/merge-patch+json", bodyReader)
 }
 
 // NewTenantsUpdateRequestWithBody constructs an http.Request for the TenantsUpdate method, with any body, and a specified content type
@@ -2297,9 +2453,10 @@ type ClientWithResponsesInterface interface {
 
 	// CustomersCreateWithBodyWithResponse Register a customer
 	//
-	// Creates the customer and its primary tenant in one transaction, then
-	// creates or adopts its GitLab group. A GitLab failure does not fail the
-	// request: the customer exists, and `warnings` says what is missing.
+	// Creates the customer (with `status` `active` unless `suspended` is asked
+	// for) and its primary tenant in one transaction, then creates or adopts its
+	// GitLab group. A GitLab failure does not fail the request: the customer exists,
+	// and `warnings` says what is missing.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -2308,9 +2465,10 @@ type ClientWithResponsesInterface interface {
 
 	// CustomersCreateWithResponse Register a customer
 	//
-	// Creates the customer and its primary tenant in one transaction, then
-	// creates or adopts its GitLab group. A GitLab failure does not fail the
-	// request: the customer exists, and `warnings` says what is missing.
+	// Creates the customer (with `status` `active` unless `suspended` is asked
+	// for) and its primary tenant in one transaction, then creates or adopts its
+	// GitLab group. A GitLab failure does not fail the request: the customer exists,
+	// and `warnings` says what is missing.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -2321,6 +2479,8 @@ type ClientWithResponsesInterface interface {
 	//
 	// Archives the customer (F8): the row, its keys, its tenants and its GitLab
 	// group stay. Archiving an archived customer succeeds and changes nothing.
+	// Archiving is final through v1: no operation restores an archived customer,
+	// and its `customer_index`, `short_name` and `gitlab_group` stay taken.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -2336,8 +2496,9 @@ type ClientWithResponsesInterface interface {
 
 	// CustomersUpdateWithBodyWithResponse Change a customer
 	//
-	// Only the fields in the body change. `customer_index`, `short_name`,
-	// `gitlab_group` and `edition` are frozen.
+	// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -2346,13 +2507,25 @@ type ClientWithResponsesInterface interface {
 
 	// CustomersUpdateWithResponse Change a customer
 	//
-	// Only the fields in the body change. `customer_index`, `short_name`,
-	// `gitlab_group` and `edition` are frozen.
+	// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 	CustomersUpdateWithResponse(ctx context.Context, customerId string, body CustomersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error)
+
+	// CustomersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a customer
+	//
+	// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+	CustomersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error)
 
 	// MetaGetWithResponse API and platform facts
 	//
@@ -2391,9 +2564,7 @@ type ClientWithResponsesInterface interface {
 
 	// TenantsDeleteWithResponse Delete an empty tenant
 	//
-	// Deletes the tenant only when nothing but memberships hangs off it — no
-	// project of any status, no contract, no helpdesk record. Its memberships go
-	// with it, and its Keycloak /tenants/<slug> groups are removed.
+	// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource. Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -2409,7 +2580,9 @@ type ClientWithResponsesInterface interface {
 
 	// TenantsUpdateWithBodyWithResponse Change a tenant
 	//
-	// Only the fields in the body change. `customer_id` and `slug` are frozen.
+	// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -2418,12 +2591,25 @@ type ClientWithResponsesInterface interface {
 
 	// TenantsUpdateWithResponse Change a tenant
 	//
-	// Only the fields in the body change. `customer_id` and `slug` are frozen.
+	// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
 	TenantsUpdateWithResponse(ctx context.Context, tenantId string, body TenantsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantsUpdateResponse, error)
+
+	// TenantsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a tenant
+	//
+	// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+	TenantsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, tenantId string, body TenantsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantsUpdateResponse, error)
 
 	// TenantMembershipsListWithResponse A tenant's memberships
 	//
@@ -2433,6 +2619,8 @@ type ClientWithResponsesInterface interface {
 	TenantMembershipsListWithResponse(ctx context.Context, tenantId string, params *TenantMembershipsListParams, reqEditors ...RequestEditorFn) (*TenantMembershipsListResponse, error)
 
 	// TenantMembershipsDeleteWithResponse Remove a member
+	//
+	// Removes the user's membership of the tenant and re-syncs their Keycloak groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -3688,9 +3876,10 @@ func (c *ClientWithResponses) CustomersListWithResponse(ctx context.Context, par
 
 // CustomersCreateWithBodyWithResponse Register a customer
 //
-// Creates the customer and its primary tenant in one transaction, then
-// creates or adopts its GitLab group. A GitLab failure does not fail the
-// request: the customer exists, and `warnings` says what is missing.
+// Creates the customer (with `status` `active` unless `suspended` is asked
+// for) and its primary tenant in one transaction, then creates or adopts its
+// GitLab group. A GitLab failure does not fail the request: the customer exists,
+// and `warnings` says what is missing.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -3705,9 +3894,10 @@ func (c *ClientWithResponses) CustomersCreateWithBodyWithResponse(ctx context.Co
 
 // CustomersCreateWithResponse Register a customer
 //
-// Creates the customer and its primary tenant in one transaction, then
-// creates or adopts its GitLab group. A GitLab failure does not fail the
-// request: the customer exists, and `warnings` says what is missing.
+// Creates the customer (with `status` `active` unless `suspended` is asked
+// for) and its primary tenant in one transaction, then creates or adopts its
+// GitLab group. A GitLab failure does not fail the request: the customer exists,
+// and `warnings` says what is missing.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -3724,6 +3914,8 @@ func (c *ClientWithResponses) CustomersCreateWithResponse(ctx context.Context, b
 //
 // Archives the customer (F8): the row, its keys, its tenants and its GitLab
 // group stay. Archiving an archived customer succeeds and changes nothing.
+// Archiving is final through v1: no operation restores an archived customer,
+// and its `customer_index`, `short_name` and `gitlab_group` stay taken.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -3751,8 +3943,9 @@ func (c *ClientWithResponses) CustomersGetWithResponse(ctx context.Context, cust
 
 // CustomersUpdateWithBodyWithResponse Change a customer
 //
-// Only the fields in the body change. `customer_index`, `short_name`,
-// `gitlab_group` and `edition` are frozen.
+// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -3767,14 +3960,32 @@ func (c *ClientWithResponses) CustomersUpdateWithBodyWithResponse(ctx context.Co
 
 // CustomersUpdateWithResponse Change a customer
 //
-// Only the fields in the body change. `customer_index`, `short_name`,
-// `gitlab_group` and `edition` are frozen.
+// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
 // Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 func (c *ClientWithResponses) CustomersUpdateWithResponse(ctx context.Context, customerId string, body CustomersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error) {
 	rsp, err := c.CustomersUpdate(ctx, customerId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomersUpdateResponse(rsp)
+}
+
+// CustomersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a customer
+//
+// Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+func (c *ClientWithResponses) CustomersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error) {
+	rsp, err := c.CustomersUpdateWithApplicationMergePatchPlusJSONBody(ctx, customerId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -3848,9 +4059,7 @@ func (c *ClientWithResponses) TenantsCreateWithResponse(ctx context.Context, bod
 
 // TenantsDeleteWithResponse Delete an empty tenant
 //
-// Deletes the tenant only when nothing but memberships hangs off it — no
-// project of any status, no contract, no helpdesk record. Its memberships go
-// with it, and its Keycloak /tenants/<slug> groups are removed.
+// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource. Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -3878,7 +4087,9 @@ func (c *ClientWithResponses) TenantsGetWithResponse(ctx context.Context, tenant
 
 // TenantsUpdateWithBodyWithResponse Change a tenant
 //
-// Only the fields in the body change. `customer_id` and `slug` are frozen.
+// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -3893,13 +4104,32 @@ func (c *ClientWithResponses) TenantsUpdateWithBodyWithResponse(ctx context.Cont
 
 // TenantsUpdateWithResponse Change a tenant
 //
-// Only the fields in the body change. `customer_id` and `slug` are frozen.
+// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
 // Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
 func (c *ClientWithResponses) TenantsUpdateWithResponse(ctx context.Context, tenantId string, body TenantsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantsUpdateResponse, error) {
 	rsp, err := c.TenantsUpdate(ctx, tenantId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantsUpdateResponse(rsp)
+}
+
+// TenantsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a tenant
+//
+// Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+func (c *ClientWithResponses) TenantsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, tenantId string, body TenantsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantsUpdateResponse, error) {
+	rsp, err := c.TenantsUpdateWithApplicationMergePatchPlusJSONBody(ctx, tenantId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -3920,6 +4150,8 @@ func (c *ClientWithResponses) TenantMembershipsListWithResponse(ctx context.Cont
 }
 
 // TenantMembershipsDeleteWithResponse Remove a member
+//
+// Removes the user's membership of the tenant and re-syncs their Keycloak groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 //
 // Returns a wrapper object for the known response body format(s).
 //

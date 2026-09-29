@@ -4,25 +4,11 @@
 package provider_test
 
 import (
-	"bytes"
-	"context"
-	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
-	"time"
-
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/go-plugin"
-	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
-	"github.com/hashicorp/terraform-plugin-go/tfprotov6/tf6server"
-
-	"github.com/ataila/terraform-provider-ataila/internal/provider"
 )
 
 // Environment variables naming the two CLIs for TestCrossCLIState.
@@ -31,32 +17,118 @@ const (
 	envCrossTofu      = "ATAILA_CROSS_CLI_TOFU"
 )
 
-// TestCrossCLIState proves that state written by one CLI is read by the
-// other without a diff (PLAN §7, step 6): Terraform applies, OpenTofu plans
-// with -detailed-exitcode and must find nothing to do; then OpenTofu applies
-// a change and Terraform must find nothing to do. Both CLIs run against the
-// same working directory and the same state file, with configuration that
-// says only `source = "ataila/ataila"`, as a user's does.
+// The provider address each CLI writes into a state for source "ataila/ataila".
+const (
+	terraformAddr = terraformHost + "/ataila/ataila"
+	tofuAddr      = tofuHost + "/ataila/ataila"
+)
+
+// TestCrossCLIState proves what happens when one working directory, one
+// configuration (`source = "ataila/ataila"`) and one state file are used by
+// both CLIs, in both orders, with the provider installed as a user installs it
+// (each CLI knows it under its own registry's address only):
 //
-// It needs both CLIs, so it is not an acceptance test of the per-CLI matrix:
-// set ATAILA_CROSS_CLI_TERRAFORM and ATAILA_CROSS_CLI_TOFU to their paths.
+//   - OpenTofu reads a state Terraform wrote, unaided: it maps
+//     registry.terraform.io/ataila/ataila to its own registry by itself.
+//   - Terraform does NOT read a state OpenTofu wrote: the state names
+//     registry.opentofu.org/ataila/ataila, which Terraform does not know.
+//     After `terraform state replace-provider` it reads it without a diff.
+//
+// Each order ends with the second CLI changing something and the first one
+// reading that back without a diff. The README section "Switching between
+// OpenTofu and Terraform" documents the commands.
+//
+// It needs both CLIs: set ATAILA_CROSS_CLI_TERRAFORM and ATAILA_CROSS_CLI_TOFU.
 func TestCrossCLIState(t *testing.T) {
 	terraformBin, tofuBin := os.Getenv(envCrossTerraform), os.Getenv(envCrossTofu)
 	if terraformBin == "" || tofuBin == "" {
 		t.Skipf("set %s and %s to run the cross-CLI state check", envCrossTerraform, envCrossTofu)
 	}
-	m := newMock(t)
-	m.SetTokenAllowDestroy(true)
-	user := m.AddUser("dana@example.com")
+	providerDir := buildProvider(t)
 
-	dir := t.TempDir()
-	cliConfig := filepath.Join(dir, "empty.rc")
-	if err := os.WriteFile(cliConfig, nil, 0o600); err != nil {
-		t.Fatal(err)
+	type pair struct{ terraform, tofu *cli }
+	setup := func(t *testing.T) (pair, func(string)) {
+		m := newMock(t)
+		m.SetTokenAllowDestroy(true)
+		user := m.AddUser("dana@example.com")
+		dir := t.TempDir()
+		write := func(description string) {
+			t.Helper()
+			if err := os.WriteFile(filepath.Join(dir, "main.tf"), []byte(crossConfig(description, user)), 0o600); err != nil {
+				t.Fatal(err)
+			}
+		}
+		return pair{
+			terraform: newCLI(t, terraformBin, terraformHost, dir, providerDir),
+			tofu:      newCLI(t, tofuBin, tofuHost, dir, providerDir),
+		}, write
 	}
-	writeConfig := func(description string) {
+	expectProviders := func(t *testing.T, dir, want, after string) {
 		t.Helper()
-		cfg := fmt.Sprintf(`
+		got := stateProviders(t, dir)
+		if len(got) != 1 || got[0] != fmt.Sprintf("%q", "provider[\""+want+"\"]") {
+			t.Fatalf("after %s the state names %v, want only %s", after, got, want)
+		}
+	}
+	// terraformRefuses shows that Terraform cannot use a state OpenTofu wrote.
+	terraformRefuses := func(t *testing.T, tf *cli) {
+		t.Helper()
+		out, code := tf.run("plan", "-input=false", "-no-color", "-detailed-exitcode")
+		if code != 1 || !strings.Contains(out, tofuAddr) {
+			t.Fatalf("terraform plan on an OpenTofu state: exit %d, want 1 naming %s:\n%s", code, tofuAddr, out)
+		}
+		t.Logf("terraform refuses as expected: %s", errorBlock(out))
+	}
+	replaceForTerraform := func(tf *cli) {
+		tf.must("state", "replace-provider", "-auto-approve", tofuAddr, terraformAddr)
+	}
+
+	t.Run("terraform-first", func(t *testing.T) {
+		p, write := setup(t)
+		write("Written by Terraform.")
+		p.terraform.apply()
+		expectProviders(t, p.terraform.dir, terraformAddr, "terraform apply")
+
+		// OpenTofu reads Terraform's state unaided.
+		p.tofu.noDiff("OpenTofu reading the state Terraform wrote")
+
+		write("Changed by OpenTofu.")
+		p.tofu.apply()
+		expectProviders(t, p.tofu.dir, tofuAddr, "tofu apply")
+
+		// Back to Terraform: refused until the address is mapped.
+		terraformRefuses(t, p.terraform)
+		replaceForTerraform(p.terraform)
+		p.terraform.noDiff("Terraform reading the state OpenTofu wrote, after replace-provider")
+		p.terraform.must("destroy", "-input=false", "-no-color", "-auto-approve")
+	})
+
+	t.Run("opentofu-first", func(t *testing.T) {
+		p, write := setup(t)
+		write("Written by OpenTofu.")
+		p.tofu.apply()
+		expectProviders(t, p.tofu.dir, tofuAddr, "tofu apply")
+
+		// Terraform cannot read it until the address is mapped.
+		terraformRefuses(t, p.terraform)
+		replaceForTerraform(p.terraform)
+		expectProviders(t, p.terraform.dir, terraformAddr, "terraform state replace-provider")
+		p.terraform.noDiff("Terraform reading the state OpenTofu wrote, after replace-provider")
+
+		write("Changed by Terraform.")
+		p.terraform.apply()
+
+		// OpenTofu reads it back unaided; its optional replace-provider works too.
+		p.tofu.noDiff("OpenTofu reading the state Terraform wrote")
+		p.tofu.must("state", "replace-provider", "-auto-approve", terraformAddr, tofuAddr)
+		expectProviders(t, p.tofu.dir, tofuAddr, "tofu state replace-provider")
+		p.tofu.noDiff("OpenTofu after its own replace-provider")
+		p.tofu.must("destroy", "-input=false", "-no-color", "-auto-approve")
+	})
+}
+
+func crossConfig(description, user string) string {
+	return fmt.Sprintf(`
 terraform {
   required_providers {
     ataila = {
@@ -75,7 +147,7 @@ resource "ataila_customer" "c" {
   gitlab_group          = "cross"
   primary_contact_email = "Ops@Cross.EXAMPLE"
   primary_contact_name  = "Ops Desk"
-  notes                 = "Written by one CLI, read by the other."
+  status                = "suspended"
 }
 
 resource "ataila_tenant" "t" {
@@ -99,163 +171,18 @@ data "ataila_tenants" "all" {
 output "tenant_count" {
   value = length(data.ataila_tenants.all.tenants)
 }
+
+output "tenant_created_at" {
+  value = ataila_tenant.t.created_at
+}
 `, description, user)
-		if err := os.WriteFile(filepath.Join(dir, "main.tf"), []byte(cfg), 0o600); err != nil {
-			t.Fatal(err)
-		}
-	}
-
-	// run executes one CLI command against a fresh in-process provider server.
-	run := func(bin string, args ...string) (string, int) {
-		t.Helper()
-		name := filepath.Base(bin)
-		// Each CLI gets the provider only under its own registry's address,
-		// as an installed provider would be; a state that names the other
-		// registry's address must still work.
-		host := "registry.terraform.io"
-		if bin == tofuBin {
-			host = "registry.opentofu.org"
-		}
-		reattach, stop := serveProvider(t, host)
-		defer stop()
-		cmd := exec.Command(bin, args...)
-		cmd.Dir = dir
-		cmd.Env = append(os.Environ(),
-			"TF_REATTACH_PROVIDERS="+reattach,
-			"TF_IN_AUTOMATION=1",
-			"CHECKPOINT_DISABLE=1",
-			"TF_CLI_CONFIG_FILE="+cliConfig,
-			"TOFU_CLI_CONFIG_FILE="+cliConfig,
-			// Each CLI keeps its own working data; the state file is shared.
-			"TF_DATA_DIR="+filepath.Join(dir, ".data-"+strings.TrimSuffix(name, ".exe")),
-		)
-		var out bytes.Buffer
-		cmd.Stdout, cmd.Stderr = &out, &out
-		err := cmd.Run()
-		code := 0
-		var exitErr *exec.ExitError
-		if errors.As(err, &exitErr) {
-			code = exitErr.ExitCode()
-		} else if err != nil {
-			t.Fatalf("%s %s: %v", name, strings.Join(args, " "), err)
-		}
-		t.Logf("%s %s: exit %d", name, strings.Join(args, " "), code)
-		return out.String(), code
-	}
-	must := func(bin string, args ...string) {
-		t.Helper()
-		if out, code := run(bin, args...); code != 0 {
-			t.Fatalf("%s %s failed (exit %d):\n%s", filepath.Base(bin), strings.Join(args, " "), code, out)
-		}
-	}
-	// noDiff runs plan -detailed-exitcode: 0 is "no changes", 2 is a diff.
-	noDiff := func(bin, wroteBy string) {
-		t.Helper()
-		out, code := run(bin, "plan", "-input=false", "-no-color", "-detailed-exitcode")
-		if code != 0 {
-			t.Fatalf("%s found a difference in the state %s wrote (exit %d):\n%s",
-				filepath.Base(bin), wroteBy, code, out)
-		}
-	}
-
-	writeConfig("First written by Terraform.")
-	must(terraformBin, "init", "-input=false", "-no-color")
-	must(terraformBin, "apply", "-input=false", "-no-color", "-auto-approve")
-
-	must(tofuBin, "init", "-input=false", "-no-color")
-	noDiff(tofuBin, "Terraform")
-
-	writeConfig("Then changed by OpenTofu.")
-	must(tofuBin, "apply", "-input=false", "-no-color", "-auto-approve")
-	// As on a fresh machine: init against the state the other CLI wrote.
-	must(terraformBin, "init", "-input=false", "-no-color")
-	noDiff(terraformBin, "OpenTofu")
-
-	tenants, _ := m.Tenant(tenantIDFromState(t, dir))
-	if tenants == nil || tenants["description"] != "Then changed by OpenTofu." {
-		t.Errorf("the change made by OpenTofu did not reach the platform: %v", tenants)
-	}
-
-	must(terraformBin, "destroy", "-input=false", "-no-color", "-auto-approve")
-	if c, _ := m.Customer("1"); c["status"] != "archived" {
-		t.Errorf("customer after destroy: %v", c)
-	}
 }
 
-// tenantIDFromState reads ataila_tenant.t's id from the shared state file.
-func tenantIDFromState(t *testing.T, dir string) string {
-	t.Helper()
-	b, err := os.ReadFile(filepath.Join(dir, "terraform.tfstate"))
-	if err != nil {
-		t.Fatal(err)
+// errorBlock is the CLI's first error, its title and text on one line.
+func errorBlock(out string) string {
+	i := strings.Index(out, "Error:")
+	if i < 0 {
+		return "(no error in the output)"
 	}
-	var st struct {
-		Resources []struct {
-			Type      string `json:"type"`
-			Provider  string `json:"provider"`
-			Instances []struct {
-				Attributes map[string]any `json:"attributes"`
-			} `json:"instances"`
-		} `json:"resources"`
-	}
-	if err := json.Unmarshal(b, &st); err != nil {
-		t.Fatal(err)
-	}
-	for _, r := range st.Resources {
-		if r.Type == "ataila_tenant" && len(r.Instances) == 1 {
-			t.Logf("state records the provider as %s", r.Provider)
-			return fmt.Sprint(r.Instances[0].Attributes["id"])
-		}
-	}
-	t.Fatal("no ataila_tenant in the state")
-	return ""
-}
-
-// serveProvider starts the provider in-process in debug mode and returns the
-// TF_REATTACH_PROVIDERS value for the provider under the given registry host,
-// and a stop function.
-func serveProvider(t *testing.T, host string) (string, func()) {
-	t.Helper()
-	ctx, cancel := context.WithCancel(context.Background())
-	cfgCh := make(chan *plugin.ReattachConfig, 1)
-	closeCh := make(chan struct{})
-	factory := func() tfprotov6.ProviderServer {
-		s, err := providerserver.NewProtocol6WithError(provider.New(testVersion)())()
-		if err != nil {
-			panic(err)
-		}
-		return s
-	}
-	go func() {
-		_ = tf6server.Serve(host+"/ataila/ataila", factory,
-			tf6server.WithDebug(ctx, cfgCh, closeCh),
-			tf6server.WithGoPluginLogger(hclog.NewNullLogger()),
-			tf6server.WithLoggingSink(t),
-			tf6server.WithoutLogStderrOverride())
-	}()
-	var cfg *plugin.ReattachConfig
-	select {
-	case cfg = <-cfgCh:
-	case <-time.After(10 * time.Second):
-		cancel()
-		t.Fatal("the provider server did not start")
-	}
-	entry := map[string]any{
-		"Protocol":        string(cfg.Protocol),
-		"ProtocolVersion": cfg.ProtocolVersion,
-		"Pid":             cfg.Pid,
-		"Test":            true,
-		"Addr":            map[string]string{"Network": cfg.Addr.Network(), "String": cfg.Addr.String()},
-	}
-	b, _ := json.Marshal(map[string]any{
-		"registry.terraform.io/ataila/ataila": entry,
-		"registry.opentofu.org/ataila/ataila": entry,
-	})
-	return string(b), func() {
-		cancel()
-		select {
-		case <-closeCh:
-		case <-time.After(10 * time.Second):
-		}
-	}
+	return strings.Join(strings.Fields(out[i:min(len(out), i+400)]), " ")
 }

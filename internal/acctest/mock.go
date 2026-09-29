@@ -49,7 +49,17 @@ type Fault struct {
 	// idempotent answer stored) and then answers with the fault: a response
 	// lost on the way back, as a proxy's 502 after the API did the work.
 	AfterHandling bool
+	// StillRunning models a slow POST: the request's Idempotency-Key is
+	// claimed, the fault is answered (a proxy's 504, say) while the API keeps
+	// working, and the next StillRunning requests with that key are answered
+	// 429 idempotency_request_in_progress with Retry-After, as the platform
+	// does. The request after those finds the work done and gets it replayed.
+	StillRunning int
 }
+
+// InProgressRetryAfter is the Retry-After of a 429
+// idempotency_request_in_progress, as the platform sends it.
+const InProgressRetryAfter = "2"
 
 // Request is what the mock saw.
 type Request struct {
@@ -82,6 +92,10 @@ type storedReply struct {
 	hash   string
 	status int
 	body   []byte
+	// running counts the 429s still to answer while a claimed request is
+	// "still running"; pending marks such a claim.
+	running int
+	pending bool
 }
 
 // reply is a handler's answer before it is written, so that idempotency and
@@ -305,6 +319,11 @@ func (m *MockAPI) serve(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fault, hasFault := m.takeFault(c.path, r.Method)
+	if key := r.Header.Get("Idempotency-Key"); hasFault && fault.StillRunning > 0 && r.Method == http.MethodPost && key != "" {
+		m.idempotent[key] = storedReply{hash: requestHash(c), running: fault.StillRunning, pending: true}
+		write(w, c.faultReply(fault))
+		return
+	}
 	if hasFault && !fault.AfterHandling {
 		write(w, c.faultReply(fault))
 		return
@@ -338,18 +357,29 @@ func (m *MockAPI) takeFault(path, method string) (Fault, bool) {
 // Idempotent-Replayed); the same key with a different request is 409
 // idempotency_key_reused. Answers of 500 and above are not stored.
 func (m *MockAPI) idempotently(c *call, key string) reply {
-	sum := sha256.New()
-	for _, part := range [][]byte{[]byte(c.r.Method), []byte(c.path), []byte(c.r.URL.RawQuery), c.body} {
-		fmt.Fprintf(sum, "%d:", len(part))
-		sum.Write(part)
+	hash := requestHash(c)
+	stored, ok := m.idempotent[key]
+	if ok && stored.hash != hash {
+		return c.problem(http.StatusConflict, "idempotency_key_reused",
+			"This Idempotency-Key was used for a different request.", nil)
 	}
-	hash := hex.EncodeToString(sum.Sum(nil))
-
-	if stored, ok := m.idempotent[key]; ok {
-		if stored.hash != hash {
-			return c.problem(http.StatusConflict, "idempotency_key_reused",
-				"This Idempotency-Key was used for a different request.", nil)
+	if ok && stored.pending {
+		if stored.running > 0 {
+			stored.running--
+			m.idempotent[key] = stored
+			rep := c.problem(http.StatusTooManyRequests, "idempotency_request_in_progress",
+				"A request with this Idempotency-Key is still running; retry after the indicated delay.", nil)
+			rep.headers = map[string]string{"Retry-After": InProgressRetryAfter}
+			return rep
 		}
+		// The claimed request has finished: its answer is stored, and replayed.
+		rep := m.route(c)
+		b, _ := json.Marshal(rep.body)
+		m.idempotent[key] = storedReply{hash: hash, status: rep.status, body: b}
+		rep.headers = map[string]string{"Idempotent-Replayed": "true"}
+		return rep
+	}
+	if ok {
 		return reply{status: stored.status, body: json.RawMessage(stored.body),
 			problem: stored.status >= 400, headers: map[string]string{"Idempotent-Replayed": "true"}}
 	}
@@ -359,6 +389,16 @@ func (m *MockAPI) idempotently(c *call, key string) reply {
 		m.idempotent[key] = storedReply{hash: hash, status: rep.status, body: b}
 	}
 	return rep
+}
+
+// requestHash identifies a request for idempotency: method, path, query, body.
+func requestHash(c *call) string {
+	sum := sha256.New()
+	for _, part := range [][]byte{[]byte(c.r.Method), []byte(c.path), []byte(c.r.URL.RawQuery), c.body} {
+		fmt.Fprintf(sum, "%d:", len(part))
+		sum.Write(part)
+	}
+	return hex.EncodeToString(sum.Sum(nil))
 }
 
 func (m *MockAPI) route(c *call) reply {

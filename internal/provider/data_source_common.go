@@ -6,6 +6,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -38,6 +39,14 @@ func stringOrNull(p *string) types.String {
 		return types.StringNull()
 	}
 	return types.StringValue(*p)
+}
+
+// timestampString renders an optional time as the provider stores times.
+func timestampString(t *time.Time) types.String {
+	if t == nil {
+		return types.StringNull()
+	}
+	return types.StringValue(FormatTimestamp(*t))
 }
 
 func stringList(ctx context.Context, items []string, diags *diag.Diagnostics) types.List {

@@ -46,20 +46,20 @@ type customerResource struct {
 // customerModel is the state of ataila_customer and of the ataila_customer
 // data source.
 type customerModel struct {
-	ID                  types.String `tfsdk:"id"`
-	CustomerIndex       types.Int64  `tfsdk:"customer_index"`
-	ShortName           types.String `tfsdk:"short_name"`
-	LongName            types.String `tfsdk:"long_name"`
-	GitlabGroup         types.String `tfsdk:"gitlab_group"`
-	Edition             types.String `tfsdk:"edition"`
-	PrimaryContactEmail types.String `tfsdk:"primary_contact_email"`
-	PrimaryContactName  types.String `tfsdk:"primary_contact_name"`
-	DefaultEmailTier    types.Int64  `tfsdk:"default_email_tier"`
-	BillingTier         types.String `tfsdk:"billing_tier"`
-	Status              types.String `tfsdk:"status"`
-	Notes               types.String `tfsdk:"notes"`
-	PrimaryTenantID     types.String `tfsdk:"primary_tenant_id"`
-	CreatedAt           types.String `tfsdk:"created_at"`
+	ID                  types.String   `tfsdk:"id"`
+	CustomerIndex       types.Int64    `tfsdk:"customer_index"`
+	ShortName           types.String   `tfsdk:"short_name"`
+	LongName            types.String   `tfsdk:"long_name"`
+	GitlabGroup         types.String   `tfsdk:"gitlab_group"`
+	Edition             types.String   `tfsdk:"edition"`
+	PrimaryContactEmail types.String   `tfsdk:"primary_contact_email"`
+	PrimaryContactName  types.String   `tfsdk:"primary_contact_name"`
+	DefaultEmailTier    types.Int64    `tfsdk:"default_email_tier"`
+	BillingTier         types.String   `tfsdk:"billing_tier"`
+	Status              types.String   `tfsdk:"status"`
+	Notes               types.String   `tfsdk:"notes"`
+	PrimaryTenantID     types.String   `tfsdk:"primary_tenant_id"`
+	CreatedAt           TimestampValue `tfsdk:"created_at"`
 }
 
 // fromAPI fills the model from the API's answer. prior is the configured or
@@ -79,7 +79,7 @@ func (m *customerModel) fromAPI(c *client.Customer, priorEmail types.String) {
 	m.Status = types.StringValue(string(c.Status))
 	m.Notes = stringOrNull(c.Notes)
 	m.PrimaryTenantID = types.StringValue(c.PrimaryTenantId)
-	m.CreatedAt = types.StringValue(c.CreatedAt)
+	m.CreatedAt = NewTimestamp(c.CreatedAt)
 }
 
 func (m *customerModel) ident() string {
@@ -98,8 +98,8 @@ var customerDocs = map[string]string{
 	"short_name": "Short name, `^[A-Z][A-Z0-9]{1,15}$`, for example `EXAMPLE`. **Frozen.**",
 	"long_name": "Display name, 3-80 characters. Quotes, backslashes and control characters are " +
 		"refused because the name is copied into generated project files.",
-	"gitlab_group": "GitLab group of the customer, `^[a-z][a-z0-9-]{1,30}$`; also the slug of its primary " +
-		"tenant. No customer's group may be a hyphen-prefix of another's (`example` and `example-labs`). " +
+	"gitlab_group": "GitLab group of the customer, `^[a-z][a-z0-9-]{1,29}$` (2-30 characters); also the slug " +
+		"of its primary tenant, so the tenant slug rule applies. No customer's group may be a hyphen-prefix of another's (`example` and `example-labs`). " +
 		"**Frozen.**",
 	"edition": "`sp` (service provider, the default) or `enterprise`. **Frozen.**",
 	"primary_contact_email": "E-mail address of the primary contact. A platform user with this address " +
@@ -112,14 +112,17 @@ var customerDocs = map[string]string{
 		"cannot be configured.",
 	"notes":             "Free-text notes, up to 2000 characters.",
 	"primary_tenant_id": "Id of the tenant created with the customer. It can never be deleted.",
-	"created_at":        "When the customer was created, as the platform reports it.",
+	"created_at": "When the customer was created: RFC 3339 in UTC, compared as an instant (another " +
+		"representation of the same time is not a change).",
 }
 
 var (
 	rxShortName   = regexp.MustCompile(`^[A-Z][A-Z0-9]{1,15}$`)
-	rxGitlabGroup = regexp.MustCompile(`^[a-z][a-z0-9-]{1,30}$`)
+	rxGitlabGroup = regexp.MustCompile(`^[a-z][a-z0-9-]{1,29}$`)
 	rxLongName    = regexp.MustCompile(`^[^"'\\\x00-\x1f\x7f]*$`)
-	rxEmail       = regexp.MustCompile(`^[^@\s]+@[^@\s]+\.[^@\s]+$`)
+	// An address alone: no surrounding spaces and no "Name <address>" form,
+	// which the platform would reduce to the address (a perpetual difference).
+	rxEmail = regexp.MustCompile(`^[^@\s<>",;]+@[^@\s<>",;]+\.[^@\s<>",;]+$`)
 )
 
 func (r *customerResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -174,7 +177,7 @@ func (r *customerResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 				MarkdownDescription: d["gitlab_group"],
 				Required:            true,
 				Validators: []validator.String{stringvalidator.RegexMatches(rxGitlabGroup,
-					"must be a lower-case letter followed by 1-30 lower-case letters, digits or hyphens")},
+					"must be a lower-case letter followed by 1-29 lower-case letters, digits or hyphens (2-30 characters)")},
 				PlanModifiers: []planmodifier.String{customerFrozen.forString()},
 			},
 			"edition": schema.StringAttribute{
@@ -228,6 +231,7 @@ func (r *customerResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 			},
 			"created_at": schema.StringAttribute{
 				MarkdownDescription: d["created_at"],
+				CustomType:          TimestampType{},
 				Computed:            true,
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
@@ -307,6 +311,10 @@ func (r *customerResource) Create(ctx context.Context, req resource.CreateReques
 		t := client.CustomerCreateDefaultEmailTier(plan.DefaultEmailTier.ValueInt64())
 		body.DefaultEmailTier = &t
 	}
+	if v := optString(plan.Status); v != nil {
+		s := client.CustomerCreateStatus(*v)
+		body.Status = &s
+	}
 
 	c, err := r.data.API.CreateCustomer(ctx, body)
 	if err != nil {
@@ -314,26 +322,6 @@ func (r *customerResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 	addWarnings(&resp.Diagnostics, "creating the customer "+c.ShortName, c.Warnings)
-
-	// The API creates a customer active; a configuration that asks for it
-	// suspended gets a second call. If that call fails the customer still
-	// exists: an error now would taint it, and replacing a customer archives
-	// it for good. So the failure is a warning; the state takes the planned
-	// status (a different one would be an inconsistent result, which also
-	// taints), and the next refresh reads the real one and plans the change
-	// again.
-	if want := plan.Status.ValueString(); want != "" && want != string(c.Status) {
-		c2, err := r.data.API.UpdateCustomer(ctx, c.Id, client.Patch{"status": want})
-		if err != nil {
-			d := apiError("setting the status of the new customer "+c.ShortName, err)
-			resp.Diagnostics.AddWarning("The customer was created but is not "+want+" yet",
-				d.Summary()+"\n\n"+d.Detail()+"\n\nThe next plan shows the status change again; apply once more.")
-			c.Status = client.CustomerStatus(want)
-		} else {
-			addWarnings(&resp.Diagnostics, "setting the status of the customer "+c.ShortName, c2.Warnings)
-			c = c2
-		}
-	}
 
 	var state customerModel
 	state.fromAPI(c, plan.PrimaryContactEmail)
@@ -470,9 +458,10 @@ func (r *customerResource) ImportState(ctx context.Context, req resource.ImportS
 		}
 		id = found[0].Id
 	}
-	if id == "" {
+	if !rxIntID.MatchString(id) {
 		resp.Diagnostics.AddError("Cannot import the customer",
-			"Give the customer id, or short_name:<SHORT_NAME>.")
+			fmt.Sprintf("%q is not a customer id (1 to 999999999, no leading zero). Give the id, or "+
+				"short_name:<SHORT_NAME>.", id))
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), id)...)

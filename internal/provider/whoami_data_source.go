@@ -176,7 +176,7 @@ func (d *whoamiDataSource) Read(ctx context.Context, _ datasource.ReadRequest, r
 		Principal: principal,
 		AuthKind:  types.StringValue(who.AuthKind),
 		Scopes:    stringList(ctx, who.Scopes, &resp.Diagnostics),
-		ExpiresAt: stringOrNull(who.ExpiresAt),
+		ExpiresAt: timestampString(who.ExpiresAt),
 		Token:     token,
 	}
 	if resp.Diagnostics.HasError() {

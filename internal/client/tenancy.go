@@ -44,10 +44,13 @@ type TenantFilter struct {
 	Slug       string
 }
 
-// Patch is a PATCH body: only the members present are changed, and a nil
-// value is sent as JSON null, which clears a nullable field. The generated
-// request types cannot say "null" (their pointers are omitempty), so PATCH
-// bodies are built by hand.
+// MergePatchContentType is the media type of every PATCH body (RFC 7396).
+const MergePatchContentType = "application/merge-patch+json"
+
+// Patch is a JSON Merge Patch body (RFC 7396): only the members present are
+// changed, and a nil value is sent as JSON null, which clears a nullable
+// field. The generated request types cannot say "null" (their pointers are
+// omitempty), so PATCH bodies are built by hand.
 type Patch map[string]any
 
 func (a *API) pageSize() int {
@@ -125,7 +128,7 @@ func (a *API) UpdateCustomer(ctx context.Context, id string, patch Patch) (*Cust
 	if err != nil {
 		return nil, err
 	}
-	rsp, err := a.raw.CustomersUpdateWithBodyWithResponse(ctx, id, "application/json", body)
+	rsp, err := a.raw.CustomersUpdateWithBodyWithResponse(ctx, id, MergePatchContentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -210,7 +213,7 @@ func (a *API) UpdateTenant(ctx context.Context, id string, patch Patch) (*Tenant
 	if err != nil {
 		return nil, err
 	}
-	rsp, err := a.raw.TenantsUpdateWithBodyWithResponse(ctx, id, "application/json", body)
+	rsp, err := a.raw.TenantsUpdateWithBodyWithResponse(ctx, id, MergePatchContentType, body)
 	if err != nil {
 		return nil, err
 	}

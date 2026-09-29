@@ -41,17 +41,17 @@ type tenantResource struct {
 // tenantModel is the state of ataila_tenant, of the ataila_tenant data source
 // and of each element of the ataila_tenants data source.
 type tenantModel struct {
-	ID              types.String `tfsdk:"id"`
-	CustomerID      types.String `tfsdk:"customer_id"`
-	Slug            types.String `tfsdk:"slug"`
-	Name            types.String `tfsdk:"name"`
-	Description     types.String `tfsdk:"description"`
-	DefaultRouterID types.String `tfsdk:"default_router_id"`
-	IsPrimary       types.Bool   `tfsdk:"is_primary"`
-	ProjectCount    types.Int64  `tfsdk:"project_count"`
-	MemberCount     types.Int64  `tfsdk:"member_count"`
-	CreatedAt       types.String `tfsdk:"created_at"`
-	UpdatedAt       types.String `tfsdk:"updated_at"`
+	ID              types.String   `tfsdk:"id"`
+	CustomerID      types.String   `tfsdk:"customer_id"`
+	Slug            types.String   `tfsdk:"slug"`
+	Name            types.String   `tfsdk:"name"`
+	Description     types.String   `tfsdk:"description"`
+	DefaultRouterID types.String   `tfsdk:"default_router_id"`
+	IsPrimary       types.Bool     `tfsdk:"is_primary"`
+	ProjectCount    types.Int64    `tfsdk:"project_count"`
+	MemberCount     types.Int64    `tfsdk:"member_count"`
+	CreatedAt       TimestampValue `tfsdk:"created_at"`
+	UpdatedAt       TimestampValue `tfsdk:"updated_at"`
 }
 
 func (m *tenantModel) fromAPI(t *client.Tenant) {
@@ -64,8 +64,8 @@ func (m *tenantModel) fromAPI(t *client.Tenant) {
 	m.IsPrimary = types.BoolValue(t.IsPrimary)
 	m.ProjectCount = types.Int64Value(int64(t.ProjectCount))
 	m.MemberCount = types.Int64Value(int64(t.MemberCount))
-	m.CreatedAt = stringOrNull(t.CreatedAt)
-	m.UpdatedAt = stringOrNull(t.UpdatedAt)
+	m.CreatedAt = NewTimestamp(t.CreatedAt)
+	m.UpdatedAt = NewTimestamp(t.UpdatedAt)
 }
 
 func (m *tenantModel) ident() string {
@@ -90,8 +90,9 @@ var tenantDocs = map[string]string{
 		"tenant is never deleted.",
 	"project_count": "Projects in the tenant, every status included.",
 	"member_count":  "Tenant memberships.",
-	"created_at":    "When the tenant was created, as the platform reports it.",
-	"updated_at":    "When the tenant was last changed, as the platform reports it.",
+	"created_at":    "When the tenant was created: RFC 3339 in UTC, compared as an instant.",
+	"updated_at": "When the tenant was last changed; equal to `created_at` until the first change. " +
+		"RFC 3339 in UTC, compared as an instant.",
 }
 
 var (
@@ -157,9 +158,11 @@ func (r *tenantResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 			"project_count": schema.Int64Attribute{MarkdownDescription: d["project_count"], Computed: true},
 			"member_count":  schema.Int64Attribute{MarkdownDescription: d["member_count"], Computed: true},
 			"created_at": schema.StringAttribute{
-				MarkdownDescription: d["created_at"], Computed: true, PlanModifiers: state,
+				MarkdownDescription: d["created_at"], CustomType: TimestampType{}, Computed: true, PlanModifiers: state,
 			},
-			"updated_at": schema.StringAttribute{MarkdownDescription: d["updated_at"], Computed: true},
+			"updated_at": schema.StringAttribute{
+				MarkdownDescription: d["updated_at"], CustomType: TimestampType{}, Computed: true,
+			},
 		},
 	}
 }
@@ -317,5 +320,24 @@ func (r *tenantResource) ImportState(ctx context.Context, req resource.ImportSta
 		resp.Diagnostics.AddError("Cannot import the tenant", "Give the tenant id, or slug:<slug>.")
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), id)...)
+	// A legacy tenant that no customer owns can be read, never managed:
+	// customer_id is required and frozen here.
+	t, err := r.data.API.GetTenant(ctx, id)
+	if err != nil {
+		if isNotFound(err) {
+			resp.Diagnostics.AddError("Cannot import the tenant", fmt.Sprintf("No tenant has id %q.", id))
+			return
+		}
+		resp.Diagnostics.Append(apiError("reading the tenant "+id, err))
+		return
+	}
+	if t.CustomerId == nil {
+		resp.Diagnostics.AddError("Cannot import a tenant that belongs to no customer",
+			fmt.Sprintf("The tenant %s (id %s) is a legacy tenant: no customer owns it, so its customer_id is "+
+				"null. The ataila_tenant resource manages only tenants of a customer, because customer_id is "+
+				"required and can never change.\n\nRead it with the ataila_tenant data source (by id or "+
+				"slug) or the ataila_tenants data source instead.", t.Slug, t.Id))
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), t.Id)...)
 }

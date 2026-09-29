@@ -8,6 +8,7 @@ import (
 	"errors"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/ataila/terraform-provider-ataila/internal/acctest"
 )
@@ -127,7 +128,8 @@ func TestCustomerArchiveRefusedWithProjects(t *testing.T) {
 	}
 	m.SetTenantBlockers(c.PrimaryTenantId, 3, 0, 0, 0)
 	e := apiErr(t, api.ArchiveCustomer(ctx, c.Id))
-	if e.StatusCode != 409 || e.Code() != "customer_has_projects" || !strings.Contains(e.Detail(), "project_count: 3") {
+	if e.StatusCode != 409 || e.Code() != "customer_has_projects" || e.Blockers()["projects"] != 3 ||
+		!strings.Contains(e.Detail(), "blockers: projects=3") {
 		t.Errorf("%v\n%s", e, e.Detail())
 	}
 }
@@ -272,5 +274,88 @@ func TestCreateReplayedAfterALostAnswer(t *testing.T) {
 	all, err := api.ListCustomers(ctx, CustomerFilter{})
 	if err != nil || len(all) != 1 || all[0].Id != c.Id {
 		t.Errorf("customers after a replayed create: %+v %v", all, err)
+	}
+}
+
+// A retry that arrives while the first attempt is still running is answered
+// 429 idempotency_request_in_progress with Retry-After, and retried like any
+// 429 until the first attempt's answer is replayed: one customer.
+func TestCreateRetriedWhileTheFirstAttemptRuns(t *testing.T) {
+	m, api := mockAPI(t, 0)
+	ctx := context.Background()
+	m.InjectFaults("/customers", acctest.Fault{Status: 504, Code: "gateway_timeout", Method: "POST", StillRunning: 1})
+
+	start := time.Now()
+	c, err := api.CreateCustomer(ctx, newCustomer("SLOW", "slow"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if waited := time.Since(start); waited < 2*time.Second {
+		t.Errorf("the 429's Retry-After (2s) was not honoured: %v", waited)
+	}
+	var keys []string
+	for _, r := range m.Requests() {
+		if r.Method == "POST" && r.Path == "/customers" {
+			keys = append(keys, r.Header.Get(IdempotencyHeader))
+		}
+	}
+	if len(keys) != 3 || keys[0] != keys[1] || keys[1] != keys[2] {
+		t.Errorf("POST /customers keys = %q, want three identical (504, 429, replay)", keys)
+	}
+	if all, _ := api.ListCustomers(ctx, CustomerFilter{}); len(all) != 1 || all[0].Id != c.Id {
+		t.Errorf("customers: %+v", all)
+	}
+}
+
+// What the contract says a client sees: status on create, RFC 3339 times,
+// updated_at equal to created_at on a new tenant, the normalised e-mail, the
+// one integer-id rule, merge-patch bodies, a legacy tenant without customer.
+func TestContractDetails(t *testing.T) {
+	m, api := mockAPI(t, 0)
+	ctx := context.Background()
+	body := newCustomer("DETAIL", "detail")
+	suspended := CustomerCreateStatusSuspended
+	body.Status = &suspended
+	body.PrimaryContactEmail = "Pat@Example.COM"
+	c, err := api.CreateCustomer(ctx, body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if c.Status != CustomerStatusSuspended || c.PrimaryContactEmail != "Pat@example.com" {
+		t.Errorf("created: status %s, e-mail %s", c.Status, c.PrimaryContactEmail)
+	}
+	if c.CreatedAt.IsZero() || c.CreatedAt.Location() != time.UTC {
+		t.Errorf("created_at %v", c.CreatedAt)
+	}
+	if n := m.Calls("PATCH", "/customers"); n != 0 {
+		t.Errorf("a suspended create took %d PATCH calls", n)
+	}
+
+	tn, err := api.CreateTenant(ctx, TenantCreate{CustomerId: c.Id, Name: "Lab", Slug: "detail-lab"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !tn.UpdatedAt.Equal(tn.CreatedAt) {
+		t.Errorf("new tenant: updated_at %v, created_at %v", tn.UpdatedAt, tn.CreatedAt)
+	}
+	if _, err := api.UpdateTenant(ctx, tn.Id, Patch{"name": "Laboratory"}); err != nil {
+		t.Fatal(err)
+	}
+	for _, r := range m.Requests() {
+		if r.Method == "PATCH" && r.Header.Get("Content-Type") != MergePatchContentType {
+			t.Errorf("PATCH %s sent as %q", r.Path, r.Header.Get("Content-Type"))
+		}
+	}
+
+	for _, bad := range []string{"007", "+1", "1234567890", "0"} {
+		if _, err := api.GetCustomer(ctx, bad); !apiErr(t, err).IsNotFound() {
+			t.Errorf("GET /customers/%s: %v, want 404", bad, err)
+		}
+	}
+
+	legacy := m.AddLegacyTenant("old-shop", "Old Shop")
+	got, err := api.GetTenant(ctx, legacy)
+	if err != nil || got.CustomerId != nil {
+		t.Errorf("legacy tenant: %+v %v", got, err)
 	}
 }

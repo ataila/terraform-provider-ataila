@@ -15,6 +15,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
+	"golang.org/x/net/idna"
+
 	"github.com/ataila/terraform-provider-ataila/internal/client"
 )
 
@@ -212,14 +214,24 @@ func addWarnings(diags *diag.Diagnostics, doing string, warnings *[]client.ApiWa
 
 // ── small conversions ────────────────────────────────────────────────────────
 
-// sameEmail compares two addresses as the platform stores them: it lowercases
-// the domain and keeps the local part.
+// sameEmail compares two addresses as the platform stores them: the local
+// part exactly, the domain case-folded and in its canonical (Unicode) form, so
+// Pat@Example.COM, Pat@example.com and an internationalised domain written in
+// either form are the same address.
 func sameEmail(a, b string) bool {
+	a, b = strings.TrimSpace(a), strings.TrimSpace(b)
 	ia, ib := strings.LastIndex(a, "@"), strings.LastIndex(b, "@")
 	if ia < 0 || ib < 0 {
 		return a == b
 	}
-	return a[:ia] == b[:ib] && strings.EqualFold(a[ia+1:], b[ib+1:])
+	return a[:ia] == b[:ib] && strings.EqualFold(canonicalDomain(a[ia+1:]), canonicalDomain(b[ib+1:]))
+}
+
+func canonicalDomain(d string) string {
+	if u, err := idna.Lookup.ToUnicode(strings.ToLower(d)); err == nil {
+		return u
+	}
+	return d
 }
 
 // keepEmail keeps the configured spelling of an address the platform stored

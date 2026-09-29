@@ -8,9 +8,11 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/datasourcevalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/ataila/terraform-provider-ataila/internal/client"
@@ -33,11 +35,12 @@ func (d *customerDataSource) Metadata(_ context.Context, req datasource.Metadata
 }
 
 func (d *customerDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
-	lookup := func(name, how string) schema.StringAttribute {
+	lookup := func(name, how string, v ...validator.String) schema.StringAttribute {
 		return schema.StringAttribute{
 			MarkdownDescription: customerDocs[name] + " " + how,
 			Optional:            true,
 			Computed:            true,
+			Validators:          v,
 		}
 	}
 	computed := func(name string) schema.StringAttribute {
@@ -47,7 +50,8 @@ func (d *customerDataSource) Schema(_ context.Context, _ datasource.SchemaReques
 		MarkdownDescription: "One customer, looked up by exactly one of `id`, `short_name` or `gitlab_group`. " +
 			"Archived customers are found too; check `status`.",
 		Attributes: map[string]schema.Attribute{
-			"id":           lookup("id", "Set it to look the customer up by id."),
+			"id": lookup("id", "Set it to look the customer up by id.",
+				stringvalidator.RegexMatches(rxIntID, "must be a customer id (1 to 999999999, no leading zero)")),
 			"short_name":   lookup("short_name", "Set it to look the customer up by short name."),
 			"gitlab_group": lookup("gitlab_group", "Set it to look the customer up by GitLab group."),
 			"customer_index": schema.Int64Attribute{
@@ -66,7 +70,9 @@ func (d *customerDataSource) Schema(_ context.Context, _ datasource.SchemaReques
 			},
 			"notes":             computed("notes"),
 			"primary_tenant_id": computed("primary_tenant_id"),
-			"created_at":        computed("created_at"),
+			"created_at": schema.StringAttribute{
+				MarkdownDescription: customerDocs["created_at"], CustomType: TimestampType{}, Computed: true,
+			},
 		},
 	}
 }

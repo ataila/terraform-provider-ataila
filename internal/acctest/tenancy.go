@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"mime"
 	"net/http"
 	"regexp"
 	"sort"
@@ -33,7 +34,18 @@ import (
 //     cannot be changed; DELETE of a tenant succeeds only for an empty tenant
 //     that is no customer's primary;
 //   - lists are cursor-paged (customers by id, tenants by slug, memberships by
-//     user id), page size 1-200, default 50.
+//     user id), page size 1-200, default 50;
+//   - a customer is created `active` or, when asked, `suspended`; `archived`
+//     is refused (422);
+//   - every destroy refusal is a 409 with a `blockers` object;
+//   - integer ids follow one rule (^[1-9][0-9]{0,8}$); anything else in a
+//     path is a 404; gitlab_group follows the tenant slug rule (2-30);
+//   - timestamps are RFC 3339 in UTC with a Z; a tenant's updated_at equals
+//     created_at until its first change;
+//   - e-mail addresses come back with the domain lower-cased;
+//   - PATCH is JSON Merge Patch (application/merge-patch+json or JSON);
+//   - a membership may read `developer`, a PUT accepts only the other four;
+//   - a legacy tenant (AddLegacyTenant) has customer_id null.
 
 // Routers the mock knows; hubRouterID is the default router of every new
 // customer's primary tenant.
@@ -50,7 +62,7 @@ var gitlabWarnings = map[string]string{
 
 var (
 	rxShortName   = regexp.MustCompile(`^[A-Z][A-Z0-9]{1,15}$`)
-	rxGitlabGroup = regexp.MustCompile(`^[a-z][a-z0-9-]{1,30}$`)
+	rxGitlabGroup = regexp.MustCompile(`^[a-z][a-z0-9-]{1,29}$`)
 	rxSlug        = regexp.MustCompile(`^[a-z][a-z0-9-]{1,29}$`)
 	rxIntID       = regexp.MustCompile(`^[1-9][0-9]{0,8}$`)
 	// Assumed: a simplified stand-in for pydantic's EmailStr.
@@ -103,9 +115,17 @@ func newTenancyState() *tenancyState {
 	}
 }
 
-func now() string {
-	// The platform renders timestamps with Python's str(datetime).
-	return time.Now().UTC().Format("2006-01-02 15:04:05.000000-07:00")
+func now() string { return wireTime(time.Now()) }
+
+// wireTime renders a time as the platform does: RFC 3339 in UTC with a Z,
+// microseconds only when there are any.
+func wireTime(t time.Time) string {
+	t = t.UTC()
+	s := t.Format("2006-01-02T15:04:05")
+	if us := t.Nanosecond() / 1000; us != 0 {
+		s += fmt.Sprintf(".%06d", us)
+	}
+	return s + "Z"
 }
 
 // ── test helpers: out-of-band changes, as an operator in the portal makes them
@@ -227,6 +247,14 @@ func (m *MockAPI) SetTenantField(id, field string, value any) {
 		panic("SetTenantField: unsupported field " + field)
 	}
 	t.updatedAt = now()
+}
+
+// AddLegacyTenant adds a tenant that no customer owns (customer_id null), as
+// older platforms hold, and returns its id.
+func (m *MockAPI) AddLegacyTenant(slug, name string) string {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	return m.tenancy.newTenant(nil, slug, name, nil, nil).id
 }
 
 // RemoveTenant deletes a tenant and its memberships out of band.
@@ -513,21 +541,48 @@ func longName(s string) string {
 }
 
 func email(s string) string {
-	if !rxEmail.MatchString(s) {
+	if !rxEmail.MatchString(bareAddress(s)) {
 		return "value is not a valid email address"
 	}
 	return ""
 }
 
-// normalizeEmail lowercases the domain, as pydantic's EmailStr (through
-// email-validator) does. Assumed from those libraries; the platform's own code
-// stores whatever the model hands it.
+var rxNamedAddress = regexp.MustCompile(`^[^<>]*<([^<>]+)>$`)
+
+// bareAddress drops surrounding whitespace and reduces "Name <address>" to
+// the address.
+func bareAddress(s string) string {
+	s = strings.TrimSpace(s)
+	if m := rxNamedAddress.FindStringSubmatch(s); m != nil {
+		return strings.TrimSpace(m[1])
+	}
+	return s
+}
+
+// normalizeEmail is what the platform stores and returns: the bare address,
+// the local part as sent, the domain lower-cased. (The platform also converts
+// an internationalised domain to its canonical form; the mock only
+// lower-cases.)
 func normalizeEmail(s string) string {
+	s = bareAddress(s)
 	at := strings.LastIndex(s, "@")
 	if at < 0 {
 		return s
 	}
 	return s[:at+1] + strings.ToLower(s[at+1:])
+}
+
+// patchMediaType accepts a PATCH body sent as JSON Merge Patch or plain JSON,
+// the two media types the contract documents. Assumed: anything else is
+// refused as an invalid body, as FastAPI does when it cannot read JSON.
+func patchMediaType(c *call) *reply {
+	mt, _, _ := mime.ParseMediaType(c.r.Header.Get("Content-Type"))
+	if mt == "application/json" || mt == "application/merge-patch+json" {
+		return nil
+	}
+	v := &validation{}
+	v.fail("", "Input should be a valid dictionary or object to extract fields from")
+	return v.reply(c)
 }
 
 // ── paging
@@ -585,11 +640,13 @@ func invalidCursor(c *call) reply {
 
 // ── ids: a path id that cannot name a row is a 404 of the resource
 
+// intID applies the one integer-id rule of paths, filters and bodies:
+// 1 to 999999999, no sign, no leading zero. Anything else names no row.
 func intID(raw string) (int, bool) {
-	n, err := strconv.Atoi(raw)
-	if err != nil || n <= 0 || n > 2147483647 || strconv.Itoa(n) != strings.TrimLeft(raw, "0") || strings.ContainsAny(raw, "+-") {
+	if !rxIntID.MatchString(raw) {
 		return 0, false
 	}
+	n, _ := strconv.Atoi(raw)
 	return n, true
 }
 
@@ -692,7 +749,7 @@ func (m *MockAPI) customersCreate(c *call) reply {
 	}
 	v := &validation{}
 	body := decodeBody(c, v, "customer_index", "short_name", "long_name", "gitlab_group", "primary_contact_email",
-		"primary_contact_name", "default_email_tier", "billing_tier", "notes", "edition")
+		"primary_contact_name", "default_email_tier", "billing_tier", "notes", "edition", "status")
 	index, _ := intField(v, body, "customer_index", true, func(n int) string {
 		if n < 1 || n > 999 {
 			return "Input should be between 1 and 999"
@@ -713,6 +770,7 @@ func (m *MockAPI) customersCreate(c *call) reply {
 	billing, _ := strField(v, body, "billing_tier", false, false, oneOf("INTERNAL", "PAYING"))
 	notes, _ := strField(v, body, "notes", false, true, length(0, 2000))
 	edition, _ := strField(v, body, "edition", false, false, oneOf("sp", "enterprise"))
+	createStatus, _ := strField(v, body, "status", false, false, oneOf("active", "suspended"))
 	if r := v.reply(c); r != nil {
 		return *r
 	}
@@ -775,6 +833,9 @@ func (m *MockAPI) customersCreate(c *call) reply {
 	}
 	if edition != nil {
 		cu.edition = *edition
+	}
+	if createStatus != nil {
+		cu.status = *createStatus
 	}
 	hub := hubRouterID
 	primary := s.newTenant(&cu.id, cu.group, cu.longName, nil, &hub)
@@ -856,6 +917,9 @@ func (m *MockAPI) customersUpdate(c *call, raw string) reply {
 	if r := m.canWrite(c); r != nil {
 		return *r
 	}
+	if r := patchMediaType(c); r != nil {
+		return *r
+	}
 	v := &validation{}
 	body := decodeBody(c, v, "long_name", "primary_contact_email", "primary_contact_name", "default_email_tier",
 		"billing_tier", "status", "notes", "customer_index", "short_name", "gitlab_group", "edition")
@@ -934,7 +998,7 @@ func (m *MockAPI) customersDelete(c *call, raw string) reply {
 	if n := m.tenancy.customerProjects(cu.id); n > 0 {
 		return c.problem(http.StatusConflict, "customer_has_projects",
 			fmt.Sprintf("The customer still has %d project(s); every project row counts, retired ones included.", n),
-			map[string]any{"project_count": n})
+			map[string]any{"blockers": map[string]any{"projects": n}})
 	}
 	cu.status = "archived"
 	return reply{status: http.StatusNoContent}
@@ -1102,6 +1166,9 @@ func (m *MockAPI) tenantsGet(c *call, raw string) reply {
 
 func (m *MockAPI) tenantsUpdate(c *call, raw string) reply {
 	if r := m.canWrite(c); r != nil {
+		return *r
+	}
+	if r := patchMediaType(c); r != nil {
 		return *r
 	}
 	v := &validation{}

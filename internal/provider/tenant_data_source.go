@@ -50,8 +50,8 @@ func tenantDataAttributes(lookups map[string]schema.StringAttribute) map[string]
 		"is_primary":        schema.BoolAttribute{MarkdownDescription: d["is_primary"], Computed: true},
 		"project_count":     schema.Int64Attribute{MarkdownDescription: d["project_count"], Computed: true},
 		"member_count":      schema.Int64Attribute{MarkdownDescription: d["member_count"], Computed: true},
-		"created_at":        str("created_at"),
-		"updated_at":        str("updated_at"),
+		"created_at":        schema.StringAttribute{MarkdownDescription: d["created_at"], CustomType: TimestampType{}, Computed: true},
+		"updated_at":        schema.StringAttribute{MarkdownDescription: d["updated_at"], CustomType: TimestampType{}, Computed: true},
 	}
 }
 

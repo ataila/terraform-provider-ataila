@@ -128,3 +128,18 @@ func TestMockValidation(t *testing.T) {
 		t.Errorf("got %d %v with %d errors", resp.StatusCode, out["code"], len(errs))
 	}
 }
+
+// An address comes back as the platform stores it: the bare address, the
+// local part as sent, the domain lower-cased.
+func TestMockNormalisesAddresses(t *testing.T) {
+	for in, want := range map[string]string{
+		"Pat@Example.COM":             "Pat@example.com",
+		"  Pat@Example.COM ":          "Pat@example.com",
+		"Pat Doe <Pat@Example.COM>":   "Pat@example.com",
+		"ops.desk+tf@Sub.Example.Org": "ops.desk+tf@sub.example.org",
+	} {
+		if got := normalizeEmail(in); got != want {
+			t.Errorf("normalizeEmail(%q) = %q, want %q", in, got, want)
+		}
+	}
+}

@@ -42,12 +42,12 @@ resource "ataila_tenant" "builds" {
 
 ### Read-Only
 
-- `created_at` (String) When the tenant was created, as the platform reports it.
+- `created_at` (String) When the tenant was created: RFC 3339 in UTC, compared as an instant.
 - `id` (String) Tenant id (a UUID), assigned by the platform.
 - `is_primary` (Boolean) Whether this is a customer's primary tenant, created with the customer. A primary tenant is never deleted.
 - `member_count` (Number) Tenant memberships.
 - `project_count` (Number) Projects in the tenant, every status included.
-- `updated_at` (String) When the tenant was last changed, as the platform reports it.
+- `updated_at` (String) When the tenant was last changed; equal to `created_at` until the first change. RFC 3339 in UTC, compared as an instant.
 
 ## Import
 

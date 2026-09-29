@@ -67,6 +67,22 @@ terraform init && terraform plan
 `source = "ataila/ataila"` resolves to `registry.opentofu.org/ataila/ataila` under OpenTofu and to
 `registry.terraform.io/ataila/ataila` under Terraform; the same release is published to both.
 
+### Switching between OpenTofu and Terraform
+
+One configuration works with both CLIs, and so does one state, with one step in one direction. A state
+records the provider's full address, and `source = "ataila/ataila"` means
+`registry.opentofu.org/ataila/ataila` to OpenTofu and `registry.terraform.io/ataila/ataila` to Terraform.
+
+| From → to | What to run |
+|---|---|
+| Terraform → OpenTofu | Nothing. OpenTofu maps `registry.terraform.io/ataila/ataila` in a state to its own registry by itself, and its next apply records its own address. To record it at once: `tofu state replace-provider registry.terraform.io/ataila/ataila registry.opentofu.org/ataila/ataila` |
+| OpenTofu → Terraform | **Required**, once, before anything else: `terraform state replace-provider registry.opentofu.org/ataila/ataila registry.terraform.io/ataila/ataila` |
+
+Without that step Terraform stops with *Missing required provider: This state requires provider
+registry.opentofu.org/ataila/ataila, but that provider isn't available*. After it, `terraform plan` shows
+no changes. Both commands ask for confirmation; `-auto-approve` skips it. A remote backend is changed in
+place, so switch once, not back and forth in parallel runs.
+
 ### Provider configuration
 
 | Argument | Environment variable | Default | Meaning |
@@ -112,6 +128,16 @@ customer or a tenant, because destroying a customer only archives it and an arch
 keys, so the re-create could never succeed.
 
 **Warnings** the platform returns on a request that succeeded are reported as warnings, never as errors.
+
+**Timestamps** (`created_at`, `updated_at`) are RFC 3339 in UTC and compared as instants: the same time
+written another way (`Z` or `+00:00`, more or fewer fractional digits) is never a difference.
+
+**E-mail addresses** keep the configuration's spelling; the platform stores the domain in lower case, and
+the provider compares the domain case-folded (and internationalised domains in either form).
+
+**Legacy data:** a tenant that no customer owns is read by the data sources with a null `customer_id`; the
+`ataila_tenant` resource refuses to import it. A membership holding the legacy role `developer` can be
+imported and kept (leave `role` out, or set it to `developer`); planning to set `developer` fails the plan.
 
 Import forms:
 
@@ -164,9 +190,12 @@ TF_ACC=1 TF_ACC_TERRAFORM_PATH="$(command -v tofu)" TF_ACC_PROVIDER_HOST=registr
 
 ### State shared by both CLIs
 
-`TestCrossCLIState` proves that state written by one CLI is read by the other without a diff: Terraform
-applies, OpenTofu runs `init` and `plan -detailed-exitcode` and must find nothing to do, then OpenTofu applies
-a change and Terraform, after its own `init`, must find nothing to do. It needs both CLIs:
+`TestCrossCLIState` builds the provider, installs it for each CLI through `dev_overrides` under that CLI's
+own registry address (as a user's installation is), and runs one working directory and one state file
+through both CLIs in both orders. It proves what [Switching between OpenTofu and
+Terraform](#switching-between-opentofu-and-terraform) says: OpenTofu reads a Terraform state unaided;
+Terraform refuses an OpenTofu state until `terraform state replace-provider`, and then reads it without a
+diff. It needs both CLIs:
 
 ```shell
 ATAILA_CROSS_CLI_TERRAFORM="$(command -v terraform)" ATAILA_CROSS_CLI_TOFU="$(command -v tofu)" \

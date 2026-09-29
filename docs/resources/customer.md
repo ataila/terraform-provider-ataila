@@ -45,7 +45,7 @@ output "primary_tenant_id" {
 
 ### Required
 
-- `gitlab_group` (String) GitLab group of the customer, `^[a-z][a-z0-9-]{1,30}$`; also the slug of its primary tenant. No customer's group may be a hyphen-prefix of another's (`example` and `example-labs`). **Frozen.**
+- `gitlab_group` (String) GitLab group of the customer, `^[a-z][a-z0-9-]{1,29}$` (2-30 characters); also the slug of its primary tenant, so the tenant slug rule applies. No customer's group may be a hyphen-prefix of another's (`example` and `example-labs`). **Frozen.**
 - `long_name` (String) Display name, 3-80 characters. Quotes, backslashes and control characters are refused because the name is copied into generated project files.
 - `primary_contact_email` (String) E-mail address of the primary contact. A platform user with this address becomes a `member` of the primary tenant when the customer is created. The platform stores the domain in lower case; the provider keeps the spelling of the configuration.
 - `primary_contact_name` (String) Name of the primary contact, 2-80 characters.
@@ -62,7 +62,7 @@ output "primary_tenant_id" {
 
 ### Read-Only
 
-- `created_at` (String) When the customer was created, as the platform reports it.
+- `created_at` (String) When the customer was created: RFC 3339 in UTC, compared as an instant (another representation of the same time is not a change).
 - `id` (String) Customer id, assigned by the platform.
 - `primary_tenant_id` (String) Id of the tenant created with the customer. It can never be deleted.
 

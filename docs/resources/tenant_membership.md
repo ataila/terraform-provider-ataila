@@ -4,6 +4,7 @@ subcategory: ""
 description: |-
   A user's membership in a tenant, with its role. The platform mirrors it into the identity provider's tenant groups.
   Creating a membership that already exists adopts it and sets its role (a warning says so). Changing tenant_id or user_id replaces the membership, which is safe; changing role updates it in place. Destroying removes the membership and needs no allow_destroy.
+  A legacy membership may hold the role developer, which can be read but no longer set. Import it and leave role out of the configuration (or set it to developer) and it shows no difference; planning to set developer anywhere else fails the plan.
 ---
 
 # ataila_tenant_membership (Resource)
@@ -11,6 +12,8 @@ description: |-
 A user's membership in a tenant, with its role. The platform mirrors it into the identity provider's tenant groups.
 
 Creating a membership that already exists adopts it and sets its role (a warning says so). Changing `tenant_id` or `user_id` replaces the membership, which is safe; changing `role` updates it in place. Destroying removes the membership and needs no `allow_destroy`.
+
+A legacy membership may hold the role `developer`, which can be read but no longer set. Import it and leave `role` out of the configuration (or set it to `developer`) and it shows no difference; planning to set `developer` anywhere else fails the plan.
 
 ## Example Usage
 
@@ -32,13 +35,16 @@ resource "ataila_tenant_membership" "developer" {
 
 ### Required
 
-- `role` (String) `owner`, `admin`, `member` or `viewer`. A legacy membership may read `developer`, which can no longer be set.
 - `tenant_id` (String) Id of the tenant. Changing it replaces the membership.
 - `user_id` (String) Id of the platform user. Changing it replaces the membership.
 
+### Optional
+
+- `role` (String) `owner`, `admin`, `member` or `viewer`. Required to create a membership. Leave it out to keep an existing membership's role as it is, for example a legacy `developer`, which can be read but no longer set.
+
 ### Read-Only
 
-- `created_at` (String) When the membership was created, as the platform reports it.
+- `created_at` (String) When the membership was created: RFC 3339 in UTC, compared as an instant.
 - `id` (String) `<tenant_id>/<user_id>`.
 
 ## Import

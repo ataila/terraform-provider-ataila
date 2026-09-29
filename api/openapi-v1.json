@@ -31,6 +31,7 @@
             "type": "string"
           },
           "created_at": {
+            "format": "date-time",
             "title": "Created At",
             "type": "string"
           },
@@ -85,6 +86,7 @@
             "title": "Notes"
           },
           "primary_contact_email": {
+            "description": "An e-mail address. Stored and returned normalised: the domain is lower-cased (and internationalised domains are converted to their canonical form), the local part (before `@`) keeps its case exactly as sent, surrounding whitespace is dropped, and a `Name <address>` form is reduced to the address. `Pat@Example.COM` is therefore returned as `Pat@example.com`; compare with the domain case-folded to avoid a perpetual diff.",
             "title": "Primary Contact Email",
             "type": "string"
           },
@@ -101,6 +103,7 @@
             "type": "string"
           },
           "status": {
+            "description": "`archived` is set only by `DELETE /customers/{id}` and is final: v1 has no way to restore an archived customer.",
             "enum": [
               "active",
               "suspended",
@@ -181,7 +184,8 @@
             "type": "string"
           },
           "gitlab_group": {
-            "description": "^[a-z][a-z0-9-]{1,30}$ — also the primary tenant's slug.",
+            "description": "Also the primary tenant's slug, so the tenant slug rule applies: Lowercase letters, digits and '-', starting with a letter, 2-30 characters. Frozen after create.",
+            "pattern": "^[a-z][a-z0-9-]{1,29}$",
             "title": "Gitlab Group",
             "type": "string"
           },
@@ -204,6 +208,7 @@
             "title": "Notes"
           },
           "primary_contact_email": {
+            "description": "An e-mail address. Stored and returned normalised: the domain is lower-cased (and internationalised domains are converted to their canonical form), the local part (before `@`) keeps its case exactly as sent, surrounding whitespace is dropped, and a `Name <address>` form is reduced to the address. `Pat@Example.COM` is therefore returned as `Pat@example.com`; compare with the domain case-folded to avoid a perpetual diff.",
             "format": "email",
             "title": "Primary Contact Email",
             "type": "string"
@@ -217,6 +222,16 @@
           "short_name": {
             "description": "^[A-Z][A-Z0-9]{1,15}$",
             "title": "Short Name",
+            "type": "string"
+          },
+          "status": {
+            "default": "active",
+            "description": "`active` (default) or `suspended`.",
+            "enum": [
+              "active",
+              "suspended"
+            ],
+            "title": "Status",
             "type": "string"
           }
         },
@@ -259,7 +274,7 @@
       },
       "CustomerPatch": {
         "additionalProperties": false,
-        "description": "Only the fields present are changed. ``archived`` is not a settable\nstatus: archiving is ``DELETE /customers/{id}``.",
+        "description": "A JSON Merge Patch (RFC 7396): an omitted member is left unchanged; an\nexplicit ``null`` clears ``notes`` and is refused for every other field.\n``archived`` is not a settable status: archiving is\n``DELETE /customers/{id}``.",
         "properties": {
           "billing_tier": {
             "anyOf": [
@@ -355,6 +370,7 @@
                 "type": "null"
               }
             ],
+            "description": "null clears it.",
             "title": "Notes"
           },
           "primary_contact_email": {
@@ -367,6 +383,7 @@
                 "type": "null"
               }
             ],
+            "description": "An e-mail address. Stored and returned normalised: the domain is lower-cased (and internationalised domains are converted to their canonical form), the local part (before `@`) keeps its case exactly as sent, surrounding whitespace is dropped, and a `Name <address>` form is reduced to the address. `Pat@Example.COM` is therefore returned as `Pat@example.com`; compare with the domain case-folded to avoid a perpetual diff.",
             "title": "Primary Contact Email"
           },
           "primary_contact_name": {
@@ -483,6 +500,7 @@
           "created_at": {
             "anyOf": [
               {
+                "format": "date-time",
                 "type": "string"
               },
               {
@@ -492,6 +510,7 @@
             "title": "Created At"
           },
           "role": {
+            "description": "`developer` can be read (legacy rows hold it) but not written: `PUT` accepts only `owner`, `admin`, `member` and `viewer`.",
             "enum": [
               "owner",
               "admin",
@@ -611,6 +630,7 @@
           "created_at": {
             "anyOf": [
               {
+                "format": "date-time",
                 "type": "string"
               },
               {
@@ -687,6 +707,7 @@
           "updated_at": {
             "anyOf": [
               {
+                "format": "date-time",
                 "type": "string"
               },
               {
@@ -770,15 +791,9 @@
       "Tenant": {
         "properties": {
           "created_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Created At"
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
           },
           "customer_id": {
             "anyOf": [
@@ -789,7 +804,7 @@
                 "type": "null"
               }
             ],
-            "description": "Null only for a legacy tenant that no customer owns.",
+            "description": "The owning customer's id. Null only for a legacy tenant that no customer owns; such a tenant can be read but never created through v1, where customer_id is required.",
             "title": "Customer Id"
           },
           "default_router_id": {
@@ -840,15 +855,10 @@
             "type": "string"
           },
           "updated_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Updated At"
+            "description": "The last change; equal to `created_at` until the tenant is first changed, so it is never null.",
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
           }
         },
         "required": [
@@ -858,7 +868,9 @@
           "name",
           "is_primary",
           "project_count",
-          "member_count"
+          "member_count",
+          "created_at",
+          "updated_at"
         ],
         "title": "Tenant",
         "type": "object"
@@ -902,7 +914,7 @@
             "type": "string"
           },
           "slug": {
-            "description": "Lowercase, 2-30 characters; frozen after create.",
+            "description": "Lowercase letters, digits and '-', starting with a letter, 2-30 characters. Frozen after create.",
             "pattern": "^[a-z][a-z0-9-]{1,29}$",
             "title": "Slug",
             "type": "string"
@@ -945,7 +957,7 @@
       },
       "TenantPatch": {
         "additionalProperties": false,
-        "description": "Only the fields present are changed; ``description: null`` clears it,\nan omitted description is left alone.",
+        "description": "A JSON Merge Patch (RFC 7396): an omitted member is left unchanged;\n``description: null`` and ``default_router_id: null`` clear those fields,\n``name: null`` is refused.",
         "properties": {
           "customer_id": {
             "anyOf": [
@@ -982,6 +994,7 @@
                 "type": "null"
               }
             ],
+            "description": "null clears it.",
             "title": "Description"
           },
           "name": {
@@ -1022,6 +1035,7 @@
           "expires_at": {
             "anyOf": [
               {
+                "format": "date-time",
                 "type": "string"
               },
               {
@@ -1134,7 +1148,7 @@
     }
   },
   "info": {
-    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code`. POSTs accept an `Idempotency-Key` header. Limit: 600 requests per minute per token.",
+    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code`. Timestamps are RFC 3339 in UTC. POSTs accept an `Idempotency-Key` header: the same key with the same request replays the stored response (`Idempotent-Replayed: true`), with a different request it is a 409 `idempotency_key_reused`, and while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. PATCH bodies are JSON Merge Patch (RFC 7396). Limit: 600 requests per minute per token (429 `rate_limited` with `Retry-After`).",
     "title": "ATAILA Cloud Platform API",
     "version": "1.0.0"
   },
@@ -1272,7 +1286,7 @@
         ]
       },
       "post": {
-        "description": "Creates the customer and its primary tenant in one transaction, then\ncreates or adopts its GitLab group. A GitLab failure does not fail the\nrequest: the customer exists, and `warnings` says what is missing.",
+        "description": "Creates the customer (with `status` `active` unless `suspended` is asked\nfor) and its primary tenant in one transaction, then creates or adopts its\nGitLab group. A GitLab failure does not fail the request: the customer exists,\nand `warnings` says what is missing.",
         "operationId": "customers_create",
         "requestBody": {
           "content": {
@@ -1339,14 +1353,17 @@
     },
     "/customers/{customer_id}": {
       "delete": {
-        "description": "Archives the customer (F8): the row, its keys, its tenants and its GitLab\ngroup stay. Archiving an archived customer succeeds and changes nothing.",
+        "description": "Archives the customer (F8): the row, its keys, its tenants and its GitLab\ngroup stay. Archiving an archived customer succeeds and changes nothing.\nArchiving is final through v1: no operation restores an archived customer,\nand its `customer_index`, `short_name` and `gitlab_group` stay taken.",
         "operationId": "customers_delete",
         "parameters": [
           {
+            "description": "The customer's id (`id` on a customer).",
             "in": "path",
             "name": "customer_id",
             "required": true,
             "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
               "title": "Customer Id",
               "type": "string"
             }
@@ -1399,7 +1416,7 @@
                 }
               }
             },
-            "description": "Projects still exist under the customer, retired ones included (`customer_has_projects`)."
+            "description": "Projects still exist under the customer, retired ones included (`customer_has_projects`). `blockers` counts them: `{\"projects\": n}`."
           },
           "default": {
             "content": {
@@ -1431,10 +1448,13 @@
         "operationId": "customers_get",
         "parameters": [
           {
+            "description": "The customer's id (`id` on a customer).",
             "in": "path",
             "name": "customer_id",
             "required": true,
             "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
               "title": "Customer Id",
               "type": "string"
             }
@@ -1512,14 +1532,17 @@
         ]
       },
       "patch": {
-        "description": "Only the fields in the body change. `customer_index`, `short_name`,\n`gitlab_group` and `edition` are frozen.",
+        "description": "Only the members in the body change. `customer_index`, `short_name`, `gitlab_group` and `edition` are frozen: sending the current value is accepted, a different one is a 422. An archived customer cannot be changed, and `status` can be set only to `active` or `suspended`, so an archived customer cannot be restored through v1.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
         "operationId": "customers_update",
         "parameters": [
           {
+            "description": "The customer's id (`id` on a customer).",
             "in": "path",
             "name": "customer_id",
             "required": true,
             "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
               "title": "Customer Id",
               "type": "string"
             }
@@ -1528,6 +1551,11 @@
         "requestBody": {
           "content": {
             "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerPatch"
+              }
+            },
+            "application/merge-patch+json": {
               "schema": {
                 "$ref": "#/components/schemas/CustomerPatch"
               }
@@ -1904,7 +1932,7 @@
     },
     "/tenants/{tenant_id}": {
       "delete": {
-        "description": "Deletes the tenant only when nothing but memberships hangs off it — no\nproject of any status, no contract, no helpdesk record. Its memberships go\nwith it, and its Keycloak /tenants/<slug> groups are removed.",
+        "description": "Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource. Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.",
         "operationId": "tenants_delete",
         "parameters": [
           {
@@ -2058,7 +2086,7 @@
         ]
       },
       "patch": {
-        "description": "Only the fields in the body change. `customer_id` and `slug` are frozen.",
+        "description": "Only the members in the body change. `customer_id` and `slug` are frozen: sending the current value is accepted, a different one is a 422.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
         "operationId": "tenants_update",
         "parameters": [
           {
@@ -2074,6 +2102,11 @@
         "requestBody": {
           "content": {
             "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantPatch"
+              }
+            },
+            "application/merge-patch+json": {
               "schema": {
                 "$ref": "#/components/schemas/TenantPatch"
               }
@@ -2250,6 +2283,7 @@
     },
     "/tenants/{tenant_id}/memberships/{user_id}": {
       "delete": {
+        "description": "Removes the user's membership of the tenant and re-syncs their Keycloak groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.",
         "operationId": "tenant_memberships_delete",
         "parameters": [
           {

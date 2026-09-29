@@ -33,7 +33,7 @@ output "builds_projects" {
 
 ### Read-Only
 
-- `created_at` (String) When the tenant was created, as the platform reports it.
+- `created_at` (String) When the tenant was created: RFC 3339 in UTC, compared as an instant.
 - `customer_id` (String) Id of the customer the tenant belongs to. **Frozen.** Null only for a legacy tenant that no customer owns.
 - `default_router_id` (String) Id of the tenant's default VPN router. Omit it to leave the platform's choice (a customer's primary tenant gets the hub router; a new tenant gets none). Once set it can be changed but not cleared from configuration.
 - `description` (String) Description, up to 2000 characters.
@@ -41,4 +41,4 @@ output "builds_projects" {
 - `member_count` (Number) Tenant memberships.
 - `name` (String) Display name, 2-120 characters.
 - `project_count` (Number) Projects in the tenant, every status included.
-- `updated_at` (String) When the tenant was last changed, as the platform reports it.
+- `updated_at` (String) When the tenant was last changed; equal to `created_at` until the first change. RFC 3339 in UTC, compared as an instant.

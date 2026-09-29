@@ -265,3 +265,58 @@ resource "ataila_tenant" "primary" {
 		},
 	})
 }
+
+// A legacy tenant that no customer owns: the data sources read it with a null
+// customer_id; the resource refuses to import it and says what to use instead.
+func TestAccTenant_LegacyTenantWithoutCustomer(t *testing.T) {
+	m := newMock(t)
+	legacy := m.AddLegacyTenant("old-shop", "Old Shop")
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: protoV6,
+		Steps: []resource.TestStep{
+			{
+				Config: providerBlock(false) + `
+data "ataila_tenant" "legacy" {
+  slug = "old-shop"
+}
+
+data "ataila_tenants" "all" {}
+`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("data.ataila_tenant.legacy", "id", legacy),
+					resource.TestCheckNoResourceAttr("data.ataila_tenant.legacy", "customer_id"),
+					resource.TestCheckResourceAttr("data.ataila_tenant.legacy", "is_primary", "false"),
+					resource.TestCheckResourceAttr("data.ataila_tenants.all", "tenants.#", "1"),
+					resource.TestCheckNoResourceAttr("data.ataila_tenants.all", "tenants.0.customer_id"),
+				),
+			},
+			{
+				Config: providerBlock(false) + `
+resource "ataila_tenant" "legacy" {
+  customer_id = "1"
+  slug        = "old-shop"
+  name        = "Old Shop"
+}
+`,
+				ResourceName:  "ataila_tenant.legacy",
+				ImportState:   true,
+				ImportStateId: "slug:old-shop",
+				ExpectError: words("Cannot import a tenant that belongs to no customer .* legacy tenant " +
+					".* ataila_tenant data source"),
+			},
+			{
+				Config: providerBlock(false) + `
+resource "ataila_tenant" "legacy" {
+  customer_id = "1"
+  slug        = "old-shop"
+  name        = "Old Shop"
+}
+`,
+				ResourceName:  "ataila_tenant.legacy",
+				ImportState:   true,
+				ImportStateId: legacy,
+				ExpectError:   words("Cannot import a tenant that belongs to no customer"),
+			},
+		},
+	})
+}

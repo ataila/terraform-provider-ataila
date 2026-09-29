@@ -3,6 +3,47 @@
 All notable changes to this provider. Versions follow semantic versioning; until the first publication the
 provider stays at 0.x and any release may change.
 
+## 0.2.1 (unreleased)
+
+Follows the platform's revised `/api/v1` contract (still API 1.0.0, unpublished).
+
+### Changed
+
+- `ataila_customer`: a customer configured `suspended` is created in one call (the create body now takes
+  `status`); `gitlab_group` follows the tenant slug rule, 2-30 characters.
+- Destroy refusals are reported with the platform's `blockers` for customers too (`{"projects": n}`).
+- A create retried while its first attempt is still running is answered 429
+  `idempotency_request_in_progress` with `Retry-After`; the provider waits and retries it like any 429.
+- PATCH bodies are sent as JSON Merge Patch (`application/merge-patch+json`).
+- Timestamps (`created_at`, `updated_at`) use a timestamp type compared as instants: `Z` and `+00:00`,
+  or different fractional precision of the same time, are never a difference, never an inconsistent
+  result. A tenant's `updated_at` equals `created_at` until its first change.
+- E-mail addresses are compared with the domain case-folded and internationalised domains in canonical
+  form; a `Name <address>` form or surrounding spaces are refused at plan time.
+- Integer ids follow one rule (1 to 999999999, no leading zero): the customer data source and import
+  refuse anything else with a clear message.
+- `ataila_tenant_membership`: `role` may be left out to keep an existing membership's role. A legacy
+  `developer` membership can be imported and kept; planning to set `developer`, or creating a membership
+  without a role, fails the plan.
+- `ataila_tenant`: importing a legacy tenant that no customer owns is refused with a message pointing at
+  the data sources, which read such a tenant with a null `customer_id`.
+
+### Documentation
+
+- "Switching between OpenTofu and Terraform": OpenTofu reads a Terraform state unaided; Terraform needs
+  `terraform state replace-provider registry.opentofu.org/ataila/ataila registry.terraform.io/ataila/ataila`
+  once before it reads an OpenTofu state.
+
+### Tests and CI
+
+- The mock follows the revised contract (status on create, `blockers` everywhere, the 429 in-progress
+  answer, RFC 3339 timestamps, `updated_at` on create, normalised e-mail, the id and slug rules,
+  merge-patch bodies, legacy tenants, the `developer` role).
+- `TestCrossCLIState` runs both orders with the provider installed through `dev_overrides`, as a user's
+  is, and proves the switching rules above; the CI job requires both orders.
+- `TestAccTimestampRepresentation` rewrites the state's timestamps to another representation of the same
+  instants and requires no diff and no inconsistent result.
+
 ## 0.2.0 (unreleased)
 
 Customers, tenants and tenant memberships (the platform's tenancy API). Requires API 1.0.0.

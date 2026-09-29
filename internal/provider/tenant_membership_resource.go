@@ -23,7 +23,11 @@ import (
 var (
 	_ resource.ResourceWithConfigure   = (*membershipResource)(nil)
 	_ resource.ResourceWithImportState = (*membershipResource)(nil)
+	_ resource.ResourceWithModifyPlan  = (*membershipResource)(nil)
 )
+
+// legacyRole can be read on old memberships but no longer set.
+const legacyRole = "developer"
 
 // NewTenantMembershipResource is the factory for ataila_tenant_membership.
 func NewTenantMembershipResource() resource.Resource { return &membershipResource{} }
@@ -33,11 +37,11 @@ type membershipResource struct {
 }
 
 type membershipModel struct {
-	ID        types.String `tfsdk:"id"`
-	TenantID  types.String `tfsdk:"tenant_id"`
-	UserID    types.String `tfsdk:"user_id"`
-	Role      types.String `tfsdk:"role"`
-	CreatedAt types.String `tfsdk:"created_at"`
+	ID        types.String   `tfsdk:"id"`
+	TenantID  types.String   `tfsdk:"tenant_id"`
+	UserID    types.String   `tfsdk:"user_id"`
+	Role      types.String   `tfsdk:"role"`
+	CreatedAt TimestampValue `tfsdk:"created_at"`
 }
 
 func (m *membershipModel) fromAPI(mm *client.Membership) {
@@ -45,7 +49,7 @@ func (m *membershipModel) fromAPI(mm *client.Membership) {
 	m.TenantID = types.StringValue(mm.TenantId)
 	m.UserID = types.StringValue(mm.UserId)
 	m.Role = types.StringValue(string(mm.Role))
-	m.CreatedAt = stringOrNull(mm.CreatedAt)
+	m.CreatedAt = NewTimestampPointer(mm.CreatedAt)
 }
 
 func (m *membershipModel) ident() string {
@@ -63,7 +67,10 @@ func (r *membershipResource) Schema(_ context.Context, _ resource.SchemaRequest,
 			"the identity provider's tenant groups.\n\n" +
 			"Creating a membership that already exists adopts it and sets its role (a warning says so). " +
 			"Changing `tenant_id` or `user_id` replaces the membership, which is safe; changing `role` " +
-			"updates it in place. Destroying removes the membership and needs no `allow_destroy`.",
+			"updates it in place. Destroying removes the membership and needs no `allow_destroy`.\n\n" +
+			"A legacy membership may hold the role `developer`, which can be read but no longer set. " +
+			"Import it and leave `role` out of the configuration (or set it to `developer`) and it shows " +
+			"no difference; planning to set `developer` anywhere else fails the plan.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				MarkdownDescription: "`<tenant_id>/<user_id>`.",
@@ -81,13 +88,17 @@ func (r *membershipResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				PlanModifiers:       replace,
 			},
 			"role": schema.StringAttribute{
-				MarkdownDescription: "`owner`, `admin`, `member` or `viewer`. A legacy membership may read " +
-					"`developer`, which can no longer be set.",
-				Required:   true,
-				Validators: []validator.String{stringvalidator.OneOf("owner", "admin", "member", "viewer")},
+				MarkdownDescription: "`owner`, `admin`, `member` or `viewer`. Required to create a membership. " +
+					"Leave it out to keep an existing membership's role as it is, for example a legacy " +
+					"`developer`, which can be read but no longer set.",
+				Optional:      true,
+				Computed:      true,
+				Validators:    []validator.String{stringvalidator.OneOf("owner", "admin", "member", "viewer", legacyRole)},
+				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"created_at": schema.StringAttribute{
-				MarkdownDescription: "When the membership was created, as the platform reports it.",
+				MarkdownDescription: "When the membership was created: RFC 3339 in UTC, compared as an instant.",
+				CustomType:          TimestampType{},
 				Computed:            true,
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
@@ -105,6 +116,39 @@ func (r *membershipResource) configured(diags interface{ AddError(string, string
 		return false
 	}
 	return true
+}
+
+// ModifyPlan checks the role at plan time: a new membership needs one, and
+// `developer` can only be kept, never set.
+func (r *membershipResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+	if req.Plan.Raw.IsNull() {
+		return // destroy: memberships are not destroy-gated
+	}
+	var plan membershipModel
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	var configRole types.String
+	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("role"), &configRole)...)
+	if resp.Diagnostics.HasError() || configRole.IsUnknown() {
+		return
+	}
+	creating := req.State.Raw.IsNull() || len(resp.RequiresReplace) > 0
+	stateRole := ""
+	if !req.State.Raw.IsNull() {
+		var state membershipModel
+		resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+		stateRole = state.Role.ValueString()
+	}
+	switch {
+	case creating && configRole.IsNull():
+		resp.Diagnostics.AddAttributeError(path.Root("role"), "A new membership needs a role",
+			"Set role to owner, admin, member or viewer. Leaving role out is only for keeping the role of a "+
+				"membership that already exists (for example one imported with the legacy role developer).")
+	case plan.Role.ValueString() == legacyRole && (creating || stateRole != legacyRole):
+		resp.Diagnostics.AddAttributeError(path.Root("role"), "The role developer can no longer be set",
+			"developer is a legacy role: the platform still reports it on old memberships but accepts only "+
+				"owner, admin, member or viewer when a role is set. Choose one of those. A membership that "+
+				"already holds developer keeps it as long as the configuration leaves role out or says developer.")
+	}
 }
 
 func (r *membershipResource) put(ctx context.Context, plan *membershipModel, adopt bool, diags interface {

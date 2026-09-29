@@ -81,6 +81,14 @@ func TestAccCustomerResource_Lifecycle(t *testing.T) {
 					resource.TestCheckResourceAttr(customerAddr, "notes", "Signed in September."),
 					mockField(m.Customer, &id, "status", "suspended"),
 					mockField(m.Customer, &id, "billing_tier", "PAYING"),
+					check(func() error {
+						for _, r := range m.Requests() {
+							if r.Method == "PATCH" && r.Header.Get("Content-Type") != "application/merge-patch+json" {
+								return fmt.Errorf("PATCH %s sent as %q", r.Path, r.Header.Get("Content-Type"))
+							}
+						}
+						return nil
+					}),
 				),
 			},
 			{
@@ -155,6 +163,13 @@ resource "ataila_customer" "test" {
 				resource.TestCheckResourceAttr(customerAddr, "primary_contact_email", "Billing@Sample.EXAMPLE"),
 				mockField(m.Customer, &id, "primary_contact_email", "Billing@sample.example"),
 				mockField(m.Customer, &id, "status", "suspended"),
+				// Created suspended in one call.
+				check(func() error {
+					if n := m.Calls("PATCH", "/customers"); n != 0 {
+						return fmt.Errorf("a suspended create sent %d PATCH requests", n)
+					}
+					return nil
+				}),
 			),
 		}},
 	})
@@ -346,7 +361,7 @@ func TestAccCustomerResource_DestroyRefusedWithProjects(t *testing.T) {
 				Config:    cfg,
 				Destroy:   true,
 				ExpectError: words("The platform refused to archive the customer (customer_has_projects) " +
-					".* project_count: 2"),
+					".* blockers: projects=2"),
 			},
 			{
 				PreConfig: func() { m.SetTenantBlockers(primary, 0, 0, 0, 0) },
@@ -402,5 +417,73 @@ func TestAccCustomerResource_CreateSurvivesALostAnswer(t *testing.T) {
 				}),
 			),
 		}},
+	})
+}
+
+// A create whose first attempt is still running when the retry arrives: the
+// platform answers 429 idempotency_request_in_progress with Retry-After, the
+// provider waits and retries, and the first attempt's answer is replayed.
+func TestAccCustomerResource_CreateRetriedWhileTheFirstAttemptRuns(t *testing.T) {
+	m := newMock(t)
+	m.InjectFaults("/customers", acctest.Fault{Status: 504, Method: "POST", StillRunning: 1})
+	var id string
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: protoV6,
+		PreCheck:                 allowDestroyEverywhere(m),
+		CheckDestroy:             archived(m, &id),
+		Steps: []resource.TestStep{{
+			Config: providerBlock(true) + customerHCL("SLOW", "slow"),
+			Check: resource.ComposeAggregateTestCheckFunc(
+				stateAttr(customerAddr, "id", &id),
+				check(func() error {
+					if n := m.Calls("POST", "/customers"); n != 3 {
+						return fmt.Errorf("POST /customers sent %d times, want 3 (504, 429, replay)", n)
+					}
+					if _, second := m.Customer("2"); second {
+						return fmt.Errorf("a second customer was created")
+					}
+					return nil
+				}),
+			),
+		}},
+	})
+}
+
+// Values the platform would refuse or rewrite are refused at plan time: a
+// GitLab group longer than a tenant slug may be, an address in the
+// "Name <address>" form, a customer id with a leading zero.
+func TestAccCustomerResource_InputRules(t *testing.T) {
+	newMock(t)
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: protoV6,
+		Steps: []resource.TestStep{
+			{
+				Config:      providerBlock(false) + customerHCL("LONG", "a-group-name-of-thirty-one-char"),
+				PlanOnly:    true,
+				ExpectError: words("1-29 lower-case letters, digits or hyphens"),
+			},
+			{
+				Config: providerBlock(false) + `
+resource "ataila_customer" "test" {
+  short_name            = "NAMED"
+  long_name             = "Named Address Ltd"
+  gitlab_group          = "named"
+  primary_contact_email = "Ops Desk <ops@example.com>"
+  primary_contact_name  = "Ops Desk"
+}
+`,
+				PlanOnly:    true,
+				ExpectError: words("must be an e-mail address"),
+			},
+			{
+				Config: providerBlock(false) + `
+data "ataila_customer" "zero" {
+  id = "007"
+}
+`,
+				PlanOnly:    true,
+				ExpectError: words("must be a customer id"),
+			},
+		},
 	})
 }
