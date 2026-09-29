@@ -1,0 +1,5 @@
+# Everything is stored with LF line endings, whatever the platform.
+* text=auto eol=lf
+*.sh text eol=lf
+*.gen.go linguist-generated=true
+docs/** linguist-generated=true

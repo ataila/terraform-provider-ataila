@@ -1,0 +1,178 @@
+# CI for terraform-provider-ataila.
+#
+# This GitLab project is the primary repository and the only build. The public
+# mirror never builds: release files are built and signed here once.
+#
+# Every push:  toolchain probe · lint · leak guard · unit tests ·
+#              acceptance (oldest + newest OpenTofu, oldest + newest Terraform) · build
+# A v* tag:    all of the above, then goreleaser archives + SHA256SUMS + detached signature
+#
+# Jobs run on shell runners. Go, OpenTofu and Terraform are downloaded into the
+# build directory and checked against pinned SHA-256 sums (scripts/ci/toolchain.sh);
+# nothing is installed on the runner. When a runner cannot provide something the
+# job fails and says what an operator must install or allow.
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH
+
+stages:
+  - check
+  - test
+  - build
+  - release
+
+variables:
+  # One tag per position, as in the platform's shared CI templates.
+  RUNNER_TAG: shell
+  GO_VERSION: "1.27.1"
+  GOTOOLCHAIN: local
+  GOFLAGS: -mod=readonly
+  GOPROXY: https://proxy.golang.org,direct
+  GOMODCACHE: $CI_PROJECT_DIR/.cache/gomod
+  GOCACHE: $CI_PROJECT_DIR/.cache/gobuild
+  TOOLCHAIN_DIR: $CI_PROJECT_DIR/.cache/tools
+  # The Terraform that renders docs/ in the lint job (tfplugindocs needs one).
+  DOCS_TERRAFORM_VERSION: "1.16.4"
+  GORELEASER_VERSION: v2.18.2
+
+default:
+  tags: [$RUNNER_TAG]
+  interruptible: true
+
+.go:
+  cache:
+    key: go-$GO_VERSION
+    paths:
+      - .cache/
+  before_script:
+    - source scripts/ci/toolchain.sh
+    - ensure_go
+
+toolchain:probe:
+  stage: check
+  cache: []
+  script:
+    - source scripts/ci/toolchain.sh
+    - probe
+
+lint:
+  stage: check
+  extends: .go
+  script:
+    - echo "== gofmt"
+    - unformatted=$(gofmt -l $(git ls-files '*.go'))
+    - if [ -n "$unformatted" ]; then echo "Not gofmt-formatted:" $unformatted; exit 1; fi
+    - echo "== go vet"
+    - go vet ./...
+    - echo "== go.mod and go.sum are tidy"
+    - go mod tidy -diff
+    - echo "== generated client and docs are current"
+    - ensure_cli terraform "$DOCS_TERRAFORM_VERSION"
+    - export PATH="$(dirname "$CLI_PATH"):$PATH"
+    - go generate ./...
+    - |
+      if ! git diff --exit-code -- internal/client docs; then
+        echo "Generated files are stale: run 'go generate ./...' and commit the result."
+        exit 1
+      fi
+
+leak-guard:
+  stage: check
+  cache: []
+  variables:
+    # The guard scans the branch's whole history; a shallow clone makes it fail.
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
+  script:
+    - bash scripts/leak-guard.sh
+
+unit:
+  stage: test
+  extends: .go
+  script:
+    - go test ./... -count=1 -coverprofile=coverage.out
+    - go tool cover -func=coverage.out | tail -n 1
+
+acceptance:
+  stage: test
+  extends: .go
+  parallel:
+    matrix:
+      # Oldest and newest supported release of each CLI. The oldest is the
+      # minimum the README declares; raise both together.
+      - ACC_CLI: tofu
+        ACC_CLI_VERSION: ["1.6.0", "1.12.6"]
+      - ACC_CLI: terraform
+        ACC_CLI_VERSION: ["1.6.0", "1.16.4"]
+  script:
+    - ensure_cli "$ACC_CLI" "$ACC_CLI_VERSION"
+    - export TF_ACC=1 TF_ACC_TERRAFORM_PATH="$CLI_PATH"
+    - if [ "$ACC_CLI" = tofu ]; then export TF_ACC_PROVIDER_HOST=registry.opentofu.org; fi
+    - go test ./internal/provider/ -run '^TestAcc' -count=1 -v -timeout 30m > acceptance.log 2>&1 || { cat acceptance.log; exit 1; }
+    - cat acceptance.log
+    # A run in which the acceptance tests silently skipped is a failure.
+    - passed=$(grep -c '^--- PASS: TestAcc' acceptance.log || true)
+    - skipped=$(grep -c '^--- SKIP: TestAcc' acceptance.log || true)
+    - echo "acceptance under $ACC_CLI $ACC_CLI_VERSION: $passed passed, $skipped skipped"
+    - if [ "$passed" -eq 0 ] || [ "$skipped" -ne 0 ]; then echo "Acceptance tests did not all run."; exit 1; fi
+  artifacts:
+    when: always
+    paths:
+      - acceptance.log
+    expire_in: 1 week
+
+build:
+  stage: build
+  extends: .go
+  script:
+    - base=$(sed -n 's/^var version = "\(.*\)"$/\1/p' main.go)
+    - version="${CI_COMMIT_TAG#v}"; version="${version:-$base-dev+$CI_COMMIT_SHORT_SHA}"
+    - |
+      for target in linux/amd64 linux/arm64 darwin/arm64 windows/amd64; do
+        os=${target%/*}; arch=${target#*/}; ext=""; [ "$os" = windows ] && ext=.exe
+        CGO_ENABLED=0 GOOS=$os GOARCH=$arch go build -trimpath -ldflags "-s -w -X main.version=$version" \
+          -o "dist/terraform-provider-ataila_${version}_${os}_${arch}${ext}" .
+      done
+    - ls -l dist/
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+release:
+  stage: release
+  extends: .go
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
+  variables:
+    GIT_DEPTH: "0"
+  script:
+    - |
+      if [ -z "${GPG_PRIVATE_KEY:-}" ] || [ -z "${GPG_FINGERPRINT:-}" ]; then
+        echo "RELEASE STOPPED: no signing key."
+        echo "The protected CI variables GPG_PRIVATE_KEY (the armored private key, as a File or"
+        echo "Variable) and GPG_FINGERPRINT are not set for this tag. The registries accept only"
+        echo "signed releases, so nothing was built. An operator adds both variables (protected,"
+        echo "masked where possible), protects the v* tags, and re-runs this job."
+        exit 1
+      fi
+    - command -v gpg >/dev/null || { echo "RELEASE STOPPED: gpg is not installed on this runner."; exit 1; }
+    - base=$(sed -n 's/^var version = "\(.*\)"$/\1/p' main.go)
+    - if [ "v$base" != "$CI_COMMIT_TAG" ]; then echo "RELEASE STOPPED: tag $CI_COMMIT_TAG does not match version $base in main.go."; exit 1; fi
+    - export GNUPGHOME="$(mktemp -d)"
+    - if [ -f "$GPG_PRIVATE_KEY" ]; then gpg --batch --import "$GPG_PRIVATE_KEY"; else printf '%s\n' "$GPG_PRIVATE_KEY" | gpg --batch --import; fi
+    - GOBIN="$TOOLCHAIN_DIR/bin" go install "github.com/goreleaser/goreleaser/v2@$GORELEASER_VERSION"
+    - '"$TOOLCHAIN_DIR/bin/goreleaser" release --clean --skip=publish,announce'
+    - rm -rf "$GNUPGHOME"
+    # The registries fetch the manifest next to the archives; its checksum is already in SHA256SUMS.
+    - cp terraform-registry-manifest.json "dist/terraform-provider-ataila_${base}_manifest.json"
+    - (cd dist && sha256sum -c --ignore-missing "terraform-provider-ataila_${base}_SHA256SUMS")
+  artifacts:
+    paths:
+      - dist/*.zip
+      - dist/*_SHA256SUMS
+      - dist/*_SHA256SUMS.sig
+      - dist/*_manifest.json
+    expire_in: never

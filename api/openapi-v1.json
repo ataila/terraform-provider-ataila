@@ -1,0 +1,534 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ATAILA Cloud Platform API",
+    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code`. POSTs accept an `Idempotency-Key` header. Limit: 600 requests per minute per token.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/meta": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "API and platform facts",
+        "operationId": "meta_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Problem details (RFC 9457)",
+            "content": {
+              "application/problem+json": {},
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/whoami": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "The calling principal",
+        "operationId": "whoami_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whoami"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Problem details (RFC 9457)",
+            "content": {
+              "application/problem+json": {},
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/operations/{operation_id}": {
+      "get": {
+        "tags": [
+          "operations"
+        ],
+        "summary": "One operation",
+        "operationId": "operations_get",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "operation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Operation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Problem details (RFC 9457)",
+            "content": {
+              "application/problem+json": {},
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LicenceSummary": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "state_reason": {
+            "type": "string",
+            "title": "State Reason",
+            "default": ""
+          },
+          "days_remaining": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Remaining"
+          }
+        },
+        "type": "object",
+        "required": [
+          "state"
+        ],
+        "title": "LicenceSummary"
+      },
+      "Meta": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "title": "Api Version"
+          },
+          "platform_version": {
+            "type": "string",
+            "title": "Platform Version"
+          },
+          "tier": {
+            "type": "string",
+            "title": "Tier",
+            "default": ""
+          },
+          "tenancy_mode": {
+            "type": "string",
+            "title": "Tenancy Mode",
+            "default": ""
+          },
+          "modules": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Modules",
+            "default": []
+          },
+          "licence": {
+            "$ref": "#/components/schemas/LicenceSummary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "api_version",
+          "platform_version",
+          "licence"
+        ],
+        "title": "Meta"
+      },
+      "Operation": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "running",
+              "awaiting_approval",
+              "awaiting_operator",
+              "succeeded",
+              "failed"
+            ],
+            "title": "Status"
+          },
+          "resource_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource Type"
+          },
+          "resource_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource Id"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "status"
+        ],
+        "title": "Operation"
+      },
+      "Problem": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "instance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instance"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "code"
+        ],
+        "title": "Problem",
+        "description": "The OpenAPI shape of an error. Extra members may appear (for example the\nlicence refusal's ``state``/``remedy`` or a validation ``errors`` list)."
+      },
+      "Whoami": {
+        "properties": {
+          "principal": {
+            "$ref": "#/components/schemas/WhoamiPrincipal"
+          },
+          "auth_kind": {
+            "type": "string",
+            "title": "Auth Kind"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "token": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WhoamiToken"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "principal",
+          "auth_kind",
+          "scopes"
+        ],
+        "title": "Whoami"
+      },
+      "WhoamiPrincipal": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "name",
+          "kind"
+        ],
+        "title": "WhoamiPrincipal"
+      },
+      "WhoamiToken": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "prefix": {
+            "type": "string",
+            "title": "Prefix"
+          },
+          "granted_scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Granted Scopes"
+          },
+          "allow_destroy": {
+            "type": "boolean",
+            "title": "Allow Destroy"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "prefix",
+          "granted_scopes",
+          "allow_destroy"
+        ],
+        "title": "WhoamiToken"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "An ATAILA API token (personal `ataila_pat_…` or service account `ataila_sat_…`). A portal session JWT is accepted as well.",
+        "scheme": "bearer",
+        "bearerFormat": "ataila_pat_… | ataila_sat_…"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "meta",
+      "description": "What this API and platform are, and who is calling."
+    },
+    {
+      "name": "operations",
+      "description": "Long-running work: poll until succeeded or failed."
+    },
+    {
+      "name": "customers",
+      "description": "Customers (companies) on this platform."
+    },
+    {
+      "name": "tenants",
+      "description": "Tenants of a customer and their memberships."
+    },
+    {
+      "name": "users",
+      "description": "Users, role grants and the permission catalog."
+    },
+    {
+      "name": "projects",
+      "description": "Projects, provisioning and project members."
+    },
+    {
+      "name": "releases",
+      "description": "Release promotions, release state and the PROD lock."
+    },
+    {
+      "name": "ai-gateway",
+      "description": "AI gateway virtual keys and serving tiers."
+    },
+    {
+      "name": "ai-models",
+      "description": "The AI model catalogue and node caches."
+    },
+    {
+      "name": "ai-nodes",
+      "description": "AI Center nodes, DGX clusters and the launch catalogue (read-only)."
+    },
+    {
+      "name": "licence",
+      "description": "This platform's licence."
+    },
+    {
+      "name": "brand",
+      "description": "This platform's branding."
+    }
+  ]
+}

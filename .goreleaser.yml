@@ -1,0 +1,68 @@
+# Release build: archives for every platform the registries expect, one
+# SHA256SUMS file, the registry manifest and a detached signature of the sums.
+#
+# CI runs `goreleaser release --clean --skip=publish,announce` on a v* tag, so
+# this file only builds and signs. Publishing (GitLab release, the public
+# mirror's release, the registries) is configured when the provider is
+# published, not before.
+#
+# Signing uses the key whose fingerprint is in GPG_FINGERPRINT; the release CI
+# job refuses to start without it.
+version: 2
+
+project_name: terraform-provider-ataila
+
+before:
+  hooks:
+    - go mod download
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+    ldflags:
+      - "-s -w -X main.version={{ .Version }}"
+    goos:
+      - freebsd
+      - windows
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - "386"
+      - arm
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: "386"
+    binary: "{{ .ProjectName }}_v{{ .Version }}"
+
+archives:
+  - formats: [zip]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_SHA256SUMS"
+  algorithm: sha256
+  extra_files:
+    - glob: terraform-registry-manifest.json
+      name_template: "{{ .ProjectName }}_{{ .Version }}_manifest.json"
+
+signs:
+  - artifacts: checksum
+    args:
+      - "--batch"
+      - "--local-user"
+      - "{{ .Env.GPG_FINGERPRINT }}"
+      - "--output"
+      - "${signature}"
+      - "--detach-sign"
+      - "${artifact}"
+
+release:
+  disable: true
+
+changelog:
+  disable: true

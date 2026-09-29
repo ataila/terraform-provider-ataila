@@ -1,0 +1,9 @@
+# Code generation for the /api/v1 contract (api/openapi-v1.json).
+#
+# Regenerate with `go generate ./internal/client` after replacing the contract.
+# TestGeneratedClientIsCurrent fails when the contract and client.gen.go are
+# out of step. The output path is given on the command line (see doc.go).
+package: client
+generate:
+  models: true
+  client: true

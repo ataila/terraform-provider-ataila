@@ -1,0 +1,177 @@
+# terraform-provider-ataila
+
+The OpenTofu and Terraform provider for the **ATAILA Cloud Platform**. It manages a platform through its
+versioned API, `/api/v1`, with an API token minted in the platform's portal.
+
+- Registry address: `ataila/ataila` (OpenTofu and Terraform registries)
+- Plugin protocol: 6 only (terraform-plugin-framework)
+- Licence: [MPL-2.0](LICENSE)
+- Status: **0.x, pre-release.** The stability promise (additive changes only within API v1, semantic versioning
+  of the provider) starts when the provider is first published. Until then any 0.x release may change.
+
+## Supported CLIs
+
+Both CLIs are first-class. Every change is tested against the oldest and the newest supported release of each.
+
+| CLI | Minimum version | Tested in CI |
+|---|---|---|
+| OpenTofu | **1.6** | 1.6.0 and 1.12.6 |
+| Terraform | **1.6** | 1.6.0 and 1.16.4 |
+
+To stay usable from both, the provider uses nothing that exists in only one CLI or at different versions:
+no actions, no ephemeral resources, no write-only attributes and no provider functions.
+
+## Using it
+
+```hcl
+terraform {
+  required_providers {
+    ataila = {
+      source  = "ataila/ataila"
+      version = "~> 0.1"
+    }
+  }
+}
+
+provider "ataila" {
+  endpoint = "https://portal.example.com"
+}
+
+data "ataila_whoami" "me" {}
+```
+
+```shell
+export ATAILA_TOKEN="<token from the portal>"
+
+# OpenTofu
+tofu init && tofu plan
+
+# Terraform
+terraform init && terraform plan
+```
+
+`source = "ataila/ataila"` resolves to `registry.opentofu.org/ataila/ataila` under OpenTofu and to
+`registry.terraform.io/ataila/ataila` under Terraform; the same release is published to both.
+
+### Provider configuration
+
+| Argument | Environment variable | Default | Meaning |
+|---|---|---|---|
+| `endpoint` | `ATAILA_ENDPOINT` | — | Base URL of the portal, for example `https://portal.example.com`. `/api/v1` is appended; a trailing `/api/v1` is accepted. HTTPS is required except for a loopback address. |
+| `token` | `ATAILA_TOKEN` | — | API token: personal (`ataila_pat_…`) or service account (`ataila_sat_…`). Sensitive. Prefer the environment variable. |
+| `ca_cert_file` | `ATAILA_CA_CERT` | — | PEM file of a private certificate authority, trusted in addition to the system roots. The environment variable takes a path or PEM text. |
+| `ca_cert_pem` | | — | The same certificate authority as PEM text. Conflicts with `ca_cert_file`. |
+| `allow_destroy` | | `false` | Allow destroying platform objects. A destroy needs this **and** a token minted with destroy allowed. |
+| `request_timeout` | | `60s` | Timeout of one HTTP request; each retry gets its own. |
+
+### What the provider does on every run
+
+- Reads `GET /api/v1/meta` when it is configured and refuses a platform whose API major version is not 1, or
+  whose API is older than the minimum this release needs.
+- Sends `Authorization: Bearer <token>` and `User-Agent: terraform-provider-ataila/<version>`.
+- Retries with backoff only on 429, 502, 503 and 504, honouring `Retry-After`. No other answer is retried.
+- Treats a licence refusal (403 whose `code` starts with `licence_`) as final and quotes the platform's remedy.
+- Turns every error, an RFC 9457 problem document, into a diagnostic with its title, detail, `code` and
+  `request_id`, so an operator can find the request in the platform's logs.
+- Sends a fresh `Idempotency-Key` with every create; that create's own retries reuse it, so a create never runs twice.
+- A 404 on start means a wrong endpoint or a platform whose public API is switched off.
+
+### Data sources
+
+| Name | What it reads |
+|---|---|
+| [`ataila_meta`](docs/data-sources/meta.md) | API version, platform version, licence tier, tenancy mode, licensed modules, licence state |
+| [`ataila_whoami`](docs/data-sources/whoami.md) | The calling principal, how it authenticated, its effective scopes, token details and expiry |
+
+Resources follow milestone by milestone; each ships with its documentation, examples and tests.
+
+## Developing
+
+Requirements: Go (the version in `go.mod`), and OpenTofu and/or Terraform on `PATH`.
+
+```shell
+go build ./...
+go test ./...                 # unit tests; acceptance tests skip without TF_ACC
+go generate ./...             # regenerates internal/client from api/openapi-v1.json, and docs/
+```
+
+### Acceptance tests
+
+The acceptance tests run the real CLI against an in-process mock of `/api/v1` (`internal/acctest`), served over
+TLS with its own certificate authority, so they need no platform and no credentials. Run them once per CLI:
+
+```shell
+# Terraform
+TF_ACC=1 TF_ACC_TERRAFORM_PATH="$(command -v terraform)" go test ./internal/provider/ -run '^TestAcc' -v
+
+# OpenTofu
+TF_ACC=1 TF_ACC_TERRAFORM_PATH="$(command -v tofu)" TF_ACC_PROVIDER_HOST=registry.opentofu.org \
+  go test ./internal/provider/ -run '^TestAcc' -v
+```
+
+### Trying a local build
+
+Build the binary and point the CLI at it with a development override, in `~/.tofurc` for OpenTofu or
+`~/.terraformrc` for Terraform (on Windows: `%APPDATA%\tofu.rc` or `%APPDATA%\terraform.rc`):
+
+```hcl
+provider_installation {
+  dev_overrides {
+    "registry.opentofu.org/ataila/ataila"   = "/path/to/terraform-provider-ataila"
+    "registry.terraform.io/ataila/ataila"   = "/path/to/terraform-provider-ataila"
+  }
+  direct {}
+}
+```
+
+### The API contract
+
+`api/openapi-v1.json` is the pinned OpenAPI document of the platform's `/api/v1`, exported from the platform
+release the provider is built against. `internal/client/client.gen.go` is generated from it with oapi-codegen;
+the rest of `internal/client` is a thin hand-written wrapper (transport, retries, errors, TLS).
+`TestGeneratedClientIsCurrent` fails whenever the two are out of step. To move to a newer contract: replace
+the JSON, run `go generate ./...`, and commit both.
+
+## Repository layout
+
+```
+main.go                     provider server (protocol 6)
+internal/provider/          provider, one file per data source or resource, tests
+internal/client/            generated client + hand-written wrapper
+internal/acctest/           in-process mock of /api/v1 for acceptance tests
+api/openapi-v1.json         the pinned API contract
+examples/                   provider configuration and one example per object (rendered into docs/)
+templates/                  documentation templates
+docs/                       generated with tfplugindocs; do not edit by hand
+scripts/leak-guard.sh       blocks anything internal from entering this repository
+scripts/ci/toolchain.sh     fetches and verifies the CI toolchain
+```
+
+## CI and releases
+
+The primary repository and the only build are on the company's GitLab; the public repository is a one-way,
+read-only mirror and never builds. Every push runs: a toolchain probe, lint (gofmt, go vet, tidy modules,
+generated files current), the leak guard, unit tests, the acceptance matrix (OpenTofu 1.6.0 and 1.12.6,
+Terraform 1.6.0 and 1.16.4) and cross-platform builds.
+
+A `vX.Y.Z` tag additionally runs goreleaser: zip archives for every platform, one `SHA256SUMS` file, the
+registry manifest and a detached GPG signature of the sums. The tag must match `version` in `main.go`. The
+release job stops with a clear message while the signing key variables (`GPG_PRIVATE_KEY`,
+`GPG_FINGERPRINT`) are not configured.
+
+### Leak guard
+
+`scripts/leak-guard.sh` runs on every push, blocking. It scans every file, every file name and the whole history
+of the branch (added lines, commit messages, author identities) for private IPv4 addresses, internal host
+names, Vault paths, token shapes (platform API tokens, GitLab and Vault tokens, private keys) and internal code
+names. Examples and docs use `portal.example.com`. Run it before every push:
+
+```shell
+bash scripts/leak-guard.sh
+```
+
+A finding in history must be removed by rewriting that history before anything is pushed or mirrored.
+
+## Licence
+
+Copyright (c) 2026 Macskásy Attila. Licensed under the [Mozilla Public License 2.0](LICENSE).

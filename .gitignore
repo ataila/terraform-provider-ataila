@@ -1,0 +1,21 @@
+# Build output
+/terraform-provider-ataila
+/terraform-provider-ataila.exe
+/dist/
+
+# CI caches and downloaded tools
+/.cache/
+/.tools/
+
+# Local OpenTofu / Terraform state from trying the examples
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+.terraformrc
+.tofurc
+
+# Editors
+.idea/
+.vscode/
+*.swp
