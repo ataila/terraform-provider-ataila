@@ -113,10 +113,14 @@ acceptance:
     - go test ./internal/provider/ -run '^TestAcc' -count=1 -v -timeout 30m > acceptance.log 2>&1 || { cat acceptance.log; exit 1; }
     - cat acceptance.log
     # A run in which the acceptance tests silently skipped is a failure.
-    - passed=$(grep -c '^--- PASS: TestAcc' acceptance.log || true)
-    - skipped=$(grep -c '^--- SKIP: TestAcc' acceptance.log || true)
-    - echo "acceptance under $ACC_CLI $ACC_CLI_VERSION: $passed passed, $skipped skipped"
-    - if [ "$passed" -eq 0 ] || [ "$skipped" -ne 0 ]; then echo "Acceptance tests did not all run."; exit 1; fi
+    - |
+      passed=$(grep -c '^--- PASS: TestAcc' acceptance.log || true)
+      skipped=$(grep -c '^--- SKIP: TestAcc' acceptance.log || true)
+      echo "acceptance under $ACC_CLI $ACC_CLI_VERSION: $passed passed, $skipped skipped"
+      if [ "$passed" -eq 0 ] || [ "$skipped" -ne 0 ]; then
+        echo "Acceptance tests did not all run."
+        exit 1
+      fi
   artifacts:
     when: always
     paths:
@@ -158,9 +162,17 @@ release:
         echo "masked where possible), protects the v* tags, and re-runs this job."
         exit 1
       fi
-    - command -v gpg >/dev/null || { echo "RELEASE STOPPED: gpg is not installed on this runner."; exit 1; }
+    - |
+      if ! command -v gpg >/dev/null; then
+        echo "RELEASE STOPPED: gpg is not installed on this runner."
+        exit 1
+      fi
     - base=$(sed -n 's/^var version = "\(.*\)"$/\1/p' main.go)
-    - if [ "v$base" != "$CI_COMMIT_TAG" ]; then echo "RELEASE STOPPED: tag $CI_COMMIT_TAG does not match version $base in main.go."; exit 1; fi
+    - |
+      if [ "v$base" != "$CI_COMMIT_TAG" ]; then
+        echo "RELEASE STOPPED: tag $CI_COMMIT_TAG does not match version $base in main.go."
+        exit 1
+      fi
     - export GNUPGHOME="$(mktemp -d)"
     - if [ -f "$GPG_PRIVATE_KEY" ]; then gpg --batch --import "$GPG_PRIVATE_KEY"; else printf '%s\n' "$GPG_PRIVATE_KEY" | gpg --batch --import; fi
     - GOBIN="$TOOLCHAIN_DIR/bin" go install "github.com/goreleaser/goreleaser/v2@$GORELEASER_VERSION"
