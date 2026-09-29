@@ -215,11 +215,18 @@ func (p *ataProvider) DataSources(_ context.Context) []func() datasource.DataSou
 	return []func() datasource.DataSource{
 		NewMetaDataSource,
 		NewWhoamiDataSource,
+		NewCustomerDataSource,
+		NewTenantDataSource,
+		NewTenantsDataSource,
 	}
 }
 
 func (p *ataProvider) Resources(_ context.Context) []func() resource.Resource {
-	return nil
+	return []func() resource.Resource{
+		NewCustomerResource,
+		NewTenantResource,
+		NewTenantMembershipResource,
+	}
 }
 
 // firstSet returns the configured value, else the environment variable.

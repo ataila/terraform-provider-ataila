@@ -149,6 +149,9 @@ func (e *APIError) Detail() string {
 		if fields := e.validationErrors(); fields != "" {
 			parts = append(parts, fields)
 		}
+		if extra := e.ExtraMembers(); len(extra) > 0 {
+			parts = append(parts, strings.Join(extra, "\n"))
+		}
 		if e.Problem == nil && e.RawBody != "" {
 			parts = append(parts, "The response was not a problem document. It began with:\n"+e.RawBody)
 		}
@@ -166,6 +169,77 @@ func (e *APIError) Detail() string {
 	}
 	parts = append(parts, strings.Join(facts, "\n"))
 	return strings.Join(parts, "\n\n")
+}
+
+// Extra returns a member of the problem document beyond the standard ones,
+// for example the "blockers" of a refused delete.
+func (e *APIError) Extra(key string) (any, bool) {
+	if e.Problem == nil {
+		return nil, false
+	}
+	return e.Problem.Get(key)
+}
+
+// Blockers is the "blockers" member of a 409 (what keeps an object from
+// being deleted, with a count each), or nil.
+func (e *APIError) Blockers() map[string]int {
+	raw, ok := e.Extra("blockers")
+	if !ok {
+		return nil
+	}
+	m, ok := raw.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+	out := make(map[string]int, len(m))
+	for k, v := range m {
+		if n, ok := v.(float64); ok {
+			out[k] = int(n)
+		}
+	}
+	return out
+}
+
+// ExtraMembers renders the problem's non-standard members as sorted
+// "name: value" lines, an object as "name: k=v, k=v". The validation "errors"
+// list is rendered separately and left out here.
+func (e *APIError) ExtraMembers() []string {
+	if e.Problem == nil || len(e.Problem.AdditionalProperties) == 0 {
+		return nil
+	}
+	var lines []string
+	for k, v := range e.Problem.AdditionalProperties {
+		if k == "errors" {
+			continue
+		}
+		lines = append(lines, k+": "+renderValue(v))
+	}
+	sort.Strings(lines)
+	return lines
+}
+
+func renderValue(v any) string {
+	switch t := v.(type) {
+	case map[string]interface{}:
+		keys := make([]string, 0, len(t))
+		for k := range t {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		parts := make([]string, 0, len(keys))
+		for _, k := range keys {
+			parts = append(parts, k+"="+renderValue(t[k]))
+		}
+		return strings.Join(parts, ", ")
+	case float64:
+		if t == float64(int64(t)) {
+			return fmt.Sprintf("%d", int64(t))
+		}
+		return fmt.Sprint(t)
+	case nil:
+		return "null"
+	}
+	return fmt.Sprint(v)
 }
 
 // validationErrors renders the "errors" member of a 422.

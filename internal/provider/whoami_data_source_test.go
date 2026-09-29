@@ -32,7 +32,7 @@ func TestAccWhoamiDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.ataila_whoami.me", "principal.email", "ci-bot@service-account.invalid"),
 				resource.TestCheckResourceAttr("data.ataila_whoami.me", "auth_kind", "service_account"),
 				resource.TestCheckResourceAttr("data.ataila_whoami.me", "scopes.#", "2"),
-				resource.TestCheckResourceAttr("data.ataila_whoami.me", "scopes.0", "customers-global"),
+				resource.TestCheckResourceAttr("data.ataila_whoami.me", "scopes.0", "tenancy-admin-global"),
 				resource.TestCheckResourceAttr("data.ataila_whoami.me", "expires_at", "2027-01-01T00:00:00Z"),
 				resource.TestCheckResourceAttr("data.ataila_whoami.me", "token.prefix", "mocktokn"),
 				resource.TestCheckResourceAttr("data.ataila_whoami.me", "token.granted_scopes.#", "2"),

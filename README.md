@@ -28,7 +28,7 @@ terraform {
   required_providers {
     ataila = {
       source  = "ataila/ataila"
-      version = "~> 0.1"
+      version = "~> 0.2"
     }
   }
 }
@@ -38,6 +38,20 @@ provider "ataila" {
 }
 
 data "ataila_whoami" "me" {}
+
+resource "ataila_customer" "example" {
+  short_name            = "EXAMPLE"
+  long_name             = "Example Holdings Ltd"
+  gitlab_group          = "example"
+  primary_contact_email = "it@example.com"
+  primary_contact_name  = "Example IT Desk"
+}
+
+resource "ataila_tenant" "builds" {
+  customer_id = ataila_customer.example.id
+  slug        = "example-builds"
+  name        = "Build Farm"
+}
 ```
 
 ```shell
@@ -76,14 +90,53 @@ terraform init && terraform plan
 - Sends a fresh `Idempotency-Key` with every create; that create's own retries reuse it, so a create never runs twice.
 - A 404 on start means a wrong endpoint or a platform whose public API is switched off.
 
+### Resources
+
+| Name | What it manages | Destroy |
+|---|---|---|
+| [`ataila_customer`](docs/resources/customer.md) | A customer (company), with its primary tenant and GitLab group | Archives; gated |
+| [`ataila_tenant`](docs/resources/tenant.md) | A further tenant of a customer | Deletes an empty tenant; gated |
+| [`ataila_tenant_membership`](docs/resources/tenant_membership.md) | A user's role in a tenant | Removes the membership |
+
+**Destroy is off by default and needs two switches**: `allow_destroy = true` on the provider **and** a token
+minted with destroy allowed. With the provider switch off, destroying a customer or a tenant fails at plan
+time, before any request, and the error explains both switches and how to remove the object from the state
+instead (`tofu state rm` / `terraform state rm`). With the provider switch on and a token without the flag,
+the platform refuses and the error says so. A refusal by the platform itself (a customer that still has
+projects, a tenant that is not empty or is a customer's primary) is reported with the platform's code and
+what blocks the destroy.
+
+**Frozen keys** (a customer's `customer_index`, `short_name`, `gitlab_group` and `edition`; a tenant's
+`customer_id` and `slug`) are fixed at create. Changing one fails the plan; the provider never replaces a
+customer or a tenant, because destroying a customer only archives it and an archived customer keeps its
+keys, so the re-create could never succeed.
+
+**Warnings** the platform returns on a request that succeeded are reported as warnings, never as errors.
+
+Import forms:
+
+| Resource | Import id |
+|---|---|
+| `ataila_customer` | the id, or `short_name:<SHORT_NAME>` |
+| `ataila_tenant` | the id, or `slug:<slug>` |
+| `ataila_tenant_membership` | `<tenant_id>/<user_id>` |
+
+```shell
+tofu import ataila_customer.example short_name:EXAMPLE        # OpenTofu
+terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
+```
+
 ### Data sources
 
 | Name | What it reads |
 |---|---|
 | [`ataila_meta`](docs/data-sources/meta.md) | API version, platform version, licence tier, tenancy mode, licensed modules, licence state |
 | [`ataila_whoami`](docs/data-sources/whoami.md) | The calling principal, how it authenticated, its effective scopes, token details and expiry |
+| [`ataila_customer`](docs/data-sources/customer.md) | One customer, by id, short name or GitLab group |
+| [`ataila_tenant`](docs/data-sources/tenant.md) | One tenant, by id or slug |
+| [`ataila_tenants`](docs/data-sources/tenants.md) | Every tenant, or every tenant of one customer (all pages) |
 
-Resources follow milestone by milestone; each ships with its documentation, examples and tests.
+Further resources follow milestone by milestone; each ships with its documentation, examples and tests.
 
 ## Developing
 
@@ -107,6 +160,17 @@ TF_ACC=1 TF_ACC_TERRAFORM_PATH="$(command -v terraform)" go test ./internal/prov
 # OpenTofu
 TF_ACC=1 TF_ACC_TERRAFORM_PATH="$(command -v tofu)" TF_ACC_PROVIDER_HOST=registry.opentofu.org \
   go test ./internal/provider/ -run '^TestAcc' -v
+```
+
+### State shared by both CLIs
+
+`TestCrossCLIState` proves that state written by one CLI is read by the other without a diff: Terraform
+applies, OpenTofu runs `init` and `plan -detailed-exitcode` and must find nothing to do, then OpenTofu applies
+a change and Terraform, after its own `init`, must find nothing to do. It needs both CLIs:
+
+```shell
+ATAILA_CROSS_CLI_TERRAFORM="$(command -v terraform)" ATAILA_CROSS_CLI_TOFU="$(command -v tofu)" \
+  go test ./internal/provider/ -run '^TestCrossCLIState$' -v
 ```
 
 ### Trying a local build
@@ -152,7 +216,8 @@ scripts/ci/toolchain.sh     fetches and verifies the CI toolchain
 The primary repository and the only build are on the company's GitLab; the public repository is a one-way,
 read-only mirror and never builds. Every push runs: a toolchain probe, lint (gofmt, go vet, tidy modules,
 generated files current), the leak guard, unit tests, the acceptance matrix (OpenTofu 1.6.0 and 1.12.6,
-Terraform 1.6.0 and 1.16.4) and cross-platform builds.
+Terraform 1.6.0 and 1.16.4), the cross-CLI state check (the oldest pair and the newest pair) and
+cross-platform builds.
 
 A `vX.Y.Z` tag additionally runs goreleaser: zip archives for every platform, one `SHA256SUMS` file, the
 registry manifest and a detached GPG signature of the sums. The tag must match `version` in `main.go`. The

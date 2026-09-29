@@ -45,13 +45,18 @@ type Config struct {
 	BackoffMax  time.Duration
 	// HTTPClient replaces the client built from the settings above (tests).
 	HTTPClient *http.Client
+	// PageSize is the page size of list reads; zero or anything above
+	// MaxPageSize means MaxPageSize. Tests use small pages to cross page
+	// boundaries cheaply.
+	PageSize int
 }
 
 // API is the hand-written face of the generated client.
 type API struct {
-	baseURL   string
-	raw       *ClientWithResponses
-	transport *transport
+	baseURL      string
+	raw          *ClientWithResponses
+	transport    *transport
+	listPageSize int
 }
 
 // UserAgent is the User-Agent this provider sends.
@@ -114,7 +119,7 @@ func New(cfg Config) (*API, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &API{baseURL: base, raw: raw, transport: t}, nil
+	return &API{baseURL: base, raw: raw, transport: t, listPageSize: cfg.PageSize}, nil
 }
 
 // BaseURL is the normalised API URL, ending in /api/v1.

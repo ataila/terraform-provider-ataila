@@ -2,7 +2,7 @@ terraform {
   required_providers {
     ataila = {
       source  = "ataila/ataila"
-      version = "~> 0.1"
+      version = "~> 0.2"
     }
   }
 }

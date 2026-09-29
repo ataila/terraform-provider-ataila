@@ -12,8 +12,10 @@ import (
 	"strings"
 	"testing"
 
+	fwdatasource "github.com/hashicorp/terraform-plugin-framework/datasource"
 	fwprovider "github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
+	fwresource "github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -263,4 +265,47 @@ func TestAccProvider_RequestHeaders(t *testing.T) {
 			},
 		}},
 	})
+}
+
+// D38: nothing that exists in only one CLI, or at different versions in each.
+func TestProviderUsesNothingOnlyOneCLIHas(t *testing.T) {
+	ctx := context.Background()
+	p := provider.New(testVersion)()
+	if _, ok := p.(fwprovider.ProviderWithFunctions); ok {
+		t.Error("provider functions are not allowed")
+	}
+	if _, ok := p.(fwprovider.ProviderWithEphemeralResources); ok {
+		t.Error("ephemeral resources are not allowed")
+	}
+	if _, ok := p.(fwprovider.ProviderWithActions); ok {
+		t.Error("actions are not allowed")
+	}
+	if _, ok := p.(fwprovider.ProviderWithListResources); ok {
+		t.Error("list resources are not allowed")
+	}
+	for _, newResource := range p.Resources(ctx) {
+		r := newResource()
+		var meta fwresource.MetadataResponse
+		r.Metadata(ctx, fwresource.MetadataRequest{ProviderTypeName: "ataila"}, &meta)
+		var resp fwresource.SchemaResponse
+		r.Schema(ctx, fwresource.SchemaRequest{}, &resp)
+		if diags := resp.Schema.ValidateImplementation(ctx); diags.HasError() {
+			t.Errorf("%s: %v", meta.TypeName, diags)
+		}
+		for name, a := range resp.Schema.Attributes {
+			if wo, ok := a.(interface{ IsWriteOnly() bool }); ok && wo.IsWriteOnly() {
+				t.Errorf("%s.%s is write-only", meta.TypeName, name)
+			}
+		}
+	}
+	for _, newDataSource := range p.DataSources(ctx) {
+		d := newDataSource()
+		var meta fwdatasource.MetadataResponse
+		d.Metadata(ctx, fwdatasource.MetadataRequest{ProviderTypeName: "ataila"}, &meta)
+		var resp fwdatasource.SchemaResponse
+		d.Schema(ctx, fwdatasource.SchemaRequest{}, &resp)
+		if diags := resp.Schema.ValidateImplementation(ctx); diags.HasError() {
+			t.Errorf("%s: %v", meta.TypeName, diags)
+		}
+	}
 }
