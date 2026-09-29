@@ -79,8 +79,9 @@ records the provider's full address, and `source = "ataila/ataila"` means
 | OpenTofu → Terraform | **Required**, once, before anything else: `terraform state replace-provider registry.opentofu.org/ataila/ataila registry.terraform.io/ataila/ataila` |
 
 Without that step Terraform stops with *Missing required provider: This state requires provider
-registry.opentofu.org/ataila/ataila, but that provider isn't available*. After it, `terraform plan` shows
-no changes. Both commands ask for confirmation; `-auto-approve` skips it. A remote backend is changed in
+registry.opentofu.org/ataila/ataila, but that provider isn't available* (Terraform 1.6 words it *Failed to
+load plugin schemas … unavailable provider "registry.opentofu.org/ataila/ataila"*). After it,
+`terraform plan` shows no changes. Both commands ask for confirmation; `-auto-approve` skips it. A remote backend is changed in
 place, so switch once, not back and forth in parallel runs.
 
 ### Provider configuration
