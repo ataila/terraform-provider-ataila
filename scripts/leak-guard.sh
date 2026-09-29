@@ -96,10 +96,12 @@ negatives=(
 for i in "${!PATTERNS[@]}"; do
   IFS='|' read -r name flags re <<<"${PATTERNS[$i]}"
   re="${PATTERNS[$i]#*|*|}"
-  printf '%s\n' "${samples[$i]}" | grep -qE $flags -- "$re" \
+  # Here-strings, not pipes: under pipefail an early-exiting grep -q could
+  # make the writer die of SIGPIPE and turn a match into a failure.
+  grep -qE $flags -- "$re" <<<"${samples[$i]}" \
     || die "self-test: pattern '$name' does not match its sample"
   for neg in "${negatives[@]}"; do
-    if printf '%s\n' "$neg" | grep -qE $flags -- "$re"; then
+    if grep -qE $flags -- "$re" <<<"$neg"; then
       die "self-test: pattern '$name' matches the harmless '$neg'"
     fi
   done

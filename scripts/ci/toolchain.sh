@@ -137,7 +137,7 @@ ensure_cli() {
 
   local have
   have=$(command -v "$cli" 2>/dev/null || true)
-  if [ -n "$have" ] && "$have" version 2>/dev/null | head -n1 | grep -qx "\(Terraform\|OpenTofu\) v$v"; then
+  if [ -n "$have" ] && [ "$(_tc_first_line "$have" version)" = "$(_tc_cli_banner "$cli") v$v" ]; then
     CLI_PATH="$have"
   else
     _tc_platform
@@ -152,16 +152,34 @@ ensure_cli() {
     CLI_PATH="$dir/$cli"
   fi
   local reported
-  reported=$("$CLI_PATH" version | head -n1)
-  case "$reported" in
-    *" v$v") echo "toolchain: $reported at $CLI_PATH" ;;
-    *) _tc_fail "$CLI_PATH reports '$reported', expected version $v" ;;
-  esac
+  reported=$(_tc_first_line "$CLI_PATH" version)
+  if [ "$reported" != "$(_tc_cli_banner "$cli") v$v" ]; then
+    _tc_fail "$CLI_PATH reports '$reported', expected version $v"
+  fi
+  echo "toolchain: $reported at $CLI_PATH"
   export CLI_PATH
 }
 
-# probe: what the runner offers. Informational; always succeeds.
-probe() {
+_tc_cli_banner() {
+  case "$1" in
+    terraform) echo Terraform ;;
+    tofu) echo OpenTofu ;;
+  esac
+}
+
+# _tc_first_line <command...>: the first line of its output. The whole output
+# is read before it is cut, so no pipe closes early: under `set -o pipefail`,
+# which the job shell uses, `cmd | head -n1` can die of SIGPIPE (status 141).
+_tc_first_line() {
+  local out
+  out=$("$@" 2>&1) || true
+  printf '%s' "${out%%$'\n'*}"
+}
+
+# probe: what the runner offers. Informational; always succeeds, so it runs in
+# a subshell without errexit and pipefail.
+probe() (
+  set +e +o pipefail
   echo "== runner"
   echo "description: ${CI_RUNNER_DESCRIPTION:-?}"
   echo "id:          ${CI_RUNNER_ID:-?}"
@@ -175,13 +193,15 @@ probe() {
   echo "docker:      $([ -S /var/run/docker.sock ] && echo 'socket present' || echo 'no socket')"
   echo
   echo "== tools on PATH (plus ~/.local/bin)"
-  local PATH="$PATH:$HOME/.local/bin" t out
+  PATH="$PATH:$HOME/.local/bin"
+  local t out
   for t in go terraform tofu git curl tar unzip python3 sha256sum gpg; do
     if command -v "$t" >/dev/null 2>&1; then
       case "$t" in
-        go) out=$(go version 2>&1) ;;
-        terraform|tofu) out=$("$t" version 2>&1 | head -n1) ;;
-        *) out=$("$t" --version 2>&1 | head -n1) ;;
+        go) out=$(_tc_first_line go version) ;;
+        terraform|tofu) out=$(_tc_first_line "$t" version) ;;
+        unzip) out=$(_tc_first_line unzip -v) ;;
+        *) out=$(_tc_first_line "$t" --version) ;;
       esac
       printf '%-10s %s  (%s)\n' "$t" "$out" "$(command -v "$t")"
     else
@@ -194,11 +214,11 @@ probe() {
   for u in https://go.dev/dl/ https://dl.google.com/ https://proxy.golang.org/ https://sum.golang.org/ \
            https://releases.hashicorp.com/ https://github.com/ https://objects.githubusercontent.com/ \
            https://release-assets.githubusercontent.com/ https://registry.terraform.io/ https://registry.opentofu.org/; do
-    code=$(curl -s -o /dev/null -w '%{http_code}' --connect-timeout 8 --max-time 15 "$u" 2>/dev/null || true)
+    code=$(curl -s -o /dev/null -w '%{http_code}' --connect-timeout 8 --max-time 15 "$u" 2>/dev/null)
     printf '%-50s %s\n' "$u" "${code:-000}"
   done
   echo
   echo "== proxy settings"
   echo "HTTPS_PROXY=${HTTPS_PROXY:-${https_proxy:-unset}} NO_PROXY=${NO_PROXY:-${no_proxy:-unset}}"
-  return 0
-}
+  exit 0
+)

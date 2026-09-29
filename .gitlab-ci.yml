@@ -33,6 +33,8 @@ variables:
   GOMODCACHE: $CI_PROJECT_DIR/.cache/gomod
   GOCACHE: $CI_PROJECT_DIR/.cache/gobuild
   TOOLCHAIN_DIR: $CI_PROJECT_DIR/.cache/tools
+  # No update checks from the CLIs under test.
+  CHECKPOINT_DISABLE: "1"
   # The Terraform that renders docs/ in the lint job (tfplugindocs needs one).
   DOCS_TERRAFORM_VERSION: "1.16.4"
   GORELEASER_VERSION: v2.18.2
