@@ -4,6 +4,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -13,7 +14,248 @@ import (
 	"strings"
 
 	"github.com/oapi-codegen/runtime"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
+
+// Defines values for CustomerBillingTier.
+const (
+	CustomerBillingTierINTERNAL CustomerBillingTier = "INTERNAL"
+	CustomerBillingTierPAYING   CustomerBillingTier = "PAYING"
+)
+
+// Valid indicates whether the value is a known member of the CustomerBillingTier enum.
+func (e CustomerBillingTier) Valid() bool {
+	switch e {
+	case CustomerBillingTierINTERNAL:
+		return true
+	case CustomerBillingTierPAYING:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerEdition.
+const (
+	CustomerEditionEnterprise CustomerEdition = "enterprise"
+	CustomerEditionSp         CustomerEdition = "sp"
+)
+
+// Valid indicates whether the value is a known member of the CustomerEdition enum.
+func (e CustomerEdition) Valid() bool {
+	switch e {
+	case CustomerEditionEnterprise:
+		return true
+	case CustomerEditionSp:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerStatus.
+const (
+	CustomerStatusActive    CustomerStatus = "active"
+	CustomerStatusArchived  CustomerStatus = "archived"
+	CustomerStatusSuspended CustomerStatus = "suspended"
+)
+
+// Valid indicates whether the value is a known member of the CustomerStatus enum.
+func (e CustomerStatus) Valid() bool {
+	switch e {
+	case CustomerStatusActive:
+		return true
+	case CustomerStatusArchived:
+		return true
+	case CustomerStatusSuspended:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerCreateBillingTier.
+const (
+	CustomerCreateBillingTierINTERNAL CustomerCreateBillingTier = "INTERNAL"
+	CustomerCreateBillingTierPAYING   CustomerCreateBillingTier = "PAYING"
+)
+
+// Valid indicates whether the value is a known member of the CustomerCreateBillingTier enum.
+func (e CustomerCreateBillingTier) Valid() bool {
+	switch e {
+	case CustomerCreateBillingTierINTERNAL:
+		return true
+	case CustomerCreateBillingTierPAYING:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerCreateDefaultEmailTier.
+const (
+	CustomerCreateDefaultEmailTierN1 CustomerCreateDefaultEmailTier = 1
+	CustomerCreateDefaultEmailTierN2 CustomerCreateDefaultEmailTier = 2
+	CustomerCreateDefaultEmailTierN3 CustomerCreateDefaultEmailTier = 3
+)
+
+// Valid indicates whether the value is a known member of the CustomerCreateDefaultEmailTier enum.
+func (e CustomerCreateDefaultEmailTier) Valid() bool {
+	switch e {
+	case CustomerCreateDefaultEmailTierN1:
+		return true
+	case CustomerCreateDefaultEmailTierN2:
+		return true
+	case CustomerCreateDefaultEmailTierN3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerCreateEdition.
+const (
+	CustomerCreateEditionEnterprise CustomerCreateEdition = "enterprise"
+	CustomerCreateEditionSp         CustomerCreateEdition = "sp"
+)
+
+// Valid indicates whether the value is a known member of the CustomerCreateEdition enum.
+func (e CustomerCreateEdition) Valid() bool {
+	switch e {
+	case CustomerCreateEditionEnterprise:
+		return true
+	case CustomerCreateEditionSp:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerPatchBillingTier.
+const (
+	CustomerPatchBillingTierINTERNAL CustomerPatchBillingTier = "INTERNAL"
+	CustomerPatchBillingTierPAYING   CustomerPatchBillingTier = "PAYING"
+)
+
+// Valid indicates whether the value is a known member of the CustomerPatchBillingTier enum.
+func (e CustomerPatchBillingTier) Valid() bool {
+	switch e {
+	case CustomerPatchBillingTierINTERNAL:
+		return true
+	case CustomerPatchBillingTierPAYING:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerPatchDefaultEmailTier.
+const (
+	CustomerPatchDefaultEmailTierN1 CustomerPatchDefaultEmailTier = 1
+	CustomerPatchDefaultEmailTierN2 CustomerPatchDefaultEmailTier = 2
+	CustomerPatchDefaultEmailTierN3 CustomerPatchDefaultEmailTier = 3
+)
+
+// Valid indicates whether the value is a known member of the CustomerPatchDefaultEmailTier enum.
+func (e CustomerPatchDefaultEmailTier) Valid() bool {
+	switch e {
+	case CustomerPatchDefaultEmailTierN1:
+		return true
+	case CustomerPatchDefaultEmailTierN2:
+		return true
+	case CustomerPatchDefaultEmailTierN3:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerPatchEdition.
+const (
+	CustomerPatchEditionEnterprise CustomerPatchEdition = "enterprise"
+	CustomerPatchEditionSp         CustomerPatchEdition = "sp"
+)
+
+// Valid indicates whether the value is a known member of the CustomerPatchEdition enum.
+func (e CustomerPatchEdition) Valid() bool {
+	switch e {
+	case CustomerPatchEditionEnterprise:
+		return true
+	case CustomerPatchEditionSp:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerPatchStatus.
+const (
+	CustomerPatchStatusActive    CustomerPatchStatus = "active"
+	CustomerPatchStatusSuspended CustomerPatchStatus = "suspended"
+)
+
+// Valid indicates whether the value is a known member of the CustomerPatchStatus enum.
+func (e CustomerPatchStatus) Valid() bool {
+	switch e {
+	case CustomerPatchStatusActive:
+		return true
+	case CustomerPatchStatusSuspended:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MembershipRole.
+const (
+	MembershipRoleAdmin     MembershipRole = "admin"
+	MembershipRoleDeveloper MembershipRole = "developer"
+	MembershipRoleMember    MembershipRole = "member"
+	MembershipRoleOwner     MembershipRole = "owner"
+	MembershipRoleViewer    MembershipRole = "viewer"
+)
+
+// Valid indicates whether the value is a known member of the MembershipRole enum.
+func (e MembershipRole) Valid() bool {
+	switch e {
+	case MembershipRoleAdmin:
+		return true
+	case MembershipRoleDeveloper:
+		return true
+	case MembershipRoleMember:
+		return true
+	case MembershipRoleOwner:
+		return true
+	case MembershipRoleViewer:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MembershipPutRole.
+const (
+	MembershipPutRoleAdmin  MembershipPutRole = "admin"
+	MembershipPutRoleMember MembershipPutRole = "member"
+	MembershipPutRoleOwner  MembershipPutRole = "owner"
+	MembershipPutRoleViewer MembershipPutRole = "viewer"
+)
+
+// Valid indicates whether the value is a known member of the MembershipPutRole enum.
+func (e MembershipPutRole) Valid() bool {
+	switch e {
+	case MembershipPutRoleAdmin:
+		return true
+	case MembershipPutRoleMember:
+		return true
+	case MembershipPutRoleOwner:
+		return true
+	case MembershipPutRoleViewer:
+		return true
+	default:
+		return false
+	}
+}
 
 // Defines values for OperationStatus.
 const (
@@ -45,12 +287,190 @@ func (e OperationStatus) Valid() bool {
 	}
 }
 
+// Defines values for CustomersListParamsStatus.
+const (
+	CustomersListParamsStatusActive    CustomersListParamsStatus = "active"
+	CustomersListParamsStatusArchived  CustomersListParamsStatus = "archived"
+	CustomersListParamsStatusSuspended CustomersListParamsStatus = "suspended"
+)
+
+// Valid indicates whether the value is a known member of the CustomersListParamsStatus enum.
+func (e CustomersListParamsStatus) Valid() bool {
+	switch e {
+	case CustomersListParamsStatusActive:
+		return true
+	case CustomersListParamsStatusArchived:
+		return true
+	case CustomersListParamsStatusSuspended:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomersGetParamsInclude.
+const (
+	GitlabStatus CustomersGetParamsInclude = "gitlab_status"
+)
+
+// Valid indicates whether the value is a known member of the CustomersGetParamsInclude enum.
+func (e CustomersGetParamsInclude) Valid() bool {
+	switch e {
+	case GitlabStatus:
+		return true
+	default:
+		return false
+	}
+}
+
+// ApiWarning Something that did not go as planned, on a request that still succeeded
+// — e.g. the customer was created but its GitLab group was not. A client must
+// surface these (the provider reports them as diagnostics).
+type ApiWarning struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+// Customer defines model for Customer.
+type Customer struct {
+	BillingTier      CustomerBillingTier `json:"billing_tier"`
+	CreatedAt        string              `json:"created_at"`
+	CustomerIndex    int                 `json:"customer_index"`
+	DefaultEmailTier int                 `json:"default_email_tier"`
+	Edition          CustomerEdition     `json:"edition"`
+	GitlabGroup      string              `json:"gitlab_group"`
+
+	// GitlabStatus Only with `?include=gitlab_status` on a read; null when GitLab could not be asked (a warning then says why).
+	GitlabStatus        *GitLabGroupStatus `json:"gitlab_status,omitempty"`
+	Id                  string             `json:"id"`
+	LongName            string             `json:"long_name"`
+	Notes               *string            `json:"notes,omitempty"`
+	PrimaryContactEmail string             `json:"primary_contact_email"`
+	PrimaryContactName  string             `json:"primary_contact_name"`
+	PrimaryTenantId     string             `json:"primary_tenant_id"`
+	ShortName           string             `json:"short_name"`
+	Status              CustomerStatus     `json:"status"`
+	Warnings            *[]ApiWarning      `json:"warnings,omitempty"`
+}
+
+// CustomerBillingTier defines model for Customer.BillingTier.
+type CustomerBillingTier string
+
+// CustomerEdition defines model for Customer.Edition.
+type CustomerEdition string
+
+// CustomerStatus defines model for Customer.Status.
+type CustomerStatus string
+
+// CustomerCreate defines model for CustomerCreate.
+type CustomerCreate struct {
+	BillingTier *CustomerCreateBillingTier `json:"billing_tier,omitempty"`
+
+	// CustomerIndex Omit to have the server allocate the next free index.
+	CustomerIndex    *int                            `json:"customer_index,omitempty"`
+	DefaultEmailTier *CustomerCreateDefaultEmailTier `json:"default_email_tier,omitempty"`
+	Edition          *CustomerCreateEdition          `json:"edition,omitempty"`
+
+	// GitlabGroup ^[a-z][a-z0-9-]{1,30}$ — also the primary tenant's slug.
+	GitlabGroup         string              `json:"gitlab_group"`
+	LongName            string              `json:"long_name"`
+	Notes               *string             `json:"notes,omitempty"`
+	PrimaryContactEmail openapi_types.Email `json:"primary_contact_email"`
+	PrimaryContactName  string              `json:"primary_contact_name"`
+
+	// ShortName ^[A-Z][A-Z0-9]{1,15}$
+	ShortName string `json:"short_name"`
+}
+
+// CustomerCreateBillingTier defines model for CustomerCreate.BillingTier.
+type CustomerCreateBillingTier string
+
+// CustomerCreateDefaultEmailTier defines model for CustomerCreate.DefaultEmailTier.
+type CustomerCreateDefaultEmailTier int
+
+// CustomerCreateEdition defines model for CustomerCreate.Edition.
+type CustomerCreateEdition string
+
+// CustomerPage defines model for CustomerPage.
+type CustomerPage struct {
+	Items      []Customer `json:"items"`
+	NextCursor *string    `json:"next_cursor,omitempty"`
+}
+
+// CustomerPatch Only the fields present are changed. “archived“ is not a settable
+// status: archiving is “DELETE /customers/{id}“.
+type CustomerPatch struct {
+	BillingTier *CustomerPatchBillingTier `json:"billing_tier,omitempty"`
+
+	// CustomerIndex Frozen.
+	CustomerIndex    *int                           `json:"customer_index,omitempty"`
+	DefaultEmailTier *CustomerPatchDefaultEmailTier `json:"default_email_tier,omitempty"`
+
+	// Edition Frozen.
+	Edition *CustomerPatchEdition `json:"edition,omitempty"`
+
+	// GitlabGroup Frozen.
+	GitlabGroup         *string              `json:"gitlab_group,omitempty"`
+	LongName            *string              `json:"long_name,omitempty"`
+	Notes               *string              `json:"notes,omitempty"`
+	PrimaryContactEmail *openapi_types.Email `json:"primary_contact_email,omitempty"`
+	PrimaryContactName  *string              `json:"primary_contact_name,omitempty"`
+
+	// ShortName Frozen.
+	ShortName *string              `json:"short_name,omitempty"`
+	Status    *CustomerPatchStatus `json:"status,omitempty"`
+}
+
+// CustomerPatchBillingTier defines model for CustomerPatch.BillingTier.
+type CustomerPatchBillingTier string
+
+// CustomerPatchDefaultEmailTier defines model for CustomerPatch.DefaultEmailTier.
+type CustomerPatchDefaultEmailTier int
+
+// CustomerPatchEdition defines model for CustomerPatch.Edition.
+type CustomerPatchEdition string
+
+// CustomerPatchStatus defines model for CustomerPatch.Status.
+type CustomerPatchStatus string
+
+// GitLabGroupStatus The customer's top-level GitLab group as GitLab reports it right now.
+type GitLabGroupStatus struct {
+	Exists   bool    `json:"exists"`
+	FullPath *string `json:"full_path,omitempty"`
+	WebUrl   *string `json:"web_url,omitempty"`
+}
+
 // LicenceSummary defines model for LicenceSummary.
 type LicenceSummary struct {
 	DaysRemaining *int    `json:"days_remaining,omitempty"`
 	State         string  `json:"state"`
 	StateReason   *string `json:"state_reason,omitempty"`
 }
+
+// Membership defines model for Membership.
+type Membership struct {
+	CreatedAt *string        `json:"created_at,omitempty"`
+	Role      MembershipRole `json:"role"`
+	TenantId  string         `json:"tenant_id"`
+	UserId    string         `json:"user_id"`
+}
+
+// MembershipRole defines model for Membership.Role.
+type MembershipRole string
+
+// MembershipPage defines model for MembershipPage.
+type MembershipPage struct {
+	Items      []Membership `json:"items"`
+	NextCursor *string      `json:"next_cursor,omitempty"`
+}
+
+// MembershipPut defines model for MembershipPut.
+type MembershipPut struct {
+	Role MembershipPutRole `json:"role"`
+}
+
+// MembershipPutRole defines model for MembershipPut.Role.
+type MembershipPutRole string
 
 // Meta defines model for Meta.
 type Meta struct {
@@ -91,6 +511,57 @@ type Problem struct {
 	AdditionalProperties map[string]interface{} `json:"-"`
 }
 
+// Tenant defines model for Tenant.
+type Tenant struct {
+	CreatedAt *string `json:"created_at,omitempty"`
+
+	// CustomerId Null only for a legacy tenant that no customer owns.
+	CustomerId      *string `json:"customer_id"`
+	DefaultRouterId *string `json:"default_router_id,omitempty"`
+	Description     *string `json:"description,omitempty"`
+	Id              string  `json:"id"`
+
+	// IsPrimary The customer's primary tenant; it can never be deleted.
+	IsPrimary    bool    `json:"is_primary"`
+	MemberCount  int     `json:"member_count"`
+	Name         string  `json:"name"`
+	ProjectCount int     `json:"project_count"`
+	Slug         string  `json:"slug"`
+	UpdatedAt    *string `json:"updated_at,omitempty"`
+}
+
+// TenantCreate defines model for TenantCreate.
+type TenantCreate struct {
+	CustomerId      string  `json:"customer_id"`
+	DefaultRouterId *string `json:"default_router_id,omitempty"`
+	Description     *string `json:"description,omitempty"`
+	Name            string  `json:"name"`
+
+	// Slug Lowercase, 2-30 characters; frozen after create.
+	Slug string `json:"slug"`
+}
+
+// TenantPage defines model for TenantPage.
+type TenantPage struct {
+	Items      []Tenant `json:"items"`
+	NextCursor *string  `json:"next_cursor,omitempty"`
+}
+
+// TenantPatch Only the fields present are changed; “description: null“ clears it,
+// an omitted description is left alone.
+type TenantPatch struct {
+	// CustomerId Frozen.
+	CustomerId *string `json:"customer_id,omitempty"`
+
+	// DefaultRouterId null clears it.
+	DefaultRouterId *string `json:"default_router_id,omitempty"`
+	Description     *string `json:"description,omitempty"`
+	Name            *string `json:"name,omitempty"`
+
+	// Slug Frozen.
+	Slug *string `json:"slug,omitempty"`
+}
+
 // Whoami defines model for Whoami.
 type Whoami struct {
 	AuthKind  string          `json:"auth_kind"`
@@ -116,6 +587,73 @@ type WhoamiToken struct {
 	Name          string   `json:"name"`
 	Prefix        string   `json:"prefix"`
 }
+
+// CustomersListParams defines parameters for CustomersList.
+type CustomersListParams struct {
+	// ShortName Exact short name.
+	ShortName *string `form:"short_name,omitempty" json:"short_name,omitempty"`
+
+	// GitlabGroup Exact GitLab group.
+	GitlabGroup *string                    `form:"gitlab_group,omitempty" json:"gitlab_group,omitempty"`
+	Status      *CustomersListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// CustomersListParamsStatus defines parameters for CustomersList.
+type CustomersListParamsStatus string
+
+// CustomersGetParams defines parameters for CustomersGet.
+type CustomersGetParams struct {
+	// Include `gitlab_status`: also ask GitLab for the customer's group. Null with a warning when GitLab cannot be reached.
+	Include *CustomersGetParamsInclude `form:"include,omitempty" json:"include,omitempty"`
+}
+
+// CustomersGetParamsInclude defines parameters for CustomersGet.
+type CustomersGetParamsInclude string
+
+// TenantsListParams defines parameters for TenantsList.
+type TenantsListParams struct {
+	// CustomerId Only this customer's tenants.
+	CustomerId *string `form:"customer_id,omitempty" json:"customer_id,omitempty"`
+
+	// Slug Exact slug.
+	Slug *string `form:"slug,omitempty" json:"slug,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// TenantMembershipsListParams defines parameters for TenantMembershipsList.
+type TenantMembershipsListParams struct {
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// CustomersCreateJSONRequestBody defines body for CustomersCreate for application/json ContentType.
+type CustomersCreateJSONRequestBody = CustomerCreate
+
+// CustomersUpdateJSONRequestBody defines body for CustomersUpdate for application/json ContentType.
+type CustomersUpdateJSONRequestBody = CustomerPatch
+
+// TenantsCreateJSONRequestBody defines body for TenantsCreate for application/json ContentType.
+type TenantsCreateJSONRequestBody = TenantCreate
+
+// TenantsUpdateJSONRequestBody defines body for TenantsUpdate for application/json ContentType.
+type TenantsUpdateJSONRequestBody = TenantPatch
+
+// TenantMembershipsPutJSONRequestBody defines body for TenantMembershipsPut for application/json ContentType.
+type TenantMembershipsPutJSONRequestBody = MembershipPut
 
 // Getter for additional properties for Problem. Returns the specified
 // element and whether it was found
@@ -341,6 +879,66 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 // The interface specification for the client above.
 type ClientInterface interface {
 
+	// CustomersList List customers
+	//
+	// Corresponds with GET /customers (the `CustomersList` operationId).
+	CustomersList(ctx context.Context, params *CustomersListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomersCreateWithBody Register a customer
+	//
+	// Creates the customer and its primary tenant in one transaction, then
+	// creates or adopts its GitLab group. A GitLab failure does not fail the
+	// request: the customer exists, and `warnings` says what is missing.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /customers (the `CustomersCreate` operationId).
+	CustomersCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomersCreate Register a customer
+	//
+	// Creates the customer and its primary tenant in one transaction, then
+	// creates or adopts its GitLab group. A GitLab failure does not fail the
+	// request: the customer exists, and `warnings` says what is missing.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /customers (the `CustomersCreate` operationId).
+	CustomersCreate(ctx context.Context, body CustomersCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomersDelete Archive a customer
+	//
+	// Archives the customer (F8): the row, its keys, its tenants and its GitLab
+	// group stay. Archiving an archived customer succeeds and changes nothing.
+	//
+	// Corresponds with DELETE /customers/{customer_id} (the `CustomersDelete` operationId).
+	CustomersDelete(ctx context.Context, customerId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomersGet One customer
+	//
+	// Corresponds with GET /customers/{customer_id} (the `CustomersGet` operationId).
+	CustomersGet(ctx context.Context, customerId string, params *CustomersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomersUpdateWithBody Change a customer
+	//
+	// Only the fields in the body change. `customer_index`, `short_name`,
+	// `gitlab_group` and `edition` are frozen.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+	CustomersUpdateWithBody(ctx context.Context, customerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomersUpdate Change a customer
+	//
+	// Only the fields in the body change. `customer_index`, `short_name`,
+	// `gitlab_group` and `edition` are frozen.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+	CustomersUpdate(ctx context.Context, customerId string, body CustomersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// MetaGet API and platform facts
 	//
 	// Corresponds with GET /meta (the `MetaGet` operationId).
@@ -351,10 +949,224 @@ type ClientInterface interface {
 	// Corresponds with GET /operations/{operation_id} (the `OperationsGet` operationId).
 	OperationsGet(ctx context.Context, operationId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// TenantsList List tenants
+	//
+	// Corresponds with GET /tenants (the `TenantsList` operationId).
+	TenantsList(ctx context.Context, params *TenantsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantsCreateWithBody Register a tenant
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /tenants (the `TenantsCreate` operationId).
+	TenantsCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantsCreate Register a tenant
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /tenants (the `TenantsCreate` operationId).
+	TenantsCreate(ctx context.Context, body TenantsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantsDelete Delete an empty tenant
+	//
+	// Deletes the tenant only when nothing but memberships hangs off it — no
+	// project of any status, no contract, no helpdesk record. Its memberships go
+	// with it, and its Keycloak /tenants/<slug> groups are removed.
+	//
+	// Corresponds with DELETE /tenants/{tenant_id} (the `TenantsDelete` operationId).
+	TenantsDelete(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantsGet One tenant
+	//
+	// Corresponds with GET /tenants/{tenant_id} (the `TenantsGet` operationId).
+	TenantsGet(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantsUpdateWithBody Change a tenant
+	//
+	// Only the fields in the body change. `customer_id` and `slug` are frozen.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+	TenantsUpdateWithBody(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantsUpdate Change a tenant
+	//
+	// Only the fields in the body change. `customer_id` and `slug` are frozen.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+	TenantsUpdate(ctx context.Context, tenantId string, body TenantsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantMembershipsList A tenant's memberships
+	//
+	// Corresponds with GET /tenants/{tenant_id}/memberships (the `TenantMembershipsList` operationId).
+	TenantMembershipsList(ctx context.Context, tenantId string, params *TenantMembershipsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantMembershipsDelete Remove a member
+	//
+	// Corresponds with DELETE /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsDelete` operationId).
+	TenantMembershipsDelete(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantMembershipsGet One membership
+	//
+	// Corresponds with GET /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsGet` operationId).
+	TenantMembershipsGet(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantMembershipsPutWithBody Add a member or change their role
+	//
+	// 201 when the membership was created, 200 when an existing one was set.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
+	TenantMembershipsPutWithBody(ctx context.Context, tenantId string, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantMembershipsPut Add a member or change their role
+	//
+	// 201 when the membership was created, 200 when an existing one was set.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
+	TenantMembershipsPut(ctx context.Context, tenantId string, userId string, body TenantMembershipsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// WhoamiGet The calling principal
 	//
 	// Corresponds with GET /whoami (the `WhoamiGet` operationId).
 	WhoamiGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+// CustomersList List customers
+//
+// Corresponds with GET /customers (the `CustomersList` operationId).
+func (c *Client) CustomersList(ctx context.Context, params *CustomersListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomersListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomersCreateWithBody Register a customer
+//
+// Creates the customer and its primary tenant in one transaction, then
+// creates or adopts its GitLab group. A GitLab failure does not fail the
+// request: the customer exists, and `warnings` says what is missing.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /customers (the `CustomersCreate` operationId).
+func (c *Client) CustomersCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomersCreateRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomersCreate Register a customer
+//
+// Creates the customer and its primary tenant in one transaction, then
+// creates or adopts its GitLab group. A GitLab failure does not fail the
+// request: the customer exists, and `warnings` says what is missing.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /customers (the `CustomersCreate` operationId).
+func (c *Client) CustomersCreate(ctx context.Context, body CustomersCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomersCreateRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomersDelete Archive a customer
+//
+// Archives the customer (F8): the row, its keys, its tenants and its GitLab
+// group stay. Archiving an archived customer succeeds and changes nothing.
+//
+// Corresponds with DELETE /customers/{customer_id} (the `CustomersDelete` operationId).
+func (c *Client) CustomersDelete(ctx context.Context, customerId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomersDeleteRequest(c.Server, customerId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomersGet One customer
+//
+// Corresponds with GET /customers/{customer_id} (the `CustomersGet` operationId).
+func (c *Client) CustomersGet(ctx context.Context, customerId string, params *CustomersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomersGetRequest(c.Server, customerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomersUpdateWithBody Change a customer
+//
+// Only the fields in the body change. `customer_index`, `short_name`,
+// `gitlab_group` and `edition` are frozen.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+func (c *Client) CustomersUpdateWithBody(ctx context.Context, customerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomersUpdateRequestWithBody(c.Server, customerId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomersUpdate Change a customer
+//
+// Only the fields in the body change. `customer_index`, `short_name`,
+// `gitlab_group` and `edition` are frozen.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+func (c *Client) CustomersUpdate(ctx context.Context, customerId string, body CustomersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomersUpdateRequest(c.Server, customerId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 // MetaGet API and platform facts
@@ -387,6 +1199,210 @@ func (c *Client) OperationsGet(ctx context.Context, operationId string, reqEdito
 	return c.Client.Do(req)
 }
 
+// TenantsList List tenants
+//
+// Corresponds with GET /tenants (the `TenantsList` operationId).
+func (c *Client) TenantsList(ctx context.Context, params *TenantsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantsListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantsCreateWithBody Register a tenant
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /tenants (the `TenantsCreate` operationId).
+func (c *Client) TenantsCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantsCreateRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantsCreate Register a tenant
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /tenants (the `TenantsCreate` operationId).
+func (c *Client) TenantsCreate(ctx context.Context, body TenantsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantsCreateRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantsDelete Delete an empty tenant
+//
+// Deletes the tenant only when nothing but memberships hangs off it — no
+// project of any status, no contract, no helpdesk record. Its memberships go
+// with it, and its Keycloak /tenants/<slug> groups are removed.
+//
+// Corresponds with DELETE /tenants/{tenant_id} (the `TenantsDelete` operationId).
+func (c *Client) TenantsDelete(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantsDeleteRequest(c.Server, tenantId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantsGet One tenant
+//
+// Corresponds with GET /tenants/{tenant_id} (the `TenantsGet` operationId).
+func (c *Client) TenantsGet(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantsGetRequest(c.Server, tenantId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantsUpdateWithBody Change a tenant
+//
+// Only the fields in the body change. `customer_id` and `slug` are frozen.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+func (c *Client) TenantsUpdateWithBody(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantsUpdateRequestWithBody(c.Server, tenantId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantsUpdate Change a tenant
+//
+// Only the fields in the body change. `customer_id` and `slug` are frozen.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+func (c *Client) TenantsUpdate(ctx context.Context, tenantId string, body TenantsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantsUpdateRequest(c.Server, tenantId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantMembershipsList A tenant's memberships
+//
+// Corresponds with GET /tenants/{tenant_id}/memberships (the `TenantMembershipsList` operationId).
+func (c *Client) TenantMembershipsList(ctx context.Context, tenantId string, params *TenantMembershipsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantMembershipsListRequest(c.Server, tenantId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantMembershipsDelete Remove a member
+//
+// Corresponds with DELETE /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsDelete` operationId).
+func (c *Client) TenantMembershipsDelete(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantMembershipsDeleteRequest(c.Server, tenantId, userId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantMembershipsGet One membership
+//
+// Corresponds with GET /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsGet` operationId).
+func (c *Client) TenantMembershipsGet(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantMembershipsGetRequest(c.Server, tenantId, userId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantMembershipsPutWithBody Add a member or change their role
+//
+// 201 when the membership was created, 200 when an existing one was set.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
+func (c *Client) TenantMembershipsPutWithBody(ctx context.Context, tenantId string, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantMembershipsPutRequestWithBody(c.Server, tenantId, userId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantMembershipsPut Add a member or change their role
+//
+// 201 when the membership was created, 200 when an existing one was set.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
+func (c *Client) TenantMembershipsPut(ctx context.Context, tenantId string, userId string, body TenantMembershipsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantMembershipsPutRequest(c.Server, tenantId, userId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // WhoamiGet The calling principal
 //
 // Corresponds with GET /whoami (the `WhoamiGet` operationId).
@@ -400,6 +1416,290 @@ func (c *Client) WhoamiGet(ctx context.Context, reqEditors ...RequestEditorFn) (
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+// NewCustomersListRequest constructs an http.Request for the CustomersList method
+func NewCustomersListRequest(server string, params *CustomersListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/customers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ShortName != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "short_name", *params.ShortName, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.GitlabGroup != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "gitlab_group", *params.GitlabGroup, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCustomersCreateRequest calls the generic CustomersCreate builder with application/json body
+func NewCustomersCreateRequest(server string, body CustomersCreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCustomersCreateRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCustomersCreateRequestWithBody constructs an http.Request for the CustomersCreate method, with any body, and a specified content type
+func NewCustomersCreateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/customers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCustomersDeleteRequest constructs an http.Request for the CustomersDelete method
+func NewCustomersDeleteRequest(server string, customerId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/customers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCustomersGetRequest constructs an http.Request for the CustomersGet method
+func NewCustomersGetRequest(server string, customerId string, params *CustomersGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/customers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Include != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include", *params.Include, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCustomersUpdateRequest calls the generic CustomersUpdate builder with application/json body
+func NewCustomersUpdateRequest(server string, customerId string, body CustomersUpdateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCustomersUpdateRequestWithBody(server, customerId, "application/json", bodyReader)
+}
+
+// NewCustomersUpdateRequestWithBody constructs an http.Request for the CustomersUpdate method, with any body, and a specified content type
+func NewCustomersUpdateRequestWithBody(server string, customerId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/customers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
 }
 
 // NewMetaGetRequest constructs an http.Request for the MetaGet method
@@ -459,6 +1759,460 @@ func NewOperationsGetRequest(server string, operationId string) (*http.Request, 
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewTenantsListRequest constructs an http.Request for the TenantsList method
+func NewTenantsListRequest(server string, params *TenantsListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.CustomerId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "customer_id", *params.CustomerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Slug != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "slug", *params.Slug, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTenantsCreateRequest calls the generic TenantsCreate builder with application/json body
+func NewTenantsCreateRequest(server string, body TenantsCreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewTenantsCreateRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewTenantsCreateRequestWithBody constructs an http.Request for the TenantsCreate method, with any body, and a specified content type
+func NewTenantsCreateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewTenantsDeleteRequest constructs an http.Request for the TenantsDelete method
+func NewTenantsDeleteRequest(server string, tenantId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTenantsGetRequest constructs an http.Request for the TenantsGet method
+func NewTenantsGetRequest(server string, tenantId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTenantsUpdateRequest calls the generic TenantsUpdate builder with application/json body
+func NewTenantsUpdateRequest(server string, tenantId string, body TenantsUpdateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewTenantsUpdateRequestWithBody(server, tenantId, "application/json", bodyReader)
+}
+
+// NewTenantsUpdateRequestWithBody constructs an http.Request for the TenantsUpdate method, with any body, and a specified content type
+func NewTenantsUpdateRequestWithBody(server string, tenantId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewTenantMembershipsListRequest constructs an http.Request for the TenantMembershipsList method
+func NewTenantMembershipsListRequest(server string, tenantId string, params *TenantMembershipsListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/memberships", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTenantMembershipsDeleteRequest constructs an http.Request for the TenantMembershipsDelete method
+func NewTenantMembershipsDeleteRequest(server string, tenantId string, userId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/memberships/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTenantMembershipsGetRequest constructs an http.Request for the TenantMembershipsGet method
+func NewTenantMembershipsGetRequest(server string, tenantId string, userId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/memberships/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTenantMembershipsPutRequest calls the generic TenantMembershipsPut builder with application/json body
+func NewTenantMembershipsPutRequest(server string, tenantId string, userId string, body TenantMembershipsPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewTenantMembershipsPutRequestWithBody(server, tenantId, userId, "application/json", bodyReader)
+}
+
+// NewTenantMembershipsPutRequestWithBody constructs an http.Request for the TenantMembershipsPut method, with any body, and a specified content type
+func NewTenantMembershipsPutRequestWithBody(server string, tenantId string, userId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/memberships/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -534,6 +2288,72 @@ func WithBaseURL(baseURL string) ClientOption {
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
 
+	// CustomersListWithResponse List customers
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /customers (the `CustomersList` operationId).
+	CustomersListWithResponse(ctx context.Context, params *CustomersListParams, reqEditors ...RequestEditorFn) (*CustomersListResponse, error)
+
+	// CustomersCreateWithBodyWithResponse Register a customer
+	//
+	// Creates the customer and its primary tenant in one transaction, then
+	// creates or adopts its GitLab group. A GitLab failure does not fail the
+	// request: the customer exists, and `warnings` says what is missing.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /customers (the `CustomersCreate` operationId).
+	CustomersCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CustomersCreateResponse, error)
+
+	// CustomersCreateWithResponse Register a customer
+	//
+	// Creates the customer and its primary tenant in one transaction, then
+	// creates or adopts its GitLab group. A GitLab failure does not fail the
+	// request: the customer exists, and `warnings` says what is missing.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /customers (the `CustomersCreate` operationId).
+	CustomersCreateWithResponse(ctx context.Context, body CustomersCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersCreateResponse, error)
+
+	// CustomersDeleteWithResponse Archive a customer
+	//
+	// Archives the customer (F8): the row, its keys, its tenants and its GitLab
+	// group stay. Archiving an archived customer succeeds and changes nothing.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /customers/{customer_id} (the `CustomersDelete` operationId).
+	CustomersDeleteWithResponse(ctx context.Context, customerId string, reqEditors ...RequestEditorFn) (*CustomersDeleteResponse, error)
+
+	// CustomersGetWithResponse One customer
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /customers/{customer_id} (the `CustomersGet` operationId).
+	CustomersGetWithResponse(ctx context.Context, customerId string, params *CustomersGetParams, reqEditors ...RequestEditorFn) (*CustomersGetResponse, error)
+
+	// CustomersUpdateWithBodyWithResponse Change a customer
+	//
+	// Only the fields in the body change. `customer_index`, `short_name`,
+	// `gitlab_group` and `edition` are frozen.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+	CustomersUpdateWithBodyWithResponse(ctx context.Context, customerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error)
+
+	// CustomersUpdateWithResponse Change a customer
+	//
+	// Only the fields in the body change. `customer_index`, `short_name`,
+	// `gitlab_group` and `edition` are frozen.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+	CustomersUpdateWithResponse(ctx context.Context, customerId string, body CustomersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error)
+
 	// MetaGetWithResponse API and platform facts
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -548,12 +2368,488 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /operations/{operation_id} (the `OperationsGet` operationId).
 	OperationsGetWithResponse(ctx context.Context, operationId string, reqEditors ...RequestEditorFn) (*OperationsGetResponse, error)
 
+	// TenantsListWithResponse List tenants
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /tenants (the `TenantsList` operationId).
+	TenantsListWithResponse(ctx context.Context, params *TenantsListParams, reqEditors ...RequestEditorFn) (*TenantsListResponse, error)
+
+	// TenantsCreateWithBodyWithResponse Register a tenant
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /tenants (the `TenantsCreate` operationId).
+	TenantsCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TenantsCreateResponse, error)
+
+	// TenantsCreateWithResponse Register a tenant
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /tenants (the `TenantsCreate` operationId).
+	TenantsCreateWithResponse(ctx context.Context, body TenantsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantsCreateResponse, error)
+
+	// TenantsDeleteWithResponse Delete an empty tenant
+	//
+	// Deletes the tenant only when nothing but memberships hangs off it — no
+	// project of any status, no contract, no helpdesk record. Its memberships go
+	// with it, and its Keycloak /tenants/<slug> groups are removed.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /tenants/{tenant_id} (the `TenantsDelete` operationId).
+	TenantsDeleteWithResponse(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*TenantsDeleteResponse, error)
+
+	// TenantsGetWithResponse One tenant
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /tenants/{tenant_id} (the `TenantsGet` operationId).
+	TenantsGetWithResponse(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*TenantsGetResponse, error)
+
+	// TenantsUpdateWithBodyWithResponse Change a tenant
+	//
+	// Only the fields in the body change. `customer_id` and `slug` are frozen.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+	TenantsUpdateWithBodyWithResponse(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TenantsUpdateResponse, error)
+
+	// TenantsUpdateWithResponse Change a tenant
+	//
+	// Only the fields in the body change. `customer_id` and `slug` are frozen.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+	TenantsUpdateWithResponse(ctx context.Context, tenantId string, body TenantsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantsUpdateResponse, error)
+
+	// TenantMembershipsListWithResponse A tenant's memberships
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /tenants/{tenant_id}/memberships (the `TenantMembershipsList` operationId).
+	TenantMembershipsListWithResponse(ctx context.Context, tenantId string, params *TenantMembershipsListParams, reqEditors ...RequestEditorFn) (*TenantMembershipsListResponse, error)
+
+	// TenantMembershipsDeleteWithResponse Remove a member
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsDelete` operationId).
+	TenantMembershipsDeleteWithResponse(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*TenantMembershipsDeleteResponse, error)
+
+	// TenantMembershipsGetWithResponse One membership
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsGet` operationId).
+	TenantMembershipsGetWithResponse(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*TenantMembershipsGetResponse, error)
+
+	// TenantMembershipsPutWithBodyWithResponse Add a member or change their role
+	//
+	// 201 when the membership was created, 200 when an existing one was set.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
+	TenantMembershipsPutWithBodyWithResponse(ctx context.Context, tenantId string, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TenantMembershipsPutResponse, error)
+
+	// TenantMembershipsPutWithResponse Add a member or change their role
+	//
+	// 201 when the membership was created, 200 when an existing one was set.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
+	TenantMembershipsPutWithResponse(ctx context.Context, tenantId string, userId string, body TenantMembershipsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantMembershipsPutResponse, error)
+
 	// WhoamiGetWithResponse The calling principal
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /whoami (the `WhoamiGet` operationId).
 	WhoamiGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*WhoamiGetResponse, error)
+}
+
+type CustomersListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CustomerPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CustomersListResponse) GetJSON200() *CustomerPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CustomersListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CustomersListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CustomersListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CustomersListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CustomersListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CustomersListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CustomersCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Customer
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CustomersCreateResponse) GetJSON201() *Customer {
+	return r.JSON201
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r CustomersCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r CustomersCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CustomersCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CustomersCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CustomersCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CustomersCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CustomersCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CustomersCreateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CustomersDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r CustomersDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CustomersDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r CustomersDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r CustomersDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r CustomersDeleteResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r CustomersDeleteResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CustomersDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CustomersDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CustomersDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CustomersDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CustomersDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CustomersDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CustomersGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Customer
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CustomersGetResponse) GetJSON200() *Customer {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r CustomersGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r CustomersGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CustomersGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CustomersGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CustomersGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CustomersGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CustomersGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CustomersGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type CustomersUpdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Customer
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CustomersUpdateResponse) GetJSON200() *Customer {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r CustomersUpdateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r CustomersUpdateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r CustomersUpdateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r CustomersUpdateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r CustomersUpdateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r CustomersUpdateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CustomersUpdateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CustomersUpdateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CustomersUpdateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CustomersUpdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CustomersUpdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CustomersUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
 }
 
 type MetaGetResponse struct {
@@ -563,6 +2859,8 @@ type MetaGetResponse struct {
 	JSON200 *Meta
 	// JSONDefault the response for an HTTP default `application/json` response
 	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
@@ -573,6 +2871,11 @@ func (r MetaGetResponse) GetJSON200() *Meta {
 // GetJSONDefault returns the response for an HTTP default `application/json` response
 func (r MetaGetResponse) GetJSONDefault() *Problem {
 	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r MetaGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
 }
 
 // GetBody returns the raw response body bytes
@@ -611,6 +2914,8 @@ type OperationsGetResponse struct {
 	JSON200 *Operation
 	// JSONDefault the response for an HTTP default `application/json` response
 	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
@@ -621,6 +2926,11 @@ func (r OperationsGetResponse) GetJSON200() *Operation {
 // GetJSONDefault returns the response for an HTTP default `application/json` response
 func (r OperationsGetResponse) GetJSONDefault() *Problem {
 	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r OperationsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
 }
 
 // GetBody returns the raw response body bytes
@@ -652,6 +2962,662 @@ func (r OperationsGetResponse) ContentType() string {
 	return ""
 }
 
+type TenantsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TenantPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantsListResponse) GetJSON200() *TenantPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type TenantsCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Tenant
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r TenantsCreateResponse) GetJSON201() *Tenant {
+	return r.JSON201
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r TenantsCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r TenantsCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r TenantsCreateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r TenantsCreateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantsCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantsCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantsCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantsCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantsCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantsCreateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type TenantsDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r TenantsDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r TenantsDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantsDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantsDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r TenantsDeleteResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r TenantsDeleteResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantsDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantsDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantsDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantsDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantsDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantsDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type TenantsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Tenant
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantsGetResponse) GetJSON200() *Tenant {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type TenantsUpdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Tenant
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantsUpdateResponse) GetJSON200() *Tenant {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantsUpdateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantsUpdateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r TenantsUpdateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r TenantsUpdateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantsUpdateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantsUpdateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantsUpdateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantsUpdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantsUpdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantsUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type TenantMembershipsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MembershipPage
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantMembershipsListResponse) GetJSON200() *MembershipPage {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantMembershipsListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantMembershipsListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantMembershipsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantMembershipsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantMembershipsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantMembershipsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantMembershipsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantMembershipsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type TenantMembershipsDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantMembershipsDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantMembershipsDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantMembershipsDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantMembershipsDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantMembershipsDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantMembershipsDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantMembershipsDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantMembershipsDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type TenantMembershipsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Membership
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantMembershipsGetResponse) GetJSON200() *Membership {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantMembershipsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantMembershipsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantMembershipsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantMembershipsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantMembershipsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantMembershipsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantMembershipsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantMembershipsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type TenantMembershipsPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Membership
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Membership
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantMembershipsPutResponse) GetJSON200() *Membership {
+	return r.JSON200
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r TenantMembershipsPutResponse) GetJSON201() *Membership {
+	return r.JSON201
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantMembershipsPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantMembershipsPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantMembershipsPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantMembershipsPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantMembershipsPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantMembershipsPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantMembershipsPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantMembershipsPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type WhoamiGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -659,6 +3625,8 @@ type WhoamiGetResponse struct {
 	JSON200 *Whoami
 	// JSONDefault the response for an HTTP default `application/json` response
 	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
@@ -669,6 +3637,11 @@ func (r WhoamiGetResponse) GetJSON200() *Whoami {
 // GetJSONDefault returns the response for an HTTP default `application/json` response
 func (r WhoamiGetResponse) GetJSONDefault() *Problem {
 	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r WhoamiGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
 }
 
 // GetBody returns the raw response body bytes
@@ -700,6 +3673,114 @@ func (r WhoamiGetResponse) ContentType() string {
 	return ""
 }
 
+// CustomersListWithResponse List customers
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /customers (the `CustomersList` operationId).
+func (c *ClientWithResponses) CustomersListWithResponse(ctx context.Context, params *CustomersListParams, reqEditors ...RequestEditorFn) (*CustomersListResponse, error) {
+	rsp, err := c.CustomersList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomersListResponse(rsp)
+}
+
+// CustomersCreateWithBodyWithResponse Register a customer
+//
+// Creates the customer and its primary tenant in one transaction, then
+// creates or adopts its GitLab group. A GitLab failure does not fail the
+// request: the customer exists, and `warnings` says what is missing.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /customers (the `CustomersCreate` operationId).
+func (c *ClientWithResponses) CustomersCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CustomersCreateResponse, error) {
+	rsp, err := c.CustomersCreateWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomersCreateResponse(rsp)
+}
+
+// CustomersCreateWithResponse Register a customer
+//
+// Creates the customer and its primary tenant in one transaction, then
+// creates or adopts its GitLab group. A GitLab failure does not fail the
+// request: the customer exists, and `warnings` says what is missing.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /customers (the `CustomersCreate` operationId).
+func (c *ClientWithResponses) CustomersCreateWithResponse(ctx context.Context, body CustomersCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersCreateResponse, error) {
+	rsp, err := c.CustomersCreate(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomersCreateResponse(rsp)
+}
+
+// CustomersDeleteWithResponse Archive a customer
+//
+// Archives the customer (F8): the row, its keys, its tenants and its GitLab
+// group stay. Archiving an archived customer succeeds and changes nothing.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /customers/{customer_id} (the `CustomersDelete` operationId).
+func (c *ClientWithResponses) CustomersDeleteWithResponse(ctx context.Context, customerId string, reqEditors ...RequestEditorFn) (*CustomersDeleteResponse, error) {
+	rsp, err := c.CustomersDelete(ctx, customerId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomersDeleteResponse(rsp)
+}
+
+// CustomersGetWithResponse One customer
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /customers/{customer_id} (the `CustomersGet` operationId).
+func (c *ClientWithResponses) CustomersGetWithResponse(ctx context.Context, customerId string, params *CustomersGetParams, reqEditors ...RequestEditorFn) (*CustomersGetResponse, error) {
+	rsp, err := c.CustomersGet(ctx, customerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomersGetResponse(rsp)
+}
+
+// CustomersUpdateWithBodyWithResponse Change a customer
+//
+// Only the fields in the body change. `customer_index`, `short_name`,
+// `gitlab_group` and `edition` are frozen.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+func (c *ClientWithResponses) CustomersUpdateWithBodyWithResponse(ctx context.Context, customerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error) {
+	rsp, err := c.CustomersUpdateWithBody(ctx, customerId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomersUpdateResponse(rsp)
+}
+
+// CustomersUpdateWithResponse Change a customer
+//
+// Only the fields in the body change. `customer_index`, `short_name`,
+// `gitlab_group` and `edition` are frozen.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
+func (c *ClientWithResponses) CustomersUpdateWithResponse(ctx context.Context, customerId string, body CustomersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error) {
+	rsp, err := c.CustomersUpdate(ctx, customerId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomersUpdateResponse(rsp)
+}
+
 // MetaGetWithResponse API and platform facts
 //
 // Returns a wrapper object for the known response body format(s).
@@ -726,6 +3807,174 @@ func (c *ClientWithResponses) OperationsGetWithResponse(ctx context.Context, ope
 	return ParseOperationsGetResponse(rsp)
 }
 
+// TenantsListWithResponse List tenants
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /tenants (the `TenantsList` operationId).
+func (c *ClientWithResponses) TenantsListWithResponse(ctx context.Context, params *TenantsListParams, reqEditors ...RequestEditorFn) (*TenantsListResponse, error) {
+	rsp, err := c.TenantsList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantsListResponse(rsp)
+}
+
+// TenantsCreateWithBodyWithResponse Register a tenant
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /tenants (the `TenantsCreate` operationId).
+func (c *ClientWithResponses) TenantsCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TenantsCreateResponse, error) {
+	rsp, err := c.TenantsCreateWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantsCreateResponse(rsp)
+}
+
+// TenantsCreateWithResponse Register a tenant
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /tenants (the `TenantsCreate` operationId).
+func (c *ClientWithResponses) TenantsCreateWithResponse(ctx context.Context, body TenantsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantsCreateResponse, error) {
+	rsp, err := c.TenantsCreate(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantsCreateResponse(rsp)
+}
+
+// TenantsDeleteWithResponse Delete an empty tenant
+//
+// Deletes the tenant only when nothing but memberships hangs off it — no
+// project of any status, no contract, no helpdesk record. Its memberships go
+// with it, and its Keycloak /tenants/<slug> groups are removed.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /tenants/{tenant_id} (the `TenantsDelete` operationId).
+func (c *ClientWithResponses) TenantsDeleteWithResponse(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*TenantsDeleteResponse, error) {
+	rsp, err := c.TenantsDelete(ctx, tenantId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantsDeleteResponse(rsp)
+}
+
+// TenantsGetWithResponse One tenant
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /tenants/{tenant_id} (the `TenantsGet` operationId).
+func (c *ClientWithResponses) TenantsGetWithResponse(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*TenantsGetResponse, error) {
+	rsp, err := c.TenantsGet(ctx, tenantId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantsGetResponse(rsp)
+}
+
+// TenantsUpdateWithBodyWithResponse Change a tenant
+//
+// Only the fields in the body change. `customer_id` and `slug` are frozen.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+func (c *ClientWithResponses) TenantsUpdateWithBodyWithResponse(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TenantsUpdateResponse, error) {
+	rsp, err := c.TenantsUpdateWithBody(ctx, tenantId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantsUpdateResponse(rsp)
+}
+
+// TenantsUpdateWithResponse Change a tenant
+//
+// Only the fields in the body change. `customer_id` and `slug` are frozen.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
+func (c *ClientWithResponses) TenantsUpdateWithResponse(ctx context.Context, tenantId string, body TenantsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantsUpdateResponse, error) {
+	rsp, err := c.TenantsUpdate(ctx, tenantId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantsUpdateResponse(rsp)
+}
+
+// TenantMembershipsListWithResponse A tenant's memberships
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /tenants/{tenant_id}/memberships (the `TenantMembershipsList` operationId).
+func (c *ClientWithResponses) TenantMembershipsListWithResponse(ctx context.Context, tenantId string, params *TenantMembershipsListParams, reqEditors ...RequestEditorFn) (*TenantMembershipsListResponse, error) {
+	rsp, err := c.TenantMembershipsList(ctx, tenantId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantMembershipsListResponse(rsp)
+}
+
+// TenantMembershipsDeleteWithResponse Remove a member
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsDelete` operationId).
+func (c *ClientWithResponses) TenantMembershipsDeleteWithResponse(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*TenantMembershipsDeleteResponse, error) {
+	rsp, err := c.TenantMembershipsDelete(ctx, tenantId, userId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantMembershipsDeleteResponse(rsp)
+}
+
+// TenantMembershipsGetWithResponse One membership
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsGet` operationId).
+func (c *ClientWithResponses) TenantMembershipsGetWithResponse(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*TenantMembershipsGetResponse, error) {
+	rsp, err := c.TenantMembershipsGet(ctx, tenantId, userId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantMembershipsGetResponse(rsp)
+}
+
+// TenantMembershipsPutWithBodyWithResponse Add a member or change their role
+//
+// 201 when the membership was created, 200 when an existing one was set.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
+func (c *ClientWithResponses) TenantMembershipsPutWithBodyWithResponse(ctx context.Context, tenantId string, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TenantMembershipsPutResponse, error) {
+	rsp, err := c.TenantMembershipsPutWithBody(ctx, tenantId, userId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantMembershipsPutResponse(rsp)
+}
+
+// TenantMembershipsPutWithResponse Add a member or change their role
+//
+// 201 when the membership was created, 200 when an existing one was set.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
+func (c *ClientWithResponses) TenantMembershipsPutWithResponse(ctx context.Context, tenantId string, userId string, body TenantMembershipsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantMembershipsPutResponse, error) {
+	rsp, err := c.TenantMembershipsPut(ctx, tenantId, userId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantMembershipsPutResponse(rsp)
+}
+
 // WhoamiGetWithResponse The calling principal
 //
 // Returns a wrapper object for the known response body format(s).
@@ -737,6 +3986,314 @@ func (c *ClientWithResponses) WhoamiGetWithResponse(ctx context.Context, reqEdit
 		return nil, err
 	}
 	return ParseWhoamiGetResponse(rsp)
+}
+
+// ParseCustomersListResponse parses an HTTP response from a CustomersListWithResponse call
+func ParseCustomersListResponse(rsp *http.Response) (*CustomersListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CustomersListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CustomerPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCustomersCreateResponse parses an HTTP response from a CustomersCreateWithResponse call
+func ParseCustomersCreateResponse(rsp *http.Response) (*CustomersCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CustomersCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Customer
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCustomersDeleteResponse parses an HTTP response from a CustomersDeleteWithResponse call
+func ParseCustomersDeleteResponse(rsp *http.Response) (*CustomersDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CustomersDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCustomersGetResponse parses an HTTP response from a CustomersGetWithResponse call
+func ParseCustomersGetResponse(rsp *http.Response) (*CustomersGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CustomersGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Customer
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCustomersUpdateResponse parses an HTTP response from a CustomersUpdateWithResponse call
+func ParseCustomersUpdateResponse(rsp *http.Response) (*CustomersUpdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CustomersUpdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Customer
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParseMetaGetResponse parses an HTTP response from a MetaGetWithResponse call
@@ -766,6 +4323,13 @@ func ParseMetaGetResponse(rsp *http.Response) (*MetaGetResponse, error) {
 			return nil, err
 		}
 		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
 
 	}
 
@@ -800,6 +4364,540 @@ func ParseOperationsGetResponse(rsp *http.Response) (*OperationsGetResponse, err
 		}
 		response.JSONDefault = &dest
 
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTenantsListResponse parses an HTTP response from a TenantsListWithResponse call
+func ParseTenantsListResponse(rsp *http.Response) (*TenantsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TenantPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTenantsCreateResponse parses an HTTP response from a TenantsCreateWithResponse call
+func ParseTenantsCreateResponse(rsp *http.Response) (*TenantsCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantsCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Tenant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTenantsDeleteResponse parses an HTTP response from a TenantsDeleteWithResponse call
+func ParseTenantsDeleteResponse(rsp *http.Response) (*TenantsDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantsDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTenantsGetResponse parses an HTTP response from a TenantsGetWithResponse call
+func ParseTenantsGetResponse(rsp *http.Response) (*TenantsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Tenant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTenantsUpdateResponse parses an HTTP response from a TenantsUpdateWithResponse call
+func ParseTenantsUpdateResponse(rsp *http.Response) (*TenantsUpdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantsUpdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Tenant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTenantMembershipsListResponse parses an HTTP response from a TenantMembershipsListWithResponse call
+func ParseTenantMembershipsListResponse(rsp *http.Response) (*TenantMembershipsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantMembershipsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MembershipPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTenantMembershipsDeleteResponse parses an HTTP response from a TenantMembershipsDeleteWithResponse call
+func ParseTenantMembershipsDeleteResponse(rsp *http.Response) (*TenantMembershipsDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantMembershipsDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTenantMembershipsGetResponse parses an HTTP response from a TenantMembershipsGetWithResponse call
+func ParseTenantMembershipsGetResponse(rsp *http.Response) (*TenantMembershipsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantMembershipsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Membership
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTenantMembershipsPutResponse parses an HTTP response from a TenantMembershipsPutWithResponse call
+func ParseTenantMembershipsPutResponse(rsp *http.Response) (*TenantMembershipsPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantMembershipsPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Membership
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Membership
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
 	}
 
 	return response, nil
@@ -832,6 +4930,13 @@ func ParseWhoamiGetResponse(rsp *http.Response) (*WhoamiGetResponse, error) {
 			return nil, err
 		}
 		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
 
 	}
 

@@ -1,147 +1,456 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "ATAILA Cloud Platform API",
-    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code`. POSTs accept an `Idempotency-Key` header. Limit: 600 requests per minute per token.",
-    "version": "1.0.0"
-  },
-  "paths": {
-    "/meta": {
-      "get": {
-        "tags": [
-          "meta"
-        ],
-        "summary": "API and platform facts",
-        "operationId": "meta_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Meta"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Problem details (RFC 9457)",
-            "content": {
-              "application/problem+json": {},
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/whoami": {
-      "get": {
-        "tags": [
-          "meta"
-        ],
-        "summary": "The calling principal",
-        "operationId": "whoami_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Whoami"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Problem details (RFC 9457)",
-            "content": {
-              "application/problem+json": {},
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/operations/{operation_id}": {
-      "get": {
-        "tags": [
-          "operations"
-        ],
-        "summary": "One operation",
-        "operationId": "operations_get",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "operation_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Operation Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Operation"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Problem details (RFC 9457)",
-            "content": {
-              "application/problem+json": {},
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
   "components": {
     "schemas": {
+      "ApiWarning": {
+        "description": "Something that did not go as planned, on a request that still succeeded\n— e.g. the customer was created but its GitLab group was not. A client must\nsurface these (the provider reports them as diagnostics).",
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ApiWarning",
+        "type": "object"
+      },
+      "Customer": {
+        "properties": {
+          "billing_tier": {
+            "enum": [
+              "INTERNAL",
+              "PAYING"
+            ],
+            "title": "Billing Tier",
+            "type": "string"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "customer_index": {
+            "title": "Customer Index",
+            "type": "integer"
+          },
+          "default_email_tier": {
+            "title": "Default Email Tier",
+            "type": "integer"
+          },
+          "edition": {
+            "enum": [
+              "sp",
+              "enterprise"
+            ],
+            "title": "Edition",
+            "type": "string"
+          },
+          "gitlab_group": {
+            "title": "Gitlab Group",
+            "type": "string"
+          },
+          "gitlab_status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GitLabGroupStatus"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Only with `?include=gitlab_status` on a read; null when GitLab could not be asked (a warning then says why)."
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "long_name": {
+            "title": "Long Name",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "primary_contact_email": {
+            "title": "Primary Contact Email",
+            "type": "string"
+          },
+          "primary_contact_name": {
+            "title": "Primary Contact Name",
+            "type": "string"
+          },
+          "primary_tenant_id": {
+            "title": "Primary Tenant Id",
+            "type": "string"
+          },
+          "short_name": {
+            "title": "Short Name",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "suspended",
+              "archived"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/ApiWarning"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "customer_index",
+          "short_name",
+          "long_name",
+          "gitlab_group",
+          "edition",
+          "primary_tenant_id",
+          "primary_contact_email",
+          "primary_contact_name",
+          "default_email_tier",
+          "billing_tier",
+          "status",
+          "created_at"
+        ],
+        "title": "Customer",
+        "type": "object"
+      },
+      "CustomerCreate": {
+        "additionalProperties": false,
+        "properties": {
+          "billing_tier": {
+            "default": "INTERNAL",
+            "enum": [
+              "INTERNAL",
+              "PAYING"
+            ],
+            "title": "Billing Tier",
+            "type": "string"
+          },
+          "customer_index": {
+            "anyOf": [
+              {
+                "maximum": 999.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Omit to have the server allocate the next free index.",
+            "title": "Customer Index"
+          },
+          "default_email_tier": {
+            "default": 3,
+            "enum": [
+              1,
+              2,
+              3
+            ],
+            "title": "Default Email Tier",
+            "type": "integer"
+          },
+          "edition": {
+            "default": "sp",
+            "enum": [
+              "sp",
+              "enterprise"
+            ],
+            "title": "Edition",
+            "type": "string"
+          },
+          "gitlab_group": {
+            "description": "^[a-z][a-z0-9-]{1,30}$ — also the primary tenant's slug.",
+            "title": "Gitlab Group",
+            "type": "string"
+          },
+          "long_name": {
+            "maxLength": 80,
+            "minLength": 3,
+            "title": "Long Name",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "primary_contact_email": {
+            "format": "email",
+            "title": "Primary Contact Email",
+            "type": "string"
+          },
+          "primary_contact_name": {
+            "maxLength": 80,
+            "minLength": 2,
+            "title": "Primary Contact Name",
+            "type": "string"
+          },
+          "short_name": {
+            "description": "^[A-Z][A-Z0-9]{1,15}$",
+            "title": "Short Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "short_name",
+          "long_name",
+          "gitlab_group",
+          "primary_contact_email",
+          "primary_contact_name"
+        ],
+        "title": "CustomerCreate",
+        "type": "object"
+      },
+      "CustomerPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Customer"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "CustomerPage",
+        "type": "object"
+      },
+      "CustomerPatch": {
+        "additionalProperties": false,
+        "description": "Only the fields present are changed. ``archived`` is not a settable\nstatus: archiving is ``DELETE /customers/{id}``.",
+        "properties": {
+          "billing_tier": {
+            "anyOf": [
+              {
+                "enum": [
+                  "INTERNAL",
+                  "PAYING"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Billing Tier"
+          },
+          "customer_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Frozen.",
+            "title": "Customer Index"
+          },
+          "default_email_tier": {
+            "anyOf": [
+              {
+                "enum": [
+                  1,
+                  2,
+                  3
+                ],
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default Email Tier"
+          },
+          "edition": {
+            "anyOf": [
+              {
+                "enum": [
+                  "sp",
+                  "enterprise"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Frozen.",
+            "title": "Edition"
+          },
+          "gitlab_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Frozen.",
+            "title": "Gitlab Group"
+          },
+          "long_name": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Long Name"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "primary_contact_email": {
+            "anyOf": [
+              {
+                "format": "email",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Contact Email"
+          },
+          "primary_contact_name": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "minLength": 2,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Contact Name"
+          },
+          "short_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Frozen.",
+            "title": "Short Name"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "active",
+                  "suspended"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          }
+        },
+        "title": "CustomerPatch",
+        "type": "object"
+      },
+      "GitLabGroupStatus": {
+        "description": "The customer's top-level GitLab group as GitLab reports it right now.",
+        "properties": {
+          "exists": {
+            "title": "Exists",
+            "type": "boolean"
+          },
+          "full_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Full Path"
+          },
+          "web_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Web Url"
+          }
+        },
+        "required": [
+          "exists"
+        ],
+        "title": "GitLabGroupStatus",
+        "type": "object"
+      },
       "LicenceSummary": {
         "properties": {
-          "state": {
-            "type": "string",
-            "title": "State"
-          },
-          "state_reason": {
-            "type": "string",
-            "title": "State Reason",
-            "default": ""
-          },
           "days_remaining": {
             "anyOf": [
               {
@@ -152,98 +461,25 @@
               }
             ],
             "title": "Days Remaining"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "state_reason": {
+            "default": "",
+            "title": "State Reason",
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "state"
         ],
-        "title": "LicenceSummary"
+        "title": "LicenceSummary",
+        "type": "object"
       },
-      "Meta": {
+      "Membership": {
         "properties": {
-          "api_version": {
-            "type": "string",
-            "title": "Api Version"
-          },
-          "platform_version": {
-            "type": "string",
-            "title": "Platform Version"
-          },
-          "tier": {
-            "type": "string",
-            "title": "Tier",
-            "default": ""
-          },
-          "tenancy_mode": {
-            "type": "string",
-            "title": "Tenancy Mode",
-            "default": ""
-          },
-          "modules": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Modules",
-            "default": []
-          },
-          "licence": {
-            "$ref": "#/components/schemas/LicenceSummary"
-          }
-        },
-        "type": "object",
-        "required": [
-          "api_version",
-          "platform_version",
-          "licence"
-        ],
-        "title": "Meta"
-      },
-      "Operation": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "kind": {
-            "type": "string",
-            "title": "Kind"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "pending",
-              "running",
-              "awaiting_approval",
-              "awaiting_operator",
-              "succeeded",
-              "failed"
-            ],
-            "title": "Status"
-          },
-          "resource_type": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resource Type"
-          },
-          "resource_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resource Id"
-          },
           "created_at": {
             "anyOf": [
               {
@@ -255,18 +491,44 @@
             ],
             "title": "Created At"
           },
-          "updated_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
+          "role": {
+            "enum": [
+              "owner",
+              "admin",
+              "developer",
+              "member",
+              "viewer"
             ],
-            "title": "Updated At"
+            "title": "Role",
+            "type": "string"
           },
-          "message": {
+          "tenant_id": {
+            "title": "Tenant Id",
+            "type": "string"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tenant_id",
+          "user_id",
+          "role"
+        ],
+        "title": "Membership",
+        "type": "object"
+      },
+      "MembershipPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Membership"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
             "anyOf": [
               {
                 "type": "string"
@@ -275,7 +537,87 @@
                 "type": "null"
               }
             ],
-            "title": "Message"
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "MembershipPage",
+        "type": "object"
+      },
+      "MembershipPut": {
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "enum": [
+              "owner",
+              "admin",
+              "member",
+              "viewer"
+            ],
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role"
+        ],
+        "title": "MembershipPut",
+        "type": "object"
+      },
+      "Meta": {
+        "properties": {
+          "api_version": {
+            "title": "Api Version",
+            "type": "string"
+          },
+          "licence": {
+            "$ref": "#/components/schemas/LicenceSummary"
+          },
+          "modules": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Modules",
+            "type": "array"
+          },
+          "platform_version": {
+            "title": "Platform Version",
+            "type": "string"
+          },
+          "tenancy_mode": {
+            "default": "",
+            "title": "Tenancy Mode",
+            "type": "string"
+          },
+          "tier": {
+            "default": "",
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "api_version",
+          "platform_version",
+          "licence"
+        ],
+        "title": "Meta",
+        "type": "object"
+      },
+      "Operation": {
+        "properties": {
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
           },
           "error": {
             "anyOf": [
@@ -288,29 +630,87 @@
               }
             ],
             "title": "Error"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "resource_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource Id"
+          },
+          "resource_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource Type"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "running",
+              "awaiting_approval",
+              "awaiting_operator",
+              "succeeded",
+              "failed"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
           }
         },
-        "type": "object",
         "required": [
           "id",
           "kind",
           "status"
         ],
-        "title": "Operation"
+        "title": "Operation",
+        "type": "object"
       },
       "Problem": {
+        "additionalProperties": true,
+        "description": "The OpenAPI shape of an error. Extra members may appear (for example the\nlicence refusal's ``state``/``remedy`` or a validation ``errors`` list).",
         "properties": {
-          "type": {
-            "type": "string",
-            "title": "Type"
-          },
-          "title": {
-            "type": "string",
-            "title": "Title"
-          },
-          "status": {
-            "type": "integer",
-            "title": "Status"
+          "code": {
+            "title": "Code",
+            "type": "string"
           },
           "detail": {
             "anyOf": [
@@ -322,10 +722,6 @@
               }
             ],
             "title": "Detail"
-          },
-          "code": {
-            "type": "string",
-            "title": "Code"
           },
           "instance": {
             "anyOf": [
@@ -348,10 +744,20 @@
               }
             ],
             "title": "Request Id"
+          },
+          "status": {
+            "title": "Status",
+            "type": "integer"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
           }
         },
-        "additionalProperties": true,
-        "type": "object",
         "required": [
           "type",
           "title",
@@ -359,23 +765,259 @@
           "code"
         ],
         "title": "Problem",
-        "description": "The OpenAPI shape of an error. Extra members may appear (for example the\nlicence refusal's ``state``/``remedy`` or a validation ``errors`` list)."
+        "type": "object"
+      },
+      "Tenant": {
+        "properties": {
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null only for a legacy tenant that no customer owns.",
+            "title": "Customer Id"
+          },
+          "default_router_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default Router Id"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "is_primary": {
+            "description": "The customer's primary tenant; it can never be deleted.",
+            "title": "Is Primary",
+            "type": "boolean"
+          },
+          "member_count": {
+            "title": "Member Count",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "project_count": {
+            "title": "Project Count",
+            "type": "integer"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "required": [
+          "id",
+          "customer_id",
+          "slug",
+          "name",
+          "is_primary",
+          "project_count",
+          "member_count"
+        ],
+        "title": "Tenant",
+        "type": "object"
+      },
+      "TenantCreate": {
+        "additionalProperties": false,
+        "properties": {
+          "customer_id": {
+            "pattern": "^[1-9][0-9]{0,8}$",
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "default_router_id": {
+            "anyOf": [
+              {
+                "pattern": "^[1-9][0-9]{0,8}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default Router Id"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "name": {
+            "maxLength": 120,
+            "minLength": 2,
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "description": "Lowercase, 2-30 characters; frozen after create.",
+            "pattern": "^[a-z][a-z0-9-]{1,29}$",
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "customer_id",
+          "name",
+          "slug"
+        ],
+        "title": "TenantCreate",
+        "type": "object"
+      },
+      "TenantPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Tenant"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "TenantPage",
+        "type": "object"
+      },
+      "TenantPatch": {
+        "additionalProperties": false,
+        "description": "Only the fields present are changed; ``description: null`` clears it,\nan omitted description is left alone.",
+        "properties": {
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Frozen.",
+            "title": "Customer Id"
+          },
+          "default_router_id": {
+            "anyOf": [
+              {
+                "pattern": "^[1-9][0-9]{0,8}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "null clears it.",
+            "title": "Default Router Id"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 2,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "slug": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Frozen.",
+            "title": "Slug"
+          }
+        },
+        "title": "TenantPatch",
+        "type": "object"
       },
       "Whoami": {
         "properties": {
-          "principal": {
-            "$ref": "#/components/schemas/WhoamiPrincipal"
-          },
           "auth_kind": {
-            "type": "string",
-            "title": "Auth Kind"
-          },
-          "scopes": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Scopes"
+            "title": "Auth Kind",
+            "type": "string"
           },
           "expires_at": {
             "anyOf": [
@@ -388,6 +1030,16 @@
             ],
             "title": "Expires At"
           },
+          "principal": {
+            "$ref": "#/components/schemas/WhoamiPrincipal"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Scopes",
+            "type": "array"
+          },
           "token": {
             "anyOf": [
               {
@@ -399,69 +1051,68 @@
             ]
           }
         },
-        "type": "object",
         "required": [
           "principal",
           "auth_kind",
           "scopes"
         ],
-        "title": "Whoami"
+        "title": "Whoami",
+        "type": "object"
       },
       "WhoamiPrincipal": {
         "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
           "email": {
-            "type": "string",
-            "title": "Email"
+            "title": "Email",
+            "type": "string"
           },
-          "name": {
-            "type": "string",
-            "title": "Name"
+          "id": {
+            "title": "Id",
+            "type": "string"
           },
           "kind": {
-            "type": "string",
-            "title": "Kind"
+            "title": "Kind",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "id",
           "email",
           "name",
           "kind"
         ],
-        "title": "WhoamiPrincipal"
+        "title": "WhoamiPrincipal",
+        "type": "object"
       },
       "WhoamiToken": {
         "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "prefix": {
-            "type": "string",
-            "title": "Prefix"
+          "allow_destroy": {
+            "title": "Allow Destroy",
+            "type": "boolean"
           },
           "granted_scopes": {
             "items": {
               "type": "string"
             },
-            "type": "array",
-            "title": "Granted Scopes"
+            "title": "Granted Scopes",
+            "type": "array"
           },
-          "allow_destroy": {
-            "type": "boolean",
-            "title": "Allow Destroy"
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "prefix": {
+            "title": "Prefix",
+            "type": "string"
           }
         },
-        "type": "object",
         "required": [
           "id",
           "name",
@@ -469,66 +1120,1462 @@
           "granted_scopes",
           "allow_destroy"
         ],
-        "title": "WhoamiToken"
+        "title": "WhoamiToken",
+        "type": "object"
       }
     },
     "securitySchemes": {
       "bearerAuth": {
-        "type": "http",
+        "bearerFormat": "ataila_pat_… | ataila_sat_…",
         "description": "An ATAILA API token (personal `ataila_pat_…` or service account `ataila_sat_…`). A portal session JWT is accepted as well.",
         "scheme": "bearer",
-        "bearerFormat": "ataila_pat_… | ataila_sat_…"
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code`. POSTs accept an `Idempotency-Key` header. Limit: 600 requests per minute per token.",
+    "title": "ATAILA Cloud Platform API",
+    "version": "1.0.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/customers": {
+      "get": {
+        "operationId": "customers_list",
+        "parameters": [
+          {
+            "description": "Exact short name.",
+            "in": "query",
+            "name": "short_name",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact short name.",
+              "title": "Short Name"
+            }
+          },
+          {
+            "description": "Exact GitLab group.",
+            "in": "query",
+            "name": "gitlab_group",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact GitLab group.",
+              "title": "Gitlab Group"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "active",
+                    "suspended",
+                    "archived"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List customers",
+        "tags": [
+          "customers"
+        ]
+      },
+      "post": {
+        "description": "Creates the customer and its primary tenant in one transaction, then\ncreates or adopts its GitLab group. A GitLab failure does not fail the\nrequest: the customer exists, and `warnings` says what is missing.",
+        "operationId": "customers_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A unique key is taken (`customer_index_taken`, `short_name_taken`, `gitlab_group_taken`), the group name collides with another customer's (`gitlab_group_collision`), or no index is left (`customer_index_exhausted`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Register a customer",
+        "tags": [
+          "customers"
+        ]
+      }
+    },
+    "/customers/{customer_id}": {
+      "delete": {
+        "description": "Archives the customer (F8): the row, its keys, its tenants and its GitLab\ngroup stay. Archiving an archived customer succeeds and changes nothing.",
+        "operationId": "customers_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "title": "Customer Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The token lacks `allow_destroy` (`destroy_not_allowed`) or the permission."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such customer (`customer_not_found`)."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Projects still exist under the customer, retired ones included (`customer_has_projects`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Archive a customer",
+        "tags": [
+          "customers"
+        ]
+      },
+      "get": {
+        "operationId": "customers_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "title": "Customer Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "`gitlab_status`: also ask GitLab for the customer's group. Null with a warning when GitLab cannot be reached.",
+            "in": "query",
+            "name": "include",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "const": "gitlab_status",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`gitlab_status`: also ask GitLab for the customer's group. Null with a warning when GitLab cannot be reached.",
+              "title": "Include"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such customer (`customer_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One customer",
+        "tags": [
+          "customers"
+        ]
+      },
+      "patch": {
+        "description": "Only the fields in the body change. `customer_index`, `short_name`,\n`gitlab_group` and `edition` are frozen.",
+        "operationId": "customers_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "title": "Customer Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such customer (`customer_not_found`)."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The customer is archived (`customer_archived`)."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A frozen key was changed (`immutable_field`), or the body is invalid."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Change a customer",
+        "tags": [
+          "customers"
+        ]
+      }
+    },
+    "/meta": {
+      "get": {
+        "operationId": "meta_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "API and platform facts",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/operations/{operation_id}": {
+      "get": {
+        "operationId": "operations_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "operation_id",
+            "required": true,
+            "schema": {
+              "title": "Operation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One operation",
+        "tags": [
+          "operations"
+        ]
+      }
+    },
+    "/tenants": {
+      "get": {
+        "operationId": "tenants_list",
+        "parameters": [
+          {
+            "description": "Only this customer's tenants.",
+            "in": "query",
+            "name": "customer_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^[1-9][0-9]{0,8}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only this customer's tenants.",
+              "title": "Customer Id"
+            }
+          },
+          {
+            "description": "Exact slug.",
+            "in": "query",
+            "name": "slug",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact slug.",
+              "title": "Slug"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List tenants",
+        "tags": [
+          "tenants"
+        ]
+      },
+      "post": {
+        "operationId": "tenants_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The slug is taken (`tenant_slug_taken`) or the customer is archived (`customer_archived`)."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such customer (`customer_not_found`) or router (`default_router_not_found`), or the body is invalid."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Register a tenant",
+        "tags": [
+          "tenants"
+        ]
+      }
+    },
+    "/tenants/{tenant_id}": {
+      "delete": {
+        "description": "Deletes the tenant only when nothing but memberships hangs off it — no\nproject of any status, no contract, no helpdesk record. Its memberships go\nwith it, and its Keycloak /tenants/<slug> groups are removed.",
+        "operationId": "tenants_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The token lacks `allow_destroy` (`destroy_not_allowed`) or the permission."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`)."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The tenant is a customer's primary tenant (`tenant_is_primary`) or is not empty: `tenant_has_projects`, `tenant_has_contracts`, `tenant_has_helpdesk_records`, `tenant_has_attributed_resources`. `blockers` counts each."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Delete an empty tenant",
+        "tags": [
+          "tenants"
+        ]
+      },
+      "get": {
+        "operationId": "tenants_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One tenant",
+        "tags": [
+          "tenants"
+        ]
+      },
+      "patch": {
+        "description": "Only the fields in the body change. `customer_id` and `slug` are frozen.",
+        "operationId": "tenants_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tenant"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`)."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A frozen key was changed (`immutable_field`), no such router (`default_router_not_found`), or the body is invalid."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Change a tenant",
+        "tags": [
+          "tenants"
+        ]
+      }
+    },
+    "/tenants/{tenant_id}/memberships": {
+      "get": {
+        "operationId": "tenant_memberships_list",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MembershipPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A tenant's memberships",
+        "tags": [
+          "tenants"
+        ]
+      }
+    },
+    "/tenants/{tenant_id}/memberships/{user_id}": {
+      "delete": {
+        "operationId": "tenant_memberships_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`) or membership (`membership_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Remove a member",
+        "tags": [
+          "tenants"
+        ]
+      },
+      "get": {
+        "operationId": "tenant_memberships_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Membership"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`) or membership (`membership_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One membership",
+        "tags": [
+          "tenants"
+        ]
+      },
+      "put": {
+        "description": "201 when the membership was created, 200 when an existing one was set.",
+        "operationId": "tenant_memberships_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MembershipPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Membership"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Membership"
+                }
+              }
+            },
+            "description": "The membership was created."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`) or user (`user_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Add a member or change their role",
+        "tags": [
+          "tenants"
+        ]
+      }
+    },
+    "/whoami": {
+      "get": {
+        "operationId": "whoami_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whoami"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "The calling principal",
+        "tags": [
+          "meta"
+        ]
       }
     }
   },
   "tags": [
     {
-      "name": "meta",
-      "description": "What this API and platform are, and who is calling."
+      "description": "What this API and platform are, and who is calling.",
+      "name": "meta"
     },
     {
-      "name": "operations",
-      "description": "Long-running work: poll until succeeded or failed."
+      "description": "Long-running work: poll until succeeded or failed.",
+      "name": "operations"
     },
     {
-      "name": "customers",
-      "description": "Customers (companies) on this platform."
+      "description": "Customers (companies) on this platform.",
+      "name": "customers"
     },
     {
-      "name": "tenants",
-      "description": "Tenants of a customer and their memberships."
+      "description": "Tenants of a customer and their memberships.",
+      "name": "tenants"
     },
     {
-      "name": "users",
-      "description": "Users, role grants and the permission catalog."
+      "description": "Users, role grants and the permission catalog.",
+      "name": "users"
     },
     {
-      "name": "projects",
-      "description": "Projects, provisioning and project members."
+      "description": "Projects, provisioning and project members.",
+      "name": "projects"
     },
     {
-      "name": "releases",
-      "description": "Release promotions, release state and the PROD lock."
+      "description": "Release promotions, release state and the PROD lock.",
+      "name": "releases"
     },
     {
-      "name": "ai-gateway",
-      "description": "AI gateway virtual keys and serving tiers."
+      "description": "AI gateway virtual keys and serving tiers.",
+      "name": "ai-gateway"
     },
     {
-      "name": "ai-models",
-      "description": "The AI model catalogue and node caches."
+      "description": "The AI model catalogue and node caches.",
+      "name": "ai-models"
     },
     {
-      "name": "ai-nodes",
-      "description": "AI Center nodes, DGX clusters and the launch catalogue (read-only)."
+      "description": "AI Center nodes, DGX clusters and the launch catalogue (read-only).",
+      "name": "ai-nodes"
     },
     {
-      "name": "licence",
-      "description": "This platform's licence."
+      "description": "This platform's licence.",
+      "name": "licence"
     },
     {
-      "name": "brand",
-      "description": "This platform's branding."
+      "description": "This platform's branding.",
+      "name": "brand"
     }
   ]
 }
