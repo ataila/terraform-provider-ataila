@@ -21,6 +21,10 @@ workflow:
 stages:
   - check
   - test
+  # After the acceptance matrix, not beside it: the in-process provider of the
+  # acceptance tests must start within the test framework's fixed two seconds,
+  # which a runner busy with provider builds and CLI runs can miss.
+  - cross-cli
   - build
   - release
 
@@ -118,6 +122,9 @@ acceptance:
         ACC_CLI_VERSION: ["1.6.0", "1.16.4"]
   script:
     - ensure_cli "$ACC_CLI" "$ACC_CLI_VERSION"
+    # Built before the tests start, so the link step never competes with them.
+    - export ATAILA_PROVIDER_DIR="$(mktemp -d)"
+    - go build -o "$ATAILA_PROVIDER_DIR/terraform-provider-ataila" .
     - export TF_ACC=1 TF_ACC_TERRAFORM_PATH="$CLI_PATH"
     - if [ "$ACC_CLI" = tofu ]; then export TF_ACC_PROVIDER_HOST=registry.opentofu.org; fi
     - go test ./internal/provider/ -run '^TestAcc' -count=1 -v -timeout 30m > acceptance.log 2>&1 || { cat acceptance.log; exit 1; }
@@ -143,7 +150,7 @@ acceptance:
 # `terraform state replace-provider`, then reads it without a diff. Run for
 # the oldest and for the newest supported pair.
 cross-cli-state:
-  stage: test
+  stage: cross-cli
   extends: .go
   parallel:
     matrix:
@@ -156,6 +163,8 @@ cross-cli-state:
     - export ATAILA_CROSS_CLI_TERRAFORM="$CLI_PATH"
     - ensure_cli tofu "$XCLI_TOFU"
     - export ATAILA_CROSS_CLI_TOFU="$CLI_PATH"
+    - export ATAILA_PROVIDER_DIR="$(mktemp -d)"
+    - go build -o "$ATAILA_PROVIDER_DIR/terraform-provider-ataila" .
     - go test ./internal/provider/ -run '^TestCrossCLIState$' -count=1 -v -timeout 10m > cross-cli.log 2>&1 || { cat cross-cli.log; exit 1; }
     - cat cross-cli.log
     # A run in which the check, or either order, silently skipped is a failure.

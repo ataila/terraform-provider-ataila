@@ -43,6 +43,9 @@ Follows the platform's revised `/api/v1` contract (still API 1.0.0, unpublished)
   is, and proves the switching rules above; the CI job requires both orders.
 - `TestAccTimestampRepresentation` rewrites the state's timestamps to another representation of the same
   instants and requires no diff and no inconsistent result.
+- CI: the cross-CLI jobs run in their own stage after the acceptance matrix, and every job builds the
+  provider binary before its tests start, so the in-process provider of the acceptance tests is not
+  starved of CPU (the test framework gives it two seconds to start).
 
 ## 0.2.0 (unreleased)
 

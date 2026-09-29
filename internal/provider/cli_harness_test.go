@@ -27,19 +27,29 @@ const (
 	tofuHost      = "registry.opentofu.org"
 )
 
-// buildProvider builds the provider binary into a new directory and returns
-// that directory.
+// envProviderDir names a directory holding a provider binary built from this
+// checkout; CI builds it before the tests start. Unset, the test builds one.
+const envProviderDir = "ATAILA_PROVIDER_DIR"
+
+// buildProvider returns a directory holding the provider binary: the one in
+// ATAILA_PROVIDER_DIR, or one it builds.
 func buildProvider(t *testing.T) string {
 	t.Helper()
+	name := "terraform-provider-ataila"
+	if runtime.GOOS == "windows" {
+		name += ".exe"
+	}
+	if dir := os.Getenv(envProviderDir); dir != "" {
+		if _, err := os.Stat(filepath.Join(dir, name)); err != nil {
+			t.Fatalf("%s=%s holds no %s: %v", envProviderDir, dir, name, err)
+		}
+		return dir
+	}
 	goBin, err := exec.LookPath("go")
 	if err != nil {
 		t.Fatalf("the go command is needed to build the provider: %v", err)
 	}
 	dir := t.TempDir()
-	name := "terraform-provider-ataila"
-	if runtime.GOOS == "windows" {
-		name += ".exe"
-	}
 	cmd := exec.Command(goBin, "build", "-o", filepath.Join(dir, name), ".")
 	cmd.Dir = filepath.Join("..", "..")
 	if out, err := cmd.CombinedOutput(); err != nil {
