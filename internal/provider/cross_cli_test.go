@@ -185,8 +185,10 @@ output "tenant_created_at" {
 `, description, user)
 }
 
-// crossProjectConfig adds a project, its provisioning and a member. The
-// primary domain is written in mixed case, which the platform lower-cases.
+// crossProjectConfig adds a project, its provisioning, a member, a release
+// promotion, its PROD data lock and an AI model. The primary domain is
+// written in mixed case, which the platform lower-cases, and a benchmark with
+// a trailing zero, which it drops.
 func crossProjectConfig(tenantID, user string) string {
 	return fmt.Sprintf(`
 resource "ataila_project" "p" {
@@ -210,6 +212,23 @@ resource "ataila_project_member" "m" {
 
 output "project_frontend" {
   value = ataila_project.p.urls.frontend
+}
+
+resource "ataila_release_promotion" "r" {
+  project_id = ataila_project.p.id
+  component  = "app-api"
+  target_env = "dev"
+  version    = "1.0.0"
+}
+
+resource "ataila_project_prod_lock" "l" {
+  project_id = ataila_project.p.id
+  locked     = true
+}
+
+resource "ataila_ai_model" "m" {
+  repo       = "example-lab/cross-model"
+  benchmarks = { score = "80.50" }
 }
 `, tenantID, user)
 }

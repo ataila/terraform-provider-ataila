@@ -320,7 +320,7 @@ func TestAccProjectResource_ValidateConfig(t *testing.T) {
 // ── provisioning ─────────────────────────────────────────────────────────────
 
 func fastPoll(t *testing.T) {
-	t.Cleanup(provider.SetProvisioningPollInterval(5 * time.Millisecond))
+	t.Cleanup(provider.SetPollInterval(5 * time.Millisecond))
 }
 
 // Provision to converged; a change of the project leaves a stage stale, the

@@ -1608,6 +1608,294 @@ func (e ProvisioningState) Valid() bool {
 	}
 }
 
+// Defines values for ReleaseOperationComponent.
+const (
+	ReleaseOperationComponentAppApi ReleaseOperationComponent = "app-api"
+	ReleaseOperationComponentWww    ReleaseOperationComponent = "www"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseOperationComponent enum.
+func (e ReleaseOperationComponent) Valid() bool {
+	switch e {
+	case ReleaseOperationComponentAppApi:
+		return true
+	case ReleaseOperationComponentWww:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleaseOperationOperation.
+const (
+	CopyData     ReleaseOperationOperation = "copy_data"
+	PromoteBuild ReleaseOperationOperation = "promote_build"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseOperationOperation enum.
+func (e ReleaseOperationOperation) Valid() bool {
+	switch e {
+	case CopyData:
+		return true
+	case PromoteBuild:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleaseOperationPortalStatus.
+const (
+	ReleaseOperationPortalStatusApproved  ReleaseOperationPortalStatus = "approved"
+	ReleaseOperationPortalStatusFailed    ReleaseOperationPortalStatus = "failed"
+	ReleaseOperationPortalStatusPending   ReleaseOperationPortalStatus = "pending"
+	ReleaseOperationPortalStatusRejected  ReleaseOperationPortalStatus = "rejected"
+	ReleaseOperationPortalStatusRunning   ReleaseOperationPortalStatus = "running"
+	ReleaseOperationPortalStatusSucceeded ReleaseOperationPortalStatus = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseOperationPortalStatus enum.
+func (e ReleaseOperationPortalStatus) Valid() bool {
+	switch e {
+	case ReleaseOperationPortalStatusApproved:
+		return true
+	case ReleaseOperationPortalStatusFailed:
+		return true
+	case ReleaseOperationPortalStatusPending:
+		return true
+	case ReleaseOperationPortalStatusRejected:
+		return true
+	case ReleaseOperationPortalStatusRunning:
+		return true
+	case ReleaseOperationPortalStatusSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleaseOperationRequestedVia.
+const (
+	Pat            ReleaseOperationRequestedVia = "pat"
+	ServiceAccount ReleaseOperationRequestedVia = "service_account"
+	Session        ReleaseOperationRequestedVia = "session"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseOperationRequestedVia enum.
+func (e ReleaseOperationRequestedVia) Valid() bool {
+	switch e {
+	case Pat:
+		return true
+	case ServiceAccount:
+		return true
+	case Session:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleaseOperationSourceEnv.
+const (
+	ReleaseOperationSourceEnvDev     ReleaseOperationSourceEnv = "dev"
+	ReleaseOperationSourceEnvProd    ReleaseOperationSourceEnv = "prod"
+	ReleaseOperationSourceEnvSandbox ReleaseOperationSourceEnv = "sandbox"
+	ReleaseOperationSourceEnvUat     ReleaseOperationSourceEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseOperationSourceEnv enum.
+func (e ReleaseOperationSourceEnv) Valid() bool {
+	switch e {
+	case ReleaseOperationSourceEnvDev:
+		return true
+	case ReleaseOperationSourceEnvProd:
+		return true
+	case ReleaseOperationSourceEnvSandbox:
+		return true
+	case ReleaseOperationSourceEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleaseOperationStatus.
+const (
+	ReleaseOperationStatusAwaitingApproval ReleaseOperationStatus = "awaiting_approval"
+	ReleaseOperationStatusFailed           ReleaseOperationStatus = "failed"
+	ReleaseOperationStatusPending          ReleaseOperationStatus = "pending"
+	ReleaseOperationStatusRunning          ReleaseOperationStatus = "running"
+	ReleaseOperationStatusSucceeded        ReleaseOperationStatus = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseOperationStatus enum.
+func (e ReleaseOperationStatus) Valid() bool {
+	switch e {
+	case ReleaseOperationStatusAwaitingApproval:
+		return true
+	case ReleaseOperationStatusFailed:
+		return true
+	case ReleaseOperationStatusPending:
+		return true
+	case ReleaseOperationStatusRunning:
+		return true
+	case ReleaseOperationStatusSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleaseOperationTargetEnv.
+const (
+	ReleaseOperationTargetEnvDev     ReleaseOperationTargetEnv = "dev"
+	ReleaseOperationTargetEnvProd    ReleaseOperationTargetEnv = "prod"
+	ReleaseOperationTargetEnvSandbox ReleaseOperationTargetEnv = "sandbox"
+	ReleaseOperationTargetEnvUat     ReleaseOperationTargetEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseOperationTargetEnv enum.
+func (e ReleaseOperationTargetEnv) Valid() bool {
+	switch e {
+	case ReleaseOperationTargetEnvDev:
+		return true
+	case ReleaseOperationTargetEnvProd:
+		return true
+	case ReleaseOperationTargetEnvSandbox:
+		return true
+	case ReleaseOperationTargetEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleasePromotionCreateComponent.
+const (
+	ReleasePromotionCreateComponentAppApi ReleasePromotionCreateComponent = "app-api"
+	ReleasePromotionCreateComponentWww    ReleasePromotionCreateComponent = "www"
+)
+
+// Valid indicates whether the value is a known member of the ReleasePromotionCreateComponent enum.
+func (e ReleasePromotionCreateComponent) Valid() bool {
+	switch e {
+	case ReleasePromotionCreateComponentAppApi:
+		return true
+	case ReleasePromotionCreateComponentWww:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleasePromotionCreateTargetEnv.
+const (
+	ReleasePromotionCreateTargetEnvDev  ReleasePromotionCreateTargetEnv = "dev"
+	ReleasePromotionCreateTargetEnvProd ReleasePromotionCreateTargetEnv = "prod"
+	ReleasePromotionCreateTargetEnvUat  ReleasePromotionCreateTargetEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the ReleasePromotionCreateTargetEnv enum.
+func (e ReleasePromotionCreateTargetEnv) Valid() bool {
+	switch e {
+	case ReleasePromotionCreateTargetEnvDev:
+		return true
+	case ReleasePromotionCreateTargetEnvProd:
+		return true
+	case ReleasePromotionCreateTargetEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleaseStateDeploymentBackend.
+const (
+	ReleaseStateDeploymentBackendK8s ReleaseStateDeploymentBackend = "k8s"
+	ReleaseStateDeploymentBackendVm  ReleaseStateDeploymentBackend = "vm"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseStateDeploymentBackend enum.
+func (e ReleaseStateDeploymentBackend) Valid() bool {
+	switch e {
+	case ReleaseStateDeploymentBackendK8s:
+		return true
+	case ReleaseStateDeploymentBackendVm:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReportedVersionComponent.
+const (
+	ReportedVersionComponentAppApi   ReportedVersionComponent = "app-api"
+	ReportedVersionComponentDatabase ReportedVersionComponent = "database"
+	ReportedVersionComponentWww      ReportedVersionComponent = "www"
+)
+
+// Valid indicates whether the value is a known member of the ReportedVersionComponent enum.
+func (e ReportedVersionComponent) Valid() bool {
+	switch e {
+	case ReportedVersionComponentAppApi:
+		return true
+	case ReportedVersionComponentDatabase:
+		return true
+	case ReportedVersionComponentWww:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReportedVersionEnv.
+const (
+	ReportedVersionEnvDev     ReportedVersionEnv = "dev"
+	ReportedVersionEnvProd    ReportedVersionEnv = "prod"
+	ReportedVersionEnvSandbox ReportedVersionEnv = "sandbox"
+	ReportedVersionEnvUat     ReportedVersionEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the ReportedVersionEnv enum.
+func (e ReportedVersionEnv) Valid() bool {
+	switch e {
+	case ReportedVersionEnvDev:
+		return true
+	case ReportedVersionEnvProd:
+		return true
+	case ReportedVersionEnvSandbox:
+		return true
+	case ReportedVersionEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReportedVersionSourceEnv.
+const (
+	ReportedVersionSourceEnvDev     ReportedVersionSourceEnv = "dev"
+	ReportedVersionSourceEnvProd    ReportedVersionSourceEnv = "prod"
+	ReportedVersionSourceEnvSandbox ReportedVersionSourceEnv = "sandbox"
+	ReportedVersionSourceEnvUat     ReportedVersionSourceEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the ReportedVersionSourceEnv enum.
+func (e ReportedVersionSourceEnv) Valid() bool {
+	switch e {
+	case ReportedVersionSourceEnvDev:
+		return true
+	case ReportedVersionSourceEnvProd:
+		return true
+	case ReportedVersionSourceEnvSandbox:
+		return true
+	case ReportedVersionSourceEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ServingTierSource.
 const (
 	Auto       ServingTierSource = "auto"
@@ -1713,6 +2001,24 @@ func (e StageStateStatus) Valid() bool {
 	case StageStateStatusRunning:
 		return true
 	case StageStateStatusSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for StoreRunDispatchMode.
+const (
+	StoreRunDispatchModeDryrun StoreRunDispatchMode = "dryrun"
+	StoreRunDispatchModeLive   StoreRunDispatchMode = "live"
+)
+
+// Valid indicates whether the value is a known member of the StoreRunDispatchMode enum.
+func (e StoreRunDispatchMode) Valid() bool {
+	switch e {
+	case StoreRunDispatchModeDryrun:
+		return true
+	case StoreRunDispatchModeLive:
 		return true
 	default:
 		return false
@@ -2034,6 +2340,75 @@ func (e ProjectsListParamsStatus) Valid() bool {
 	}
 }
 
+// Defines values for ReleaseOperationsListParamsStatus.
+const (
+	ReleaseOperationsListParamsStatusAwaitingApproval ReleaseOperationsListParamsStatus = "awaiting_approval"
+	ReleaseOperationsListParamsStatusFailed           ReleaseOperationsListParamsStatus = "failed"
+	ReleaseOperationsListParamsStatusPending          ReleaseOperationsListParamsStatus = "pending"
+	ReleaseOperationsListParamsStatusRunning          ReleaseOperationsListParamsStatus = "running"
+	ReleaseOperationsListParamsStatusSucceeded        ReleaseOperationsListParamsStatus = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseOperationsListParamsStatus enum.
+func (e ReleaseOperationsListParamsStatus) Valid() bool {
+	switch e {
+	case ReleaseOperationsListParamsStatusAwaitingApproval:
+		return true
+	case ReleaseOperationsListParamsStatusFailed:
+		return true
+	case ReleaseOperationsListParamsStatusPending:
+		return true
+	case ReleaseOperationsListParamsStatusRunning:
+		return true
+	case ReleaseOperationsListParamsStatusSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleaseOperationsListParamsTargetEnv.
+const (
+	ReleaseOperationsListParamsTargetEnvDev     ReleaseOperationsListParamsTargetEnv = "dev"
+	ReleaseOperationsListParamsTargetEnvProd    ReleaseOperationsListParamsTargetEnv = "prod"
+	ReleaseOperationsListParamsTargetEnvSandbox ReleaseOperationsListParamsTargetEnv = "sandbox"
+	ReleaseOperationsListParamsTargetEnvUat     ReleaseOperationsListParamsTargetEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseOperationsListParamsTargetEnv enum.
+func (e ReleaseOperationsListParamsTargetEnv) Valid() bool {
+	switch e {
+	case ReleaseOperationsListParamsTargetEnvDev:
+		return true
+	case ReleaseOperationsListParamsTargetEnvProd:
+		return true
+	case ReleaseOperationsListParamsTargetEnvSandbox:
+		return true
+	case ReleaseOperationsListParamsTargetEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ReleaseOperationsListParamsComponent.
+const (
+	ReleaseOperationsListParamsComponentAppApi ReleaseOperationsListParamsComponent = "app-api"
+	ReleaseOperationsListParamsComponentWww    ReleaseOperationsListParamsComponent = "www"
+)
+
+// Valid indicates whether the value is a known member of the ReleaseOperationsListParamsComponent enum.
+func (e ReleaseOperationsListParamsComponent) Valid() bool {
+	switch e {
+	case ReleaseOperationsListParamsComponentAppApi:
+		return true
+	case ReleaseOperationsListParamsComponentWww:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for UsersListParamsKind.
 const (
 	UsersListParamsKindAll     UsersListParamsKind = "all"
@@ -2062,6 +2437,256 @@ type AiGateway struct {
 
 	// Tiers Every serving tier name in the catalogue, sorted.
 	Tiers []string `json:"tiers"`
+}
+
+// AiModel defines model for AiModel.
+type AiModel struct {
+	Architecture  *string                                             `json:"architecture,omitempty"`
+	Benchmarks    *map[string]AiModel_Benchmarks_AdditionalProperties `json:"benchmarks,omitempty"`
+	Category      *string                                             `json:"category,omitempty"`
+	ContextWindow *string                                             `json:"context_window,omitempty"`
+	CreatedAt     time.Time                                           `json:"created_at"`
+	Description   *string                                             `json:"description,omitempty"`
+
+	// DgxRecipe The spark-vllm recipe a DGX cluster serves it with, if any.
+	DgxRecipe     *string `json:"dgx_recipe"`
+	DisplayName   string  `json:"display_name"`
+	FrontierEquiv *string `json:"frontier_equiv,omitempty"`
+
+	// Gated The Hugging Face repo needs an accept-click to pull.
+	Gated       bool    `json:"gated"`
+	GatewayTier *string `json:"gateway_tier,omitempty"`
+	Id          string  `json:"id"`
+	License     *string `json:"license,omitempty"`
+
+	// Location Read-only: set by the store actions (pull, node cache, purge), never by a client. `synology` (central store), `local` (node caches only), `both`, or null.
+	Location     *string `json:"location"`
+	MinTarget    *string `json:"min_target,omitempty"`
+	ModelCardUrl *string `json:"model_card_url,omitempty"`
+
+	// NodeCaches The node caches (see /node-caches).
+	NodeCaches []NodeCacheRef `json:"node_caches"`
+	Notes      *string        `json:"notes,omitempty"`
+
+	// OfflineReady Read-only: set by the store actions (pull, node cache, purge), never by a client. A node holds a cached copy.
+	OfflineReady bool    `json:"offline_ready"`
+	Org          *string `json:"org,omitempty"`
+
+	// ParamCountB Parameters in billions, sortable.
+	ParamCountB *float32 `json:"param_count_b,omitempty"`
+
+	// Params Human form, e.g. "480B (35B active)".
+	Params    *string `json:"params,omitempty"`
+	Published *string `json:"published,omitempty"`
+	Quant     *string `json:"quant,omitempty"`
+
+	// Repo A Hugging Face repo id `org/name`: each part starts with a letter or digit and holds only letters, digits, `.`, `_` and `-` (no `..`), at most 96 characters. Frozen after create.
+	Repo        string   `json:"repo"`
+	ServingNode *string  `json:"serving_node,omitempty"`
+	SizeGb      *float32 `json:"size_gb,omitempty"`
+
+	// Status Read-only: set by the store actions (pull, node cache, purge), never by a client. `planned`, `pulling`, `owned` or `serving`.
+	Status     string  `json:"status"`
+	StrongAxis *string `json:"strong_axis,omitempty"`
+	Summary    *string `json:"summary,omitempty"`
+
+	// SynologyPath Where the central copy is; null without one.
+	SynologyPath *string `json:"synology_path"`
+
+	// SynologyVolume Read-only: set by the store actions (pull, node cache, purge), never by a client. The central-store share holding the weights; null while there is no central copy.
+	SynologyVolume *string   `json:"synology_volume"`
+	UpdatedAt      time.Time `json:"updated_at"`
+
+	// Vendor The lab that built the model (the HF org may be a quantizer).
+	Vendor        *string `json:"vendor,omitempty"`
+	VendorCountry *string `json:"vendor_country,omitempty"`
+}
+
+// AiModelBenchmarks0 defines model for AiModel.Benchmarks.0.
+type AiModelBenchmarks0 = float32
+
+// AiModelBenchmarks1 defines model for AiModel.Benchmarks.1.
+type AiModelBenchmarks1 = int
+
+// AiModelBenchmarks2 defines model for AiModel.Benchmarks.2.
+type AiModelBenchmarks2 = string
+
+// AiModel_Benchmarks_AdditionalProperties defines model for AiModel.benchmarks.AdditionalProperties.
+type AiModel_Benchmarks_AdditionalProperties struct {
+	union json.RawMessage
+}
+
+// AiModelCreate A catalogue row. The model is created `planned`, with no central copy and
+// no node cache: weights arrive only through the store actions, and pulling
+// them is not part of v1. “display_name“ defaults to the repo's last part.
+type AiModelCreate struct {
+	Architecture  *string                                                   `json:"architecture,omitempty"`
+	Benchmarks    *map[string]AiModelCreate_Benchmarks_AdditionalProperties `json:"benchmarks,omitempty"`
+	Category      *string                                                   `json:"category,omitempty"`
+	ContextWindow *string                                                   `json:"context_window,omitempty"`
+	Description   *string                                                   `json:"description,omitempty"`
+	DisplayName   *string                                                   `json:"display_name,omitempty"`
+	FrontierEquiv *string                                                   `json:"frontier_equiv,omitempty"`
+	Gated         *bool                                                     `json:"gated,omitempty"`
+	GatewayTier   *string                                                   `json:"gateway_tier,omitempty"`
+	License       *string                                                   `json:"license,omitempty"`
+	MinTarget     *string                                                   `json:"min_target,omitempty"`
+	ModelCardUrl  *string                                                   `json:"model_card_url,omitempty"`
+	Notes         *string                                                   `json:"notes,omitempty"`
+	Org           *string                                                   `json:"org,omitempty"`
+	ParamCountB   *float32                                                  `json:"param_count_b,omitempty"`
+	Params        *string                                                   `json:"params,omitempty"`
+	Published     *string                                                   `json:"published,omitempty"`
+	Quant         *string                                                   `json:"quant,omitempty"`
+
+	// Repo A Hugging Face repo id `org/name`: each part starts with a letter or digit and holds only letters, digits, `.`, `_` and `-` (no `..`), at most 96 characters. Frozen after create; unique.
+	Repo          string   `json:"repo"`
+	ServingNode   *string  `json:"serving_node,omitempty"`
+	SizeGb        *float32 `json:"size_gb,omitempty"`
+	StrongAxis    *string  `json:"strong_axis,omitempty"`
+	Summary       *string  `json:"summary,omitempty"`
+	Vendor        *string  `json:"vendor,omitempty"`
+	VendorCountry *string  `json:"vendor_country,omitempty"`
+}
+
+// AiModelCreateBenchmarks0 defines model for AiModelCreate.Benchmarks.0.
+type AiModelCreateBenchmarks0 = float32
+
+// AiModelCreateBenchmarks1 defines model for AiModelCreate.Benchmarks.1.
+type AiModelCreateBenchmarks1 = int
+
+// AiModelCreateBenchmarks2 defines model for AiModelCreate.Benchmarks.2.
+type AiModelCreateBenchmarks2 = string
+
+// AiModelCreate_Benchmarks_AdditionalProperties defines model for AiModelCreate.benchmarks.AdditionalProperties.
+type AiModelCreate_Benchmarks_AdditionalProperties struct {
+	union json.RawMessage
+}
+
+// AiModelPage defines model for AiModelPage.
+type AiModelPage struct {
+	Items      []AiModel `json:"items"`
+	NextCursor *string   `json:"next_cursor,omitempty"`
+}
+
+// AiModelPatch A JSON Merge Patch (RFC 7396) of the metadata. “null“ clears a field
+// where the schema allows it (never “display_name“ or “gated“). “repo“
+// is frozen and “status“, “location“, “offline_ready“,
+// “synology_volume“ are read-only: each may be sent with its current value
+// and nothing else.
+type AiModelPatch struct {
+	Architecture  *string                                                  `json:"architecture,omitempty"`
+	Benchmarks    *map[string]AiModelPatch_Benchmarks_AdditionalProperties `json:"benchmarks,omitempty"`
+	Category      *string                                                  `json:"category,omitempty"`
+	ContextWindow *string                                                  `json:"context_window,omitempty"`
+	Description   *string                                                  `json:"description,omitempty"`
+	DisplayName   *string                                                  `json:"display_name,omitempty"`
+	FrontierEquiv *string                                                  `json:"frontier_equiv,omitempty"`
+	Gated         *bool                                                    `json:"gated,omitempty"`
+	GatewayTier   *string                                                  `json:"gateway_tier,omitempty"`
+	License       *string                                                  `json:"license,omitempty"`
+
+	// Location Read-only.
+	Location     *string `json:"location,omitempty"`
+	MinTarget    *string `json:"min_target,omitempty"`
+	ModelCardUrl *string `json:"model_card_url,omitempty"`
+	Notes        *string `json:"notes,omitempty"`
+
+	// OfflineReady Read-only.
+	OfflineReady *bool    `json:"offline_ready,omitempty"`
+	Org          *string  `json:"org,omitempty"`
+	ParamCountB  *float32 `json:"param_count_b,omitempty"`
+	Params       *string  `json:"params,omitempty"`
+	Published    *string  `json:"published,omitempty"`
+	Quant        *string  `json:"quant,omitempty"`
+
+	// Repo Frozen.
+	Repo        *string  `json:"repo,omitempty"`
+	ServingNode *string  `json:"serving_node,omitempty"`
+	SizeGb      *float32 `json:"size_gb,omitempty"`
+
+	// Status Read-only.
+	Status     *string `json:"status,omitempty"`
+	StrongAxis *string `json:"strong_axis,omitempty"`
+	Summary    *string `json:"summary,omitempty"`
+
+	// SynologyVolume Read-only.
+	SynologyVolume *string `json:"synology_volume,omitempty"`
+	Vendor         *string `json:"vendor,omitempty"`
+	VendorCountry  *string `json:"vendor_country,omitempty"`
+}
+
+// AiModelPatchBenchmarks0 defines model for AiModelPatch.Benchmarks.0.
+type AiModelPatchBenchmarks0 = float32
+
+// AiModelPatchBenchmarks1 defines model for AiModelPatch.Benchmarks.1.
+type AiModelPatchBenchmarks1 = int
+
+// AiModelPatchBenchmarks2 defines model for AiModelPatch.Benchmarks.2.
+type AiModelPatchBenchmarks2 = string
+
+// AiModelPatch_Benchmarks_AdditionalProperties defines model for AiModelPatch.benchmarks.AdditionalProperties.
+type AiModelPatch_Benchmarks_AdditionalProperties struct {
+	union json.RawMessage
+}
+
+// AiNode One AI node. The ROSTER fields (from the portal's hardware inventory) are
+// always present; the LIVE fields come from Prometheus and are null when it
+// cannot be read — this read never fails because of Prometheus.
+type AiNode struct {
+	// Cluster Live (Prometheus); null when `prometheus_reachable` is false.
+	Cluster *NodeCluster `json:"cluster,omitempty"`
+
+	// CollectorStale Live (Prometheus); null when `prometheus_reachable` is false.
+	CollectorStale *bool    `json:"collector_stale,omitempty"`
+	CpuUtilPct     *float32 `json:"cpu_util_pct,omitempty"`
+	DiskUsedPct    *float32 `json:"disk_used_pct,omitempty"`
+
+	// GpuClass e.g. `rtx-3090`, `gb10`, `rtx-pro-6000`.
+	GpuClass      *string  `json:"gpu_class,omitempty"`
+	GpuCount      *int     `json:"gpu_count,omitempty"`
+	GpuTempMaxC   *float32 `json:"gpu_temp_max_c,omitempty"`
+	GpuUtilAvgPct *float32 `json:"gpu_util_avg_pct,omitempty"`
+	Hostname      string   `json:"hostname"`
+
+	// IsVirtual A GPU VM on a hybrid host (its power belongs to `parent_host`).
+	IsVirtual  bool     `json:"is_virtual"`
+	Load1      *float32 `json:"load1,omitempty"`
+	MemUsedPct *float32 `json:"mem_used_pct,omitempty"`
+	MgmtIp     *string  `json:"mgmt_ip,omitempty"`
+
+	// Models Live (Prometheus); null when `prometheus_reachable` is false. Loaded models.
+	Models *[]NodeModel `json:"models,omitempty"`
+
+	// Online Live (Prometheus); null when `prometheus_reachable` is false.
+	Online              *bool   `json:"online,omitempty"`
+	ParentHost          *string `json:"parent_host,omitempty"`
+	PrometheusReachable bool    `json:"prometheus_reachable"`
+
+	// Role Live (Prometheus); null when `prometheus_reachable` is false.
+	Role         *string   `json:"role,omitempty"`
+	Services     *[]string `json:"services,omitempty"`
+	Site         *string   `json:"site,omitempty"`
+	SpecsSummary *string   `json:"specs_summary,omitempty"`
+
+	// Status Live (Prometheus); null when `prometheus_reachable` is false. `serving`, `loaded_idle`, `idle`, `offline`, `standby` or `powered_off`.
+	Status *string `json:"status,omitempty"`
+
+	// ThrottleActive Live (Prometheus); null when `prometheus_reachable` is false.
+	ThrottleActive *bool    `json:"throttle_active,omitempty"`
+	UptimeSeconds  *float32 `json:"uptime_seconds,omitempty"`
+	Vmid           *int     `json:"vmid,omitempty"`
+	VramTotalBytes *float32 `json:"vram_total_bytes,omitempty"`
+	VramUsedBytes  *float32 `json:"vram_used_bytes,omitempty"`
+}
+
+// AiNodePage defines model for AiNodePage.
+type AiNodePage struct {
+	Items      []AiNode `json:"items"`
+	NextCursor *string  `json:"next_cursor,omitempty"`
+
+	// PrometheusReachable False: every live field below is null.
+	PrometheusReachable bool `json:"prometheus_reachable"`
 }
 
 // ApiWarning Something that did not go as planned, on a request that still succeeded
@@ -2168,6 +2793,33 @@ type BrandPut struct {
 
 // BrandPutLogoSize The sidebar logo size preset.
 type BrandPutLogoSize string
+
+// CachedModelRef defines model for CachedModelRef.
+type CachedModelRef struct {
+	CachedAt *time.Time `json:"cached_at,omitempty"`
+	Name     string     `json:"name"`
+	Repo     string     `json:"repo"`
+	SizeGb   *float32   `json:"size_gb,omitempty"`
+}
+
+// ClusterMember defines model for ClusterMember.
+type ClusterMember struct {
+	CrosslinkIp *string `json:"crosslink_ip,omitempty"`
+	Hostname    string  `json:"hostname"`
+	MgmtIp      *string `json:"mgmt_ip,omitempty"`
+
+	// Role `head` or `worker`.
+	Role *string `json:"role,omitempty"`
+}
+
+// ClusterServe defines model for ClusterServe.
+type ClusterServe struct {
+	Model  *string `json:"model,omitempty"`
+	Recipe *string `json:"recipe,omitempty"`
+
+	// ServedAt When serving started, if recorded (a value that is not a timestamp reads as null).
+	ServedAt *time.Time `json:"served_at,omitempty"`
+}
 
 // Customer defines model for Customer.
 type Customer struct {
@@ -2288,6 +2940,30 @@ type CustomerPatchEdition string
 
 // CustomerPatchStatus defines model for CustomerPatch.Status.
 type CustomerPatchStatus string
+
+// DgxCluster defines model for DgxCluster.
+type DgxCluster struct {
+	CreatedAt       time.Time       `json:"created_at"`
+	CrosslinkSubnet *string         `json:"crosslink_subnet,omitempty"`
+	ErrorMessage    *string         `json:"error_message,omitempty"`
+	Id              string          `json:"id"`
+	Interconnect    string          `json:"interconnect"`
+	Members         []ClusterMember `json:"members"`
+	Name            string          `json:"name"`
+	Notes           *string         `json:"notes,omitempty"`
+	Serve           *ClusterServe   `json:"serve,omitempty"`
+
+	// Status As recorded: `defined`, `forming`, `active`, `breaking` or `error`. This read does not converge a cluster that is mid-change (the portal's DGX page does).
+	Status    string    `json:"status"`
+	Topology  string    `json:"topology"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// DgxClusterPage defines model for DgxClusterPage.
+type DgxClusterPage struct {
+	Items      []DgxCluster `json:"items"`
+	NextCursor *string      `json:"next_cursor,omitempty"`
+}
 
 // GatewayKey defines model for GatewayKey.
 type GatewayKey struct {
@@ -2450,6 +3126,27 @@ type KubernetesNamespace struct {
 	Namespace string `json:"namespace"`
 }
 
+// LaunchCatalogEntry A launchable model on a node. Never the load or unload commands.
+type LaunchCatalogEntry struct {
+	Enabled bool   `json:"enabled"`
+	Engine  string `json:"engine"`
+
+	// Host The node (for a cluster: its head).
+	Host  string `json:"host"`
+	Key   string `json:"key"`
+	Label string `json:"label"`
+	Model string `json:"model"`
+
+	// Port The port the loaded model answers on.
+	Port int `json:"port"`
+}
+
+// LaunchCatalogPage defines model for LaunchCatalogPage.
+type LaunchCatalogPage struct {
+	Items      []LaunchCatalogEntry `json:"items"`
+	NextCursor *string              `json:"next_cursor,omitempty"`
+}
+
 // Licence defines model for Licence.
 type Licence struct {
 	// BoundFqdn The name the installed licence is bound to. A licence bound to another name puts the portal in DOMAIN_MISMATCH.
@@ -2610,6 +3307,33 @@ type LicenceSummary struct {
 	StateReason   *string `json:"state_reason,omitempty"`
 }
 
+// LoadTarget defines model for LoadTarget.
+type LoadTarget struct {
+	Engine   *string `json:"engine,omitempty"`
+	GpuCount int     `json:"gpu_count"`
+
+	// Hostname A node, or a DGX cluster by name.
+	Hostname  string `json:"hostname"`
+	IsCluster *bool  `json:"is_cluster,omitempty"`
+
+	// Loadable False for fit-only targets (DGX clusters, Kubernetes nodes).
+	Loadable       bool       `json:"loadable"`
+	LoadedModels   []*string  `json:"loaded_models"`
+	Members        *[]*string `json:"members,omitempty"`
+	Online         bool       `json:"online"`
+	PerGpuGb       int        `json:"per_gpu_gb"`
+	Status         string     `json:"status"`
+	TensorParallel int        `json:"tensor_parallel"`
+	UsableVramGb   float32    `json:"usable_vram_gb"`
+	VramTotalGb    int        `json:"vram_total_gb"`
+}
+
+// LoadTargetPage defines model for LoadTargetPage.
+type LoadTargetPage struct {
+	Items      []LoadTarget `json:"items"`
+	NextCursor *string      `json:"next_cursor,omitempty"`
+}
+
 // Membership defines model for Membership.
 type Membership struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
@@ -2647,6 +3371,68 @@ type Meta struct {
 	Tier            *string        `json:"tier,omitempty"`
 }
 
+// NodeCache defines model for NodeCache.
+type NodeCache struct {
+	// Id `<model id>:<node>`.
+	Id      string   `json:"id"`
+	ModelId string   `json:"model_id"`
+	Node    string   `json:"node"`
+	Path    *string  `json:"path,omitempty"`
+	SizeGb  *float32 `json:"size_gb,omitempty"`
+
+	// State `cached` once the copy is complete.
+	State     string     `json:"state"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+}
+
+// NodeCachePage defines model for NodeCachePage.
+type NodeCachePage struct {
+	Items      []NodeCache `json:"items"`
+	NextCursor *string     `json:"next_cursor,omitempty"`
+}
+
+// NodeCacheRef defines model for NodeCacheRef.
+type NodeCacheRef struct {
+	Node   string   `json:"node"`
+	SizeGb *float32 `json:"size_gb,omitempty"`
+
+	// State `cached`, or a state a failed or partial copy left.
+	State string `json:"state"`
+}
+
+// NodeCluster defines model for NodeCluster.
+type NodeCluster struct {
+	Name string `json:"name"`
+	Role string `json:"role"`
+}
+
+// NodeModel defines model for NodeModel.
+type NodeModel struct {
+	Cluster     *string `json:"cluster,omitempty"`
+	Engine      *string `json:"engine,omitempty"`
+	MaxModelLen *int    `json:"max_model_len,omitempty"`
+	Model       string  `json:"model"`
+
+	// Port The serving port (a node can run several).
+	Port           *int    `json:"port,omitempty"`
+	ServedName     *string `json:"served_name,omitempty"`
+	TensorParallel *int    `json:"tensor_parallel,omitempty"`
+
+	// Tiers Serving tiers it backs right now.
+	Tiers *[]string `json:"tiers,omitempty"`
+}
+
+// NodeStorage defines model for NodeStorage.
+type NodeStorage struct {
+	Cached     *[]CachedModelRef `json:"cached,omitempty"`
+	CapturedAt *time.Time        `json:"captured_at,omitempty"`
+	FreeGb     *float32          `json:"free_gb,omitempty"`
+	Kind       *string           `json:"kind,omitempty"`
+	Mount      *string           `json:"mount,omitempty"`
+	Name       string            `json:"name"`
+	TotalGb    *float32          `json:"total_gb,omitempty"`
+}
+
 // Operation defines model for Operation.
 type Operation struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
@@ -2657,8 +3443,11 @@ type Operation struct {
 	Id           string                  `json:"id"`
 	Kind         string                  `json:"kind"`
 	Message      *string                 `json:"message,omitempty"`
-	ResourceId   *string                 `json:"resource_id,omitempty"`
-	ResourceType *string                 `json:"resource_type,omitempty"`
+
+	// PipelineUrl For release operations: the pipeline carrying the work out, once one is known.
+	PipelineUrl  *string `json:"pipeline_url,omitempty"`
+	ResourceId   *string `json:"resource_id,omitempty"`
+	ResourceType *string `json:"resource_type,omitempty"`
 
 	// Simulated For project provisioning: the result rests on SIMULATED stages (`dispatch_mode` `simulate`). A succeeded simulated operation provisioned nothing.
 	Simulated *bool `json:"simulated,omitempty"`
@@ -2734,6 +3523,21 @@ type Problem struct {
 	Title                string                 `json:"title"`
 	Type                 string                 `json:"type"`
 	AdditionalProperties map[string]interface{} `json:"-"`
+}
+
+// ProdLock defines model for ProdLock.
+type ProdLock struct {
+	Locked    bool       `json:"locked"`
+	LockedAt  *time.Time `json:"locked_at,omitempty"`
+	LockedBy  *string    `json:"locked_by,omitempty"`
+	ProjectId string     `json:"project_id"`
+}
+
+// ProdLockPut defines model for ProdLockPut.
+type ProdLockPut struct {
+	// ConfirmUnlock Required to UNLOCK: the project's short name, exactly.
+	ConfirmUnlock *string `json:"confirm_unlock,omitempty"`
+	Locked        bool    `json:"locked"`
 }
 
 // Project defines model for Project.
@@ -3232,6 +4036,151 @@ type ProvisioningDispatchMode string
 // ProvisioningState defines model for Provisioning.State.
 type ProvisioningState string
 
+// ReleaseOperation One Release Manager operation: a promotion (`promote_build`) or a data
+// copy (`copy_data`, booked in the portal only).
+type ReleaseOperation struct {
+	// ApprovalReason The requester's reason and the approver's note, as recorded.
+	ApprovalReason *string                    `json:"approval_reason,omitempty"`
+	CompletedAt    *time.Time                 `json:"completed_at,omitempty"`
+	Component      *ReleaseOperationComponent `json:"component,omitempty"`
+	DecidedAt      *time.Time                 `json:"decided_at,omitempty"`
+
+	// DecidedBy Who approved or rejected it.
+	DecidedBy *string `json:"decided_by,omitempty"`
+
+	// ErrorReason Why it failed or was rejected. Host addresses and digests are masked.
+	ErrorReason *string `json:"error_reason,omitempty"`
+
+	// Id The release operation's id (`/release-operations/{id}`).
+	Id        string                    `json:"id"`
+	Operation ReleaseOperationOperation `json:"operation"`
+
+	// OperationId `release:<id>`, for `GET /operations/{operation_id}`.
+	OperationId string `json:"operation_id"`
+
+	// PipelineUrl The pipeline that carries it out, once known.
+	PipelineUrl *string `json:"pipeline_url,omitempty"`
+
+	// PortalStatus The Release Manager's own status.
+	PortalStatus ReleaseOperationPortalStatus `json:"portal_status"`
+	ProjectId    string                       `json:"project_id"`
+	RequestedAt  time.Time                    `json:"requested_at"`
+
+	// RequestedBy E-mail of the principal that asked (for a service account, its service address), or `ci:<repo>@<commit>`.
+	RequestedBy string `json:"requested_by"`
+
+	// RequestedTokenId The API token used, when one was.
+	RequestedTokenId *string `json:"requested_token_id,omitempty"`
+
+	// RequestedVia How the request was made through /api/v1. Null: booked in the portal or by a pipeline.
+	RequestedVia *ReleaseOperationRequestedVia `json:"requested_via,omitempty"`
+	SourceEnv    ReleaseOperationSourceEnv     `json:"source_env"`
+	StartedAt    *time.Time                    `json:"started_at,omitempty"`
+
+	// Status `awaiting_approval`: a PROD request waiting for a person in the portal. `pending`: approved, not yet picked up. `failed` also covers a rejected request (`portal_status` = `rejected`) and an operation the portal gave up on after hearing nothing (`error_reason` says so).
+	Status    ReleaseOperationStatus    `json:"status"`
+	TargetEnv ReleaseOperationTargetEnv `json:"target_env"`
+	Version   *string                   `json:"version,omitempty"`
+}
+
+// ReleaseOperationComponent defines model for ReleaseOperation.Component.
+type ReleaseOperationComponent string
+
+// ReleaseOperationOperation defines model for ReleaseOperation.Operation.
+type ReleaseOperationOperation string
+
+// ReleaseOperationPortalStatus The Release Manager's own status.
+type ReleaseOperationPortalStatus string
+
+// ReleaseOperationRequestedVia defines model for ReleaseOperation.RequestedVia.
+type ReleaseOperationRequestedVia string
+
+// ReleaseOperationSourceEnv defines model for ReleaseOperation.SourceEnv.
+type ReleaseOperationSourceEnv string
+
+// ReleaseOperationStatus `awaiting_approval`: a PROD request waiting for a person in the portal. `pending`: approved, not yet picked up. `failed` also covers a rejected request (`portal_status` = `rejected`) and an operation the portal gave up on after hearing nothing (`error_reason` says so).
+type ReleaseOperationStatus string
+
+// ReleaseOperationTargetEnv defines model for ReleaseOperation.TargetEnv.
+type ReleaseOperationTargetEnv string
+
+// ReleaseOperationPage defines model for ReleaseOperationPage.
+type ReleaseOperationPage struct {
+	Items      []ReleaseOperation `json:"items"`
+	NextCursor *string            `json:"next_cursor,omitempty"`
+}
+
+// ReleasePromotionCreate Request a promotion of one component into one environment.
+//
+// `dev` deploys a named build and needs `version`; the API cannot verify that the
+// build exists before dispatch. `uat` and `prod` promote what the
+// environment below LAST REPORTED running (`dev` for `uat`, `uat` for `prod`):
+// omit `version` to take it, or give it and it must be that version.
+type ReleasePromotionCreate struct {
+	Component ReleasePromotionCreateComponent `json:"component"`
+	TargetEnv ReleasePromotionCreateTargetEnv `json:"target_env"`
+
+	// Version Required for `dev`, where it names a build that the API cannot verify exists before dispatch. For `uat` and `prod`: omitted means the version the source environment last reported; given, it must equal that version (422 `version_not_at_source` otherwise).
+	Version *string `json:"version,omitempty"`
+}
+
+// ReleasePromotionCreateComponent defines model for ReleasePromotionCreate.Component.
+type ReleasePromotionCreateComponent string
+
+// ReleasePromotionCreateTargetEnv defines model for ReleasePromotionCreate.TargetEnv.
+type ReleasePromotionCreateTargetEnv string
+
+// ReleaseState defines model for ReleaseState.
+type ReleaseState struct {
+	// DeploymentBackend Only `k8s` projects accept promotion requests through the API.
+	DeploymentBackend ReleaseStateDeploymentBackend `json:"deployment_backend"`
+
+	// InFlightOperationIds `release:<id>` of every operation approved or running.
+	InFlightOperationIds []string `json:"in_flight_operation_ids"`
+
+	// PendingOperationIds `release:<id>` of every operation awaiting approval.
+	PendingOperationIds []string `json:"pending_operation_ids"`
+
+	// PriorProdDataCopies Succeeded data copies into PROD, all time.
+	PriorProdDataCopies int `json:"prior_prod_data_copies"`
+
+	// ProdDataLocked The PROD DATA lock: while set, no data copy may target PROD. It does not block code promotion.
+	ProdDataLocked   bool       `json:"prod_data_locked"`
+	ProdDataLockedAt *time.Time `json:"prod_data_locked_at,omitempty"`
+	ProdDataLockedBy *string    `json:"prod_data_locked_by,omitempty"`
+	ProjectId        string     `json:"project_id"`
+
+	// Versions Last reported versions, per environment and component.
+	Versions []ReportedVersion `json:"versions"`
+}
+
+// ReleaseStateDeploymentBackend Only `k8s` projects accept promotion requests through the API.
+type ReleaseStateDeploymentBackend string
+
+// ReportedVersion What a release pipeline LAST REPORTED for one environment and component.
+// Not a live probe: the portal records it when a deploy reports success.
+type ReportedVersion struct {
+	Component      ReportedVersionComponent `json:"component"`
+	Env            ReportedVersionEnv       `json:"env"`
+	LastReportedAt time.Time                `json:"last_reported_at"`
+
+	// LastReportedBy An operator's e-mail or `pipeline:<id>`.
+	LastReportedBy      string `json:"last_reported_by"`
+	LastReportedVersion string `json:"last_reported_version"`
+
+	// SourceEnv The environment it was promoted from.
+	SourceEnv *ReportedVersionSourceEnv `json:"source_env,omitempty"`
+}
+
+// ReportedVersionComponent defines model for ReportedVersion.Component.
+type ReportedVersionComponent string
+
+// ReportedVersionEnv defines model for ReportedVersion.Env.
+type ReportedVersionEnv string
+
+// ReportedVersionSourceEnv defines model for ReportedVersion.SourceEnv.
+type ReportedVersionSourceEnv string
+
 // RoleGrant defines model for RoleGrant.
 type RoleGrant struct {
 	GrantedAt *time.Time    `json:"granted_at,omitempty"`
@@ -3379,6 +4328,65 @@ type StageState struct {
 
 // StageStateStatus `manual`: the stage needs an operator.
 type StageStateStatus string
+
+// Storage defines model for Storage.
+type Storage struct {
+	// CapturedAt The newest scan; null when nothing was ever scanned.
+	CapturedAt *time.Time `json:"captured_at"`
+
+	// Nodes Last scanned local disk per node, with its cached models.
+	Nodes []NodeStorage `json:"nodes"`
+
+	// Shares The central-store shares the store actions can use.
+	Shares []string `json:"shares"`
+
+	// Synology Last scanned free space per share.
+	Synology []StorageMount `json:"synology"`
+}
+
+// StorageMount defines model for StorageMount.
+type StorageMount struct {
+	CapturedAt *time.Time `json:"captured_at,omitempty"`
+	FreeGb     *float32   `json:"free_gb,omitempty"`
+	Kind       *string    `json:"kind,omitempty"`
+	Mount      *string    `json:"mount,omitempty"`
+	Name       string     `json:"name"`
+	TotalGb    *float32   `json:"total_gb,omitempty"`
+}
+
+// StoreRun defines model for StoreRun.
+type StoreRun struct {
+	// Action `cache` / `uncache` (the two v1 starts), or a portal action: `pull`, `purge`, `rescan`, `gateway-deploy`, `gateway-restart`.
+	Action string  `json:"action"`
+	Detail *string `json:"detail,omitempty"`
+
+	// DispatchMode `live`: the runner pipeline was triggered. `dryrun`: this estate fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate` — a store run is never simulated); the run holds a fake pipeline id and nothing ran. Null for runs started by the portal, which does not record it.
+	DispatchMode *StoreRunDispatchMode `json:"dispatch_mode"`
+	FinishedAt   *time.Time            `json:"finished_at,omitempty"`
+	Id           string                `json:"id"`
+
+	// JobStartedAt When the runner job started. The run's time budget counts from here, not from the dispatch.
+	JobStartedAt *time.Time `json:"job_started_at"`
+	ModelId      *string    `json:"model_id,omitempty"`
+	Node         *string    `json:"node,omitempty"`
+
+	// OperationId `model-store-run:<id>`: poll it at /operations/{id}.
+	OperationId string   `json:"operation_id"`
+	PipelineId  *int     `json:"pipeline_id,omitempty"`
+	PipelineUrl *string  `json:"pipeline_url,omitempty"`
+	ProgressGb  *float32 `json:"progress_gb,omitempty"`
+	Repo        string   `json:"repo"`
+
+	// StartedAt When the run was recorded (dispatched).
+	StartedAt time.Time `json:"started_at"`
+
+	// Status `pending`, `running`, `success`, `failed` or `timeout`.
+	Status      string  `json:"status"`
+	TriggeredBy *string `json:"triggered_by,omitempty"`
+}
+
+// StoreRunDispatchMode defines model for StoreRun.DispatchMode.
+type StoreRunDispatchMode string
 
 // Tenant defines model for Tenant.
 type Tenant struct {
@@ -3597,6 +4605,66 @@ type WhoamiToken struct {
 	Prefix        string   `json:"prefix"`
 }
 
+// AiModelsListParams defines parameters for AiModelsList.
+type AiModelsListParams struct {
+	// Repo Exact repo id: finds a model's `id` to import it.
+	Repo *string `form:"repo,omitempty" json:"repo,omitempty"`
+
+	// Status Exact status.
+	Status      *string `form:"status,omitempty" json:"status,omitempty"`
+	Category    *string `form:"category,omitempty" json:"category,omitempty"`
+	GatewayTier *string `form:"gateway_tier,omitempty" json:"gateway_tier,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// AiModelsLoadTargetsListParams defines parameters for AiModelsLoadTargetsList.
+type AiModelsLoadTargetsListParams struct {
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// AiModelsNodeCachesListParams defines parameters for AiModelsNodeCachesList.
+type AiModelsNodeCachesListParams struct {
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// AiCatalogListParams defines parameters for AiCatalogList.
+type AiCatalogListParams struct {
+	// Host Exact host.
+	Host    *string `form:"host,omitempty" json:"host,omitempty"`
+	Enabled *bool   `form:"enabled,omitempty" json:"enabled,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// AiClustersListParams defines parameters for AiClustersList.
+type AiClustersListParams struct {
+	// Name Exact name: finds a cluster to import.
+	Name *string `form:"name,omitempty" json:"name,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
 // AiGatewayKeysListParams defines parameters for AiGatewayKeysList.
 type AiGatewayKeysListParams struct {
 	// OrganizationId Only this tenant's keys.
@@ -3625,6 +4693,15 @@ type AiGatewayKeysListParamsOrigin string
 
 // AiGatewayTiersListParams defines parameters for AiGatewayTiersList.
 type AiGatewayTiersListParams struct {
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// AiNodesListParams defines parameters for AiNodesList.
+type AiNodesListParams struct {
 	// Limit Page size.
 	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
 
@@ -3746,6 +4823,31 @@ type ProjectMembersListParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
 
+// ReleaseOperationsListParams defines parameters for ReleaseOperationsList.
+type ReleaseOperationsListParams struct {
+	// Status Only operations in this status.
+	Status    *ReleaseOperationsListParamsStatus    `form:"status,omitempty" json:"status,omitempty"`
+	TargetEnv *ReleaseOperationsListParamsTargetEnv `form:"target_env,omitempty" json:"target_env,omitempty"`
+
+	// Component Excludes data copies (no component).
+	Component *ReleaseOperationsListParamsComponent `form:"component,omitempty" json:"component,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// ReleaseOperationsListParamsStatus defines parameters for ReleaseOperationsList.
+type ReleaseOperationsListParamsStatus string
+
+// ReleaseOperationsListParamsTargetEnv defines parameters for ReleaseOperationsList.
+type ReleaseOperationsListParamsTargetEnv string
+
+// ReleaseOperationsListParamsComponent defines parameters for ReleaseOperationsList.
+type ReleaseOperationsListParamsComponent string
+
 // TenantsListParams defines parameters for TenantsList.
 type TenantsListParams struct {
 	// CustomerId Only this customer's tenants.
@@ -3810,6 +4912,15 @@ type UserRolesListParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
 
+// AiModelsCreateJSONRequestBody defines body for AiModelsCreate for application/json ContentType.
+type AiModelsCreateJSONRequestBody = AiModelCreate
+
+// AiModelsUpdateJSONRequestBody defines body for AiModelsUpdate for application/json ContentType.
+type AiModelsUpdateJSONRequestBody = AiModelPatch
+
+// AiModelsUpdateApplicationMergePatchPlusJSONRequestBody defines body for AiModelsUpdate for application/merge-patch+json ContentType.
+type AiModelsUpdateApplicationMergePatchPlusJSONRequestBody = AiModelPatch
+
 // AiGatewayKeysCreateJSONRequestBody defines body for AiGatewayKeysCreate for application/json ContentType.
 type AiGatewayKeysCreateJSONRequestBody = GatewayKeyCreate
 
@@ -3857,6 +4968,12 @@ type ProjectsUpdateApplicationMergePatchPlusJSONRequestBody = ProjectPatch
 
 // ProjectMembersPutJSONRequestBody defines body for ProjectMembersPut for application/json ContentType.
 type ProjectMembersPutJSONRequestBody = ProjectMemberPut
+
+// ProdLockPutJSONRequestBody defines body for ProdLockPut for application/json ContentType.
+type ProdLockPutJSONRequestBody = ProdLockPut
+
+// ReleasePromotionsCreateJSONRequestBody defines body for ReleasePromotionsCreate for application/json ContentType.
+type ReleasePromotionsCreateJSONRequestBody = ReleasePromotionCreate
 
 // TenantsCreateJSONRequestBody defines body for TenantsCreate for application/json ContentType.
 type TenantsCreateJSONRequestBody = TenantCreate
@@ -4029,6 +5146,270 @@ func (a Problem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(object)
 }
 
+// AsAiModelBenchmarks0 returns the union data inside the AiModel_Benchmarks_AdditionalProperties as a AiModelBenchmarks0
+func (t AiModel_Benchmarks_AdditionalProperties) AsAiModelBenchmarks0() (AiModelBenchmarks0, error) {
+	var body AiModelBenchmarks0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAiModelBenchmarks0 overwrites any union data inside the AiModel_Benchmarks_AdditionalProperties as the provided AiModelBenchmarks0
+func (t *AiModel_Benchmarks_AdditionalProperties) FromAiModelBenchmarks0(v AiModelBenchmarks0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAiModelBenchmarks0 performs a merge with any union data inside the AiModel_Benchmarks_AdditionalProperties, using the provided AiModelBenchmarks0
+func (t *AiModel_Benchmarks_AdditionalProperties) MergeAiModelBenchmarks0(v AiModelBenchmarks0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAiModelBenchmarks1 returns the union data inside the AiModel_Benchmarks_AdditionalProperties as a AiModelBenchmarks1
+func (t AiModel_Benchmarks_AdditionalProperties) AsAiModelBenchmarks1() (AiModelBenchmarks1, error) {
+	var body AiModelBenchmarks1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAiModelBenchmarks1 overwrites any union data inside the AiModel_Benchmarks_AdditionalProperties as the provided AiModelBenchmarks1
+func (t *AiModel_Benchmarks_AdditionalProperties) FromAiModelBenchmarks1(v AiModelBenchmarks1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAiModelBenchmarks1 performs a merge with any union data inside the AiModel_Benchmarks_AdditionalProperties, using the provided AiModelBenchmarks1
+func (t *AiModel_Benchmarks_AdditionalProperties) MergeAiModelBenchmarks1(v AiModelBenchmarks1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAiModelBenchmarks2 returns the union data inside the AiModel_Benchmarks_AdditionalProperties as a AiModelBenchmarks2
+func (t AiModel_Benchmarks_AdditionalProperties) AsAiModelBenchmarks2() (AiModelBenchmarks2, error) {
+	var body AiModelBenchmarks2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAiModelBenchmarks2 overwrites any union data inside the AiModel_Benchmarks_AdditionalProperties as the provided AiModelBenchmarks2
+func (t *AiModel_Benchmarks_AdditionalProperties) FromAiModelBenchmarks2(v AiModelBenchmarks2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAiModelBenchmarks2 performs a merge with any union data inside the AiModel_Benchmarks_AdditionalProperties, using the provided AiModelBenchmarks2
+func (t *AiModel_Benchmarks_AdditionalProperties) MergeAiModelBenchmarks2(v AiModelBenchmarks2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AiModel_Benchmarks_AdditionalProperties) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AiModel_Benchmarks_AdditionalProperties) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsAiModelCreateBenchmarks0 returns the union data inside the AiModelCreate_Benchmarks_AdditionalProperties as a AiModelCreateBenchmarks0
+func (t AiModelCreate_Benchmarks_AdditionalProperties) AsAiModelCreateBenchmarks0() (AiModelCreateBenchmarks0, error) {
+	var body AiModelCreateBenchmarks0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAiModelCreateBenchmarks0 overwrites any union data inside the AiModelCreate_Benchmarks_AdditionalProperties as the provided AiModelCreateBenchmarks0
+func (t *AiModelCreate_Benchmarks_AdditionalProperties) FromAiModelCreateBenchmarks0(v AiModelCreateBenchmarks0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAiModelCreateBenchmarks0 performs a merge with any union data inside the AiModelCreate_Benchmarks_AdditionalProperties, using the provided AiModelCreateBenchmarks0
+func (t *AiModelCreate_Benchmarks_AdditionalProperties) MergeAiModelCreateBenchmarks0(v AiModelCreateBenchmarks0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAiModelCreateBenchmarks1 returns the union data inside the AiModelCreate_Benchmarks_AdditionalProperties as a AiModelCreateBenchmarks1
+func (t AiModelCreate_Benchmarks_AdditionalProperties) AsAiModelCreateBenchmarks1() (AiModelCreateBenchmarks1, error) {
+	var body AiModelCreateBenchmarks1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAiModelCreateBenchmarks1 overwrites any union data inside the AiModelCreate_Benchmarks_AdditionalProperties as the provided AiModelCreateBenchmarks1
+func (t *AiModelCreate_Benchmarks_AdditionalProperties) FromAiModelCreateBenchmarks1(v AiModelCreateBenchmarks1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAiModelCreateBenchmarks1 performs a merge with any union data inside the AiModelCreate_Benchmarks_AdditionalProperties, using the provided AiModelCreateBenchmarks1
+func (t *AiModelCreate_Benchmarks_AdditionalProperties) MergeAiModelCreateBenchmarks1(v AiModelCreateBenchmarks1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAiModelCreateBenchmarks2 returns the union data inside the AiModelCreate_Benchmarks_AdditionalProperties as a AiModelCreateBenchmarks2
+func (t AiModelCreate_Benchmarks_AdditionalProperties) AsAiModelCreateBenchmarks2() (AiModelCreateBenchmarks2, error) {
+	var body AiModelCreateBenchmarks2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAiModelCreateBenchmarks2 overwrites any union data inside the AiModelCreate_Benchmarks_AdditionalProperties as the provided AiModelCreateBenchmarks2
+func (t *AiModelCreate_Benchmarks_AdditionalProperties) FromAiModelCreateBenchmarks2(v AiModelCreateBenchmarks2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAiModelCreateBenchmarks2 performs a merge with any union data inside the AiModelCreate_Benchmarks_AdditionalProperties, using the provided AiModelCreateBenchmarks2
+func (t *AiModelCreate_Benchmarks_AdditionalProperties) MergeAiModelCreateBenchmarks2(v AiModelCreateBenchmarks2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AiModelCreate_Benchmarks_AdditionalProperties) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AiModelCreate_Benchmarks_AdditionalProperties) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsAiModelPatchBenchmarks0 returns the union data inside the AiModelPatch_Benchmarks_AdditionalProperties as a AiModelPatchBenchmarks0
+func (t AiModelPatch_Benchmarks_AdditionalProperties) AsAiModelPatchBenchmarks0() (AiModelPatchBenchmarks0, error) {
+	var body AiModelPatchBenchmarks0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAiModelPatchBenchmarks0 overwrites any union data inside the AiModelPatch_Benchmarks_AdditionalProperties as the provided AiModelPatchBenchmarks0
+func (t *AiModelPatch_Benchmarks_AdditionalProperties) FromAiModelPatchBenchmarks0(v AiModelPatchBenchmarks0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAiModelPatchBenchmarks0 performs a merge with any union data inside the AiModelPatch_Benchmarks_AdditionalProperties, using the provided AiModelPatchBenchmarks0
+func (t *AiModelPatch_Benchmarks_AdditionalProperties) MergeAiModelPatchBenchmarks0(v AiModelPatchBenchmarks0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAiModelPatchBenchmarks1 returns the union data inside the AiModelPatch_Benchmarks_AdditionalProperties as a AiModelPatchBenchmarks1
+func (t AiModelPatch_Benchmarks_AdditionalProperties) AsAiModelPatchBenchmarks1() (AiModelPatchBenchmarks1, error) {
+	var body AiModelPatchBenchmarks1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAiModelPatchBenchmarks1 overwrites any union data inside the AiModelPatch_Benchmarks_AdditionalProperties as the provided AiModelPatchBenchmarks1
+func (t *AiModelPatch_Benchmarks_AdditionalProperties) FromAiModelPatchBenchmarks1(v AiModelPatchBenchmarks1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAiModelPatchBenchmarks1 performs a merge with any union data inside the AiModelPatch_Benchmarks_AdditionalProperties, using the provided AiModelPatchBenchmarks1
+func (t *AiModelPatch_Benchmarks_AdditionalProperties) MergeAiModelPatchBenchmarks1(v AiModelPatchBenchmarks1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsAiModelPatchBenchmarks2 returns the union data inside the AiModelPatch_Benchmarks_AdditionalProperties as a AiModelPatchBenchmarks2
+func (t AiModelPatch_Benchmarks_AdditionalProperties) AsAiModelPatchBenchmarks2() (AiModelPatchBenchmarks2, error) {
+	var body AiModelPatchBenchmarks2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromAiModelPatchBenchmarks2 overwrites any union data inside the AiModelPatch_Benchmarks_AdditionalProperties as the provided AiModelPatchBenchmarks2
+func (t *AiModelPatch_Benchmarks_AdditionalProperties) FromAiModelPatchBenchmarks2(v AiModelPatchBenchmarks2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeAiModelPatchBenchmarks2 performs a merge with any union data inside the AiModelPatch_Benchmarks_AdditionalProperties, using the provided AiModelPatchBenchmarks2
+func (t *AiModelPatch_Benchmarks_AdditionalProperties) MergeAiModelPatchBenchmarks2(v AiModelPatchBenchmarks2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t AiModelPatch_Benchmarks_AdditionalProperties) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *AiModelPatch_Benchmarks_AdditionalProperties) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
 // RequestEditorFn is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
 
@@ -4102,6 +5483,135 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+
+	// AiModelsList List AI models
+	//
+	// Corresponds with GET /ai-models (the `AiModelsList` operationId).
+	AiModelsList(ctx context.Context, params *AiModelsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsCreateWithBody Add an AI model to the catalogue
+	//
+	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /ai-models (the `AiModelsCreate` operationId).
+	AiModelsCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsCreate Add an AI model to the catalogue
+	//
+	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /ai-models (the `AiModelsCreate` operationId).
+	AiModelsCreate(ctx context.Context, body AiModelsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsLoadTargetsList List load targets
+	//
+	// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when Prometheus answers, static fallbacks otherwise.
+	//
+	// Corresponds with GET /ai-models/load-targets (the `AiModelsLoadTargetsList` operationId).
+	AiModelsLoadTargetsList(ctx context.Context, params *AiModelsLoadTargetsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsRunsGet One store run
+	//
+	// Corresponds with GET /ai-models/runs/{run_id} (the `AiModelsRunsGet` operationId).
+	AiModelsRunsGet(ctx context.Context, runId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsStorageGet Model storage
+	//
+	// The central-store shares and each node's local disk with the models cached on it, as last scanned. Nothing is scanned by this read.
+	//
+	// Corresponds with GET /ai-models/storage (the `AiModelsStorageGet` operationId).
+	AiModelsStorageGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsDelete Remove an AI model from the catalogue
+	//
+	// Removes the catalogue ROW and nothing else: no disk is touched. It is refused while the row is the record of weights that exist (a central copy, or `status` `owned` / `serving`), while any node holds a cache, and while a store run is pending or running. Removing a node cache first is allowed (`DELETE .../node-caches/{node}`); removing a central copy is not possible through v1. Needs the admin permission; NOT destroy-gated, because it never destroys weights.
+	//
+	// Corresponds with DELETE /ai-models/{model_id} (the `AiModelsDelete` operationId).
+	AiModelsDelete(ctx context.Context, modelId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsGet One AI model
+	//
+	// Corresponds with GET /ai-models/{model_id} (the `AiModelsGet` operationId).
+	AiModelsGet(ctx context.Context, modelId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsUpdateWithBody Change an AI model's metadata
+	//
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+	AiModelsUpdateWithBody(ctx context.Context, modelId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsUpdate Change an AI model's metadata
+	//
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+	AiModelsUpdate(ctx context.Context, modelId string, body AiModelsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsUpdateWithApplicationMergePatchPlusJSONBody Change an AI model's metadata
+	//
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type.
+	//
+	// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+	AiModelsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, modelId string, body AiModelsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsNodeCachesList List a model's node caches
+	//
+	// Corresponds with GET /ai-models/{model_id}/node-caches (the `AiModelsNodeCachesList` operationId).
+	AiModelsNodeCachesList(ctx context.Context, modelId string, params *AiModelsNodeCachesListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsNodeCachesDelete Remove a model's cache from a node
+	//
+	// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while Prometheus cannot be read.
+	//
+	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+	//
+	// Corresponds with DELETE /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesDelete` operationId).
+	AiModelsNodeCachesDelete(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsNodeCachesGet One node cache
+	//
+	// Corresponds with GET /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesGet` operationId).
+	AiModelsNodeCachesGet(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiModelsNodeCachesPut Cache a model on a node
+	//
+	// Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.
+	//
+	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+	//
+	// Corresponds with PUT /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesPut` operationId).
+	AiModelsNodeCachesPut(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiCatalogList List the launch catalogue
+	//
+	// The launchable models per node: key, host, label, model, engine, port and enabled. The load and unload commands are never returned.
+	//
+	// Corresponds with GET /ai/catalog (the `AiCatalogList` operationId).
+	AiCatalogList(ctx context.Context, params *AiCatalogListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiClustersList List DGX clusters
+	//
+	// The DGX clusters as recorded. A read: it does not converge a cluster that is forming or breaking.
+	//
+	// Corresponds with GET /ai/clusters (the `AiClustersList` operationId).
+	AiClustersList(ctx context.Context, params *AiClustersListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// AiGatewayGet The AI gateway
 	//
@@ -4229,6 +5739,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
 	AiGatewayTiersPut(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiNodesList List AI nodes
+	//
+	// The AI fleet. Roster fields are always present; live fields are null when Prometheus cannot be read (`prometheus_reachable: false`). Never 503.
+	//
+	// Corresponds with GET /ai/nodes (the `AiNodesList` operationId).
+	AiNodesList(ctx context.Context, params *AiNodesListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiNodesGet One AI node
+	//
+	// One node, as in the list. Never 503.
+	//
+	// Corresponds with GET /ai/nodes/{hostname} (the `AiNodesGet` operationId).
+	AiNodesGet(ctx context.Context, hostname string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// BrandGet This platform's brand
 	//
@@ -4522,6 +6046,35 @@ type ClientInterface interface {
 	// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
 	ProjectMembersPut(ctx context.Context, projectId string, userId string, body ProjectMembersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ProdLockGet The PROD data lock
+	//
+	// While `locked`, no data copy may target PROD. Code promotion is not affected.
+	//
+	// Corresponds with GET /projects/{project_id}/prod-lock (the `ProdLockGet` operationId).
+	ProdLockGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProdLockPutWithBody Set the PROD data lock
+	//
+	// The lock protects PROD DATA: while it is set, the portal refuses every data copy into PROD, so PROD stays the source of truth for its data. It does NOT block code promotion into PROD.
+	//
+	// `{"locked": true}` locks. Unlocking needs `confirm_unlock` equal to the project's short name. Setting the state it already has changes nothing (the lock keeps its time and author).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/prod-lock (the `ProdLockPut` operationId).
+	ProdLockPutWithBody(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProdLockPut Set the PROD data lock
+	//
+	// The lock protects PROD DATA: while it is set, the portal refuses every data copy into PROD, so PROD stays the source of truth for its data. It does NOT block code promotion into PROD.
+	//
+	// `{"locked": true}` locks. Unlocking needs `confirm_unlock` equal to the project's short name. Setting the state it already has changes nothing (the lock keeps its time and author).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/prod-lock (the `ProdLockPut` operationId).
+	ProdLockPut(ctx context.Context, projectId string, body ProdLockPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ProjectProvisioningGet A project's provisioning state
 	//
 	// Read from the database only. `converged` is true when every stage is done and none is stale; `provisioned` additionally requires that no stage was simulated. On a platform whose `dispatch_mode` is `dryrun` nothing is ever executed and provisioning never completes; under `simulate` stages are marked done without running, so `converged` can be true while `provisioned` is false.
@@ -4536,12 +6089,61 @@ type ClientInterface interface {
 	// Corresponds with POST /projects/{project_id}/provisioning (the `ProjectProvisioningStart` operationId).
 	ProjectProvisioningStart(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ReleaseOperationsList Release history of a project
+	//
+	// Newest first. Includes the data copies booked in the portal.
+	//
+	// Corresponds with GET /projects/{project_id}/release-operations (the `ReleaseOperationsList` operationId).
+	ReleaseOperationsList(ctx context.Context, projectId string, params *ReleaseOperationsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReleasePromotionsCreateWithBody Request a promotion
+	//
+	// Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.
+	//
+	// * `dev` and `uat` start at once.
+	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
+	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+	//
+	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /projects/{project_id}/release-promotions (the `ReleasePromotionsCreate` operationId).
+	ReleasePromotionsCreateWithBody(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReleasePromotionsCreate Request a promotion
+	//
+	// Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.
+	//
+	// * `dev` and `uat` start at once.
+	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
+	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+	//
+	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /projects/{project_id}/release-promotions (the `ReleasePromotionsCreate` operationId).
+	ReleasePromotionsCreate(ctx context.Context, projectId string, body ReleasePromotionsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReleaseStateGet Release state of a project
+	//
+	// Per environment and component, the version a release pipeline LAST REPORTED, when and by whom — recorded when a deploy reports success, not probed live. Also the PROD DATA lock and the operations still open.
+	//
+	// Corresponds with GET /projects/{project_id}/release-state (the `ReleaseStateGet` operationId).
+	ReleaseStateGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ProjectStagesList A project's provisioning stages
 	//
 	// The stage grid of the portal's Plan page, read-only and from the database only.
 	//
 	// Corresponds with GET /projects/{project_id}/stages (the `ProjectStagesList` operationId).
 	ProjectStagesList(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReleaseOperationsGet One release operation
+	//
+	// Corresponds with GET /release-operations/{release_operation_id} (the `ReleaseOperationsGet` operationId).
+	ReleaseOperationsGet(ctx context.Context, releaseOperationId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// TenantsList List tenants
 	//
@@ -4738,6 +6340,305 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /whoami (the `WhoamiGet` operationId).
 	WhoamiGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+// AiModelsList List AI models
+//
+// Corresponds with GET /ai-models (the `AiModelsList` operationId).
+func (c *Client) AiModelsList(ctx context.Context, params *AiModelsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsCreateWithBody Add an AI model to the catalogue
+//
+// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /ai-models (the `AiModelsCreate` operationId).
+func (c *Client) AiModelsCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsCreateRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsCreate Add an AI model to the catalogue
+//
+// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /ai-models (the `AiModelsCreate` operationId).
+func (c *Client) AiModelsCreate(ctx context.Context, body AiModelsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsCreateRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsLoadTargetsList List load targets
+//
+// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when Prometheus answers, static fallbacks otherwise.
+//
+// Corresponds with GET /ai-models/load-targets (the `AiModelsLoadTargetsList` operationId).
+func (c *Client) AiModelsLoadTargetsList(ctx context.Context, params *AiModelsLoadTargetsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsLoadTargetsListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsRunsGet One store run
+//
+// Corresponds with GET /ai-models/runs/{run_id} (the `AiModelsRunsGet` operationId).
+func (c *Client) AiModelsRunsGet(ctx context.Context, runId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsRunsGetRequest(c.Server, runId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsStorageGet Model storage
+//
+// The central-store shares and each node's local disk with the models cached on it, as last scanned. Nothing is scanned by this read.
+//
+// Corresponds with GET /ai-models/storage (the `AiModelsStorageGet` operationId).
+func (c *Client) AiModelsStorageGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsStorageGetRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsDelete Remove an AI model from the catalogue
+//
+// Removes the catalogue ROW and nothing else: no disk is touched. It is refused while the row is the record of weights that exist (a central copy, or `status` `owned` / `serving`), while any node holds a cache, and while a store run is pending or running. Removing a node cache first is allowed (`DELETE .../node-caches/{node}`); removing a central copy is not possible through v1. Needs the admin permission; NOT destroy-gated, because it never destroys weights.
+//
+// Corresponds with DELETE /ai-models/{model_id} (the `AiModelsDelete` operationId).
+func (c *Client) AiModelsDelete(ctx context.Context, modelId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsDeleteRequest(c.Server, modelId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsGet One AI model
+//
+// Corresponds with GET /ai-models/{model_id} (the `AiModelsGet` operationId).
+func (c *Client) AiModelsGet(ctx context.Context, modelId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsGetRequest(c.Server, modelId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsUpdateWithBody Change an AI model's metadata
+//
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+func (c *Client) AiModelsUpdateWithBody(ctx context.Context, modelId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsUpdateRequestWithBody(c.Server, modelId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsUpdate Change an AI model's metadata
+//
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+func (c *Client) AiModelsUpdate(ctx context.Context, modelId string, body AiModelsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsUpdateRequest(c.Server, modelId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsUpdateWithApplicationMergePatchPlusJSONBody Change an AI model's metadata
+//
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type.
+//
+// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+func (c *Client) AiModelsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, modelId string, body AiModelsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, modelId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsNodeCachesList List a model's node caches
+//
+// Corresponds with GET /ai-models/{model_id}/node-caches (the `AiModelsNodeCachesList` operationId).
+func (c *Client) AiModelsNodeCachesList(ctx context.Context, modelId string, params *AiModelsNodeCachesListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsNodeCachesListRequest(c.Server, modelId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsNodeCachesDelete Remove a model's cache from a node
+//
+// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while Prometheus cannot be read.
+//
+// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+//
+// Corresponds with DELETE /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesDelete` operationId).
+func (c *Client) AiModelsNodeCachesDelete(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsNodeCachesDeleteRequest(c.Server, modelId, node)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsNodeCachesGet One node cache
+//
+// Corresponds with GET /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesGet` operationId).
+func (c *Client) AiModelsNodeCachesGet(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsNodeCachesGetRequest(c.Server, modelId, node)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiModelsNodeCachesPut Cache a model on a node
+//
+// Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.
+//
+// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+//
+// Corresponds with PUT /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesPut` operationId).
+func (c *Client) AiModelsNodeCachesPut(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiModelsNodeCachesPutRequest(c.Server, modelId, node)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiCatalogList List the launch catalogue
+//
+// The launchable models per node: key, host, label, model, engine, port and enabled. The load and unload commands are never returned.
+//
+// Corresponds with GET /ai/catalog (the `AiCatalogList` operationId).
+func (c *Client) AiCatalogList(ctx context.Context, params *AiCatalogListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiCatalogListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiClustersList List DGX clusters
+//
+// The DGX clusters as recorded. A read: it does not converge a cluster that is forming or breaking.
+//
+// Corresponds with GET /ai/clusters (the `AiClustersList` operationId).
+func (c *Client) AiClustersList(ctx context.Context, params *AiClustersListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiClustersListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 // AiGatewayGet The AI gateway
@@ -5007,6 +6908,40 @@ func (c *Client) AiGatewayTiersPutWithBody(ctx context.Context, key string, cont
 // Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
 func (c *Client) AiGatewayTiersPut(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAiGatewayTiersPutRequest(c.Server, key, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiNodesList List AI nodes
+//
+// The AI fleet. Roster fields are always present; live fields are null when Prometheus cannot be read (`prometheus_reachable: false`). Never 503.
+//
+// Corresponds with GET /ai/nodes (the `AiNodesList` operationId).
+func (c *Client) AiNodesList(ctx context.Context, params *AiNodesListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiNodesListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiNodesGet One AI node
+//
+// One node, as in the list. Never 503.
+//
+// Corresponds with GET /ai/nodes/{hostname} (the `AiNodesGet` operationId).
+func (c *Client) AiNodesGet(ctx context.Context, hostname string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiNodesGetRequest(c.Server, hostname)
 	if err != nil {
 		return nil, err
 	}
@@ -5659,6 +7594,65 @@ func (c *Client) ProjectMembersPut(ctx context.Context, projectId string, userId
 	return c.Client.Do(req)
 }
 
+// ProdLockGet The PROD data lock
+//
+// While `locked`, no data copy may target PROD. Code promotion is not affected.
+//
+// Corresponds with GET /projects/{project_id}/prod-lock (the `ProdLockGet` operationId).
+func (c *Client) ProdLockGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProdLockGetRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProdLockPutWithBody Set the PROD data lock
+//
+// The lock protects PROD DATA: while it is set, the portal refuses every data copy into PROD, so PROD stays the source of truth for its data. It does NOT block code promotion into PROD.
+//
+// `{"locked": true}` locks. Unlocking needs `confirm_unlock` equal to the project's short name. Setting the state it already has changes nothing (the lock keeps its time and author).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /projects/{project_id}/prod-lock (the `ProdLockPut` operationId).
+func (c *Client) ProdLockPutWithBody(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProdLockPutRequestWithBody(c.Server, projectId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProdLockPut Set the PROD data lock
+//
+// The lock protects PROD DATA: while it is set, the portal refuses every data copy into PROD, so PROD stays the source of truth for its data. It does NOT block code promotion into PROD.
+//
+// `{"locked": true}` locks. Unlocking needs `confirm_unlock` equal to the project's short name. Setting the state it already has changes nothing (the lock keeps its time and author).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /projects/{project_id}/prod-lock (the `ProdLockPut` operationId).
+func (c *Client) ProdLockPut(ctx context.Context, projectId string, body ProdLockPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProdLockPutRequest(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ProjectProvisioningGet A project's provisioning state
 //
 // Read from the database only. `converged` is true when every stage is done and none is stale; `provisioned` additionally requires that no stage was simulated. On a platform whose `dispatch_mode` is `dryrun` nothing is ever executed and provisioning never completes; under `simulate` stages are marked done without running, so `converged` can be true while `provisioned` is false.
@@ -5693,6 +7687,90 @@ func (c *Client) ProjectProvisioningStart(ctx context.Context, projectId string,
 	return c.Client.Do(req)
 }
 
+// ReleaseOperationsList Release history of a project
+//
+// Newest first. Includes the data copies booked in the portal.
+//
+// Corresponds with GET /projects/{project_id}/release-operations (the `ReleaseOperationsList` operationId).
+func (c *Client) ReleaseOperationsList(ctx context.Context, projectId string, params *ReleaseOperationsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReleaseOperationsListRequest(c.Server, projectId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReleasePromotionsCreateWithBody Request a promotion
+//
+// Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.
+//
+// * `dev` and `uat` start at once.
+// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
+// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+//
+// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /projects/{project_id}/release-promotions (the `ReleasePromotionsCreate` operationId).
+func (c *Client) ReleasePromotionsCreateWithBody(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReleasePromotionsCreateRequestWithBody(c.Server, projectId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReleasePromotionsCreate Request a promotion
+//
+// Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.
+//
+// * `dev` and `uat` start at once.
+// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
+// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+//
+// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /projects/{project_id}/release-promotions (the `ReleasePromotionsCreate` operationId).
+func (c *Client) ReleasePromotionsCreate(ctx context.Context, projectId string, body ReleasePromotionsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReleasePromotionsCreateRequest(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReleaseStateGet Release state of a project
+//
+// Per environment and component, the version a release pipeline LAST REPORTED, when and by whom — recorded when a deploy reports success, not probed live. Also the PROD DATA lock and the operations still open.
+//
+// Corresponds with GET /projects/{project_id}/release-state (the `ReleaseStateGet` operationId).
+func (c *Client) ReleaseStateGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReleaseStateGetRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ProjectStagesList A project's provisioning stages
 //
 // The stage grid of the portal's Plan page, read-only and from the database only.
@@ -5700,6 +7778,21 @@ func (c *Client) ProjectProvisioningStart(ctx context.Context, projectId string,
 // Corresponds with GET /projects/{project_id}/stages (the `ProjectStagesList` operationId).
 func (c *Client) ProjectStagesList(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewProjectStagesListRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReleaseOperationsGet One release operation
+//
+// Corresponds with GET /release-operations/{release_operation_id} (the `ReleaseOperationsGet` operationId).
+func (c *Client) ReleaseOperationsGet(ctx context.Context, releaseOperationId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReleaseOperationsGetRequest(c.Server, releaseOperationId)
 	if err != nil {
 		return nil, err
 	}
@@ -6164,6 +8257,777 @@ func (c *Client) WhoamiGet(ctx context.Context, reqEditors ...RequestEditorFn) (
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+// NewAiModelsListRequest constructs an http.Request for the AiModelsList method
+func NewAiModelsListRequest(server string, params *AiModelsListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Repo != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "repo", *params.Repo, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Category != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "category", *params.Category, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.GatewayTier != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "gateway_tier", *params.GatewayTier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiModelsCreateRequest calls the generic AiModelsCreate builder with application/json body
+func NewAiModelsCreateRequest(server string, body AiModelsCreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAiModelsCreateRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewAiModelsCreateRequestWithBody constructs an http.Request for the AiModelsCreate method, with any body, and a specified content type
+func NewAiModelsCreateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAiModelsLoadTargetsListRequest constructs an http.Request for the AiModelsLoadTargetsList method
+func NewAiModelsLoadTargetsListRequest(server string, params *AiModelsLoadTargetsListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models/load-targets")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiModelsRunsGetRequest constructs an http.Request for the AiModelsRunsGet method
+func NewAiModelsRunsGetRequest(server string, runId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models/runs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiModelsStorageGetRequest constructs an http.Request for the AiModelsStorageGet method
+func NewAiModelsStorageGetRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models/storage")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiModelsDeleteRequest constructs an http.Request for the AiModelsDelete method
+func NewAiModelsDeleteRequest(server string, modelId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "model_id", modelId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiModelsGetRequest constructs an http.Request for the AiModelsGet method
+func NewAiModelsGetRequest(server string, modelId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "model_id", modelId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiModelsUpdateRequest calls the generic AiModelsUpdate builder with application/json body
+func NewAiModelsUpdateRequest(server string, modelId string, body AiModelsUpdateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAiModelsUpdateRequestWithBody(server, modelId, "application/json", bodyReader)
+}
+
+// NewAiModelsUpdateRequestWithApplicationMergePatchPlusJSONBody calls the generic AiModelsUpdate builder with application/merge-patch+json body
+func NewAiModelsUpdateRequestWithApplicationMergePatchPlusJSONBody(server string, modelId string, body AiModelsUpdateApplicationMergePatchPlusJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAiModelsUpdateRequestWithBody(server, modelId, "application/merge-patch+json", bodyReader)
+}
+
+// NewAiModelsUpdateRequestWithBody constructs an http.Request for the AiModelsUpdate method, with any body, and a specified content type
+func NewAiModelsUpdateRequestWithBody(server string, modelId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "model_id", modelId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAiModelsNodeCachesListRequest constructs an http.Request for the AiModelsNodeCachesList method
+func NewAiModelsNodeCachesListRequest(server string, modelId string, params *AiModelsNodeCachesListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "model_id", modelId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models/%s/node-caches", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiModelsNodeCachesDeleteRequest constructs an http.Request for the AiModelsNodeCachesDelete method
+func NewAiModelsNodeCachesDeleteRequest(server string, modelId string, node string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "model_id", modelId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "node", node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models/%s/node-caches/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiModelsNodeCachesGetRequest constructs an http.Request for the AiModelsNodeCachesGet method
+func NewAiModelsNodeCachesGetRequest(server string, modelId string, node string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "model_id", modelId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "node", node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models/%s/node-caches/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiModelsNodeCachesPutRequest constructs an http.Request for the AiModelsNodeCachesPut method
+func NewAiModelsNodeCachesPutRequest(server string, modelId string, node string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "model_id", modelId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "node", node, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai-models/%s/node-caches/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiCatalogListRequest constructs an http.Request for the AiCatalogList method
+func NewAiCatalogListRequest(server string, params *AiCatalogListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/catalog")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Host != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "host", *params.Host, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Enabled != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "enabled", *params.Enabled, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiClustersListRequest constructs an http.Request for the AiClustersList method
+func NewAiClustersListRequest(server string, params *AiClustersListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/clusters")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Name != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "name", *params.Name, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
 }
 
 // NewAiGatewayGetRequest constructs an http.Request for the AiGatewayGet method
@@ -6675,6 +9539,106 @@ func NewAiGatewayTiersPutRequestWithBody(server string, key string, contentType 
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAiNodesListRequest constructs an http.Request for the AiNodesList method
+func NewAiNodesListRequest(server string, params *AiNodesListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/nodes")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiNodesGetRequest constructs an http.Request for the AiNodesGet method
+func NewAiNodesGetRequest(server string, hostname string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "hostname", hostname, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/nodes/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -7942,6 +10906,87 @@ func NewProjectMembersPutRequestWithBody(server string, projectId string, userId
 	return req, nil
 }
 
+// NewProdLockGetRequest constructs an http.Request for the ProdLockGet method
+func NewProdLockGetRequest(server string, projectId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/prod-lock", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProdLockPutRequest calls the generic ProdLockPut builder with application/json body
+func NewProdLockPutRequest(server string, projectId string, body ProdLockPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewProdLockPutRequestWithBody(server, projectId, "application/json", bodyReader)
+}
+
+// NewProdLockPutRequestWithBody constructs an http.Request for the ProdLockPut method, with any body, and a specified content type
+func NewProdLockPutRequestWithBody(server string, projectId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/prod-lock", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewProjectProvisioningGetRequest constructs an http.Request for the ProjectProvisioningGet method
 func NewProjectProvisioningGetRequest(server string, projectId string) (*http.Request, error) {
 	var err error
@@ -8010,6 +11055,196 @@ func NewProjectProvisioningStartRequest(server string, projectId string) (*http.
 	return req, nil
 }
 
+// NewReleaseOperationsListRequest constructs an http.Request for the ReleaseOperationsList method
+func NewReleaseOperationsListRequest(server string, projectId string, params *ReleaseOperationsListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/release-operations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.TargetEnv != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "target_env", *params.TargetEnv, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Component != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "component", *params.Component, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewReleasePromotionsCreateRequest calls the generic ReleasePromotionsCreate builder with application/json body
+func NewReleasePromotionsCreateRequest(server string, projectId string, body ReleasePromotionsCreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewReleasePromotionsCreateRequestWithBody(server, projectId, "application/json", bodyReader)
+}
+
+// NewReleasePromotionsCreateRequestWithBody constructs an http.Request for the ReleasePromotionsCreate method, with any body, and a specified content type
+func NewReleasePromotionsCreateRequestWithBody(server string, projectId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/release-promotions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewReleaseStateGetRequest constructs an http.Request for the ReleaseStateGet method
+func NewReleaseStateGetRequest(server string, projectId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/release-state", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewProjectStagesListRequest constructs an http.Request for the ProjectStagesList method
 func NewProjectStagesListRequest(server string, projectId string) (*http.Request, error) {
 	var err error
@@ -8027,6 +11262,40 @@ func NewProjectStagesListRequest(server string, projectId string) (*http.Request
 	}
 
 	operationPath := fmt.Sprintf("/projects/%s/stages", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewReleaseOperationsGetRequest constructs an http.Request for the ReleaseOperationsGet method
+func NewReleaseOperationsGetRequest(server string, releaseOperationId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "release_operation_id", releaseOperationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/release-operations/%s", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -9092,6 +12361,159 @@ func WithBaseURL(baseURL string) ClientOption {
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
 
+	// AiModelsListWithResponse List AI models
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai-models (the `AiModelsList` operationId).
+	AiModelsListWithResponse(ctx context.Context, params *AiModelsListParams, reqEditors ...RequestEditorFn) (*AiModelsListResponse, error)
+
+	// AiModelsCreateWithBodyWithResponse Add an AI model to the catalogue
+	//
+	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /ai-models (the `AiModelsCreate` operationId).
+	AiModelsCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiModelsCreateResponse, error)
+
+	// AiModelsCreateWithResponse Add an AI model to the catalogue
+	//
+	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /ai-models (the `AiModelsCreate` operationId).
+	AiModelsCreateWithResponse(ctx context.Context, body AiModelsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*AiModelsCreateResponse, error)
+
+	// AiModelsLoadTargetsListWithResponse List load targets
+	//
+	// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when Prometheus answers, static fallbacks otherwise.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai-models/load-targets (the `AiModelsLoadTargetsList` operationId).
+	AiModelsLoadTargetsListWithResponse(ctx context.Context, params *AiModelsLoadTargetsListParams, reqEditors ...RequestEditorFn) (*AiModelsLoadTargetsListResponse, error)
+
+	// AiModelsRunsGetWithResponse One store run
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai-models/runs/{run_id} (the `AiModelsRunsGet` operationId).
+	AiModelsRunsGetWithResponse(ctx context.Context, runId string, reqEditors ...RequestEditorFn) (*AiModelsRunsGetResponse, error)
+
+	// AiModelsStorageGetWithResponse Model storage
+	//
+	// The central-store shares and each node's local disk with the models cached on it, as last scanned. Nothing is scanned by this read.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai-models/storage (the `AiModelsStorageGet` operationId).
+	AiModelsStorageGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AiModelsStorageGetResponse, error)
+
+	// AiModelsDeleteWithResponse Remove an AI model from the catalogue
+	//
+	// Removes the catalogue ROW and nothing else: no disk is touched. It is refused while the row is the record of weights that exist (a central copy, or `status` `owned` / `serving`), while any node holds a cache, and while a store run is pending or running. Removing a node cache first is allowed (`DELETE .../node-caches/{node}`); removing a central copy is not possible through v1. Needs the admin permission; NOT destroy-gated, because it never destroys weights.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /ai-models/{model_id} (the `AiModelsDelete` operationId).
+	AiModelsDeleteWithResponse(ctx context.Context, modelId string, reqEditors ...RequestEditorFn) (*AiModelsDeleteResponse, error)
+
+	// AiModelsGetWithResponse One AI model
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai-models/{model_id} (the `AiModelsGet` operationId).
+	AiModelsGetWithResponse(ctx context.Context, modelId string, reqEditors ...RequestEditorFn) (*AiModelsGetResponse, error)
+
+	// AiModelsUpdateWithBodyWithResponse Change an AI model's metadata
+	//
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+	AiModelsUpdateWithBodyWithResponse(ctx context.Context, modelId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiModelsUpdateResponse, error)
+
+	// AiModelsUpdateWithResponse Change an AI model's metadata
+	//
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+	AiModelsUpdateWithResponse(ctx context.Context, modelId string, body AiModelsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*AiModelsUpdateResponse, error)
+
+	// AiModelsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change an AI model's metadata
+	//
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+	AiModelsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, modelId string, body AiModelsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*AiModelsUpdateResponse, error)
+
+	// AiModelsNodeCachesListWithResponse List a model's node caches
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai-models/{model_id}/node-caches (the `AiModelsNodeCachesList` operationId).
+	AiModelsNodeCachesListWithResponse(ctx context.Context, modelId string, params *AiModelsNodeCachesListParams, reqEditors ...RequestEditorFn) (*AiModelsNodeCachesListResponse, error)
+
+	// AiModelsNodeCachesDeleteWithResponse Remove a model's cache from a node
+	//
+	// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while Prometheus cannot be read.
+	//
+	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesDelete` operationId).
+	AiModelsNodeCachesDeleteWithResponse(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*AiModelsNodeCachesDeleteResponse, error)
+
+	// AiModelsNodeCachesGetWithResponse One node cache
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesGet` operationId).
+	AiModelsNodeCachesGetWithResponse(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*AiModelsNodeCachesGetResponse, error)
+
+	// AiModelsNodeCachesPutWithResponse Cache a model on a node
+	//
+	// Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.
+	//
+	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesPut` operationId).
+	AiModelsNodeCachesPutWithResponse(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*AiModelsNodeCachesPutResponse, error)
+
+	// AiCatalogListWithResponse List the launch catalogue
+	//
+	// The launchable models per node: key, host, label, model, engine, port and enabled. The load and unload commands are never returned.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/catalog (the `AiCatalogList` operationId).
+	AiCatalogListWithResponse(ctx context.Context, params *AiCatalogListParams, reqEditors ...RequestEditorFn) (*AiCatalogListResponse, error)
+
+	// AiClustersListWithResponse List DGX clusters
+	//
+	// The DGX clusters as recorded. A read: it does not converge a cluster that is forming or breaking.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/clusters (the `AiClustersList` operationId).
+	AiClustersListWithResponse(ctx context.Context, params *AiClustersListParams, reqEditors ...RequestEditorFn) (*AiClustersListResponse, error)
+
 	// AiGatewayGetWithResponse The AI gateway
 	//
 	// The OpenAI-compatible base URL and the serving-tier names. The base URL
@@ -9230,6 +12652,24 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
 	AiGatewayTiersPutWithResponse(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayTiersPutResponse, error)
+
+	// AiNodesListWithResponse List AI nodes
+	//
+	// The AI fleet. Roster fields are always present; live fields are null when Prometheus cannot be read (`prometheus_reachable: false`). Never 503.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/nodes (the `AiNodesList` operationId).
+	AiNodesListWithResponse(ctx context.Context, params *AiNodesListParams, reqEditors ...RequestEditorFn) (*AiNodesListResponse, error)
+
+	// AiNodesGetWithResponse One AI node
+	//
+	// One node, as in the list. Never 503.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/nodes/{hostname} (the `AiNodesGet` operationId).
+	AiNodesGetWithResponse(ctx context.Context, hostname string, reqEditors ...RequestEditorFn) (*AiNodesGetResponse, error)
 
 	// BrandGetWithResponse This platform's brand
 	//
@@ -9557,6 +12997,37 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
 	ProjectMembersPutWithResponse(ctx context.Context, projectId string, userId string, body ProjectMembersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectMembersPutResponse, error)
 
+	// ProdLockGetWithResponse The PROD data lock
+	//
+	// While `locked`, no data copy may target PROD. Code promotion is not affected.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/prod-lock (the `ProdLockGet` operationId).
+	ProdLockGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProdLockGetResponse, error)
+
+	// ProdLockPutWithBodyWithResponse Set the PROD data lock
+	//
+	// The lock protects PROD DATA: while it is set, the portal refuses every data copy into PROD, so PROD stays the source of truth for its data. It does NOT block code promotion into PROD.
+	//
+	// `{"locked": true}` locks. Unlocking needs `confirm_unlock` equal to the project's short name. Setting the state it already has changes nothing (the lock keeps its time and author).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/prod-lock (the `ProdLockPut` operationId).
+	ProdLockPutWithBodyWithResponse(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProdLockPutResponse, error)
+
+	// ProdLockPutWithResponse Set the PROD data lock
+	//
+	// The lock protects PROD DATA: while it is set, the portal refuses every data copy into PROD, so PROD stays the source of truth for its data. It does NOT block code promotion into PROD.
+	//
+	// `{"locked": true}` locks. Unlocking needs `confirm_unlock` equal to the project's short name. Setting the state it already has changes nothing (the lock keeps its time and author).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/prod-lock (the `ProdLockPut` operationId).
+	ProdLockPutWithResponse(ctx context.Context, projectId string, body ProdLockPutJSONRequestBody, reqEditors ...RequestEditorFn) (*ProdLockPutResponse, error)
+
 	// ProjectProvisioningGetWithResponse A project's provisioning state
 	//
 	// Read from the database only. `converged` is true when every stage is done and none is stale; `provisioned` additionally requires that no stage was simulated. On a platform whose `dispatch_mode` is `dryrun` nothing is ever executed and provisioning never completes; under `simulate` stages are marked done without running, so `converged` can be true while `provisioned` is false.
@@ -9575,6 +13046,54 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /projects/{project_id}/provisioning (the `ProjectProvisioningStart` operationId).
 	ProjectProvisioningStartWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectProvisioningStartResponse, error)
 
+	// ReleaseOperationsListWithResponse Release history of a project
+	//
+	// Newest first. Includes the data copies booked in the portal.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/release-operations (the `ReleaseOperationsList` operationId).
+	ReleaseOperationsListWithResponse(ctx context.Context, projectId string, params *ReleaseOperationsListParams, reqEditors ...RequestEditorFn) (*ReleaseOperationsListResponse, error)
+
+	// ReleasePromotionsCreateWithBodyWithResponse Request a promotion
+	//
+	// Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.
+	//
+	// * `dev` and `uat` start at once.
+	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
+	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+	//
+	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/release-promotions (the `ReleasePromotionsCreate` operationId).
+	ReleasePromotionsCreateWithBodyWithResponse(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReleasePromotionsCreateResponse, error)
+
+	// ReleasePromotionsCreateWithResponse Request a promotion
+	//
+	// Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.
+	//
+	// * `dev` and `uat` start at once.
+	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
+	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+	//
+	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/release-promotions (the `ReleasePromotionsCreate` operationId).
+	ReleasePromotionsCreateWithResponse(ctx context.Context, projectId string, body ReleasePromotionsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*ReleasePromotionsCreateResponse, error)
+
+	// ReleaseStateGetWithResponse Release state of a project
+	//
+	// Per environment and component, the version a release pipeline LAST REPORTED, when and by whom — recorded when a deploy reports success, not probed live. Also the PROD DATA lock and the operations still open.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/release-state (the `ReleaseStateGet` operationId).
+	ReleaseStateGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ReleaseStateGetResponse, error)
+
 	// ProjectStagesListWithResponse A project's provisioning stages
 	//
 	// The stage grid of the portal's Plan page, read-only and from the database only.
@@ -9583,6 +13102,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /projects/{project_id}/stages (the `ProjectStagesList` operationId).
 	ProjectStagesListWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectStagesListResponse, error)
+
+	// ReleaseOperationsGetWithResponse One release operation
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /release-operations/{release_operation_id} (the `ReleaseOperationsGet` operationId).
+	ReleaseOperationsGetWithResponse(ctx context.Context, releaseOperationId string, reqEditors ...RequestEditorFn) (*ReleaseOperationsGetResponse, error)
 
 	// TenantsListWithResponse List tenants
 	//
@@ -9807,6 +13333,1070 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /whoami (the `WhoamiGet` operationId).
 	WhoamiGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*WhoamiGetResponse, error)
+}
+
+type AiModelsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AiModelPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiModelsListResponse) GetJSON200() *AiModelPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *AiModel
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r AiModelsCreateResponse) GetJSON201() *AiModel {
+	return r.JSON201
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r AiModelsCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r AiModelsCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AiModelsCreateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r AiModelsCreateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsCreateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsLoadTargetsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LoadTargetPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiModelsLoadTargetsListResponse) GetJSON200() *LoadTargetPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsLoadTargetsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsLoadTargetsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsLoadTargetsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsLoadTargetsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsLoadTargetsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsLoadTargetsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsRunsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *StoreRun
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiModelsRunsGetResponse) GetJSON200() *StoreRun {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiModelsRunsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiModelsRunsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsRunsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsRunsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsRunsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsRunsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsRunsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsRunsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsStorageGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Storage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiModelsStorageGetResponse) GetJSON200() *Storage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsStorageGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsStorageGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsStorageGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsStorageGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsStorageGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsStorageGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiModelsDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiModelsDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r AiModelsDeleteResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r AiModelsDeleteResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AiModel
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiModelsGetResponse) GetJSON200() *AiModel {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiModelsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiModelsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsUpdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AiModel
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiModelsUpdateResponse) GetJSON200() *AiModel {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiModelsUpdateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiModelsUpdateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AiModelsUpdateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r AiModelsUpdateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsUpdateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsUpdateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsUpdateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsUpdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsUpdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsNodeCachesListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *NodeCachePage
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiModelsNodeCachesListResponse) GetJSON200() *NodeCachePage {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiModelsNodeCachesListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiModelsNodeCachesListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsNodeCachesListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsNodeCachesListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsNodeCachesListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsNodeCachesListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsNodeCachesListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsNodeCachesListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsNodeCachesDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Operation
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r AiModelsNodeCachesDeleteResponse) GetJSON202() *Operation {
+	return r.JSON202
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiModelsNodeCachesDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiModelsNodeCachesDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r AiModelsNodeCachesDeleteResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r AiModelsNodeCachesDeleteResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AiModelsNodeCachesDeleteResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r AiModelsNodeCachesDeleteResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r AiModelsNodeCachesDeleteResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r AiModelsNodeCachesDeleteResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r AiModelsNodeCachesDeleteResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r AiModelsNodeCachesDeleteResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r AiModelsNodeCachesDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r AiModelsNodeCachesDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsNodeCachesDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsNodeCachesDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsNodeCachesDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsNodeCachesDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsNodeCachesDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsNodeCachesDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsNodeCachesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *NodeCache
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiModelsNodeCachesGetResponse) GetJSON200() *NodeCache {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiModelsNodeCachesGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiModelsNodeCachesGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsNodeCachesGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsNodeCachesGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsNodeCachesGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsNodeCachesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsNodeCachesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsNodeCachesGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiModelsNodeCachesPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *NodeCache
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Operation
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiModelsNodeCachesPutResponse) GetJSON200() *NodeCache {
+	return r.JSON200
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r AiModelsNodeCachesPutResponse) GetJSON202() *Operation {
+	return r.JSON202
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiModelsNodeCachesPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiModelsNodeCachesPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r AiModelsNodeCachesPutResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r AiModelsNodeCachesPutResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AiModelsNodeCachesPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r AiModelsNodeCachesPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r AiModelsNodeCachesPutResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r AiModelsNodeCachesPutResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r AiModelsNodeCachesPutResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r AiModelsNodeCachesPutResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiModelsNodeCachesPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiModelsNodeCachesPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiModelsNodeCachesPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiModelsNodeCachesPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiModelsNodeCachesPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiModelsNodeCachesPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiCatalogListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LaunchCatalogPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiCatalogListResponse) GetJSON200() *LaunchCatalogPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiCatalogListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiCatalogListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiCatalogListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiCatalogListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiCatalogListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiCatalogListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiClustersListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DgxClusterPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiClustersListResponse) GetJSON200() *DgxClusterPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiClustersListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiClustersListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiClustersListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiClustersListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiClustersListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiClustersListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
 }
 
 type AiGatewayGetResponse struct {
@@ -10654,6 +15244,130 @@ func (r AiGatewayTiersPutResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AiGatewayTiersPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiNodesListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AiNodePage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiNodesListResponse) GetJSON200() *AiNodePage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiNodesListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiNodesListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiNodesListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiNodesListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiNodesListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiNodesListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiNodesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AiNode
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiNodesGetResponse) GetJSON200() *AiNode {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiNodesGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiNodesGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiNodesGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiNodesGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiNodesGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiNodesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiNodesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiNodesGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -12532,6 +17246,158 @@ func (r ProjectMembersPutResponse) ContentType() string {
 	return ""
 }
 
+type ProdLockGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ProdLock
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProdLockGetResponse) GetJSON200() *ProdLock {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProdLockGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProdLockGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProdLockGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProdLockGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProdLockGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProdLockGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProdLockGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProdLockGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProdLockPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ProdLock
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProdLockPutResponse) GetJSON200() *ProdLock {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProdLockPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProdLockPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ProdLockPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ProdLockPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProdLockPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProdLockPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProdLockPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProdLockPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProdLockPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProdLockPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type ProjectProvisioningGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -12684,6 +17550,241 @@ func (r ProjectProvisioningStartResponse) ContentType() string {
 	return ""
 }
 
+type ReleaseOperationsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ReleaseOperationPage
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ReleaseOperationsListResponse) GetJSON200() *ReleaseOperationPage {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ReleaseOperationsListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ReleaseOperationsListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ReleaseOperationsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ReleaseOperationsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ReleaseOperationsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReleaseOperationsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReleaseOperationsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReleaseOperationsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ReleasePromotionsCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Operation
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r ReleasePromotionsCreateResponse) GetJSON202() *Operation {
+	return r.JSON202
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ReleasePromotionsCreateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ReleasePromotionsCreateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ReleasePromotionsCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ReleasePromotionsCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ReleasePromotionsCreateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ReleasePromotionsCreateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ReleasePromotionsCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ReleasePromotionsCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ReleasePromotionsCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReleasePromotionsCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReleasePromotionsCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReleasePromotionsCreateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ReleaseStateGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ReleaseState
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ReleaseStateGetResponse) GetJSON200() *ReleaseState {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ReleaseStateGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ReleaseStateGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ReleaseStateGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ReleaseStateGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ReleaseStateGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReleaseStateGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReleaseStateGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReleaseStateGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type ProjectStagesListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -12747,6 +17848,75 @@ func (r ProjectStagesListResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ProjectStagesListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ReleaseOperationsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ReleaseOperation
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ReleaseOperationsGetResponse) GetJSON200() *ReleaseOperation {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ReleaseOperationsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ReleaseOperationsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ReleaseOperationsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ReleaseOperationsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ReleaseOperationsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReleaseOperationsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReleaseOperationsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReleaseOperationsGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -14239,6 +19409,261 @@ func (r WhoamiGetResponse) ContentType() string {
 	return ""
 }
 
+// AiModelsListWithResponse List AI models
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai-models (the `AiModelsList` operationId).
+func (c *ClientWithResponses) AiModelsListWithResponse(ctx context.Context, params *AiModelsListParams, reqEditors ...RequestEditorFn) (*AiModelsListResponse, error) {
+	rsp, err := c.AiModelsList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsListResponse(rsp)
+}
+
+// AiModelsCreateWithBodyWithResponse Add an AI model to the catalogue
+//
+// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /ai-models (the `AiModelsCreate` operationId).
+func (c *ClientWithResponses) AiModelsCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiModelsCreateResponse, error) {
+	rsp, err := c.AiModelsCreateWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsCreateResponse(rsp)
+}
+
+// AiModelsCreateWithResponse Add an AI model to the catalogue
+//
+// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /ai-models (the `AiModelsCreate` operationId).
+func (c *ClientWithResponses) AiModelsCreateWithResponse(ctx context.Context, body AiModelsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*AiModelsCreateResponse, error) {
+	rsp, err := c.AiModelsCreate(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsCreateResponse(rsp)
+}
+
+// AiModelsLoadTargetsListWithResponse List load targets
+//
+// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when Prometheus answers, static fallbacks otherwise.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai-models/load-targets (the `AiModelsLoadTargetsList` operationId).
+func (c *ClientWithResponses) AiModelsLoadTargetsListWithResponse(ctx context.Context, params *AiModelsLoadTargetsListParams, reqEditors ...RequestEditorFn) (*AiModelsLoadTargetsListResponse, error) {
+	rsp, err := c.AiModelsLoadTargetsList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsLoadTargetsListResponse(rsp)
+}
+
+// AiModelsRunsGetWithResponse One store run
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai-models/runs/{run_id} (the `AiModelsRunsGet` operationId).
+func (c *ClientWithResponses) AiModelsRunsGetWithResponse(ctx context.Context, runId string, reqEditors ...RequestEditorFn) (*AiModelsRunsGetResponse, error) {
+	rsp, err := c.AiModelsRunsGet(ctx, runId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsRunsGetResponse(rsp)
+}
+
+// AiModelsStorageGetWithResponse Model storage
+//
+// The central-store shares and each node's local disk with the models cached on it, as last scanned. Nothing is scanned by this read.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai-models/storage (the `AiModelsStorageGet` operationId).
+func (c *ClientWithResponses) AiModelsStorageGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AiModelsStorageGetResponse, error) {
+	rsp, err := c.AiModelsStorageGet(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsStorageGetResponse(rsp)
+}
+
+// AiModelsDeleteWithResponse Remove an AI model from the catalogue
+//
+// Removes the catalogue ROW and nothing else: no disk is touched. It is refused while the row is the record of weights that exist (a central copy, or `status` `owned` / `serving`), while any node holds a cache, and while a store run is pending or running. Removing a node cache first is allowed (`DELETE .../node-caches/{node}`); removing a central copy is not possible through v1. Needs the admin permission; NOT destroy-gated, because it never destroys weights.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /ai-models/{model_id} (the `AiModelsDelete` operationId).
+func (c *ClientWithResponses) AiModelsDeleteWithResponse(ctx context.Context, modelId string, reqEditors ...RequestEditorFn) (*AiModelsDeleteResponse, error) {
+	rsp, err := c.AiModelsDelete(ctx, modelId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsDeleteResponse(rsp)
+}
+
+// AiModelsGetWithResponse One AI model
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai-models/{model_id} (the `AiModelsGet` operationId).
+func (c *ClientWithResponses) AiModelsGetWithResponse(ctx context.Context, modelId string, reqEditors ...RequestEditorFn) (*AiModelsGetResponse, error) {
+	rsp, err := c.AiModelsGet(ctx, modelId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsGetResponse(rsp)
+}
+
+// AiModelsUpdateWithBodyWithResponse Change an AI model's metadata
+//
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+func (c *ClientWithResponses) AiModelsUpdateWithBodyWithResponse(ctx context.Context, modelId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiModelsUpdateResponse, error) {
+	rsp, err := c.AiModelsUpdateWithBody(ctx, modelId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsUpdateResponse(rsp)
+}
+
+// AiModelsUpdateWithResponse Change an AI model's metadata
+//
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+func (c *ClientWithResponses) AiModelsUpdateWithResponse(ctx context.Context, modelId string, body AiModelsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*AiModelsUpdateResponse, error) {
+	rsp, err := c.AiModelsUpdate(ctx, modelId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsUpdateResponse(rsp)
+}
+
+// AiModelsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change an AI model's metadata
+//
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /ai-models/{model_id} (the `AiModelsUpdate` operationId).
+func (c *ClientWithResponses) AiModelsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, modelId string, body AiModelsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*AiModelsUpdateResponse, error) {
+	rsp, err := c.AiModelsUpdateWithApplicationMergePatchPlusJSONBody(ctx, modelId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsUpdateResponse(rsp)
+}
+
+// AiModelsNodeCachesListWithResponse List a model's node caches
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai-models/{model_id}/node-caches (the `AiModelsNodeCachesList` operationId).
+func (c *ClientWithResponses) AiModelsNodeCachesListWithResponse(ctx context.Context, modelId string, params *AiModelsNodeCachesListParams, reqEditors ...RequestEditorFn) (*AiModelsNodeCachesListResponse, error) {
+	rsp, err := c.AiModelsNodeCachesList(ctx, modelId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsNodeCachesListResponse(rsp)
+}
+
+// AiModelsNodeCachesDeleteWithResponse Remove a model's cache from a node
+//
+// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while Prometheus cannot be read.
+//
+// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesDelete` operationId).
+func (c *ClientWithResponses) AiModelsNodeCachesDeleteWithResponse(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*AiModelsNodeCachesDeleteResponse, error) {
+	rsp, err := c.AiModelsNodeCachesDelete(ctx, modelId, node, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsNodeCachesDeleteResponse(rsp)
+}
+
+// AiModelsNodeCachesGetWithResponse One node cache
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesGet` operationId).
+func (c *ClientWithResponses) AiModelsNodeCachesGetWithResponse(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*AiModelsNodeCachesGetResponse, error) {
+	rsp, err := c.AiModelsNodeCachesGet(ctx, modelId, node, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsNodeCachesGetResponse(rsp)
+}
+
+// AiModelsNodeCachesPutWithResponse Cache a model on a node
+//
+// Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.
+//
+// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesPut` operationId).
+func (c *ClientWithResponses) AiModelsNodeCachesPutWithResponse(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*AiModelsNodeCachesPutResponse, error) {
+	rsp, err := c.AiModelsNodeCachesPut(ctx, modelId, node, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiModelsNodeCachesPutResponse(rsp)
+}
+
+// AiCatalogListWithResponse List the launch catalogue
+//
+// The launchable models per node: key, host, label, model, engine, port and enabled. The load and unload commands are never returned.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/catalog (the `AiCatalogList` operationId).
+func (c *ClientWithResponses) AiCatalogListWithResponse(ctx context.Context, params *AiCatalogListParams, reqEditors ...RequestEditorFn) (*AiCatalogListResponse, error) {
+	rsp, err := c.AiCatalogList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiCatalogListResponse(rsp)
+}
+
+// AiClustersListWithResponse List DGX clusters
+//
+// The DGX clusters as recorded. A read: it does not converge a cluster that is forming or breaking.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/clusters (the `AiClustersList` operationId).
+func (c *ClientWithResponses) AiClustersListWithResponse(ctx context.Context, params *AiClustersListParams, reqEditors ...RequestEditorFn) (*AiClustersListResponse, error) {
+	rsp, err := c.AiClustersList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiClustersListResponse(rsp)
+}
+
 // AiGatewayGetWithResponse The AI gateway
 //
 // The OpenAI-compatible base URL and the serving-tier names. The base URL
@@ -14466,6 +19891,36 @@ func (c *ClientWithResponses) AiGatewayTiersPutWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseAiGatewayTiersPutResponse(rsp)
+}
+
+// AiNodesListWithResponse List AI nodes
+//
+// The AI fleet. Roster fields are always present; live fields are null when Prometheus cannot be read (`prometheus_reachable: false`). Never 503.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/nodes (the `AiNodesList` operationId).
+func (c *ClientWithResponses) AiNodesListWithResponse(ctx context.Context, params *AiNodesListParams, reqEditors ...RequestEditorFn) (*AiNodesListResponse, error) {
+	rsp, err := c.AiNodesList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiNodesListResponse(rsp)
+}
+
+// AiNodesGetWithResponse One AI node
+//
+// One node, as in the list. Never 503.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/nodes/{hostname} (the `AiNodesGet` operationId).
+func (c *ClientWithResponses) AiNodesGetWithResponse(ctx context.Context, hostname string, reqEditors ...RequestEditorFn) (*AiNodesGetResponse, error) {
+	rsp, err := c.AiNodesGet(ctx, hostname, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiNodesGetResponse(rsp)
 }
 
 // BrandGetWithResponse This platform's brand
@@ -15004,6 +20459,55 @@ func (c *ClientWithResponses) ProjectMembersPutWithResponse(ctx context.Context,
 	return ParseProjectMembersPutResponse(rsp)
 }
 
+// ProdLockGetWithResponse The PROD data lock
+//
+// While `locked`, no data copy may target PROD. Code promotion is not affected.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/prod-lock (the `ProdLockGet` operationId).
+func (c *ClientWithResponses) ProdLockGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProdLockGetResponse, error) {
+	rsp, err := c.ProdLockGet(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProdLockGetResponse(rsp)
+}
+
+// ProdLockPutWithBodyWithResponse Set the PROD data lock
+//
+// The lock protects PROD DATA: while it is set, the portal refuses every data copy into PROD, so PROD stays the source of truth for its data. It does NOT block code promotion into PROD.
+//
+// `{"locked": true}` locks. Unlocking needs `confirm_unlock` equal to the project's short name. Setting the state it already has changes nothing (the lock keeps its time and author).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/prod-lock (the `ProdLockPut` operationId).
+func (c *ClientWithResponses) ProdLockPutWithBodyWithResponse(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProdLockPutResponse, error) {
+	rsp, err := c.ProdLockPutWithBody(ctx, projectId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProdLockPutResponse(rsp)
+}
+
+// ProdLockPutWithResponse Set the PROD data lock
+//
+// The lock protects PROD DATA: while it is set, the portal refuses every data copy into PROD, so PROD stays the source of truth for its data. It does NOT block code promotion into PROD.
+//
+// `{"locked": true}` locks. Unlocking needs `confirm_unlock` equal to the project's short name. Setting the state it already has changes nothing (the lock keeps its time and author).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/prod-lock (the `ProdLockPut` operationId).
+func (c *ClientWithResponses) ProdLockPutWithResponse(ctx context.Context, projectId string, body ProdLockPutJSONRequestBody, reqEditors ...RequestEditorFn) (*ProdLockPutResponse, error) {
+	rsp, err := c.ProdLockPut(ctx, projectId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProdLockPutResponse(rsp)
+}
+
 // ProjectProvisioningGetWithResponse A project's provisioning state
 //
 // Read from the database only. `converged` is true when every stage is done and none is stale; `provisioned` additionally requires that no stage was simulated. On a platform whose `dispatch_mode` is `dryrun` nothing is ever executed and provisioning never completes; under `simulate` stages are marked done without running, so `converged` can be true while `provisioned` is false.
@@ -15034,6 +20538,78 @@ func (c *ClientWithResponses) ProjectProvisioningStartWithResponse(ctx context.C
 	return ParseProjectProvisioningStartResponse(rsp)
 }
 
+// ReleaseOperationsListWithResponse Release history of a project
+//
+// Newest first. Includes the data copies booked in the portal.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/release-operations (the `ReleaseOperationsList` operationId).
+func (c *ClientWithResponses) ReleaseOperationsListWithResponse(ctx context.Context, projectId string, params *ReleaseOperationsListParams, reqEditors ...RequestEditorFn) (*ReleaseOperationsListResponse, error) {
+	rsp, err := c.ReleaseOperationsList(ctx, projectId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReleaseOperationsListResponse(rsp)
+}
+
+// ReleasePromotionsCreateWithBodyWithResponse Request a promotion
+//
+// Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.
+//
+// * `dev` and `uat` start at once.
+// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
+// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+//
+// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/release-promotions (the `ReleasePromotionsCreate` operationId).
+func (c *ClientWithResponses) ReleasePromotionsCreateWithBodyWithResponse(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReleasePromotionsCreateResponse, error) {
+	rsp, err := c.ReleasePromotionsCreateWithBody(ctx, projectId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReleasePromotionsCreateResponse(rsp)
+}
+
+// ReleasePromotionsCreateWithResponse Request a promotion
+//
+// Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.
+//
+// * `dev` and `uat` start at once.
+// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
+// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+//
+// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/release-promotions (the `ReleasePromotionsCreate` operationId).
+func (c *ClientWithResponses) ReleasePromotionsCreateWithResponse(ctx context.Context, projectId string, body ReleasePromotionsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*ReleasePromotionsCreateResponse, error) {
+	rsp, err := c.ReleasePromotionsCreate(ctx, projectId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReleasePromotionsCreateResponse(rsp)
+}
+
+// ReleaseStateGetWithResponse Release state of a project
+//
+// Per environment and component, the version a release pipeline LAST REPORTED, when and by whom — recorded when a deploy reports success, not probed live. Also the PROD DATA lock and the operations still open.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/release-state (the `ReleaseStateGet` operationId).
+func (c *ClientWithResponses) ReleaseStateGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ReleaseStateGetResponse, error) {
+	rsp, err := c.ReleaseStateGet(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReleaseStateGetResponse(rsp)
+}
+
 // ProjectStagesListWithResponse A project's provisioning stages
 //
 // The stage grid of the portal's Plan page, read-only and from the database only.
@@ -15047,6 +20623,19 @@ func (c *ClientWithResponses) ProjectStagesListWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseProjectStagesListResponse(rsp)
+}
+
+// ReleaseOperationsGetWithResponse One release operation
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /release-operations/{release_operation_id} (the `ReleaseOperationsGet` operationId).
+func (c *ClientWithResponses) ReleaseOperationsGetWithResponse(ctx context.Context, releaseOperationId string, reqEditors ...RequestEditorFn) (*ReleaseOperationsGetResponse, error) {
+	rsp, err := c.ReleaseOperationsGet(ctx, releaseOperationId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReleaseOperationsGetResponse(rsp)
 }
 
 // TenantsListWithResponse List tenants
@@ -15427,6 +21016,863 @@ func (c *ClientWithResponses) WhoamiGetWithResponse(ctx context.Context, reqEdit
 		return nil, err
 	}
 	return ParseWhoamiGetResponse(rsp)
+}
+
+// ParseAiModelsListResponse parses an HTTP response from a AiModelsListWithResponse call
+func ParseAiModelsListResponse(rsp *http.Response) (*AiModelsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AiModelPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsCreateResponse parses an HTTP response from a AiModelsCreateWithResponse call
+func ParseAiModelsCreateResponse(rsp *http.Response) (*AiModelsCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest AiModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsLoadTargetsListResponse parses an HTTP response from a AiModelsLoadTargetsListWithResponse call
+func ParseAiModelsLoadTargetsListResponse(rsp *http.Response) (*AiModelsLoadTargetsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsLoadTargetsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LoadTargetPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsRunsGetResponse parses an HTTP response from a AiModelsRunsGetWithResponse call
+func ParseAiModelsRunsGetResponse(rsp *http.Response) (*AiModelsRunsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsRunsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest StoreRun
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsStorageGetResponse parses an HTTP response from a AiModelsStorageGetWithResponse call
+func ParseAiModelsStorageGetResponse(rsp *http.Response) (*AiModelsStorageGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsStorageGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Storage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsDeleteResponse parses an HTTP response from a AiModelsDeleteWithResponse call
+func ParseAiModelsDeleteResponse(rsp *http.Response) (*AiModelsDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsGetResponse parses an HTTP response from a AiModelsGetWithResponse call
+func ParseAiModelsGetResponse(rsp *http.Response) (*AiModelsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AiModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsUpdateResponse parses an HTTP response from a AiModelsUpdateWithResponse call
+func ParseAiModelsUpdateResponse(rsp *http.Response) (*AiModelsUpdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsUpdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AiModel
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsNodeCachesListResponse parses an HTTP response from a AiModelsNodeCachesListWithResponse call
+func ParseAiModelsNodeCachesListResponse(rsp *http.Response) (*AiModelsNodeCachesListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsNodeCachesListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest NodeCachePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsNodeCachesDeleteResponse parses an HTTP response from a AiModelsNodeCachesDeleteWithResponse call
+func ParseAiModelsNodeCachesDeleteResponse(rsp *http.Response) (*AiModelsNodeCachesDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsNodeCachesDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Operation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsNodeCachesGetResponse parses an HTTP response from a AiModelsNodeCachesGetWithResponse call
+func ParseAiModelsNodeCachesGetResponse(rsp *http.Response) (*AiModelsNodeCachesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsNodeCachesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest NodeCache
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiModelsNodeCachesPutResponse parses an HTTP response from a AiModelsNodeCachesPutWithResponse call
+func ParseAiModelsNodeCachesPutResponse(rsp *http.Response) (*AiModelsNodeCachesPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiModelsNodeCachesPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest NodeCache
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Operation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiCatalogListResponse parses an HTTP response from a AiCatalogListWithResponse call
+func ParseAiCatalogListResponse(rsp *http.Response) (*AiCatalogListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiCatalogListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LaunchCatalogPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiClustersListResponse parses an HTTP response from a AiClustersListWithResponse call
+func ParseAiClustersListResponse(rsp *http.Response) (*AiClustersListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiClustersListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DgxClusterPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParseAiGatewayGetResponse parses an HTTP response from a AiGatewayGetWithResponse call
@@ -16113,6 +22559,100 @@ func ParseAiGatewayTiersPutResponse(rsp *http.Response) (*AiGatewayTiersPutRespo
 			return nil, err
 		}
 		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiNodesListResponse parses an HTTP response from a AiNodesListWithResponse call
+func ParseAiNodesListResponse(rsp *http.Response) (*AiNodesListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiNodesListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AiNodePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiNodesGetResponse parses an HTTP response from a AiNodesGetWithResponse call
+func ParseAiNodesGetResponse(rsp *http.Response) (*AiNodesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiNodesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AiNode
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
 
 	case rsp.Header.Get("Content-Type") == "application/json" && true:
 		var dest Problem
@@ -17639,6 +24179,128 @@ func ParseProjectMembersPutResponse(rsp *http.Response) (*ProjectMembersPutRespo
 	return response, nil
 }
 
+// ParseProdLockGetResponse parses an HTTP response from a ProdLockGetWithResponse call
+func ParseProdLockGetResponse(rsp *http.Response) (*ProdLockGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProdLockGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProdLock
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProdLockPutResponse parses an HTTP response from a ProdLockPutWithResponse call
+func ParseProdLockPutResponse(rsp *http.Response) (*ProdLockPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProdLockPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProdLock
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseProjectProvisioningGetResponse parses an HTTP response from a ProjectProvisioningGetWithResponse call
 func ParseProjectProvisioningGetResponse(rsp *http.Response) (*ProjectProvisioningGetResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -17761,6 +24423,196 @@ func ParseProjectProvisioningStartResponse(rsp *http.Response) (*ProjectProvisio
 	return response, nil
 }
 
+// ParseReleaseOperationsListResponse parses an HTTP response from a ReleaseOperationsListWithResponse call
+func ParseReleaseOperationsListResponse(rsp *http.Response) (*ReleaseOperationsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReleaseOperationsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ReleaseOperationPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseReleasePromotionsCreateResponse parses an HTTP response from a ReleasePromotionsCreateWithResponse call
+func ParseReleasePromotionsCreateResponse(rsp *http.Response) (*ReleasePromotionsCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReleasePromotionsCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Operation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseReleaseStateGetResponse parses an HTTP response from a ReleaseStateGetWithResponse call
+func ParseReleaseStateGetResponse(rsp *http.Response) (*ReleaseStateGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReleaseStateGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ReleaseState
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseProjectStagesListResponse parses an HTTP response from a ProjectStagesListWithResponse call
 func ParseProjectStagesListResponse(rsp *http.Response) (*ProjectStagesListResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -17777,6 +24629,60 @@ func ParseProjectStagesListResponse(rsp *http.Response) (*ProjectStagesListRespo
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest StageGrid
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseReleaseOperationsGetResponse parses an HTTP response from a ReleaseOperationsGetWithResponse call
+func ParseReleaseOperationsGetResponse(rsp *http.Response) (*ReleaseOperationsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReleaseOperationsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ReleaseOperation
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

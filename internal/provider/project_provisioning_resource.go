@@ -7,7 +7,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"sort"
 	"strings"
 	"time"
 
@@ -38,9 +37,9 @@ var (
 // defaultProvisioningTimeout is how long create and update wait by default.
 const defaultProvisioningTimeout = 60 * time.Minute
 
-// provisioningPollInterval is how often the provider polls a provisioning
-// operation. Tests shorten it.
-var provisioningPollInterval = 5 * time.Second
+// operationPollInterval is how often the provider polls an operation. Tests
+// shorten it.
+var operationPollInterval = 5 * time.Second
 
 // NewProjectProvisioningResource is the factory for
 // ataila_project_provisioning.
@@ -403,7 +402,7 @@ func (r *provisioningResource) poll(ctx context.Context, id string, first *clien
 		select {
 		case <-ctx.Done():
 			return last, awaiting, ctx.Err()
-		case <-time.After(provisioningPollInterval):
+		case <-time.After(operationPollInterval):
 		}
 		op, err := r.data.API.Operation(ctx, id)
 		if err != nil {
@@ -433,24 +432,6 @@ func lastStage(op *client.Operation, p *client.Provisioning) string {
 		return "none reported"
 	}
 	return strings.Join(parts, "; ")
-}
-
-func operationErrorText(op *client.Operation) string {
-	var lines []string
-	if op.Error != nil {
-		keys := make([]string, 0, len(*op.Error))
-		for k := range *op.Error {
-			keys = append(keys, k)
-		}
-		sort.Strings(keys)
-		for _, k := range keys {
-			lines = append(lines, fmt.Sprintf("%s: %v", k, (*op.Error)[k]))
-		}
-	}
-	if m := ptrString(op.Message); m != "" {
-		lines = append(lines, m)
-	}
-	return strings.Join(lines, "\n")
 }
 
 func notConvergedText(p *client.Provisioning) string {

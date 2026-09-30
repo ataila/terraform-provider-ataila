@@ -3,6 +3,51 @@
 All notable changes to this provider. Versions follow semantic versioning; until the first publication the
 provider stays at 0.x and any release may change.
 
+## 0.6.0 (unreleased)
+
+Releases, AI models and AI Center. Pins the platform's `/api/v1` contract of platform release 1.0.164
+(API 1.0.0).
+
+### Resources
+
+- `ataila_release_promotion`: requests a promotion of `app-api` or `www` of a Kubernetes project into
+  `dev` (a named `version`), `uat` or `prod` (the version the environment below last reported), with one
+  Idempotency-Key per create, and polls `release:<id>` until it succeeds. A failed operation (`rejected`,
+  `release_failed`, `operation_timed_out`) fails the apply and taints the resource. A PROD request waits for
+  a person in the portal: by default create ends with `awaiting_approval` and a warning;
+  `wait_for_approval = true` waits for the decision (`timeouts { create }`, 60 minutes). On a platform that
+  fakes dispatch, and when the timeout passes, create ends with the observed status and a warning, never
+  tainting (the next apply would book a second deployment). All arguments are frozen; destroy forgets.
+  Import by id; a data copy is refused.
+- `ataila_project_prod_lock`: the PROD data lock; unlocking needs `confirm_unlock` (the short name), sent
+  only then. Destroy forgets. Import by project id.
+- `ataila_ai_model`: a catalogue row. `repo` is frozen; `status`, `location` and the other store-owned
+  fields are read-only (setting them fails the plan). Destroy removes the row, not destroy-gated; the
+  platform's refusals (`model_has_central_copy`, `model_has_node_caches`, `model_has_active_run`) are final
+  errors naming the remedy. Import by id or `repo:<repo>`.
+- `ataila_ai_model_node_cache`: PUT/DELETE with one Idempotency-Key, polling `model-store-run:<id>`
+  (`timeouts { create, delete }`, 3 hours and 30 minutes). A copy the node already holds is adopted. Fails at
+  once on a platform that fakes dispatch. `run_in_progress`, `no_central_copy`, `unknown_node`,
+  `model_loaded_on_node` and 503 `loaded_state_unknown` are final. Import `<model_id>/<node>`.
+
+### Data sources
+
+- `ataila_release_state`, `ataila_release_operation`, `ataila_ai_model`, `ataila_ai_models`,
+  `ataila_ai_model_storage`, `ataila_ai_load_targets`, and AI Center (read-only): `ataila_ai_nodes`,
+  `ataila_ai_node`, `ataila_dgx_clusters`, `ataila_ai_model_launch_catalog`. The AI Center reads never
+  fail on a monitoring outage; `prometheus_reachable` says whether the live fields could be read.
+
+### Behaviour
+
+- Numbers of AI models and AI Center keep float64 precision (the generated models use float32).
+- A 503 `loaded_state_unknown` is final, like the other final 503 codes.
+
+### Tests
+
+- The mock implements release promotions (approval, rejection, dry-run dispatch, reported versions),
+  the PROD data lock, the model catalogue, node caches and store runs, and AI Center with and without
+  monitoring. The cross-CLI state check now covers a promotion, a PROD lock and an AI model.
+
 ## 0.5.0 (2026-09-30)
 
 Licence and brand. Same contract as 0.4.0 (platform release 1.0.162, API 1.0.0).

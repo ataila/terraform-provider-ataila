@@ -5,12 +5,12 @@ package provider
 
 import "time"
 
-// SetProvisioningPollInterval shortens the provisioning poll for a test and
+// SetPollInterval shortens the operation poll for a test and
 // returns a function that restores it.
-func SetProvisioningPollInterval(d time.Duration) func() {
-	prev := provisioningPollInterval
-	provisioningPollInterval = d
-	return func() { provisioningPollInterval = prev }
+func SetPollInterval(d time.Duration) func() {
+	prev := operationPollInterval
+	operationPollInterval = d
+	return func() { operationPollInterval = prev }
 }
 
 // HasIPv4 is hasIPv4 for the tests.

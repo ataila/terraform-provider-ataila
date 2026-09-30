@@ -24,6 +24,1424 @@
         "title": "AiGateway",
         "type": "object"
       },
+      "AiModel": {
+        "properties": {
+          "architecture": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Architecture"
+          },
+          "benchmarks": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Benchmarks"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "context_window": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context Window"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "dgx_recipe": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The spark-vllm recipe a DGX cluster serves it with, if any.",
+            "title": "Dgx Recipe"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "frontier_equiv": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frontier Equiv"
+          },
+          "gated": {
+            "description": "The Hugging Face repo needs an accept-click to pull.",
+            "title": "Gated",
+            "type": "boolean"
+          },
+          "gateway_tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gateway Tier"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "license": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "License"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Read-only: set by the store actions (pull, node cache, purge), never by a client. `synology` (central store), `local` (node caches only), `both`, or null.",
+            "title": "Location"
+          },
+          "min_target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Target"
+          },
+          "model_card_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Card Url"
+          },
+          "node_caches": {
+            "description": "The node caches (see /node-caches).",
+            "items": {
+              "$ref": "#/components/schemas/NodeCacheRef"
+            },
+            "title": "Node Caches",
+            "type": "array"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "offline_ready": {
+            "description": "Read-only: set by the store actions (pull, node cache, purge), never by a client. A node holds a cached copy.",
+            "title": "Offline Ready",
+            "type": "boolean"
+          },
+          "org": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Org"
+          },
+          "param_count_b": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Parameters in billions, sortable.",
+            "title": "Param Count B"
+          },
+          "params": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Human form, e.g. \"480B (35B active)\".",
+            "title": "Params"
+          },
+          "published": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published"
+          },
+          "quant": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quant"
+          },
+          "repo": {
+            "description": "A Hugging Face repo id `org/name`: each part starts with a letter or digit and holds only letters, digits, `.`, `_` and `-` (no `..`), at most 96 characters. Frozen after create.",
+            "title": "Repo",
+            "type": "string"
+          },
+          "serving_node": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serving Node"
+          },
+          "size_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Gb"
+          },
+          "status": {
+            "description": "Read-only: set by the store actions (pull, node cache, purge), never by a client. `planned`, `pulling`, `owned` or `serving`.",
+            "title": "Status",
+            "type": "string"
+          },
+          "strong_axis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strong Axis"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "synology_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Where the central copy is; null without one.",
+            "title": "Synology Path"
+          },
+          "synology_volume": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Read-only: set by the store actions (pull, node cache, purge), never by a client. The central-store share holding the weights; null while there is no central copy.",
+            "title": "Synology Volume"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "vendor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The lab that built the model (the HF org may be a quantizer).",
+            "title": "Vendor"
+          },
+          "vendor_country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vendor Country"
+          }
+        },
+        "required": [
+          "id",
+          "repo",
+          "display_name",
+          "gated",
+          "status",
+          "location",
+          "offline_ready",
+          "synology_volume",
+          "synology_path",
+          "dgx_recipe",
+          "node_caches",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "AiModel",
+        "type": "object"
+      },
+      "AiModelCreate": {
+        "additionalProperties": false,
+        "description": "A catalogue row. The model is created `planned`, with no central copy and\nno node cache: weights arrive only through the store actions, and pulling\nthem is not part of v1. ``display_name`` defaults to the repo's last part.",
+        "properties": {
+          "architecture": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Architecture"
+          },
+          "benchmarks": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "maxProperties": 100,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Benchmarks"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "maxLength": 24,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "context_window": {
+            "anyOf": [
+              {
+                "maxLength": 20,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context Window"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "display_name": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
+          },
+          "frontier_equiv": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frontier Equiv"
+          },
+          "gated": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gated"
+          },
+          "gateway_tier": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gateway Tier"
+          },
+          "license": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "License"
+          },
+          "min_target": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Target"
+          },
+          "model_card_url": {
+            "anyOf": [
+              {
+                "maxLength": 300,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Card Url"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "org": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Org"
+          },
+          "param_count_b": {
+            "anyOf": [
+              {
+                "maximum": 9999999.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Param Count B"
+          },
+          "params": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Params"
+          },
+          "published": {
+            "anyOf": [
+              {
+                "maxLength": 20,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published"
+          },
+          "quant": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quant"
+          },
+          "repo": {
+            "description": "A Hugging Face repo id `org/name`: each part starts with a letter or digit and holds only letters, digits, `.`, `_` and `-` (no `..`), at most 96 characters. Frozen after create; unique.",
+            "title": "Repo",
+            "type": "string"
+          },
+          "serving_node": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serving Node"
+          },
+          "size_gb": {
+            "anyOf": [
+              {
+                "maximum": 99999999.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Gb"
+          },
+          "strong_axis": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strong Axis"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "vendor": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vendor"
+          },
+          "vendor_country": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vendor Country"
+          }
+        },
+        "required": [
+          "repo"
+        ],
+        "title": "AiModelCreate",
+        "type": "object"
+      },
+      "AiModelPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AiModel"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "AiModelPage",
+        "type": "object"
+      },
+      "AiModelPatch": {
+        "additionalProperties": false,
+        "description": "A JSON Merge Patch (RFC 7396) of the metadata. ``null`` clears a field\nwhere the schema allows it (never ``display_name`` or ``gated``). ``repo``\nis frozen and ``status``, ``location``, ``offline_ready``,\n``synology_volume`` are read-only: each may be sent with its current value\nand nothing else.",
+        "properties": {
+          "architecture": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Architecture"
+          },
+          "benchmarks": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "maxProperties": 100,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Benchmarks"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "maxLength": 24,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "context_window": {
+            "anyOf": [
+              {
+                "maxLength": 20,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context Window"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "display_name": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
+          },
+          "frontier_equiv": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frontier Equiv"
+          },
+          "gated": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gated"
+          },
+          "gateway_tier": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gateway Tier"
+          },
+          "license": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "License"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Read-only.",
+            "title": "Location"
+          },
+          "min_target": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Target"
+          },
+          "model_card_url": {
+            "anyOf": [
+              {
+                "maxLength": 300,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Card Url"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "offline_ready": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Read-only.",
+            "title": "Offline Ready"
+          },
+          "org": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Org"
+          },
+          "param_count_b": {
+            "anyOf": [
+              {
+                "maximum": 9999999.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Param Count B"
+          },
+          "params": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Params"
+          },
+          "published": {
+            "anyOf": [
+              {
+                "maxLength": 20,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published"
+          },
+          "quant": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quant"
+          },
+          "repo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Frozen.",
+            "title": "Repo"
+          },
+          "serving_node": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serving Node"
+          },
+          "size_gb": {
+            "anyOf": [
+              {
+                "maximum": 99999999.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Gb"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Read-only.",
+            "title": "Status"
+          },
+          "strong_axis": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strong Axis"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "synology_volume": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Read-only.",
+            "title": "Synology Volume"
+          },
+          "vendor": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vendor"
+          },
+          "vendor_country": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vendor Country"
+          }
+        },
+        "title": "AiModelPatch",
+        "type": "object"
+      },
+      "AiNode": {
+        "description": "One AI node. The ROSTER fields (from the portal's hardware inventory) are\nalways present; the LIVE fields come from Prometheus and are null when it\ncannot be read — this read never fails because of Prometheus.",
+        "properties": {
+          "cluster": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NodeCluster"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Live (Prometheus); null when `prometheus_reachable` is false."
+          },
+          "collector_stale": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Live (Prometheus); null when `prometheus_reachable` is false.",
+            "title": "Collector Stale"
+          },
+          "cpu_util_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cpu Util Pct"
+          },
+          "disk_used_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Disk Used Pct"
+          },
+          "gpu_class": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "e.g. `rtx-3090`, `gb10`, `rtx-pro-6000`.",
+            "title": "Gpu Class"
+          },
+          "gpu_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gpu Count"
+          },
+          "gpu_temp_max_c": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gpu Temp Max C"
+          },
+          "gpu_util_avg_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gpu Util Avg Pct"
+          },
+          "hostname": {
+            "title": "Hostname",
+            "type": "string"
+          },
+          "is_virtual": {
+            "description": "A GPU VM on a hybrid host (its power belongs to `parent_host`).",
+            "title": "Is Virtual",
+            "type": "boolean"
+          },
+          "load1": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Load1"
+          },
+          "mem_used_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mem Used Pct"
+          },
+          "mgmt_ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mgmt Ip"
+          },
+          "models": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/NodeModel"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Live (Prometheus); null when `prometheus_reachable` is false. Loaded models.",
+            "title": "Models"
+          },
+          "online": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Live (Prometheus); null when `prometheus_reachable` is false.",
+            "title": "Online"
+          },
+          "parent_host": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Host"
+          },
+          "prometheus_reachable": {
+            "title": "Prometheus Reachable",
+            "type": "boolean"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Live (Prometheus); null when `prometheus_reachable` is false.",
+            "title": "Role"
+          },
+          "services": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Services",
+            "type": "array"
+          },
+          "site": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Site"
+          },
+          "specs_summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specs Summary"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Live (Prometheus); null when `prometheus_reachable` is false. `serving`, `loaded_idle`, `idle`, `offline`, `standby` or `powered_off`.",
+            "title": "Status"
+          },
+          "throttle_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Live (Prometheus); null when `prometheus_reachable` is false.",
+            "title": "Throttle Active"
+          },
+          "uptime_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uptime Seconds"
+          },
+          "vmid": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vmid"
+          },
+          "vram_total_bytes": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vram Total Bytes"
+          },
+          "vram_used_bytes": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vram Used Bytes"
+          }
+        },
+        "required": [
+          "hostname",
+          "is_virtual",
+          "prometheus_reachable"
+        ],
+        "title": "AiNode",
+        "type": "object"
+      },
+      "AiNodePage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AiNode"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "prometheus_reachable": {
+            "description": "False: every live field below is null.",
+            "title": "Prometheus Reachable",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "prometheus_reachable"
+        ],
+        "title": "AiNodePage",
+        "type": "object"
+      },
       "ApiWarning": {
         "description": "Something that did not go as planned, on a request that still succeeded\n— e.g. the customer was created but its GitLab group was not. A client must\nsurface these (the provider reports them as diagnostics).",
         "properties": {
@@ -340,6 +1758,135 @@
           "favicon_asset_id"
         ],
         "title": "BrandPut",
+        "type": "object"
+      },
+      "CachedModelRef": {
+        "properties": {
+          "cached_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cached At"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "repo": {
+            "title": "Repo",
+            "type": "string"
+          },
+          "size_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Gb"
+          }
+        },
+        "required": [
+          "name",
+          "repo"
+        ],
+        "title": "CachedModelRef",
+        "type": "object"
+      },
+      "ClusterMember": {
+        "properties": {
+          "crosslink_ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crosslink Ip"
+          },
+          "hostname": {
+            "title": "Hostname",
+            "type": "string"
+          },
+          "mgmt_ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mgmt Ip"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`head` or `worker`.",
+            "title": "Role"
+          }
+        },
+        "required": [
+          "hostname"
+        ],
+        "title": "ClusterMember",
+        "type": "object"
+      },
+      "ClusterServe": {
+        "properties": {
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "recipe": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe"
+          },
+          "served_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When serving started, if recorded (a value that is not a timestamp reads as null).",
+            "title": "Served At"
+          }
+        },
+        "title": "ClusterServe",
         "type": "object"
       },
       "Customer": {
@@ -750,6 +2297,130 @@
           }
         },
         "title": "CustomerPatch",
+        "type": "object"
+      },
+      "DgxCluster": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "crosslink_subnet": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crosslink Subnet"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Message"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "interconnect": {
+            "title": "Interconnect",
+            "type": "string"
+          },
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/ClusterMember"
+            },
+            "title": "Members",
+            "type": "array"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "serve": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClusterServe"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "description": "As recorded: `defined`, `forming`, `active`, `breaking` or `error`. This read does not converge a cluster that is mid-change (the portal's DGX page does).",
+            "title": "Status",
+            "type": "string"
+          },
+          "topology": {
+            "title": "Topology",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "topology",
+          "interconnect",
+          "members",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "DgxCluster",
+        "type": "object"
+      },
+      "DgxClusterPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DgxCluster"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "DgxClusterPage",
         "type": "object"
       },
       "GatewayKey": {
@@ -1385,6 +3056,79 @@
           "namespace"
         ],
         "title": "KubernetesNamespace",
+        "type": "object"
+      },
+      "LaunchCatalogEntry": {
+        "description": "A launchable model on a node. Never the load or unload commands.",
+        "properties": {
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "engine": {
+            "title": "Engine",
+            "type": "string"
+          },
+          "host": {
+            "description": "The node (for a cluster: its head).",
+            "title": "Host",
+            "type": "string"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "port": {
+            "description": "The port the loaded model answers on.",
+            "title": "Port",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "key",
+          "host",
+          "label",
+          "model",
+          "engine",
+          "port",
+          "enabled"
+        ],
+        "title": "LaunchCatalogEntry",
+        "type": "object"
+      },
+      "LaunchCatalogPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/LaunchCatalogEntry"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "LaunchCatalogPage",
         "type": "object"
       },
       "Licence": {
@@ -2058,6 +3802,140 @@
         "title": "LicenceSummary",
         "type": "object"
       },
+      "LoadTarget": {
+        "properties": {
+          "engine": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engine"
+          },
+          "gpu_count": {
+            "title": "Gpu Count",
+            "type": "integer"
+          },
+          "hostname": {
+            "description": "A node, or a DGX cluster by name.",
+            "title": "Hostname",
+            "type": "string"
+          },
+          "is_cluster": {
+            "default": false,
+            "title": "Is Cluster",
+            "type": "boolean"
+          },
+          "loadable": {
+            "description": "False for fit-only targets (DGX clusters, Kubernetes nodes).",
+            "title": "Loadable",
+            "type": "boolean"
+          },
+          "loaded_models": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Loaded Models",
+            "type": "array"
+          },
+          "members": {
+            "anyOf": [
+              {
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Members"
+          },
+          "online": {
+            "title": "Online",
+            "type": "boolean"
+          },
+          "per_gpu_gb": {
+            "title": "Per Gpu Gb",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "tensor_parallel": {
+            "title": "Tensor Parallel",
+            "type": "integer"
+          },
+          "usable_vram_gb": {
+            "title": "Usable Vram Gb",
+            "type": "number"
+          },
+          "vram_total_gb": {
+            "title": "Vram Total Gb",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hostname",
+          "online",
+          "status",
+          "gpu_count",
+          "tensor_parallel",
+          "per_gpu_gb",
+          "vram_total_gb",
+          "usable_vram_gb",
+          "loaded_models",
+          "loadable"
+        ],
+        "title": "LoadTarget",
+        "type": "object"
+      },
+      "LoadTargetPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/LoadTarget"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "LoadTargetPage",
+        "type": "object"
+      },
       "Membership": {
         "properties": {
           "created_at": {
@@ -2188,6 +4066,309 @@
         "title": "Meta",
         "type": "object"
       },
+      "NodeCache": {
+        "properties": {
+          "id": {
+            "description": "`<model id>:<node>`.",
+            "title": "Id",
+            "type": "string"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "node": {
+            "title": "Node",
+            "type": "string"
+          },
+          "path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Path"
+          },
+          "size_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Gb"
+          },
+          "state": {
+            "description": "`cached` once the copy is complete.",
+            "title": "State",
+            "type": "string"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "required": [
+          "id",
+          "model_id",
+          "node",
+          "state"
+        ],
+        "title": "NodeCache",
+        "type": "object"
+      },
+      "NodeCachePage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NodeCache"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "NodeCachePage",
+        "type": "object"
+      },
+      "NodeCacheRef": {
+        "properties": {
+          "node": {
+            "title": "Node",
+            "type": "string"
+          },
+          "size_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Gb"
+          },
+          "state": {
+            "description": "`cached`, or a state a failed or partial copy left.",
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "node",
+          "state"
+        ],
+        "title": "NodeCacheRef",
+        "type": "object"
+      },
+      "NodeCluster": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "role": {
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "role"
+        ],
+        "title": "NodeCluster",
+        "type": "object"
+      },
+      "NodeModel": {
+        "properties": {
+          "cluster": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cluster"
+          },
+          "engine": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engine"
+          },
+          "max_model_len": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Model Len"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The serving port (a node can run several).",
+            "title": "Port"
+          },
+          "served_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Served Name"
+          },
+          "tensor_parallel": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tensor Parallel"
+          },
+          "tiers": {
+            "description": "Serving tiers it backs right now.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Tiers",
+            "type": "array"
+          }
+        },
+        "required": [
+          "model"
+        ],
+        "title": "NodeModel",
+        "type": "object"
+      },
+      "NodeStorage": {
+        "properties": {
+          "cached": {
+            "items": {
+              "$ref": "#/components/schemas/CachedModelRef"
+            },
+            "title": "Cached",
+            "type": "array"
+          },
+          "captured_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Captured At"
+          },
+          "free_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Free Gb"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kind"
+          },
+          "mount": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mount"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "total_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Gb"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "NodeStorage",
+        "type": "object"
+      },
       "Operation": {
         "properties": {
           "created_at": {
@@ -2249,6 +4430,18 @@
               }
             ],
             "title": "Message"
+          },
+          "pipeline_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "For release operations: the pipeline carrying the work out, once one is known.",
+            "title": "Pipeline Url"
           },
           "resource_id": {
             "anyOf": [
@@ -2557,6 +4750,74 @@
           "code"
         ],
         "title": "Problem",
+        "type": "object"
+      },
+      "ProdLock": {
+        "properties": {
+          "locked": {
+            "title": "Locked",
+            "type": "boolean"
+          },
+          "locked_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locked At"
+          },
+          "locked_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locked By"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_id",
+          "locked"
+        ],
+        "title": "ProdLock",
+        "type": "object"
+      },
+      "ProdLockPut": {
+        "additionalProperties": false,
+        "properties": {
+          "confirm_unlock": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Required to UNLOCK: the project's short name, exactly.",
+            "title": "Confirm Unlock"
+          },
+          "locked": {
+            "title": "Locked",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "locked"
+        ],
+        "title": "ProdLockPut",
         "type": "object"
       },
       "Project": {
@@ -4499,6 +6760,460 @@
         "title": "Provisioning",
         "type": "object"
       },
+      "ReleaseOperation": {
+        "description": "One Release Manager operation: a promotion (`promote_build`) or a data\ncopy (`copy_data`, booked in the portal only).",
+        "properties": {
+          "approval_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The requester's reason and the approver's note, as recorded.",
+            "title": "Approval Reason"
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At"
+          },
+          "component": {
+            "anyOf": [
+              {
+                "enum": [
+                  "app-api",
+                  "www"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component"
+          },
+          "decided_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided At"
+          },
+          "decided_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Who approved or rejected it.",
+            "title": "Decided By"
+          },
+          "error_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why it failed or was rejected. Host addresses and digests are masked.",
+            "title": "Error Reason"
+          },
+          "id": {
+            "description": "The release operation's id (`/release-operations/{id}`).",
+            "title": "Id",
+            "type": "string"
+          },
+          "operation": {
+            "enum": [
+              "promote_build",
+              "copy_data"
+            ],
+            "title": "Operation",
+            "type": "string"
+          },
+          "operation_id": {
+            "description": "`release:<id>`, for `GET /operations/{operation_id}`.",
+            "title": "Operation Id",
+            "type": "string"
+          },
+          "pipeline_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The pipeline that carries it out, once known.",
+            "title": "Pipeline Url"
+          },
+          "portal_status": {
+            "description": "The Release Manager's own status.",
+            "enum": [
+              "pending",
+              "approved",
+              "rejected",
+              "running",
+              "succeeded",
+              "failed"
+            ],
+            "title": "Portal Status",
+            "type": "string"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "requested_at": {
+            "format": "date-time",
+            "title": "Requested At",
+            "type": "string"
+          },
+          "requested_by": {
+            "description": "E-mail of the principal that asked (for a service account, its service address), or `ci:<repo>@<commit>`.",
+            "title": "Requested By",
+            "type": "string"
+          },
+          "requested_token_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The API token used, when one was.",
+            "title": "Requested Token Id"
+          },
+          "requested_via": {
+            "anyOf": [
+              {
+                "enum": [
+                  "session",
+                  "pat",
+                  "service_account"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "How the request was made through /api/v1. Null: booked in the portal or by a pipeline.",
+            "title": "Requested Via"
+          },
+          "source_env": {
+            "enum": [
+              "sandbox",
+              "dev",
+              "uat",
+              "prod"
+            ],
+            "title": "Source Env",
+            "type": "string"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Started At"
+          },
+          "status": {
+            "description": "`awaiting_approval`: a PROD request waiting for a person in the portal. `pending`: approved, not yet picked up. `failed` also covers a rejected request (`portal_status` = `rejected`) and an operation the portal gave up on after hearing nothing (`error_reason` says so).",
+            "enum": [
+              "pending",
+              "awaiting_approval",
+              "running",
+              "succeeded",
+              "failed"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "target_env": {
+            "enum": [
+              "sandbox",
+              "dev",
+              "uat",
+              "prod"
+            ],
+            "title": "Target Env",
+            "type": "string"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "required": [
+          "id",
+          "operation_id",
+          "project_id",
+          "operation",
+          "source_env",
+          "target_env",
+          "status",
+          "portal_status",
+          "requested_by",
+          "requested_at"
+        ],
+        "title": "ReleaseOperation",
+        "type": "object"
+      },
+      "ReleaseOperationPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReleaseOperation"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ReleaseOperationPage",
+        "type": "object"
+      },
+      "ReleasePromotionCreate": {
+        "additionalProperties": false,
+        "description": "Request a promotion of one component into one environment.\n\n`dev` deploys a named build and needs `version`; the API cannot verify that the\nbuild exists before dispatch. `uat` and `prod` promote what the\nenvironment below LAST REPORTED running (`dev` for `uat`, `uat` for `prod`):\nomit `version` to take it, or give it and it must be that version.",
+        "properties": {
+          "component": {
+            "enum": [
+              "app-api",
+              "www"
+            ],
+            "title": "Component",
+            "type": "string"
+          },
+          "target_env": {
+            "enum": [
+              "dev",
+              "uat",
+              "prod"
+            ],
+            "title": "Target Env",
+            "type": "string"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.-]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Required for `dev`, where it names a build that the API cannot verify exists before dispatch. For `uat` and `prod`: omitted means the version the source environment last reported; given, it must equal that version (422 `version_not_at_source` otherwise).",
+            "title": "Version"
+          }
+        },
+        "required": [
+          "component",
+          "target_env"
+        ],
+        "title": "ReleasePromotionCreate",
+        "type": "object"
+      },
+      "ReleaseState": {
+        "properties": {
+          "deployment_backend": {
+            "description": "Only `k8s` projects accept promotion requests through the API.",
+            "enum": [
+              "k8s",
+              "vm"
+            ],
+            "title": "Deployment Backend",
+            "type": "string"
+          },
+          "in_flight_operation_ids": {
+            "description": "`release:<id>` of every operation approved or running.",
+            "items": {
+              "type": "string"
+            },
+            "title": "In Flight Operation Ids",
+            "type": "array"
+          },
+          "pending_operation_ids": {
+            "description": "`release:<id>` of every operation awaiting approval.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Pending Operation Ids",
+            "type": "array"
+          },
+          "prior_prod_data_copies": {
+            "description": "Succeeded data copies into PROD, all time.",
+            "title": "Prior Prod Data Copies",
+            "type": "integer"
+          },
+          "prod_data_locked": {
+            "description": "The PROD DATA lock: while set, no data copy may target PROD. It does not block code promotion.",
+            "title": "Prod Data Locked",
+            "type": "boolean"
+          },
+          "prod_data_locked_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prod Data Locked At"
+          },
+          "prod_data_locked_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prod Data Locked By"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "versions": {
+            "description": "Last reported versions, per environment and component.",
+            "items": {
+              "$ref": "#/components/schemas/ReportedVersion"
+            },
+            "title": "Versions",
+            "type": "array"
+          }
+        },
+        "required": [
+          "project_id",
+          "deployment_backend",
+          "versions",
+          "prod_data_locked",
+          "prior_prod_data_copies",
+          "pending_operation_ids",
+          "in_flight_operation_ids"
+        ],
+        "title": "ReleaseState",
+        "type": "object"
+      },
+      "ReportedVersion": {
+        "description": "What a release pipeline LAST REPORTED for one environment and component.\nNot a live probe: the portal records it when a deploy reports success.",
+        "properties": {
+          "component": {
+            "enum": [
+              "app-api",
+              "www",
+              "database"
+            ],
+            "title": "Component",
+            "type": "string"
+          },
+          "env": {
+            "enum": [
+              "sandbox",
+              "dev",
+              "uat",
+              "prod"
+            ],
+            "title": "Env",
+            "type": "string"
+          },
+          "last_reported_at": {
+            "format": "date-time",
+            "title": "Last Reported At",
+            "type": "string"
+          },
+          "last_reported_by": {
+            "description": "An operator's e-mail or `pipeline:<id>`.",
+            "title": "Last Reported By",
+            "type": "string"
+          },
+          "last_reported_version": {
+            "title": "Last Reported Version",
+            "type": "string"
+          },
+          "source_env": {
+            "anyOf": [
+              {
+                "enum": [
+                  "sandbox",
+                  "dev",
+                  "uat",
+                  "prod"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The environment it was promoted from.",
+            "title": "Source Env"
+          }
+        },
+        "required": [
+          "env",
+          "component",
+          "last_reported_version",
+          "last_reported_at",
+          "last_reported_by"
+        ],
+        "title": "ReportedVersion",
+        "type": "object"
+      },
       "RoleGrant": {
         "properties": {
           "granted_at": {
@@ -5063,6 +7778,287 @@
           "stale"
         ],
         "title": "StageState",
+        "type": "object"
+      },
+      "Storage": {
+        "properties": {
+          "captured_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The newest scan; null when nothing was ever scanned.",
+            "title": "Captured At"
+          },
+          "nodes": {
+            "description": "Last scanned local disk per node, with its cached models.",
+            "items": {
+              "$ref": "#/components/schemas/NodeStorage"
+            },
+            "title": "Nodes",
+            "type": "array"
+          },
+          "shares": {
+            "description": "The central-store shares the store actions can use.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Shares",
+            "type": "array"
+          },
+          "synology": {
+            "description": "Last scanned free space per share.",
+            "items": {
+              "$ref": "#/components/schemas/StorageMount"
+            },
+            "title": "Synology",
+            "type": "array"
+          }
+        },
+        "required": [
+          "shares",
+          "synology",
+          "nodes",
+          "captured_at"
+        ],
+        "title": "Storage",
+        "type": "object"
+      },
+      "StorageMount": {
+        "properties": {
+          "captured_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Captured At"
+          },
+          "free_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Free Gb"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kind"
+          },
+          "mount": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mount"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "total_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Gb"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "StorageMount",
+        "type": "object"
+      },
+      "StoreRun": {
+        "properties": {
+          "action": {
+            "description": "`cache` / `uncache` (the two v1 starts), or a portal action: `pull`, `purge`, `rescan`, `gateway-deploy`, `gateway-restart`.",
+            "title": "Action",
+            "type": "string"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "dispatch_mode": {
+            "anyOf": [
+              {
+                "enum": [
+                  "live",
+                  "dryrun"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`live`: the runner pipeline was triggered. `dryrun`: this estate fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate` — a store run is never simulated); the run holds a fake pipeline id and nothing ran. Null for runs started by the portal, which does not record it.",
+            "title": "Dispatch Mode"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "job_started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When the runner job started. The run's time budget counts from here, not from the dispatch.",
+            "title": "Job Started At"
+          },
+          "model_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Id"
+          },
+          "node": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node"
+          },
+          "operation_id": {
+            "description": "`model-store-run:<id>`: poll it at /operations/{id}.",
+            "title": "Operation Id",
+            "type": "string"
+          },
+          "pipeline_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pipeline Id"
+          },
+          "pipeline_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pipeline Url"
+          },
+          "progress_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Progress Gb"
+          },
+          "repo": {
+            "title": "Repo",
+            "type": "string"
+          },
+          "started_at": {
+            "description": "When the run was recorded (dispatched).",
+            "format": "date-time",
+            "title": "Started At",
+            "type": "string"
+          },
+          "status": {
+            "description": "`pending`, `running`, `success`, `failed` or `timeout`.",
+            "title": "Status",
+            "type": "string"
+          },
+          "triggered_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Triggered By"
+          }
+        },
+        "required": [
+          "id",
+          "operation_id",
+          "repo",
+          "action",
+          "status",
+          "dispatch_mode",
+          "started_at",
+          "job_started_at"
+        ],
+        "title": "StoreRun",
         "type": "object"
       },
       "Tenant": {
@@ -5878,6 +8874,1364 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/ai-models": {
+      "get": {
+        "operationId": "ai_models_list",
+        "parameters": [
+          {
+            "description": "Exact repo id: finds a model's `id` to import it.",
+            "in": "query",
+            "name": "repo",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact repo id: finds a model's `id` to import it.",
+              "title": "Repo"
+            }
+          },
+          {
+            "description": "Exact status.",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 20,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact status.",
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 24,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "in": "query",
+            "name": "gateway_tier",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 40,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Gateway Tier"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiModelPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List AI models",
+        "tags": [
+          "ai-models"
+        ]
+      },
+      "post": {
+        "description": "Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.",
+        "operationId": "ai_models_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiModelCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiModel"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The repo is already in the catalogue (`repo_taken`)."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The repo is not a strict Hugging Face id, or the body is invalid."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Add an AI model to the catalogue",
+        "tags": [
+          "ai-models"
+        ]
+      }
+    },
+    "/ai-models/load-targets": {
+      "get": {
+        "description": "The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when Prometheus answers, static fallbacks otherwise.",
+        "operationId": "ai_models_load_targets_list",
+        "parameters": [
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadTargetPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List load targets",
+        "tags": [
+          "ai-models"
+        ]
+      }
+    },
+    "/ai-models/runs/{run_id}": {
+      "get": {
+        "operationId": "ai_models_runs_get",
+        "parameters": [
+          {
+            "description": "The run's id.",
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "description": "The run's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreRun"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such run (`run_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One store run",
+        "tags": [
+          "ai-models"
+        ]
+      }
+    },
+    "/ai-models/storage": {
+      "get": {
+        "description": "The central-store shares and each node's local disk with the models cached on it, as last scanned. Nothing is scanned by this read.",
+        "operationId": "ai_models_storage_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Storage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Model storage",
+        "tags": [
+          "ai-models"
+        ]
+      }
+    },
+    "/ai-models/{model_id}": {
+      "delete": {
+        "description": "Removes the catalogue ROW and nothing else: no disk is touched. It is refused while the row is the record of weights that exist (a central copy, or `status` `owned` / `serving`), while any node holds a cache, and while a store run is pending or running. Removing a node cache first is allowed (`DELETE .../node-caches/{node}`); removing a central copy is not possible through v1. Needs the admin permission; NOT destroy-gated, because it never destroys weights.",
+        "operationId": "ai_models_delete",
+        "parameters": [
+          {
+            "description": "The model's id (`id` on a model).",
+            "in": "path",
+            "name": "model_id",
+            "required": true,
+            "schema": {
+              "description": "The model's id (`id` on a model).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Model Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such model (`model_not_found`)."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The model still has weights or work: an active store run (`model_has_active_run`), a node cache (`model_has_node_caches`) or a central copy (`model_has_central_copy`). `blockers` counts each: `{\"active_runs\": n, \"node_caches\": n, \"central_copy\": 1}`."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Remove an AI model from the catalogue",
+        "tags": [
+          "ai-models"
+        ]
+      },
+      "get": {
+        "operationId": "ai_models_get",
+        "parameters": [
+          {
+            "description": "The model's id (`id` on a model).",
+            "in": "path",
+            "name": "model_id",
+            "required": true,
+            "schema": {
+              "description": "The model's id (`id` on a model).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Model Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiModel"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such model (`model_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One AI model",
+        "tags": [
+          "ai-models"
+        ]
+      },
+      "patch": {
+        "description": "Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
+        "operationId": "ai_models_update",
+        "parameters": [
+          {
+            "description": "The model's id (`id` on a model).",
+            "in": "path",
+            "name": "model_id",
+            "required": true,
+            "schema": {
+              "description": "The model's id (`id` on a model).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Model Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiModelPatch"
+              }
+            },
+            "application/merge-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiModelPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiModel"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such model (`model_not_found`)."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "`repo` was changed (`immutable_field`), a read-only field was changed (`read_only_field`), or the body is invalid."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Change an AI model's metadata",
+        "tags": [
+          "ai-models"
+        ]
+      }
+    },
+    "/ai-models/{model_id}/node-caches": {
+      "get": {
+        "operationId": "ai_models_node_caches_list",
+        "parameters": [
+          {
+            "description": "The model's id (`id` on a model).",
+            "in": "path",
+            "name": "model_id",
+            "required": true,
+            "schema": {
+              "description": "The model's id (`id` on a model).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Model Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeCachePage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such model (`model_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List a model's node caches",
+        "tags": [
+          "ai-models"
+        ]
+      }
+    },
+    "/ai-models/{model_id}/node-caches/{node}": {
+      "delete": {
+        "description": "Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while Prometheus cannot be read.\n\nThe run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.",
+        "operationId": "ai_models_node_caches_delete",
+        "parameters": [
+          {
+            "description": "The model's id (`id` on a model).",
+            "in": "path",
+            "name": "model_id",
+            "required": true,
+            "schema": {
+              "description": "The model's id (`id` on a model).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Model Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The AI node's hostname, e.g. `prod-ai-03`.",
+            "in": "path",
+            "name": "node",
+            "required": true,
+            "schema": {
+              "description": "The AI node's hostname, e.g. `prod-ai-03`.",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$",
+              "title": "Node",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such model (`model_not_found`), or no cache of it on that node (`node_cache_not_found`)."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A store run of this model is pending or running (`run_in_progress`; `operation_id` names it), the key was used for another request (`idempotency_key_reused`), or — cache — the model has no central copy to cache from (`no_central_copy`), or — uncache — it is loaded on the node (`model_loaded_on_node`)."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The node is not an AI node (`unknown_node`) or has no management address (`node_has_no_mgmt_ip`), the stored repo is not a strict Hugging Face id (`unsafe_repo`), or the model's share is not a current one (`unknown_volume`)."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The same Idempotency-Key is still running (`idempotency_request_in_progress`)."
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The runner pipeline could not be triggered (`dispatch_failed`; the run is recorded as failed and `operation_id` names it)."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Whether the model is loaded on the node cannot be read right now (`loaded_state_unknown`); nothing was dispatched."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Remove a model's cache from a node",
+        "tags": [
+          "ai-models"
+        ]
+      },
+      "get": {
+        "operationId": "ai_models_node_caches_get",
+        "parameters": [
+          {
+            "description": "The model's id (`id` on a model).",
+            "in": "path",
+            "name": "model_id",
+            "required": true,
+            "schema": {
+              "description": "The model's id (`id` on a model).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Model Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The AI node's hostname, e.g. `prod-ai-03`.",
+            "in": "path",
+            "name": "node",
+            "required": true,
+            "schema": {
+              "description": "The AI node's hostname, e.g. `prod-ai-03`.",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$",
+              "title": "Node",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeCache"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such model (`model_not_found`) or no cache of it on that node (`node_cache_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One node cache",
+        "tags": [
+          "ai-models"
+        ]
+      },
+      "put": {
+        "description": "Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.\n\nThe run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.",
+        "operationId": "ai_models_node_caches_put",
+        "parameters": [
+          {
+            "description": "The model's id (`id` on a model).",
+            "in": "path",
+            "name": "model_id",
+            "required": true,
+            "schema": {
+              "description": "The model's id (`id` on a model).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Model Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The AI node's hostname, e.g. `prod-ai-03`.",
+            "in": "path",
+            "name": "node",
+            "required": true,
+            "schema": {
+              "description": "The AI node's hostname, e.g. `prod-ai-03`.",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$",
+              "title": "Node",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeCache"
+                }
+              }
+            },
+            "description": "The node already holds a cached copy; nothing was dispatched."
+          },
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such model (`model_not_found`)."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A store run of this model is pending or running (`run_in_progress`; `operation_id` names it), the key was used for another request (`idempotency_key_reused`), or — cache — the model has no central copy to cache from (`no_central_copy`), or — uncache — it is loaded on the node (`model_loaded_on_node`)."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The node is not an AI node (`unknown_node`) or has no management address (`node_has_no_mgmt_ip`), the stored repo is not a strict Hugging Face id (`unsafe_repo`), or the model's share is not a current one (`unknown_volume`)."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The same Idempotency-Key is still running (`idempotency_request_in_progress`)."
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The runner pipeline could not be triggered (`dispatch_failed`; the run is recorded as failed and `operation_id` names it)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Cache a model on a node",
+        "tags": [
+          "ai-models"
+        ]
+      }
+    },
+    "/ai/catalog": {
+      "get": {
+        "description": "The launchable models per node: key, host, label, model, engine, port and enabled. The load and unload commands are never returned.",
+        "operationId": "ai_catalog_list",
+        "parameters": [
+          {
+            "description": "Exact host.",
+            "in": "query",
+            "name": "host",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 80,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact host.",
+              "title": "Host"
+            }
+          },
+          {
+            "in": "query",
+            "name": "enabled",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Enabled"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LaunchCatalogPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List the launch catalogue",
+        "tags": [
+          "ai-nodes"
+        ]
+      }
+    },
+    "/ai/clusters": {
+      "get": {
+        "description": "The DGX clusters as recorded. A read: it does not converge a cluster that is forming or breaking.",
+        "operationId": "ai_clusters_list",
+        "parameters": [
+          {
+            "description": "Exact name: finds a cluster to import.",
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 40,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact name: finds a cluster to import.",
+              "title": "Name"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DgxClusterPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List DGX clusters",
+        "tags": [
+          "ai-nodes"
+        ]
+      }
+    },
     "/ai/gateway": {
       "get": {
         "description": "The OpenAI-compatible base URL and the serving-tier names. The base URL\ncomes from the gateway credential the keys are minted against, so it always\nnames the gateway that issued them.",
@@ -6887,6 +11241,152 @@
         "summary": "Pin or enable a serving tier",
         "tags": [
           "ai-gateway"
+        ]
+      }
+    },
+    "/ai/nodes": {
+      "get": {
+        "description": "The AI fleet. Roster fields are always present; live fields are null when Prometheus cannot be read (`prometheus_reachable: false`). Never 503.",
+        "operationId": "ai_nodes_list",
+        "parameters": [
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiNodePage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List AI nodes",
+        "tags": [
+          "ai-nodes"
+        ]
+      }
+    },
+    "/ai/nodes/{hostname}": {
+      "get": {
+        "description": "One node, as in the list. Never 503.",
+        "operationId": "ai_nodes_get",
+        "parameters": [
+          {
+            "description": "The node's hostname, e.g. `prod-ai-03`.",
+            "in": "path",
+            "name": "hostname",
+            "required": true,
+            "schema": {
+              "description": "The node's hostname, e.g. `prod-ai-03`.",
+              "title": "Hostname",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiNode"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not an AI node (`node_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One AI node",
+        "tags": [
+          "ai-nodes"
         ]
       }
     },
@@ -9183,6 +13683,171 @@
         ]
       }
     },
+    "/projects/{project_id}/prod-lock": {
+      "get": {
+        "description": "While `locked`, no data copy may target PROD. Code promotion is not affected.",
+        "operationId": "prod_lock_get",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProdLock"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or outside your scope (`project_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "The PROD data lock",
+        "tags": [
+          "releases"
+        ]
+      },
+      "put": {
+        "description": "The lock protects PROD DATA: while it is set, the portal refuses every data copy into PROD, so PROD stays the source of truth for its data. It does NOT block code promotion into PROD.\n\n`{\"locked\": true}` locks. Unlocking needs `confirm_unlock` equal to the project's short name. Setting the state it already has changes nothing (the lock keeps its time and author).",
+        "operationId": "prod_lock_put",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdLockPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProdLock"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or outside your scope (`project_not_found`)."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Unlocking without `confirm_unlock` equal to the project's short name (`unlock_not_confirmed`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Set the PROD data lock",
+        "tags": [
+          "releases"
+        ]
+      }
+    },
     "/projects/{project_id}/provisioning": {
       "get": {
         "description": "Read from the database only. `converged` is true when every stage is done and none is stale; `provisioned` additionally requires that no stage was simulated. On a platform whose `dispatch_mode` is `dryrun` nothing is ever executed and provisioning never completes; under `simulate` stages are marked done without running, so `converged` can be true while `provisioned` is false.",
@@ -9338,6 +14003,360 @@
         ]
       }
     },
+    "/projects/{project_id}/release-operations": {
+      "get": {
+        "description": "Newest first. Includes the data copies booked in the portal.",
+        "operationId": "release_operations_list",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only operations in this status.",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "pending",
+                    "awaiting_approval",
+                    "running",
+                    "succeeded",
+                    "failed"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only operations in this status.",
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "target_env",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "sandbox",
+                    "dev",
+                    "uat",
+                    "prod"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Target Env"
+            }
+          },
+          {
+            "description": "Excludes data copies (no component).",
+            "in": "query",
+            "name": "component",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "app-api",
+                    "www"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Excludes data copies (no component).",
+              "title": "Component"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseOperationPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or outside your scope (`project_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Release history of a project",
+        "tags": [
+          "releases"
+        ]
+      }
+    },
+    "/projects/{project_id}/release-promotions": {
+      "post": {
+        "description": "Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.\n\n* `dev` and `uat` start at once.\n* `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).\n* `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.\n\nKubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.",
+        "operationId": "release_promotions_create",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleasePromotionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or outside your scope (`project_not_found`)."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The Idempotency-Key already booked a different operation (`idempotency_key_reused`)."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A VM project (`vm_projects_unsupported`); the component does not exist (`component_not_enabled`); the version is not what the source environment last reported, or it reports none (`version_not_at_source`); a `dev` promotion without a version (`version_required`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Request a promotion",
+        "tags": [
+          "releases"
+        ]
+      }
+    },
+    "/projects/{project_id}/release-state": {
+      "get": {
+        "description": "Per environment and component, the version a release pipeline LAST REPORTED, when and by whom — recorded when a deploy reports success, not probed live. Also the PROD DATA lock and the operations still open.",
+        "operationId": "release_state_get",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseState"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or outside your scope (`project_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Release state of a project",
+        "tags": [
+          "releases"
+        ]
+      }
+    },
     "/projects/{project_id}/stages": {
       "get": {
         "description": "The stage grid of the portal's Plan page, read-only and from the database only.",
@@ -9406,6 +14425,74 @@
         "summary": "A project's provisioning stages",
         "tags": [
           "projects"
+        ]
+      }
+    },
+    "/release-operations/{release_operation_id}": {
+      "get": {
+        "operationId": "release_operations_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "release_operation_id",
+            "required": true,
+            "schema": {
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Release Operation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseOperation"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such operation, or its project is outside your scope (`release_operation_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One release operation",
+        "tags": [
+          "releases"
         ]
       }
     },

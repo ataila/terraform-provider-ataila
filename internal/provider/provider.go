@@ -230,6 +230,16 @@ func (p *ataProvider) DataSources(_ context.Context) []func() datasource.DataSou
 		NewLicenceSocketFactsDataSource,
 		NewBrandDataSource,
 		NewBrandAssetDataSource,
+		NewReleaseStateDataSource,
+		NewReleaseOperationDataSource,
+		NewAIModelDataSource,
+		NewAIModelsDataSource,
+		NewModelStorageDataSource,
+		NewLoadTargetsDataSource,
+		NewAINodesDataSource,
+		NewAINodeDataSource,
+		NewDGXClustersDataSource,
+		NewLaunchCatalogDataSource,
 	}
 }
 
@@ -248,6 +258,10 @@ func (p *ataProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewLicenceBundleResource,
 		NewBrandResource,
 		NewBrandAssetResource,
+		NewReleasePromotionResource,
+		NewProjectProdLockResource,
+		NewAIModelResource,
+		NewAIModelNodeCacheResource,
 	}
 }
 

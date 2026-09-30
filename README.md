@@ -124,6 +124,10 @@ place, so switch once, not back and forth in parallel runs.
 | [`ataila_licence_bundle`](docs/resources/licence_bundle.md) | The licence bundle installed on the platform (singleton) | Forgets only |
 | [`ataila_brand`](docs/resources/brand.md) | The platform's brand: name, colour, title, logo (singleton) | Forgets only |
 | [`ataila_brand_asset`](docs/resources/brand_asset.md) | A logo or favicon, content-addressed; readable without signing in | Forgets only |
+| [`ataila_release_promotion`](docs/resources/release_promotion.md) | A promotion request of a Kubernetes project's component into dev, uat or prod | Forgets only |
+| [`ataila_project_prod_lock`](docs/resources/project_prod_lock.md) | A project's PROD data lock | Forgets only |
+| [`ataila_ai_model`](docs/resources/ai_model.md) | An AI model catalogue row (no weights) | Removes the row; refused while weights exist; not gated |
+| [`ataila_ai_model_node_cache`](docs/resources/ai_model_node_cache.md) | A cached copy of a model's weights on an AI node | Removes the node's copy |
 
 **Destroy is off by default and needs two switches**: `allow_destroy = true` on the provider **and** a token
 minted with destroy allowed. With the provider switch off, destroying a customer or a tenant fails at plan
@@ -154,6 +158,12 @@ and an older one is refused (`stale_epoch`), never retried. Every brand write na
 (`If-Match`); when the brand changed outside the configuration after that read, the error says so, and the
 next plan shows the change. Brand assets are content-addressed: a changed file is a new asset (the old one
 stays served; the platform has no delete).
+
+**Releases** are requests: the provider books a promotion and follows its operation, and never decides a
+go-live. A PROD request waits for a person in the portal (`wait_for_approval` decides whether create waits for
+the decision). On a platform that fakes dispatch, releases end with a warning naming the mode (every non-live
+platform behaves so), while node caches, which move real weights, fail at once. **AI Center** reads never fail
+on a monitoring outage; `prometheus_reachable` tells.
 
 **Warnings** the platform returns on a request that succeeded are reported as warnings, never as errors.
 
@@ -195,6 +205,10 @@ Import forms:
 | `ataila_licence_bundle` | `current` |
 | `ataila_brand` | `current` |
 | `ataila_brand_asset` | the asset id |
+| `ataila_release_promotion` | the release operation id |
+| `ataila_project_prod_lock` | the project id |
+| `ataila_ai_model` | the id, or `repo:<org/name>` |
+| `ataila_ai_model_node_cache` | `<model_id>/<node>` |
 
 ```shell
 tofu import ataila_customer.example short_name:EXAMPLE        # OpenTofu
@@ -222,6 +236,16 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_licence_socket_facts`](docs/data-sources/licence_socket_facts.md) | The socket census and whether its hash chain is intact |
 | [`ataila_brand`](docs/data-sources/brand.md) | The platform's brand |
 | [`ataila_brand_asset`](docs/data-sources/brand_asset.md) | One brand asset, by id or sha256 |
+| [`ataila_release_state`](docs/data-sources/release_state.md) | Last reported versions per environment, the PROD data lock, open operations |
+| [`ataila_release_operation`](docs/data-sources/release_operation.md) | One release operation (a promotion or a data copy) |
+| [`ataila_ai_model`](docs/data-sources/ai_model.md) | One AI model, by id or repo |
+| [`ataila_ai_models`](docs/data-sources/ai_models.md) | The model catalogue, filtered by repo, status, category or gateway tier (all pages) |
+| [`ataila_ai_model_storage`](docs/data-sources/ai_model_storage.md) | Central-store shares and node disks, as last scanned |
+| [`ataila_ai_load_targets`](docs/data-sources/ai_load_targets.md) | Nodes and DGX clusters a model can be served on, with their VRAM budget |
+| [`ataila_ai_nodes`](docs/data-sources/ai_nodes.md) | The AI fleet, with `prometheus_reachable` |
+| [`ataila_ai_node`](docs/data-sources/ai_node.md) | One AI node, by hostname |
+| [`ataila_dgx_clusters`](docs/data-sources/dgx_clusters.md) | The DGX clusters as recorded |
+| [`ataila_ai_model_launch_catalog`](docs/data-sources/ai_model_launch_catalog.md) | The models each node can launch |
 
 Further resources follow milestone by milestone; each ships with its documentation, examples and tests.
 

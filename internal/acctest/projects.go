@@ -273,6 +273,15 @@ func (m *MockAPI) AddPlatformProject(tenantID, short string) string {
 	return strconv.Itoa(p.id)
 }
 
+// AddTestProject registers a project of a tenant out of band ("k8s" or "vm"
+// backend) and returns its id.
+func (m *MockAPI) AddTestProject(tenantID, short, backend string) string {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	p := m.newProject(tenantID, short, short, short+".example.com", backend, false, nil, 0)
+	return strconv.Itoa(p.id)
+}
+
 // Project is the wire form of a project.
 func (m *MockAPI) Project(id string) (map[string]any, bool) {
 	m.mu.Lock()
@@ -481,6 +490,9 @@ func (m *MockAPI) routeProjects(c *call) reply {
 		return m.stagesGet(c, parts[1])
 	case len(parts) == 3 && parts[2] == "members" && method == http.MethodGet:
 		return m.projectMembersList(c, parts[1])
+	case len(parts) == 3 && (parts[2] == "release-promotions" || parts[2] == "release-state" ||
+		parts[2] == "release-operations" || parts[2] == "prod-lock"):
+		return m.routeProjectReleases(c, parts[1], parts[2])
 	case len(parts) == 4 && parts[2] == "members":
 		switch method {
 		case http.MethodGet:

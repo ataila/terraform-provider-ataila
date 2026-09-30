@@ -89,6 +89,9 @@ func defaultPermissions() []mockPermission {
 		{"projects", "Projects and provisioning", "Platform API"},
 		{"licence", "Licence", "Platform API"},
 		{"brand-center", "Brand Center", "Platform API"},
+		{"release-manager", "Release Manager", "Platform API"},
+		{"ai-models", "AI models", "AI"},
+		{"ai-center", "AI Center", "AI"},
 		{"tenancy", "Customers and tenants", "Platform API"},
 		{"users", "Users and role grants", "Platform API"},
 	} {

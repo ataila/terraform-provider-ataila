@@ -91,6 +91,8 @@ type MockAPI struct {
 	projects   *projectsState
 	licence    *licenceState
 	brand      *brandState
+	releases   *releasesState
+	ai         *aiState
 }
 
 type storedReply struct {
@@ -138,6 +140,8 @@ func NewMockAPI(t testing.TB) *MockAPI {
 		projects:   newProjectsState(),
 		licence:    newLicenceState(),
 		brand:      newBrandState(),
+		releases:   newReleasesState(),
+		ai:         newAIState(),
 	}
 	principal, _ := m.whoami["principal"].(map[string]any)
 	m.users = newUsersState(principal, m.whoami["scopes"].([]string))
@@ -186,10 +190,11 @@ func DefaultWhoami() map[string]any {
 }
 
 func defaultScopes() []string {
-	return []string{"ai-gateway-admin-global", "ai-gateway-read-global", "brand-center-admin-global",
+	return []string{"ai-center-admin-global", "ai-center-read-global", "ai-gateway-admin-global",
+		"ai-gateway-read-global", "ai-models-admin-global", "ai-models-read-global", "brand-center-admin-global",
 		"brand-center-read-global", "licence-admin-global", "licence-read-global", "projects-admin-global",
-		"projects-read-global", "tenancy-admin-global", "tenancy-read-global", "users-admin-global",
-		"users-read-global"}
+		"projects-read-global", "release-manager-admin-global", "release-manager-read-global",
+		"tenancy-admin-global", "tenancy-read-global", "users-admin-global", "users-read-global"}
 }
 
 // URL is the portal base URL (without /api/v1).
@@ -448,6 +453,12 @@ func (m *MockAPI) route(c *call) reply {
 		if native, isProvision := strings.CutPrefix(c.path, "/operations/provision:"); isProvision {
 			return m.provisionOperation(c, native)
 		}
+		if native, isRelease := strings.CutPrefix(c.path, "/operations/release:"); isRelease {
+			return m.releaseOperation(c, native)
+		}
+		if native, isRun := strings.CutPrefix(c.path, "/operations/model-store-run:"); isRun {
+			return m.storeRunOperation(c, native)
+		}
 		if op, found := m.operations[strings.TrimPrefix(c.path, "/operations/")]; found {
 			return ok(http.StatusOK, op)
 		}
@@ -465,6 +476,15 @@ func (m *MockAPI) route(c *call) reply {
 		return m.routeLicence(c)
 	case c.path == "/brand" || strings.HasPrefix(c.path, "/brand/"):
 		return m.routeBrand(c)
+	case strings.HasPrefix(c.path, "/release-operations/"):
+		if c.r.Method != http.MethodGet {
+			return c.methodNotAllowed()
+		}
+		return m.releaseOperationGet(c, strings.TrimPrefix(c.path, "/release-operations/"))
+	case c.path == "/ai-models" || strings.HasPrefix(c.path, "/ai-models/"):
+		return m.routeAIModels(c)
+	case c.path == "/ai/nodes" || strings.HasPrefix(c.path, "/ai/nodes/"), c.path == "/ai/clusters", c.path == "/ai/catalog":
+		return m.routeAICenter(c)
 	}
 	return c.problem(http.StatusNotFound, "not_found", "", nil)
 }
