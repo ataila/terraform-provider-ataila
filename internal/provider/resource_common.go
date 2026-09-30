@@ -38,10 +38,16 @@ var (
 		"archived customer keeps its keys, so a replacement with these keys could never be created."}
 	tenantFrozen = frozenKey{object: "tenant", why: "Replacing a tenant would delete it, which the platform " +
 		"allows only for an empty tenant that is not a customer's primary, and would drop its memberships."}
+	projectFrozen = frozenKey{object: "project", why: "Destroying a project only retires it, and a retired " +
+		"project keeps its project_index, short_name and primary_domain reserved for good, so a replacement " +
+		"with these keys could never be created."}
+	provisioningFrozen = frozenKey{object: "project provisioning", why: "A provisioning belongs to one " +
+		"project. Declare a separate ataila_project_provisioning for the other project."}
 )
 
 func (f frozenKey) forString() planmodifier.String { return frozenString{f} }
 func (f frozenKey) forInt64() planmodifier.Int64   { return frozenInt64{f} }
+func (f frozenKey) forBool() planmodifier.Bool     { return frozenBool{f} }
 
 func (f frozenKey) Description(context.Context) string {
 	return "Frozen: set when the " + f.object + " is created and never changed. A change fails the plan; " +
@@ -101,6 +107,13 @@ func (m frozenInt64) PlanModifyInt64(_ context.Context, req planmodifier.Int64Re
 	m.check(req.Path, req.StateValue, resp.PlanValue, isUpdate, &resp.Diagnostics)
 }
 
+type frozenBool struct{ frozenKey }
+
+func (m frozenBool) PlanModifyBool(_ context.Context, req planmodifier.BoolRequest, resp *planmodifier.BoolResponse) {
+	isUpdate := !req.State.Raw.IsNull() && !req.Plan.Raw.IsNull()
+	m.check(req.Path, req.StateValue, resp.PlanValue, isUpdate, &resp.Diagnostics)
+}
+
 // ── destroy (D7, F8) ─────────────────────────────────────────────────────────
 
 // destroyVerb says what destroy does to each destroy-gated object.
@@ -108,6 +121,7 @@ var destroyVerb = map[string]string{
 	"customer": "archive",
 	"tenant":   "delete",
 	"user":     "deactivate",
+	"project":  "retire",
 }
 
 // destroyRefused is the diagnostic when the provider's allow_destroy is off.
@@ -121,6 +135,10 @@ func destroyRefused(resourceType, object, ident string) diag.Diagnostic {
 		"user": "For a user, destroy means deactivate: the person stays, cannot sign in, and keeps their " +
 			"e-mail address, so the same address cannot be created again (import it and set is_active = true " +
 			"instead). Setting is_active = false is a deactivation too, behind the same switches.",
+		"project": "For a project, destroy means retire: its status becomes retired and nothing on the " +
+			"substrate is touched (no machine, DNS record, Vault path or repository is removed). A retired " +
+			"project keeps its project_index, short_name and primary_domain reserved for good, so they " +
+			"cannot be used again.",
 	}[object]
 	return diag.NewErrorDiagnostic(
 		fmt.Sprintf("Destroying %s %s is not allowed", article(object), object),
@@ -165,6 +183,10 @@ func destroyError(resourceType, object, ident string, err error) diag.Diagnostic
 				"first, or remove this user from the state.",
 			"service_account_managed_elsewhere": "Service accounts are managed on the portal's service " +
 				"accounts page, not through this resource. Remove it from the state.",
+			client.CodeOrchestrationInProgress: "A provisioning run holds the project. Wait for it to " +
+				"finish (the operation_id below names it), then destroy again.",
+			client.CodePlatformReadOnly: "This is one of the platform's own projects; it is read-only " +
+				"through the API. Remove it from the state instead.",
 		}[apiErr.Code()]
 		if hint == "" && strings.HasPrefix(apiErr.Code(), "tenant_has_") {
 			hint = "Only an empty tenant can be deleted; blockers counts what still hangs off it. Move or " +

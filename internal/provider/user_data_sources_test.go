@@ -68,7 +68,7 @@ data "ataila_permission_catalog" "users" {
 					resource.TestCheckResourceAttr("data.ataila_users.admins", "users.#", "1"),
 					resource.TestCheckResourceAttr("data.ataila_users.admins", "users.0.email", "platform.admin@example.com"),
 					resource.TestCheckResourceAttr("data.ataila_users.everyone", "users.#", "208"),
-					resource.TestCheckResourceAttr("data.ataila_permission_catalog.all", "permissions.#", "16"),
+					resource.TestCheckResourceAttr("data.ataila_permission_catalog.all", "permissions.#", "20"),
 					resource.TestCheckResourceAttr("data.ataila_permission_catalog.users", "permissions.#", "4"),
 					resource.TestCheckResourceAttr("data.ataila_permission_catalog.users", "permissions.0.key", "users-admin-global"),
 					resource.TestCheckResourceAttr("data.ataila_permission_catalog.users", "permissions.0.grantable", "true"),

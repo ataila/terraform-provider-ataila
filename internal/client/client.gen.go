@@ -18,6 +18,72 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Defines values for BrandLogoSize.
+const (
+	BrandLogoSizeCompact BrandLogoSize = "compact"
+	BrandLogoSizeLarge   BrandLogoSize = "large"
+	BrandLogoSizeMedium  BrandLogoSize = "medium"
+	BrandLogoSizeRegular BrandLogoSize = "regular"
+)
+
+// Valid indicates whether the value is a known member of the BrandLogoSize enum.
+func (e BrandLogoSize) Valid() bool {
+	switch e {
+	case BrandLogoSizeCompact:
+		return true
+	case BrandLogoSizeLarge:
+		return true
+	case BrandLogoSizeMedium:
+		return true
+	case BrandLogoSizeRegular:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAssetKind.
+const (
+	BrandAssetKindFavicon BrandAssetKind = "favicon"
+	BrandAssetKindLogo    BrandAssetKind = "logo"
+)
+
+// Valid indicates whether the value is a known member of the BrandAssetKind enum.
+func (e BrandAssetKind) Valid() bool {
+	switch e {
+	case BrandAssetKindFavicon:
+		return true
+	case BrandAssetKindLogo:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandPutLogoSize.
+const (
+	BrandPutLogoSizeCompact BrandPutLogoSize = "compact"
+	BrandPutLogoSizeLarge   BrandPutLogoSize = "large"
+	BrandPutLogoSizeMedium  BrandPutLogoSize = "medium"
+	BrandPutLogoSizeRegular BrandPutLogoSize = "regular"
+)
+
+// Valid indicates whether the value is a known member of the BrandPutLogoSize enum.
+func (e BrandPutLogoSize) Valid() bool {
+	switch e {
+	case BrandPutLogoSizeCompact:
+		return true
+	case BrandPutLogoSizeLarge:
+		return true
+	case BrandPutLogoSizeMedium:
+		return true
+	case BrandPutLogoSizeRegular:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CustomerBillingTier.
 const (
 	CustomerBillingTierINTERNAL CustomerBillingTier = "INTERNAL"
@@ -321,6 +387,99 @@ func (e GatewayKeyPatchEnv) Valid() bool {
 	case GatewayKeyPatchEnvProd:
 		return true
 	case GatewayKeyPatchEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for LicenceState.
+const (
+	LicenceStateACTIVE            LicenceState = "ACTIVE"
+	LicenceStateDOMAINMISMATCH    LicenceState = "DOMAIN_MISMATCH"
+	LicenceStateEXPIRING          LicenceState = "EXPIRING"
+	LicenceStateGRACE             LicenceState = "GRACE"
+	LicenceStateINVALID           LicenceState = "INVALID"
+	LicenceStateLOCKED            LicenceState = "LOCKED"
+	LicenceStatePENDINGACTIVATION LicenceState = "PENDING_ACTIVATION"
+	LicenceStateREVOKED           LicenceState = "REVOKED"
+	LicenceStateUNLICENSED        LicenceState = "UNLICENSED"
+)
+
+// Valid indicates whether the value is a known member of the LicenceState enum.
+func (e LicenceState) Valid() bool {
+	switch e {
+	case LicenceStateACTIVE:
+		return true
+	case LicenceStateDOMAINMISMATCH:
+		return true
+	case LicenceStateEXPIRING:
+		return true
+	case LicenceStateGRACE:
+		return true
+	case LicenceStateINVALID:
+		return true
+	case LicenceStateLOCKED:
+		return true
+	case LicenceStatePENDINGACTIVATION:
+		return true
+	case LicenceStateREVOKED:
+		return true
+	case LicenceStateUNLICENSED:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for LicenceInstalledInstalled.
+const (
+	True LicenceInstalledInstalled = true
+)
+
+// Valid indicates whether the value is a known member of the LicenceInstalledInstalled enum.
+func (e LicenceInstalledInstalled) Valid() bool {
+	switch e {
+	case True:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for LicenceInstalledState.
+const (
+	LicenceInstalledStateACTIVE            LicenceInstalledState = "ACTIVE"
+	LicenceInstalledStateDOMAINMISMATCH    LicenceInstalledState = "DOMAIN_MISMATCH"
+	LicenceInstalledStateEXPIRING          LicenceInstalledState = "EXPIRING"
+	LicenceInstalledStateGRACE             LicenceInstalledState = "GRACE"
+	LicenceInstalledStateINVALID           LicenceInstalledState = "INVALID"
+	LicenceInstalledStateLOCKED            LicenceInstalledState = "LOCKED"
+	LicenceInstalledStatePENDINGACTIVATION LicenceInstalledState = "PENDING_ACTIVATION"
+	LicenceInstalledStateREVOKED           LicenceInstalledState = "REVOKED"
+	LicenceInstalledStateUNLICENSED        LicenceInstalledState = "UNLICENSED"
+)
+
+// Valid indicates whether the value is a known member of the LicenceInstalledState enum.
+func (e LicenceInstalledState) Valid() bool {
+	switch e {
+	case LicenceInstalledStateACTIVE:
+		return true
+	case LicenceInstalledStateDOMAINMISMATCH:
+		return true
+	case LicenceInstalledStateEXPIRING:
+		return true
+	case LicenceInstalledStateGRACE:
+		return true
+	case LicenceInstalledStateINVALID:
+		return true
+	case LicenceInstalledStateLOCKED:
+		return true
+	case LicenceInstalledStatePENDINGACTIVATION:
+		return true
+	case LicenceInstalledStateREVOKED:
+		return true
+	case LicenceInstalledStateUNLICENSED:
 		return true
 	default:
 		return false
@@ -1758,6 +1917,60 @@ func (e AiGatewayKeysListParamsOrigin) Valid() bool {
 	}
 }
 
+// Defines values for BrandAssetsListParamsKind.
+const (
+	BrandAssetsListParamsKindFavicon BrandAssetsListParamsKind = "favicon"
+	BrandAssetsListParamsKindLogo    BrandAssetsListParamsKind = "logo"
+)
+
+// Valid indicates whether the value is a known member of the BrandAssetsListParamsKind enum.
+func (e BrandAssetsListParamsKind) Valid() bool {
+	switch e {
+	case BrandAssetsListParamsKindFavicon:
+		return true
+	case BrandAssetsListParamsKindLogo:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAssetsCreateJSONBodyKind.
+const (
+	BrandAssetsCreateJSONBodyKindFavicon BrandAssetsCreateJSONBodyKind = "favicon"
+	BrandAssetsCreateJSONBodyKindLogo    BrandAssetsCreateJSONBodyKind = "logo"
+)
+
+// Valid indicates whether the value is a known member of the BrandAssetsCreateJSONBodyKind enum.
+func (e BrandAssetsCreateJSONBodyKind) Valid() bool {
+	switch e {
+	case BrandAssetsCreateJSONBodyKindFavicon:
+		return true
+	case BrandAssetsCreateJSONBodyKindLogo:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAssetsCreateMultipartBodyKind.
+const (
+	BrandAssetsCreateMultipartBodyKindFavicon BrandAssetsCreateMultipartBodyKind = "favicon"
+	BrandAssetsCreateMultipartBodyKindLogo    BrandAssetsCreateMultipartBodyKind = "logo"
+)
+
+// Valid indicates whether the value is a known member of the BrandAssetsCreateMultipartBodyKind enum.
+func (e BrandAssetsCreateMultipartBodyKind) Valid() bool {
+	switch e {
+	case BrandAssetsCreateMultipartBodyKindFavicon:
+		return true
+	case BrandAssetsCreateMultipartBodyKindLogo:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CustomersListParamsStatus.
 const (
 	CustomersListParamsStatusActive    CustomersListParamsStatus = "active"
@@ -1858,6 +2071,103 @@ type ApiWarning struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
 }
+
+// Brand defines model for Brand.
+type Brand struct {
+	// Attribution Read-only. The line printed under the product name; computed from `first_party`, never stored and never settable.
+	Attribution *string `json:"attribution,omitempty"`
+
+	// BrandColor Six-digit hex colour; returned lower-case.
+	BrandColor string `json:"brand_color"`
+
+	// FaviconAssetId A brand asset of kind `favicon`; null keeps the built-in one.
+	FaviconAssetId *string `json:"favicon_asset_id"`
+
+	// FirstParty Read-only. True only on ATAILA's own portal; selects the attribution line. No request can change it.
+	FirstParty *bool `json:"first_party,omitempty"`
+
+	// LogoAssetId A brand asset of kind `logo`; null shows the built-in logo.
+	LogoAssetId *string `json:"logo_asset_id"`
+
+	// LogoOffsetX Horizontal nudge of the logo, in pixels.
+	LogoOffsetX int `json:"logo_offset_x"`
+
+	// LogoSize The sidebar logo size preset.
+	LogoSize BrandLogoSize `json:"logo_size"`
+
+	// PageTitle The browser-tab title.
+	PageTitle string `json:"page_title"`
+
+	// ProductName The wordmark in the sidebar and on the sign-in page.
+	ProductName string `json:"product_name"`
+
+	// ProductNameAccent A part of `product_name` rendered in `brand_color`. Empty colours the whole name.
+	ProductNameAccent string    `json:"product_name_accent"`
+	UpdatedAt         time.Time `json:"updated_at"`
+
+	// Version Bumped by every change; send it back in `If-Match`.
+	Version int `json:"version"`
+}
+
+// BrandLogoSize The sidebar logo size preset.
+type BrandLogoSize string
+
+// BrandAsset defines model for BrandAsset.
+type BrandAsset struct {
+	Bytes      int            `json:"bytes"`
+	Filename   string         `json:"filename"`
+	Height     *int           `json:"height,omitempty"`
+	Id         string         `json:"id"`
+	Kind       BrandAssetKind `json:"kind"`
+	Mime       string         `json:"mime"`
+	Sha256     string         `json:"sha256"`
+	UploadedAt time.Time      `json:"uploaded_at"`
+
+	// Url Where the asset is served, without a file extension (`/api/brand/assets/<sha256>`); readable without signing in, like the sign-in page itself.
+	Url   string `json:"url"`
+	Width *int   `json:"width,omitempty"`
+}
+
+// BrandAssetKind defines model for BrandAsset.Kind.
+type BrandAssetKind string
+
+// BrandAssetPage defines model for BrandAssetPage.
+type BrandAssetPage struct {
+	Items      []BrandAsset `json:"items"`
+	NextCursor *string      `json:"next_cursor,omitempty"`
+}
+
+// BrandPut Full replacement of the v1 fields: every member is required (the asset
+// ids may be null). Extra members — `attribution` and `first_party` among
+// them — are refused with 422.
+type BrandPut struct {
+	// BrandColor Six-digit hex colour; returned lower-case.
+	BrandColor string `json:"brand_color"`
+
+	// FaviconAssetId A brand asset of kind `favicon`; null keeps the built-in one.
+	FaviconAssetId *string `json:"favicon_asset_id"`
+
+	// LogoAssetId A brand asset of kind `logo`; null shows the built-in logo.
+	LogoAssetId *string `json:"logo_asset_id"`
+
+	// LogoOffsetX Horizontal nudge of the logo, in pixels.
+	LogoOffsetX int `json:"logo_offset_x"`
+
+	// LogoSize The sidebar logo size preset.
+	LogoSize BrandPutLogoSize `json:"logo_size"`
+
+	// PageTitle The browser-tab title.
+	PageTitle string `json:"page_title"`
+
+	// ProductName The wordmark in the sidebar and on the sign-in page.
+	ProductName string `json:"product_name"`
+
+	// ProductNameAccent A part of `product_name` rendered in `brand_color`. Empty colours the whole name.
+	ProductNameAccent string `json:"product_name_accent"`
+}
+
+// BrandPutLogoSize The sidebar logo size preset.
+type BrandPutLogoSize string
 
 // Customer defines model for Customer.
 type Customer struct {
@@ -2138,6 +2448,159 @@ type GitLabRepository struct {
 type KubernetesNamespace struct {
 	Env       string `json:"env"`
 	Namespace string `json:"namespace"`
+}
+
+// Licence defines model for Licence.
+type Licence struct {
+	// BoundFqdn The name the installed licence is bound to. A licence bound to another name puts the portal in DOMAIN_MISMATCH.
+	BoundFqdn *string `json:"bound_fqdn"`
+
+	// Bundle SENSITIVE. The installed bundle as an `acplic1.` string, for a principal holding `licence-admin-global`; null for everyone else and when none is installed.
+	Bundle *string `json:"bundle"`
+
+	// DaysRemaining Whole days until `valid_until`; negative in grace. Null without a term.
+	DaysRemaining *int `json:"days_remaining"`
+
+	// DocumentDigest sha256 (hex) of the installed licence document envelope — the `document` member of the bundle, as ASCII. The same value the issuer records for the document it signed. Null when none is installed.
+	DocumentDigest *string `json:"document_digest"`
+
+	// Fqdn The name this portal answers on, as the licence engine derives it.
+	Fqdn      *string `json:"fqdn"`
+	GraceDays *int    `json:"grace_days,omitempty"`
+
+	// GrowthAllowed The licence gate lets the estate grow (projects, AI, customers and tenants): false in the restricted and read-only states.
+	GrowthAllowed bool `json:"growth_allowed"`
+
+	// InstalledAt When the installed document was installed.
+	InstalledAt *time.Time `json:"installed_at"`
+
+	// InstanceId This portal's instance id, which a licence document binds. Null until the portal first activates or imports a licence.
+	InstanceId   *string `json:"instance_id"`
+	LicenceClass *string `json:"licence_class,omitempty"`
+
+	// LicenceEpoch The installed document's epoch; a bundle installs only when its epoch is higher (see `PUT /licence/bundle`).
+	LicenceEpoch *int    `json:"licence_epoch"`
+	LicenceId    *string `json:"licence_id,omitempty"`
+
+	// Modules Entitled modules; empty unless the state gives full function.
+	Modules []string `json:"modules"`
+
+	// Overlays Conditions shown next to the state, never a state of their own: `clock_skew`, `over_deployed`.
+	Overlays    []string `json:"overlays"`
+	ProductCode *string  `json:"product_code,omitempty"`
+
+	// Serial The licence serial. Shown in full only to a principal holding `licence-admin-global`; everyone else gets it masked to its last group. Null when no licence is installed.
+	Serial *string `json:"serial"`
+
+	// SerialMasked True when `serial` is masked for this caller.
+	SerialMasked bool           `json:"serial_masked"`
+	Sockets      LicenceSockets `json:"sockets"`
+
+	// SpModeEnabled The licence gate lets the service-provider plane (customers and tenants) change: requires growth, the `sp-mode` module and a tenancy mode other than `single`.
+	SpModeEnabled bool         `json:"sp_mode_enabled"`
+	State         LicenceState `json:"state"`
+
+	// StateReason Why the licence is in this state; empty when ACTIVE.
+	StateReason string `json:"state_reason"`
+
+	// TenancyMode `single` or `multi`, as the licence states it.
+	TenancyMode *string    `json:"tenancy_mode"`
+	Tier        *string    `json:"tier,omitempty"`
+	ValidFrom   *time.Time `json:"valid_from,omitempty"`
+	ValidUntil  *time.Time `json:"valid_until,omitempty"`
+
+	// WritesAllowed The licence gate lets ordinary changes through: false only in the read-only states (LOCKED, REVOKED).
+	WritesAllowed bool `json:"writes_allowed"`
+}
+
+// LicenceState defines model for Licence.State.
+type LicenceState string
+
+// LicenceBundlePut defines model for LicenceBundlePut.
+type LicenceBundlePut struct {
+	// Bundle SENSITIVE. The `acplic1.` bundle ATAILA issued for this portal.
+	Bundle string `json:"bundle"`
+}
+
+// LicenceInstalled “PUT /licence/bundle“ — the licence as it is after the install.
+type LicenceInstalled struct {
+	// BoundFqdn The name the installed licence is bound to. A licence bound to another name puts the portal in DOMAIN_MISMATCH.
+	BoundFqdn *string `json:"bound_fqdn"`
+
+	// Bundle SENSITIVE. The installed bundle as an `acplic1.` string, for a principal holding `licence-admin-global`; null for everyone else and when none is installed.
+	Bundle *string `json:"bundle"`
+
+	// DaysRemaining Whole days until `valid_until`; negative in grace. Null without a term.
+	DaysRemaining *int `json:"days_remaining"`
+
+	// DocumentDigest sha256 (hex) of the installed licence document envelope — the `document` member of the bundle, as ASCII. The same value the issuer records for the document it signed. Null when none is installed.
+	DocumentDigest *string `json:"document_digest"`
+
+	// Fqdn The name this portal answers on, as the licence engine derives it.
+	Fqdn      *string `json:"fqdn"`
+	GraceDays *int    `json:"grace_days,omitempty"`
+
+	// GrowthAllowed The licence gate lets the estate grow (projects, AI, customers and tenants): false in the restricted and read-only states.
+	GrowthAllowed bool                       `json:"growth_allowed"`
+	Installed     *LicenceInstalledInstalled `json:"installed,omitempty"`
+
+	// InstalledAt When the installed document was installed.
+	InstalledAt *time.Time `json:"installed_at"`
+
+	// InstanceId This portal's instance id, which a licence document binds. Null until the portal first activates or imports a licence.
+	InstanceId   *string `json:"instance_id"`
+	LicenceClass *string `json:"licence_class,omitempty"`
+
+	// LicenceEpoch The installed document's epoch; a bundle installs only when its epoch is higher (see `PUT /licence/bundle`).
+	LicenceEpoch *int    `json:"licence_epoch"`
+	LicenceId    *string `json:"licence_id,omitempty"`
+
+	// Modules Entitled modules; empty unless the state gives full function.
+	Modules []string `json:"modules"`
+
+	// Overlays Conditions shown next to the state, never a state of their own: `clock_skew`, `over_deployed`.
+	Overlays    []string `json:"overlays"`
+	ProductCode *string  `json:"product_code,omitempty"`
+
+	// Serial The licence serial. Shown in full only to a principal holding `licence-admin-global`; everyone else gets it masked to its last group. Null when no licence is installed.
+	Serial *string `json:"serial"`
+
+	// SerialMasked True when `serial` is masked for this caller.
+	SerialMasked bool           `json:"serial_masked"`
+	Sockets      LicenceSockets `json:"sockets"`
+
+	// SpModeEnabled The licence gate lets the service-provider plane (customers and tenants) change: requires growth, the `sp-mode` module and a tenancy mode other than `single`.
+	SpModeEnabled bool                  `json:"sp_mode_enabled"`
+	State         LicenceInstalledState `json:"state"`
+
+	// StateReason Why the licence is in this state; empty when ACTIVE.
+	StateReason string `json:"state_reason"`
+
+	// TenancyMode `single` or `multi`, as the licence states it.
+	TenancyMode *string       `json:"tenancy_mode"`
+	Tier        *string       `json:"tier,omitempty"`
+	ValidFrom   *time.Time    `json:"valid_from,omitempty"`
+	ValidUntil  *time.Time    `json:"valid_until,omitempty"`
+	Warnings    *[]ApiWarning `json:"warnings,omitempty"`
+
+	// WritesAllowed The licence gate lets ordinary changes through: false only in the read-only states (LOCKED, REVOKED).
+	WritesAllowed bool `json:"writes_allowed"`
+}
+
+// LicenceInstalledInstalled defines model for LicenceInstalled.Installed.
+type LicenceInstalledInstalled bool
+
+// LicenceInstalledState defines model for LicenceInstalled.State.
+type LicenceInstalledState string
+
+// LicenceSockets defines model for LicenceSockets.
+type LicenceSockets struct {
+	// Licensed Sockets the licence allows; null when uncapped or when no licence is installed.
+	Licensed *int `json:"licensed"`
+
+	// Observed Sockets the latest census measured; null when no census has run.
+	Observed *int `json:"observed"`
+	Uncapped bool `json:"uncapped"`
 }
 
 // LicenceSummary defines model for LicenceSummary.
@@ -2831,6 +3294,39 @@ type ServingTierPut struct {
 	PinnedModel *string `json:"pinned_model,omitempty"`
 }
 
+// SocketChain defines model for SocketChain.
+type SocketChain struct {
+	// FirstBrokenRow The id of the first census row that does not match, when not intact.
+	FirstBrokenRow *string `json:"first_broken_row"`
+
+	// Intact Every row's hash matches its content and its predecessor.
+	Intact bool `json:"intact"`
+
+	// Rows Census rows in the hash chain.
+	Rows int `json:"rows"`
+}
+
+// SocketFact defines model for SocketFact.
+type SocketFact struct {
+	Cluster        *string    `json:"cluster,omitempty"`
+	CoresPerSocket *int       `json:"cores_per_socket,omitempty"`
+	MeasuredAt     *time.Time `json:"measured_at,omitempty"`
+	NodeName       string     `json:"node_name"`
+	Sockets        int        `json:"sockets"`
+	Source         string     `json:"source"`
+}
+
+// SocketFacts defines model for SocketFacts.
+type SocketFacts struct {
+	Chain SocketChain `json:"chain"`
+
+	// Facts The latest measurement per node.
+	Facts []SocketFact `json:"facts"`
+
+	// Total Sum of `sockets` over `facts`; null when no census has run.
+	Total *int `json:"total"`
+}
+
 // StageGrid defines model for StageGrid.
 type StageGrid struct {
 	Percent   int             `json:"percent"`
@@ -3136,6 +3632,49 @@ type AiGatewayTiersListParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
 
+// BrandPutParams defines parameters for BrandPut.
+type BrandPutParams struct {
+	// IfMatch The `version` last read, as an entity tag (`"7"`); `*` matches any.
+	IfMatch *string `json:"If-Match,omitempty"`
+}
+
+// BrandAssetsListParams defines parameters for BrandAssetsList.
+type BrandAssetsListParams struct {
+	Kind *BrandAssetsListParamsKind `form:"kind,omitempty" json:"kind,omitempty"`
+
+	// Sha256 Exact sha256 (lower-case hex) of the file.
+	Sha256 *string `form:"sha256,omitempty" json:"sha256,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// BrandAssetsListParamsKind defines parameters for BrandAssetsList.
+type BrandAssetsListParamsKind string
+
+// BrandAssetsCreateJSONBody defines parameters for BrandAssetsCreate.
+type BrandAssetsCreateJSONBody struct {
+	// ContentBase64 The file, standard base64; at most 512 KB decoded.
+	ContentBase64 string                        `json:"content_base64"`
+	Filename      *string                       `json:"filename,omitempty"`
+	Kind          BrandAssetsCreateJSONBodyKind `json:"kind"`
+}
+
+// BrandAssetsCreateMultipartBody defines parameters for BrandAssetsCreate.
+type BrandAssetsCreateMultipartBody struct {
+	File openapi_types.File                 `json:"file"`
+	Kind BrandAssetsCreateMultipartBodyKind `json:"kind"`
+}
+
+// BrandAssetsCreateJSONBodyKind defines parameters for BrandAssetsCreate.
+type BrandAssetsCreateJSONBodyKind string
+
+// BrandAssetsCreateMultipartBodyKind defines parameters for BrandAssetsCreate.
+type BrandAssetsCreateMultipartBodyKind string
+
 // CustomersListParams defines parameters for CustomersList.
 type CustomersListParams struct {
 	// ShortName Exact short name.
@@ -3286,6 +3825,15 @@ type AiGatewayKeysRotateJSONRequestBody = GatewayKeyRotation
 // AiGatewayTiersPutJSONRequestBody defines body for AiGatewayTiersPut for application/json ContentType.
 type AiGatewayTiersPutJSONRequestBody = ServingTierPut
 
+// BrandPutJSONRequestBody defines body for BrandPut for application/json ContentType.
+type BrandPutJSONRequestBody = BrandPut
+
+// BrandAssetsCreateJSONRequestBody defines body for BrandAssetsCreate for application/json ContentType.
+type BrandAssetsCreateJSONRequestBody BrandAssetsCreateJSONBody
+
+// BrandAssetsCreateMultipartRequestBody defines body for BrandAssetsCreate for multipart/form-data ContentType.
+type BrandAssetsCreateMultipartRequestBody BrandAssetsCreateMultipartBody
+
 // CustomersCreateJSONRequestBody defines body for CustomersCreate for application/json ContentType.
 type CustomersCreateJSONRequestBody = CustomerCreate
 
@@ -3294,6 +3842,9 @@ type CustomersUpdateJSONRequestBody = CustomerPatch
 
 // CustomersUpdateApplicationMergePatchPlusJSONRequestBody defines body for CustomersUpdate for application/merge-patch+json ContentType.
 type CustomersUpdateApplicationMergePatchPlusJSONRequestBody = CustomerPatch
+
+// LicenceBundlePutJSONRequestBody defines body for LicenceBundlePut for application/json ContentType.
+type LicenceBundlePutJSONRequestBody = LicenceBundlePut
 
 // ProjectsCreateJSONRequestBody defines body for ProjectsCreate for application/json ContentType.
 type ProjectsCreateJSONRequestBody = ProjectCreate
@@ -3679,6 +4230,59 @@ type ClientInterface interface {
 	// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
 	AiGatewayTiersPut(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// BrandGet This platform's brand
+	//
+	// The one brand of this platform. `attribution` and `first_party` are read-only and computed. The `ETag` response header carries `version` for `If-Match`.
+	//
+	// Corresponds with GET /brand (the `BrandGet` operationId).
+	BrandGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandPutWithBody Replace the brand
+	//
+	// Replaces every v1 field; all are required, the asset ids may be null. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: "<version>"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /brand (the `BrandPut` operationId).
+	BrandPutWithBody(ctx context.Context, params *BrandPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandPut Replace the brand
+	//
+	// Replaces every v1 field; all are required, the asset ids may be null. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: "<version>"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /brand (the `BrandPut` operationId).
+	BrandPut(ctx context.Context, params *BrandPutParams, body BrandPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandAssetsList List brand assets
+	//
+	// Corresponds with GET /brand/assets (the `BrandAssetsList` operationId).
+	BrandAssetsList(ctx context.Context, params *BrandAssetsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandAssetsCreateWithBody Upload a brand asset
+	//
+	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /brand/assets (the `BrandAssetsCreate` operationId).
+	BrandAssetsCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandAssetsCreate Upload a brand asset
+	//
+	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /brand/assets (the `BrandAssetsCreate` operationId).
+	BrandAssetsCreate(ctx context.Context, body BrandAssetsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandAssetsGet One brand asset
+	//
+	// Corresponds with GET /brand/assets/{asset_id} (the `BrandAssetsGet` operationId).
+	BrandAssetsGet(ctx context.Context, assetId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CustomersList List customers
 	//
 	// Corresponds with GET /customers (the `CustomersList` operationId).
@@ -3755,6 +4359,46 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 	CustomersUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LicenceGet This platform's licence
+	//
+	// The licence state as the licence gate sees it, plus what the installed document says. `growth_allowed`, `writes_allowed` and `sp_mode_enabled` are the gate's own verdicts for this state. The full `serial` and the `bundle` are returned only to a principal holding `licence-admin-global`; the serial is masked for everyone else. Never licence-gated.
+	//
+	// Corresponds with GET /licence (the `LicenceGet` operationId).
+	LicenceGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LicenceBundlePutWithBody Install a licence bundle
+	//
+	// Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.
+	//
+	// EPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch`; compare `installed_document_digest` with the digest of the document you sent to tell "already installed" from "older".
+	//
+	// A document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /licence/bundle (the `LicenceBundlePut` operationId).
+	LicenceBundlePutWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LicenceBundlePut Install a licence bundle
+	//
+	// Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.
+	//
+	// EPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch`; compare `installed_document_digest` with the digest of the document you sent to tell "already installed" from "older".
+	//
+	// A document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /licence/bundle (the `LicenceBundlePut` operationId).
+	LicenceBundlePut(ctx context.Context, body LicenceBundlePutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LicenceSocketFacts The socket census
+	//
+	// The latest census measurement per node and whether the census hash chain is intact. Read-only: the census itself runs on its own schedule and cannot be started through this API.
+	//
+	// Corresponds with GET /licence/socket-facts (the `LicenceSocketFacts` operationId).
+	LicenceSocketFacts(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// MetaGet API and platform facts
 	//
@@ -4373,6 +5017,129 @@ func (c *Client) AiGatewayTiersPut(ctx context.Context, key string, body AiGatew
 	return c.Client.Do(req)
 }
 
+// BrandGet This platform's brand
+//
+// The one brand of this platform. `attribution` and `first_party` are read-only and computed. The `ETag` response header carries `version` for `If-Match`.
+//
+// Corresponds with GET /brand (the `BrandGet` operationId).
+func (c *Client) BrandGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandGetRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandPutWithBody Replace the brand
+//
+// Replaces every v1 field; all are required, the asset ids may be null. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: "<version>"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /brand (the `BrandPut` operationId).
+func (c *Client) BrandPutWithBody(ctx context.Context, params *BrandPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandPutRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandPut Replace the brand
+//
+// Replaces every v1 field; all are required, the asset ids may be null. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: "<version>"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /brand (the `BrandPut` operationId).
+func (c *Client) BrandPut(ctx context.Context, params *BrandPutParams, body BrandPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandPutRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandAssetsList List brand assets
+//
+// Corresponds with GET /brand/assets (the `BrandAssetsList` operationId).
+func (c *Client) BrandAssetsList(ctx context.Context, params *BrandAssetsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandAssetsListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandAssetsCreateWithBody Upload a brand asset
+//
+// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /brand/assets (the `BrandAssetsCreate` operationId).
+func (c *Client) BrandAssetsCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandAssetsCreateRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandAssetsCreate Upload a brand asset
+//
+// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /brand/assets (the `BrandAssetsCreate` operationId).
+func (c *Client) BrandAssetsCreate(ctx context.Context, body BrandAssetsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandAssetsCreateRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandAssetsGet One brand asset
+//
+// Corresponds with GET /brand/assets/{asset_id} (the `BrandAssetsGet` operationId).
+func (c *Client) BrandAssetsGet(ctx context.Context, assetId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandAssetsGetRequest(c.Server, assetId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // CustomersList List customers
 //
 // Corresponds with GET /customers (the `CustomersList` operationId).
@@ -4520,6 +5287,86 @@ func (c *Client) CustomersUpdate(ctx context.Context, customerId string, body Cu
 // Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 func (c *Client) CustomersUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCustomersUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, customerId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LicenceGet This platform's licence
+//
+// The licence state as the licence gate sees it, plus what the installed document says. `growth_allowed`, `writes_allowed` and `sp_mode_enabled` are the gate's own verdicts for this state. The full `serial` and the `bundle` are returned only to a principal holding `licence-admin-global`; the serial is masked for everyone else. Never licence-gated.
+//
+// Corresponds with GET /licence (the `LicenceGet` operationId).
+func (c *Client) LicenceGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLicenceGetRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LicenceBundlePutWithBody Install a licence bundle
+//
+// Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.
+//
+// EPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch`; compare `installed_document_digest` with the digest of the document you sent to tell "already installed" from "older".
+//
+// A document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /licence/bundle (the `LicenceBundlePut` operationId).
+func (c *Client) LicenceBundlePutWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLicenceBundlePutRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LicenceBundlePut Install a licence bundle
+//
+// Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.
+//
+// EPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch`; compare `installed_document_digest` with the digest of the document you sent to tell "already installed" from "older".
+//
+// A document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /licence/bundle (the `LicenceBundlePut` operationId).
+func (c *Client) LicenceBundlePut(ctx context.Context, body LicenceBundlePutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLicenceBundlePutRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LicenceSocketFacts The socket census
+//
+// The latest census measurement per node and whether the census hash chain is intact. Read-only: the census itself runs on its own schedule and cannot be started through this API.
+//
+// Corresponds with GET /licence/socket-facts (the `LicenceSocketFacts` operationId).
+func (c *Client) LicenceSocketFacts(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLicenceSocketFactsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -5832,6 +6679,252 @@ func NewAiGatewayTiersPutRequestWithBody(server string, key string, contentType 
 	return req, nil
 }
 
+// NewBrandGetRequest constructs an http.Request for the BrandGet method
+func NewBrandGetRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/brand")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewBrandPutRequest calls the generic BrandPut builder with application/json body
+func NewBrandPutRequest(server string, params *BrandPutParams, body BrandPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewBrandPutRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewBrandPutRequestWithBody constructs an http.Request for the BrandPut method, with any body, and a specified content type
+func NewBrandPutRequestWithBody(server string, params *BrandPutParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/brand")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewBrandAssetsListRequest constructs an http.Request for the BrandAssetsList method
+func NewBrandAssetsListRequest(server string, params *BrandAssetsListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/brand/assets")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Kind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "kind", *params.Kind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Sha256 != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "sha256", *params.Sha256, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewBrandAssetsCreateRequest calls the generic BrandAssetsCreate builder with application/json body
+func NewBrandAssetsCreateRequest(server string, body BrandAssetsCreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewBrandAssetsCreateRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewBrandAssetsCreateRequestWithBody constructs an http.Request for the BrandAssetsCreate method, with any body, and a specified content type
+func NewBrandAssetsCreateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/brand/assets")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewBrandAssetsGetRequest constructs an http.Request for the BrandAssetsGet method
+func NewBrandAssetsGetRequest(server string, assetId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "asset_id", assetId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/brand/assets/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCustomersListRequest constructs an http.Request for the CustomersList method
 func NewCustomersListRequest(server string, params *CustomersListParams) (*http.Request, error) {
 	var err error
@@ -6123,6 +7216,100 @@ func NewCustomersUpdateRequestWithBody(server string, customerId string, content
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLicenceGetRequest constructs an http.Request for the LicenceGet method
+func NewLicenceGetRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/licence")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLicenceBundlePutRequest calls the generic LicenceBundlePut builder with application/json body
+func NewLicenceBundlePutRequest(server string, body LicenceBundlePutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLicenceBundlePutRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewLicenceBundlePutRequestWithBody constructs an http.Request for the LicenceBundlePut method, with any body, and a specified content type
+func NewLicenceBundlePutRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/licence/bundle")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLicenceSocketFactsRequest constructs an http.Request for the LicenceSocketFacts method
+func NewLicenceSocketFactsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/licence/socket-facts")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -8044,6 +9231,65 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
 	AiGatewayTiersPutWithResponse(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayTiersPutResponse, error)
 
+	// BrandGetWithResponse This platform's brand
+	//
+	// The one brand of this platform. `attribution` and `first_party` are read-only and computed. The `ETag` response header carries `version` for `If-Match`.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /brand (the `BrandGet` operationId).
+	BrandGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*BrandGetResponse, error)
+
+	// BrandPutWithBodyWithResponse Replace the brand
+	//
+	// Replaces every v1 field; all are required, the asset ids may be null. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: "<version>"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /brand (the `BrandPut` operationId).
+	BrandPutWithBodyWithResponse(ctx context.Context, params *BrandPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BrandPutResponse, error)
+
+	// BrandPutWithResponse Replace the brand
+	//
+	// Replaces every v1 field; all are required, the asset ids may be null. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: "<version>"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /brand (the `BrandPut` operationId).
+	BrandPutWithResponse(ctx context.Context, params *BrandPutParams, body BrandPutJSONRequestBody, reqEditors ...RequestEditorFn) (*BrandPutResponse, error)
+
+	// BrandAssetsListWithResponse List brand assets
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /brand/assets (the `BrandAssetsList` operationId).
+	BrandAssetsListWithResponse(ctx context.Context, params *BrandAssetsListParams, reqEditors ...RequestEditorFn) (*BrandAssetsListResponse, error)
+
+	// BrandAssetsCreateWithBodyWithResponse Upload a brand asset
+	//
+	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /brand/assets (the `BrandAssetsCreate` operationId).
+	BrandAssetsCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BrandAssetsCreateResponse, error)
+
+	// BrandAssetsCreateWithResponse Upload a brand asset
+	//
+	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /brand/assets (the `BrandAssetsCreate` operationId).
+	BrandAssetsCreateWithResponse(ctx context.Context, body BrandAssetsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*BrandAssetsCreateResponse, error)
+
+	// BrandAssetsGetWithResponse One brand asset
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /brand/assets/{asset_id} (the `BrandAssetsGet` operationId).
+	BrandAssetsGetWithResponse(ctx context.Context, assetId string, reqEditors ...RequestEditorFn) (*BrandAssetsGetResponse, error)
+
 	// CustomersListWithResponse List customers
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -8126,6 +9372,50 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 	CustomersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error)
+
+	// LicenceGetWithResponse This platform's licence
+	//
+	// The licence state as the licence gate sees it, plus what the installed document says. `growth_allowed`, `writes_allowed` and `sp_mode_enabled` are the gate's own verdicts for this state. The full `serial` and the `bundle` are returned only to a principal holding `licence-admin-global`; the serial is masked for everyone else. Never licence-gated.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /licence (the `LicenceGet` operationId).
+	LicenceGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*LicenceGetResponse, error)
+
+	// LicenceBundlePutWithBodyWithResponse Install a licence bundle
+	//
+	// Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.
+	//
+	// EPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch`; compare `installed_document_digest` with the digest of the document you sent to tell "already installed" from "older".
+	//
+	// A document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /licence/bundle (the `LicenceBundlePut` operationId).
+	LicenceBundlePutWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LicenceBundlePutResponse, error)
+
+	// LicenceBundlePutWithResponse Install a licence bundle
+	//
+	// Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.
+	//
+	// EPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch`; compare `installed_document_digest` with the digest of the document you sent to tell "already installed" from "older".
+	//
+	// A document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /licence/bundle (the `LicenceBundlePut` operationId).
+	LicenceBundlePutWithResponse(ctx context.Context, body LicenceBundlePutJSONRequestBody, reqEditors ...RequestEditorFn) (*LicenceBundlePutResponse, error)
+
+	// LicenceSocketFactsWithResponse The socket census
+	//
+	// The latest census measurement per node and whether the census hash chain is intact. Read-only: the census itself runs on its own schedule and cannot be started through this API.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /licence/socket-facts (the `LicenceSocketFacts` operationId).
+	LicenceSocketFactsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*LicenceSocketFactsResponse, error)
 
 	// MetaGetWithResponse API and platform facts
 	//
@@ -9370,6 +10660,428 @@ func (r AiGatewayTiersPutResponse) ContentType() string {
 	return ""
 }
 
+type BrandGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Brand
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r BrandGetResponse) GetJSON200() *Brand {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r BrandGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r BrandGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r BrandGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r BrandGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r BrandGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BrandGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BrandGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BrandGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type BrandPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Brand
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Problem
+	// ApplicationproblemJSON400 the response for an HTTP 400 `application/problem+json` response
+	ApplicationproblemJSON400 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON412 the response for an HTTP 412 `application/json` response
+	JSON412 *Problem
+	// ApplicationproblemJSON412 the response for an HTTP 412 `application/problem+json` response
+	ApplicationproblemJSON412 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r BrandPutResponse) GetJSON200() *Brand {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r BrandPutResponse) GetJSON400() *Problem {
+	return r.JSON400
+}
+
+// GetApplicationproblemJSON400 returns the response for an HTTP 400 `application/problem+json` response
+func (r BrandPutResponse) GetApplicationproblemJSON400() *Problem {
+	return r.ApplicationproblemJSON400
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r BrandPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r BrandPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON412 returns the response for an HTTP 412 `application/json` response
+func (r BrandPutResponse) GetJSON412() *Problem {
+	return r.JSON412
+}
+
+// GetApplicationproblemJSON412 returns the response for an HTTP 412 `application/problem+json` response
+func (r BrandPutResponse) GetApplicationproblemJSON412() *Problem {
+	return r.ApplicationproblemJSON412
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r BrandPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r BrandPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r BrandPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r BrandPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r BrandPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BrandPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BrandPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BrandPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type BrandAssetsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BrandAssetPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r BrandAssetsListResponse) GetJSON200() *BrandAssetPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r BrandAssetsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r BrandAssetsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r BrandAssetsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BrandAssetsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BrandAssetsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BrandAssetsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type BrandAssetsCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BrandAsset
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *BrandAsset
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON415 the response for an HTTP 415 `application/json` response
+	JSON415 *Problem
+	// ApplicationproblemJSON415 the response for an HTTP 415 `application/problem+json` response
+	ApplicationproblemJSON415 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r BrandAssetsCreateResponse) GetJSON200() *BrandAsset {
+	return r.JSON200
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r BrandAssetsCreateResponse) GetJSON201() *BrandAsset {
+	return r.JSON201
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r BrandAssetsCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r BrandAssetsCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON415 returns the response for an HTTP 415 `application/json` response
+func (r BrandAssetsCreateResponse) GetJSON415() *Problem {
+	return r.JSON415
+}
+
+// GetApplicationproblemJSON415 returns the response for an HTTP 415 `application/problem+json` response
+func (r BrandAssetsCreateResponse) GetApplicationproblemJSON415() *Problem {
+	return r.ApplicationproblemJSON415
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r BrandAssetsCreateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r BrandAssetsCreateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r BrandAssetsCreateResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r BrandAssetsCreateResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r BrandAssetsCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r BrandAssetsCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r BrandAssetsCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BrandAssetsCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BrandAssetsCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BrandAssetsCreateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type BrandAssetsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BrandAsset
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r BrandAssetsGetResponse) GetJSON200() *BrandAsset {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r BrandAssetsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r BrandAssetsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r BrandAssetsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r BrandAssetsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r BrandAssetsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BrandAssetsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BrandAssetsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BrandAssetsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type CustomersListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -9744,6 +11456,199 @@ func (r CustomersUpdateResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r CustomersUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LicenceGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Licence
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LicenceGetResponse) GetJSON200() *Licence {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r LicenceGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r LicenceGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r LicenceGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LicenceGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LicenceGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LicenceGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LicenceBundlePutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LicenceInstalled
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LicenceBundlePutResponse) GetJSON200() *LicenceInstalled {
+	return r.JSON200
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r LicenceBundlePutResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r LicenceBundlePutResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LicenceBundlePutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r LicenceBundlePutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r LicenceBundlePutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r LicenceBundlePutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r LicenceBundlePutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LicenceBundlePutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LicenceBundlePutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LicenceBundlePutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LicenceSocketFactsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SocketFacts
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LicenceSocketFactsResponse) GetJSON200() *SocketFacts {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r LicenceSocketFactsResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r LicenceSocketFactsResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r LicenceSocketFactsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LicenceSocketFactsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LicenceSocketFactsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LicenceSocketFactsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -12563,6 +14468,107 @@ func (c *ClientWithResponses) AiGatewayTiersPutWithResponse(ctx context.Context,
 	return ParseAiGatewayTiersPutResponse(rsp)
 }
 
+// BrandGetWithResponse This platform's brand
+//
+// The one brand of this platform. `attribution` and `first_party` are read-only and computed. The `ETag` response header carries `version` for `If-Match`.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /brand (the `BrandGet` operationId).
+func (c *ClientWithResponses) BrandGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*BrandGetResponse, error) {
+	rsp, err := c.BrandGet(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandGetResponse(rsp)
+}
+
+// BrandPutWithBodyWithResponse Replace the brand
+//
+// Replaces every v1 field; all are required, the asset ids may be null. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: "<version>"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /brand (the `BrandPut` operationId).
+func (c *ClientWithResponses) BrandPutWithBodyWithResponse(ctx context.Context, params *BrandPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BrandPutResponse, error) {
+	rsp, err := c.BrandPutWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandPutResponse(rsp)
+}
+
+// BrandPutWithResponse Replace the brand
+//
+// Replaces every v1 field; all are required, the asset ids may be null. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: "<version>"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /brand (the `BrandPut` operationId).
+func (c *ClientWithResponses) BrandPutWithResponse(ctx context.Context, params *BrandPutParams, body BrandPutJSONRequestBody, reqEditors ...RequestEditorFn) (*BrandPutResponse, error) {
+	rsp, err := c.BrandPut(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandPutResponse(rsp)
+}
+
+// BrandAssetsListWithResponse List brand assets
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /brand/assets (the `BrandAssetsList` operationId).
+func (c *ClientWithResponses) BrandAssetsListWithResponse(ctx context.Context, params *BrandAssetsListParams, reqEditors ...RequestEditorFn) (*BrandAssetsListResponse, error) {
+	rsp, err := c.BrandAssetsList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandAssetsListResponse(rsp)
+}
+
+// BrandAssetsCreateWithBodyWithResponse Upload a brand asset
+//
+// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /brand/assets (the `BrandAssetsCreate` operationId).
+func (c *ClientWithResponses) BrandAssetsCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BrandAssetsCreateResponse, error) {
+	rsp, err := c.BrandAssetsCreateWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandAssetsCreateResponse(rsp)
+}
+
+// BrandAssetsCreateWithResponse Upload a brand asset
+//
+// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /brand/assets (the `BrandAssetsCreate` operationId).
+func (c *ClientWithResponses) BrandAssetsCreateWithResponse(ctx context.Context, body BrandAssetsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*BrandAssetsCreateResponse, error) {
+	rsp, err := c.BrandAssetsCreate(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandAssetsCreateResponse(rsp)
+}
+
+// BrandAssetsGetWithResponse One brand asset
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /brand/assets/{asset_id} (the `BrandAssetsGet` operationId).
+func (c *ClientWithResponses) BrandAssetsGetWithResponse(ctx context.Context, assetId string, reqEditors ...RequestEditorFn) (*BrandAssetsGetResponse, error) {
+	rsp, err := c.BrandAssetsGet(ctx, assetId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandAssetsGetResponse(rsp)
+}
+
 // CustomersListWithResponse List customers
 //
 // Returns a wrapper object for the known response body format(s).
@@ -12692,6 +14698,74 @@ func (c *ClientWithResponses) CustomersUpdateWithApplicationMergePatchPlusJSONBo
 		return nil, err
 	}
 	return ParseCustomersUpdateResponse(rsp)
+}
+
+// LicenceGetWithResponse This platform's licence
+//
+// The licence state as the licence gate sees it, plus what the installed document says. `growth_allowed`, `writes_allowed` and `sp_mode_enabled` are the gate's own verdicts for this state. The full `serial` and the `bundle` are returned only to a principal holding `licence-admin-global`; the serial is masked for everyone else. Never licence-gated.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /licence (the `LicenceGet` operationId).
+func (c *ClientWithResponses) LicenceGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*LicenceGetResponse, error) {
+	rsp, err := c.LicenceGet(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLicenceGetResponse(rsp)
+}
+
+// LicenceBundlePutWithBodyWithResponse Install a licence bundle
+//
+// Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.
+//
+// EPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch`; compare `installed_document_digest` with the digest of the document you sent to tell "already installed" from "older".
+//
+// A document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /licence/bundle (the `LicenceBundlePut` operationId).
+func (c *ClientWithResponses) LicenceBundlePutWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LicenceBundlePutResponse, error) {
+	rsp, err := c.LicenceBundlePutWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLicenceBundlePutResponse(rsp)
+}
+
+// LicenceBundlePutWithResponse Install a licence bundle
+//
+// Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.
+//
+// EPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch`; compare `installed_document_digest` with the digest of the document you sent to tell "already installed" from "older".
+//
+// A document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /licence/bundle (the `LicenceBundlePut` operationId).
+func (c *ClientWithResponses) LicenceBundlePutWithResponse(ctx context.Context, body LicenceBundlePutJSONRequestBody, reqEditors ...RequestEditorFn) (*LicenceBundlePutResponse, error) {
+	rsp, err := c.LicenceBundlePut(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLicenceBundlePutResponse(rsp)
+}
+
+// LicenceSocketFactsWithResponse The socket census
+//
+// The latest census measurement per node and whether the census hash chain is intact. Read-only: the census itself runs on its own schedule and cannot be started through this API.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /licence/socket-facts (the `LicenceSocketFacts` operationId).
+func (c *ClientWithResponses) LicenceSocketFactsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*LicenceSocketFactsResponse, error) {
+	rsp, err := c.LicenceSocketFacts(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLicenceSocketFactsResponse(rsp)
 }
 
 // MetaGetWithResponse API and platform facts
@@ -14059,6 +16133,353 @@ func ParseAiGatewayTiersPutResponse(rsp *http.Response) (*AiGatewayTiersPutRespo
 	return response, nil
 }
 
+// ParseBrandGetResponse parses an HTTP response from a BrandGetWithResponse call
+func ParseBrandGetResponse(rsp *http.Response) (*BrandGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BrandGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Brand
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseBrandPutResponse parses an HTTP response from a BrandPutWithResponse call
+func ParseBrandPutResponse(rsp *http.Response) (*BrandPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BrandPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Brand
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 412:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON412 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 412:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON412 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseBrandAssetsListResponse parses an HTTP response from a BrandAssetsListWithResponse call
+func ParseBrandAssetsListResponse(rsp *http.Response) (*BrandAssetsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BrandAssetsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BrandAssetPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseBrandAssetsCreateResponse parses an HTTP response from a BrandAssetsCreateWithResponse call
+func ParseBrandAssetsCreateResponse(rsp *http.Response) (*BrandAssetsCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BrandAssetsCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BrandAsset
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest BrandAsset
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 415:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON415 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 415:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON415 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseBrandAssetsGetResponse parses an HTTP response from a BrandAssetsGetWithResponse call
+func ParseBrandAssetsGetResponse(rsp *http.Response) (*BrandAssetsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BrandAssetsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BrandAsset
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseCustomersListResponse parses an HTTP response from a CustomersListWithResponse call
 func ParseCustomersListResponse(rsp *http.Response) (*CustomersListResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -14347,6 +16768,154 @@ func ParseCustomersUpdateResponse(rsp *http.Response) (*CustomersUpdateResponse,
 			return nil, err
 		}
 		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLicenceGetResponse parses an HTTP response from a LicenceGetWithResponse call
+func ParseLicenceGetResponse(rsp *http.Response) (*LicenceGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LicenceGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Licence
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLicenceBundlePutResponse parses an HTTP response from a LicenceBundlePutWithResponse call
+func ParseLicenceBundlePutResponse(rsp *http.Response) (*LicenceBundlePutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LicenceBundlePutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LicenceInstalled
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLicenceSocketFactsResponse parses an HTTP response from a LicenceSocketFactsWithResponse call
+func ParseLicenceSocketFactsResponse(rsp *http.Response) (*LicenceSocketFactsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LicenceSocketFactsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SocketFacts
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	case rsp.Header.Get("Content-Type") == "application/json" && true:
 		var dest Problem

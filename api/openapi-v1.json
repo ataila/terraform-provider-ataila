@@ -43,6 +43,305 @@
         "title": "ApiWarning",
         "type": "object"
       },
+      "Brand": {
+        "properties": {
+          "attribution": {
+            "description": "Read-only. The line printed under the product name; computed from `first_party`, never stored and never settable.",
+            "readOnly": true,
+            "title": "Attribution",
+            "type": "string"
+          },
+          "brand_color": {
+            "description": "Six-digit hex colour; returned lower-case.",
+            "pattern": "^#[0-9a-fA-F]{6}$",
+            "title": "Brand Color",
+            "type": "string"
+          },
+          "favicon_asset_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A brand asset of kind `favicon`; null keeps the built-in one.",
+            "title": "Favicon Asset Id"
+          },
+          "first_party": {
+            "description": "Read-only. True only on ATAILA's own portal; selects the attribution line. No request can change it.",
+            "readOnly": true,
+            "title": "First Party",
+            "type": "boolean"
+          },
+          "logo_asset_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A brand asset of kind `logo`; null shows the built-in logo.",
+            "title": "Logo Asset Id"
+          },
+          "logo_offset_x": {
+            "description": "Horizontal nudge of the logo, in pixels.",
+            "maximum": 40.0,
+            "minimum": -40.0,
+            "title": "Logo Offset X",
+            "type": "integer"
+          },
+          "logo_size": {
+            "description": "The sidebar logo size preset.",
+            "enum": [
+              "compact",
+              "medium",
+              "regular",
+              "large"
+            ],
+            "title": "Logo Size",
+            "type": "string"
+          },
+          "page_title": {
+            "description": "The browser-tab title.",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Page Title",
+            "type": "string"
+          },
+          "product_name": {
+            "description": "The wordmark in the sidebar and on the sign-in page.",
+            "maxLength": 32,
+            "minLength": 2,
+            "title": "Product Name",
+            "type": "string"
+          },
+          "product_name_accent": {
+            "description": "A part of `product_name` rendered in `brand_color`. Empty colours the whole name.",
+            "maxLength": 32,
+            "title": "Product Name Accent",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "version": {
+            "description": "Bumped by every change; send it back in `If-Match`.",
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "product_name",
+          "product_name_accent",
+          "brand_color",
+          "page_title",
+          "logo_size",
+          "logo_offset_x",
+          "logo_asset_id",
+          "favicon_asset_id",
+          "first_party",
+          "version",
+          "updated_at",
+          "attribution"
+        ],
+        "title": "Brand",
+        "type": "object"
+      },
+      "BrandAsset": {
+        "properties": {
+          "bytes": {
+            "title": "Bytes",
+            "type": "integer"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Height"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "logo",
+              "favicon"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "mime": {
+            "title": "Mime",
+            "type": "string"
+          },
+          "sha256": {
+            "title": "Sha256",
+            "type": "string"
+          },
+          "uploaded_at": {
+            "format": "date-time",
+            "title": "Uploaded At",
+            "type": "string"
+          },
+          "url": {
+            "description": "Where the asset is served, without a file extension (`/api/brand/assets/<sha256>`); readable without signing in, like the sign-in page itself.",
+            "title": "Url",
+            "type": "string"
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Width"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "sha256",
+          "mime",
+          "bytes",
+          "filename",
+          "url",
+          "uploaded_at"
+        ],
+        "title": "BrandAsset",
+        "type": "object"
+      },
+      "BrandAssetPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BrandAsset"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "BrandAssetPage",
+        "type": "object"
+      },
+      "BrandPut": {
+        "additionalProperties": false,
+        "description": "Full replacement of the v1 fields: every member is required (the asset\nids may be null). Extra members — `attribution` and `first_party` among\nthem — are refused with 422.",
+        "properties": {
+          "brand_color": {
+            "description": "Six-digit hex colour; returned lower-case.",
+            "pattern": "^#[0-9a-fA-F]{6}$",
+            "title": "Brand Color",
+            "type": "string"
+          },
+          "favicon_asset_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A brand asset of kind `favicon`; null keeps the built-in one.",
+            "title": "Favicon Asset Id"
+          },
+          "logo_asset_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A brand asset of kind `logo`; null shows the built-in logo.",
+            "title": "Logo Asset Id"
+          },
+          "logo_offset_x": {
+            "description": "Horizontal nudge of the logo, in pixels.",
+            "maximum": 40.0,
+            "minimum": -40.0,
+            "title": "Logo Offset X",
+            "type": "integer"
+          },
+          "logo_size": {
+            "description": "The sidebar logo size preset.",
+            "enum": [
+              "compact",
+              "medium",
+              "regular",
+              "large"
+            ],
+            "title": "Logo Size",
+            "type": "string"
+          },
+          "page_title": {
+            "description": "The browser-tab title.",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Page Title",
+            "type": "string"
+          },
+          "product_name": {
+            "description": "The wordmark in the sidebar and on the sign-in page.",
+            "maxLength": 32,
+            "minLength": 2,
+            "title": "Product Name",
+            "type": "string"
+          },
+          "product_name_accent": {
+            "description": "A part of `product_name` rendered in `brand_color`. Empty colours the whole name.",
+            "maxLength": 32,
+            "title": "Product Name Accent",
+            "type": "string"
+          }
+        },
+        "required": [
+          "product_name",
+          "product_name_accent",
+          "brand_color",
+          "page_title",
+          "logo_size",
+          "logo_offset_x",
+          "logo_asset_id",
+          "favicon_asset_id"
+        ],
+        "title": "BrandPut",
+        "type": "object"
+      },
       "Customer": {
         "properties": {
           "billing_tier": {
@@ -1086,6 +1385,648 @@
           "namespace"
         ],
         "title": "KubernetesNamespace",
+        "type": "object"
+      },
+      "Licence": {
+        "properties": {
+          "bound_fqdn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The name the installed licence is bound to. A licence bound to another name puts the portal in DOMAIN_MISMATCH.",
+            "title": "Bound Fqdn"
+          },
+          "bundle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "SENSITIVE. The installed bundle as an `acplic1.` string, for a principal holding `licence-admin-global`; null for everyone else and when none is installed.",
+            "title": "Bundle"
+          },
+          "days_remaining": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Whole days until `valid_until`; negative in grace. Null without a term.",
+            "title": "Days Remaining"
+          },
+          "document_digest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "sha256 (hex) of the installed licence document envelope — the `document` member of the bundle, as ASCII. The same value the issuer records for the document it signed. Null when none is installed.",
+            "title": "Document Digest"
+          },
+          "fqdn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The name this portal answers on, as the licence engine derives it.",
+            "title": "Fqdn"
+          },
+          "grace_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grace Days"
+          },
+          "growth_allowed": {
+            "description": "The licence gate lets the estate grow (projects, AI, customers and tenants): false in the restricted and read-only states.",
+            "title": "Growth Allowed",
+            "type": "boolean"
+          },
+          "installed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When the installed document was installed.",
+            "title": "Installed At"
+          },
+          "instance_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This portal's instance id, which a licence document binds. Null until the portal first activates or imports a licence.",
+            "title": "Instance Id"
+          },
+          "licence_class": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Licence Class"
+          },
+          "licence_epoch": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The installed document's epoch; a bundle installs only when its epoch is higher (see `PUT /licence/bundle`).",
+            "title": "Licence Epoch"
+          },
+          "licence_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Licence Id"
+          },
+          "modules": {
+            "description": "Entitled modules; empty unless the state gives full function.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Modules",
+            "type": "array"
+          },
+          "overlays": {
+            "description": "Conditions shown next to the state, never a state of their own: `clock_skew`, `over_deployed`.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Overlays",
+            "type": "array"
+          },
+          "product_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product Code"
+          },
+          "serial": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The licence serial. Shown in full only to a principal holding `licence-admin-global`; everyone else gets it masked to its last group. Null when no licence is installed.",
+            "title": "Serial"
+          },
+          "serial_masked": {
+            "description": "True when `serial` is masked for this caller.",
+            "title": "Serial Masked",
+            "type": "boolean"
+          },
+          "sockets": {
+            "$ref": "#/components/schemas/LicenceSockets"
+          },
+          "sp_mode_enabled": {
+            "description": "The licence gate lets the service-provider plane (customers and tenants) change: requires growth, the `sp-mode` module and a tenancy mode other than `single`.",
+            "title": "Sp Mode Enabled",
+            "type": "boolean"
+          },
+          "state": {
+            "enum": [
+              "UNLICENSED",
+              "PENDING_ACTIVATION",
+              "INVALID",
+              "DOMAIN_MISMATCH",
+              "ACTIVE",
+              "EXPIRING",
+              "GRACE",
+              "LOCKED",
+              "REVOKED"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "state_reason": {
+            "description": "Why the licence is in this state; empty when ACTIVE.",
+            "title": "State Reason",
+            "type": "string"
+          },
+          "tenancy_mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`single` or `multi`, as the licence states it.",
+            "title": "Tenancy Mode"
+          },
+          "tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tier"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "writes_allowed": {
+            "description": "The licence gate lets ordinary changes through: false only in the read-only states (LOCKED, REVOKED).",
+            "title": "Writes Allowed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "state",
+          "state_reason",
+          "overlays",
+          "serial",
+          "serial_masked",
+          "licence_epoch",
+          "tenancy_mode",
+          "modules",
+          "sockets",
+          "days_remaining",
+          "instance_id",
+          "fqdn",
+          "bound_fqdn",
+          "document_digest",
+          "bundle",
+          "installed_at",
+          "growth_allowed",
+          "writes_allowed",
+          "sp_mode_enabled"
+        ],
+        "title": "Licence",
+        "type": "object"
+      },
+      "LicenceBundlePut": {
+        "additionalProperties": false,
+        "properties": {
+          "bundle": {
+            "description": "SENSITIVE. The `acplic1.` bundle ATAILA issued for this portal.",
+            "maxLength": 65536,
+            "minLength": 1,
+            "title": "Bundle",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bundle"
+        ],
+        "title": "LicenceBundlePut",
+        "type": "object"
+      },
+      "LicenceInstalled": {
+        "description": "``PUT /licence/bundle`` — the licence as it is after the install.",
+        "properties": {
+          "bound_fqdn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The name the installed licence is bound to. A licence bound to another name puts the portal in DOMAIN_MISMATCH.",
+            "title": "Bound Fqdn"
+          },
+          "bundle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "SENSITIVE. The installed bundle as an `acplic1.` string, for a principal holding `licence-admin-global`; null for everyone else and when none is installed.",
+            "title": "Bundle"
+          },
+          "days_remaining": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Whole days until `valid_until`; negative in grace. Null without a term.",
+            "title": "Days Remaining"
+          },
+          "document_digest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "sha256 (hex) of the installed licence document envelope — the `document` member of the bundle, as ASCII. The same value the issuer records for the document it signed. Null when none is installed.",
+            "title": "Document Digest"
+          },
+          "fqdn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The name this portal answers on, as the licence engine derives it.",
+            "title": "Fqdn"
+          },
+          "grace_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grace Days"
+          },
+          "growth_allowed": {
+            "description": "The licence gate lets the estate grow (projects, AI, customers and tenants): false in the restricted and read-only states.",
+            "title": "Growth Allowed",
+            "type": "boolean"
+          },
+          "installed": {
+            "const": true,
+            "default": true,
+            "title": "Installed",
+            "type": "boolean"
+          },
+          "installed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When the installed document was installed.",
+            "title": "Installed At"
+          },
+          "instance_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This portal's instance id, which a licence document binds. Null until the portal first activates or imports a licence.",
+            "title": "Instance Id"
+          },
+          "licence_class": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Licence Class"
+          },
+          "licence_epoch": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The installed document's epoch; a bundle installs only when its epoch is higher (see `PUT /licence/bundle`).",
+            "title": "Licence Epoch"
+          },
+          "licence_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Licence Id"
+          },
+          "modules": {
+            "description": "Entitled modules; empty unless the state gives full function.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Modules",
+            "type": "array"
+          },
+          "overlays": {
+            "description": "Conditions shown next to the state, never a state of their own: `clock_skew`, `over_deployed`.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Overlays",
+            "type": "array"
+          },
+          "product_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product Code"
+          },
+          "serial": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The licence serial. Shown in full only to a principal holding `licence-admin-global`; everyone else gets it masked to its last group. Null when no licence is installed.",
+            "title": "Serial"
+          },
+          "serial_masked": {
+            "description": "True when `serial` is masked for this caller.",
+            "title": "Serial Masked",
+            "type": "boolean"
+          },
+          "sockets": {
+            "$ref": "#/components/schemas/LicenceSockets"
+          },
+          "sp_mode_enabled": {
+            "description": "The licence gate lets the service-provider plane (customers and tenants) change: requires growth, the `sp-mode` module and a tenancy mode other than `single`.",
+            "title": "Sp Mode Enabled",
+            "type": "boolean"
+          },
+          "state": {
+            "enum": [
+              "UNLICENSED",
+              "PENDING_ACTIVATION",
+              "INVALID",
+              "DOMAIN_MISMATCH",
+              "ACTIVE",
+              "EXPIRING",
+              "GRACE",
+              "LOCKED",
+              "REVOKED"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "state_reason": {
+            "description": "Why the licence is in this state; empty when ACTIVE.",
+            "title": "State Reason",
+            "type": "string"
+          },
+          "tenancy_mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`single` or `multi`, as the licence states it.",
+            "title": "Tenancy Mode"
+          },
+          "tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tier"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/ApiWarning"
+            },
+            "title": "Warnings",
+            "type": "array"
+          },
+          "writes_allowed": {
+            "description": "The licence gate lets ordinary changes through: false only in the read-only states (LOCKED, REVOKED).",
+            "title": "Writes Allowed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "state",
+          "state_reason",
+          "overlays",
+          "serial",
+          "serial_masked",
+          "licence_epoch",
+          "tenancy_mode",
+          "modules",
+          "sockets",
+          "days_remaining",
+          "instance_id",
+          "fqdn",
+          "bound_fqdn",
+          "document_digest",
+          "bundle",
+          "installed_at",
+          "growth_allowed",
+          "writes_allowed",
+          "sp_mode_enabled"
+        ],
+        "title": "LicenceInstalled",
+        "type": "object"
+      },
+      "LicenceSockets": {
+        "properties": {
+          "licensed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Sockets the licence allows; null when uncapped or when no licence is installed.",
+            "title": "Licensed"
+          },
+          "observed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Sockets the latest census measured; null when no census has run.",
+            "title": "Observed"
+          },
+          "uncapped": {
+            "title": "Uncapped",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "licensed",
+          "uncapped",
+          "observed"
+        ],
+        "title": "LicenceSockets",
         "type": "object"
       },
       "LicenceSummary": {
@@ -3804,6 +4745,130 @@
         "title": "ServingTierPut",
         "type": "object"
       },
+      "SocketChain": {
+        "properties": {
+          "first_broken_row": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The id of the first census row that does not match, when not intact.",
+            "title": "First Broken Row"
+          },
+          "intact": {
+            "description": "Every row's hash matches its content and its predecessor.",
+            "title": "Intact",
+            "type": "boolean"
+          },
+          "rows": {
+            "description": "Census rows in the hash chain.",
+            "title": "Rows",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "rows",
+          "intact",
+          "first_broken_row"
+        ],
+        "title": "SocketChain",
+        "type": "object"
+      },
+      "SocketFact": {
+        "properties": {
+          "cluster": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cluster"
+          },
+          "cores_per_socket": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cores Per Socket"
+          },
+          "measured_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measured At"
+          },
+          "node_name": {
+            "title": "Node Name",
+            "type": "string"
+          },
+          "sockets": {
+            "title": "Sockets",
+            "type": "integer"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "node_name",
+          "sockets",
+          "source"
+        ],
+        "title": "SocketFact",
+        "type": "object"
+      },
+      "SocketFacts": {
+        "properties": {
+          "chain": {
+            "$ref": "#/components/schemas/SocketChain"
+          },
+          "facts": {
+            "description": "The latest measurement per node.",
+            "items": {
+              "$ref": "#/components/schemas/SocketFact"
+            },
+            "title": "Facts",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Sum of `sockets` over `facts`; null when no census has run.",
+            "title": "Total"
+          }
+        },
+        "required": [
+          "facts",
+          "total",
+          "chain"
+        ],
+        "title": "SocketFacts",
+        "type": "object"
+      },
       "StageGrid": {
         "properties": {
           "percent": {
@@ -5825,6 +6890,548 @@
         ]
       }
     },
+    "/brand": {
+      "get": {
+        "description": "The one brand of this platform. `attribution` and `first_party` are read-only and computed. The `ETag` response header carries `version` for `If-Match`.",
+        "operationId": "brand_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No brand is configured (`brand_not_configured`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "This platform's brand",
+        "tags": [
+          "brand"
+        ]
+      },
+      "put": {
+        "description": "Replaces every v1 field; all are required, the asset ids may be null. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: \"<version>\"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.",
+        "operationId": "brand_put",
+        "parameters": [
+          {
+            "description": "The `version` last read, as an entity tag (`\"7\"`); `*` matches any.",
+            "in": "header",
+            "name": "If-Match",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The `version` last read, as an entity tag (`\"7\"`); `*` matches any.",
+              "title": "If-Match"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "`If-Match` is not a version (`invalid_if_match`)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No brand is configured (`brand_not_configured`)."
+          },
+          "412": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "`If-Match` names another version (`version_mismatch`); `current_version` is the stored one."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "An asset id does not exist (`asset_not_found`) or is the wrong kind (`asset_wrong_kind`), with `field`; or the body is invalid — naming `attribution` or `first_party` included."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Replace the brand",
+        "tags": [
+          "brand"
+        ]
+      }
+    },
+    "/brand/assets": {
+      "get": {
+        "operationId": "brand_assets_list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "kind",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "logo",
+                    "favicon"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Kind"
+            }
+          },
+          {
+            "description": "Exact sha256 (lower-case hex) of the file.",
+            "in": "query",
+            "name": "sha256",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact sha256 (lower-case hex) of the file.",
+              "title": "Sha256"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandAssetPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List brand assets",
+        "tags": [
+          "brand"
+        ]
+      },
+      "post": {
+        "description": "Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete.",
+        "operationId": "brand_assets_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "description": "The JSON form of an upload. Multipart (`file` + `kind`), as the portal\nscreen sends, is accepted on the same operation.",
+                "properties": {
+                  "content_base64": {
+                    "description": "The file, standard base64; at most 512 KB decoded.",
+                    "maxLength": 699058,
+                    "minLength": 1,
+                    "title": "Content Base64",
+                    "type": "string"
+                  },
+                  "filename": {
+                    "default": "",
+                    "maxLength": 200,
+                    "title": "Filename",
+                    "type": "string"
+                  },
+                  "kind": {
+                    "enum": [
+                      "logo",
+                      "favicon"
+                    ],
+                    "title": "Kind",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "content_base64"
+                ],
+                "title": "BrandAssetUpload",
+                "type": "object"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "kind": {
+                    "enum": [
+                      "logo",
+                      "favicon"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file",
+                  "kind"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandAsset"
+                }
+              }
+            },
+            "description": "These bytes are already stored as this kind: the existing asset. Nothing new is written (a missing stored object is stored again)."
+          },
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandAsset"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "These bytes are already stored as the OTHER kind (`asset_kind_conflict`); `existing_asset_id` and `existing_kind` name it."
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Neither `multipart/form-data` nor `application/json` (`unsupported_media_type`)."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The file is refused (`asset_invalid`: type, size, SVG content, logo width), `content_base64` is not base64, or the body is invalid."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Object storage is not configured, so a new asset cannot be stored (`storage_unavailable`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Upload a brand asset",
+        "tags": [
+          "brand"
+        ]
+      }
+    },
+    "/brand/assets/{asset_id}": {
+      "get": {
+        "operationId": "brand_assets_get",
+        "parameters": [
+          {
+            "description": "The asset's id (`id` on a brand asset).",
+            "in": "path",
+            "name": "asset_id",
+            "required": true,
+            "schema": {
+              "description": "The asset's id (`id` on a brand asset).",
+              "title": "Asset Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandAsset"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such asset (`brand_asset_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One brand asset",
+        "tags": [
+          "brand"
+        ]
+      }
+    },
     "/customers": {
       "get": {
         "operationId": "customers_list",
@@ -6314,6 +7921,172 @@
         "summary": "Change a customer",
         "tags": [
           "customers"
+        ]
+      }
+    },
+    "/licence": {
+      "get": {
+        "description": "The licence state as the licence gate sees it, plus what the installed document says. `growth_allowed`, `writes_allowed` and `sp_mode_enabled` are the gate's own verdicts for this state. The full `serial` and the `bundle` are returned only to a principal holding `licence-admin-global`; the serial is masked for everyone else. Never licence-gated.",
+        "operationId": "licence_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Licence"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "This platform's licence",
+        "tags": [
+          "licence"
+        ]
+      }
+    },
+    "/licence/bundle": {
+      "put": {
+        "description": "Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.\n\nEPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch`; compare `installed_document_digest` with the digest of the document you sent to tell \"already installed\" from \"older\".\n\nA document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.",
+        "operationId": "licence_bundle_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LicenceBundlePut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LicenceInstalled"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The portal already holds a document with the same or a higher epoch (`stale_epoch`); nothing was installed. `installed_epoch` and `installed_document_digest` describe what is installed."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The bundle does not verify (`bundle_invalid`) or is bound to another portal instance (`instance_mismatch`), or the body is invalid."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Install a licence bundle",
+        "tags": [
+          "licence"
+        ]
+      }
+    },
+    "/licence/socket-facts": {
+      "get": {
+        "description": "The latest census measurement per node and whether the census hash chain is intact. Read-only: the census itself runs on its own schedule and cannot be started through this API.",
+        "operationId": "licence_socket_facts",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SocketFacts"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "The socket census",
+        "tags": [
+          "licence"
         ]
       }
     },

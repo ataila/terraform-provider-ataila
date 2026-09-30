@@ -88,6 +88,7 @@ type MockAPI struct {
 	tenancy    *tenancyState
 	users      *usersState
 	gateway    *gatewayState
+	projects   *projectsState
 }
 
 type storedReply struct {
@@ -132,6 +133,7 @@ func NewMockAPI(t testing.TB) *MockAPI {
 		idempotent: map[string]storedReply{},
 		tenancy:    newTenancyState(),
 		gateway:    newGatewayState(),
+		projects:   newProjectsState(),
 	}
 	principal, _ := m.whoami["principal"].(map[string]any)
 	m.users = newUsersState(principal, m.whoami["scopes"].([]string))
@@ -180,8 +182,9 @@ func DefaultWhoami() map[string]any {
 }
 
 func defaultScopes() []string {
-	return []string{"ai-gateway-admin-global", "ai-gateway-read-global", "tenancy-admin-global",
-		"tenancy-read-global", "users-admin-global", "users-read-global"}
+	return []string{"ai-gateway-admin-global", "ai-gateway-read-global", "projects-admin-global",
+		"projects-read-global", "tenancy-admin-global", "tenancy-read-global", "users-admin-global",
+		"users-read-global"}
 }
 
 // URL is the portal base URL (without /api/v1).
@@ -437,6 +440,9 @@ func (m *MockAPI) route(c *call) reply {
 		if c.r.Method != http.MethodGet {
 			return c.methodNotAllowed()
 		}
+		if native, isProvision := strings.CutPrefix(c.path, "/operations/provision:"); isProvision {
+			return m.provisionOperation(c, native)
+		}
 		if op, found := m.operations[strings.TrimPrefix(c.path, "/operations/")]; found {
 			return ok(http.StatusOK, op)
 		}
@@ -448,6 +454,8 @@ func (m *MockAPI) route(c *call) reply {
 		return m.routeUsers(c)
 	case c.path == "/ai/gateway" || strings.HasPrefix(c.path, "/ai/gateway/"):
 		return m.routeGateway(c)
+	case c.path == "/projects" || strings.HasPrefix(c.path, "/projects/"):
+		return m.routeProjects(c)
 	}
 	return c.problem(http.StatusNotFound, "not_found", "", nil)
 }

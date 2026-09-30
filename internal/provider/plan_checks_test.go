@@ -135,13 +135,28 @@ func replacingAttributes(t *testing.T, r resource.Resource) (replacing []string,
 				}
 			}
 		}
+		if ba, ok := a.(interface {
+			BoolPlanModifiers() []planmodifier.Bool
+		}); ok {
+			for _, m := range ba.BoolPlanModifiers() {
+				req := planmodifier.BoolRequest{Path: path.Root(name), State: tfsdk.State{Raw: present},
+					Plan: tfsdk.Plan{Raw: present}, StateValue: types.BoolValue(false), PlanValue: types.BoolValue(true)}
+				resp := &planmodifier.BoolResponse{PlanValue: req.PlanValue}
+				m.PlanModifyBool(ctx, req, resp)
+				ran++
+				if resp.RequiresReplace {
+					replacing = append(replacing, name)
+				}
+			}
+		}
 	}
 	return replacing, ran
 }
 
 // No attribute of a destroy-gated resource may force a replacement (F13).
 func TestNoTenancyAttributeForcesReplacement(t *testing.T) {
-	for _, r := range []resource.Resource{NewCustomerResource(), NewTenantResource(), NewUserResource(), NewGatewayKeyResource()} {
+	for _, r := range []resource.Resource{NewCustomerResource(), NewTenantResource(), NewUserResource(),
+		NewGatewayKeyResource(), NewProjectResource(), NewProjectProvisioningResource()} {
 		replacing, ran := replacingAttributes(t, r)
 		if ran < 5 {
 			t.Errorf("%T: only %d plan modifiers ran; the check is not looking", r, ran)
@@ -154,6 +169,55 @@ func TestNoTenancyAttributeForcesReplacement(t *testing.T) {
 	replacing, _ := replacingAttributes(t, NewTenantMembershipResource())
 	if len(replacing) != 2 {
 		t.Errorf("membership replacing attributes = %v, want tenant_id and user_id", replacing)
+	}
+	replacing, _ = replacingAttributes(t, NewProjectMemberResource())
+	if len(replacing) != 2 {
+		t.Errorf("project member replacing attributes = %v, want project_id and user_id", replacing)
+	}
+}
+
+// Every frozen key of a project fails the plan on a change, and none replaces.
+func TestProjectFrozenKeysFailThePlan(t *testing.T) {
+	ctx := context.Background()
+	var sresp resource.SchemaResponse
+	NewProjectResource().Schema(ctx, resource.SchemaRequest{}, &sresp)
+	for _, name := range []string{"tenant_id", "project_index", "short_name", "gitlab_repo_slug",
+		"primary_domain", "deployment_backend", "network_only"} {
+		var diags diag.Diagnostics
+		replace := false
+		switch a := sresp.Schema.Attributes[name].(type) {
+		case interface{ StringPlanModifiers() []planmodifier.String }:
+			for _, m := range a.StringPlanModifiers() {
+				req, resp := stringReq(present, present, types.StringValue("a"), types.StringValue("b"))
+				req.Path = path.Root(name)
+				m.PlanModifyString(ctx, req, resp)
+				diags.Append(resp.Diagnostics...)
+				replace = replace || resp.RequiresReplace
+			}
+		case interface{ Int64PlanModifiers() []planmodifier.Int64 }:
+			for _, m := range a.Int64PlanModifiers() {
+				req := planmodifier.Int64Request{Path: path.Root(name), State: tfsdk.State{Raw: present},
+					Plan: tfsdk.Plan{Raw: present}, StateValue: types.Int64Value(4), PlanValue: types.Int64Value(5)}
+				resp := &planmodifier.Int64Response{PlanValue: req.PlanValue}
+				m.PlanModifyInt64(ctx, req, resp)
+				diags.Append(resp.Diagnostics...)
+				replace = replace || resp.RequiresReplace
+			}
+		case interface{ BoolPlanModifiers() []planmodifier.Bool }:
+			for _, m := range a.BoolPlanModifiers() {
+				req := planmodifier.BoolRequest{Path: path.Root(name), State: tfsdk.State{Raw: present},
+					Plan: tfsdk.Plan{Raw: present}, StateValue: types.BoolValue(false), PlanValue: types.BoolValue(true)}
+				resp := &planmodifier.BoolResponse{PlanValue: req.PlanValue}
+				m.PlanModifyBool(ctx, req, resp)
+				diags.Append(resp.Diagnostics...)
+				replace = replace || resp.RequiresReplace
+			}
+		default:
+			t.Fatalf("%s: unexpected attribute type %T", name, a)
+		}
+		if replace || !diags.HasError() || !strings.Contains(diags[0].Summary(), "Cannot change "+name+" of an existing project") {
+			t.Errorf("%s: replace=%v diags=%v", name, replace, diags)
+		}
 	}
 }
 

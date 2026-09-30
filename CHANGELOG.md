@@ -3,6 +3,44 @@
 All notable changes to this provider. Versions follow semantic versioning; until the first publication the
 provider stays at 0.x and any release may change.
 
+## 0.4.0 (2026-09-30)
+
+Projects. Pins the platform's `/api/v1` contract of platform release 1.0.162 (API 1.0.0).
+
+### Resources
+
+- `ataila_project`: create records the project (status `planned`; nothing is provisioned);
+  `project_index` is allocated when omitted. Update is a JSON Merge Patch of the settings, after which the
+  provisioning's `stale_stages` is read into the state. `tenant_id`, `project_index`, `short_name`,
+  `gitlab_repo_slug`, `primary_domain`, `deployment_backend` and `network_only` are frozen: a change fails
+  the plan, naming the key, and never replaces. The platform's own projects (`is_self`) are refused at
+  import and at plan time. A retired project refuses changes at plan time. Destroy = retire, behind both
+  switches; destroying a retired project only forgets it. Outputs (`urls`, `harbor_namespace`,
+  `gitlab_repositories`, `kubernetes_namespaces`, `vault_paths`) are ordinary computed attributes. Import
+  by id or `short_name:<name>`.
+- `ataila_project_provisioning`: create starts provisioning (with an Idempotency-Key reused by that
+  request's retries), polls the operation until it ends, then reads the provisioning; done means
+  `converged`. A project that is not converged plans an in-place update whose apply provisions again. A
+  run already holding the project (`orchestration_in_progress`) is adopted, never duplicated; a stage
+  waiting for an operator keeps the provider waiting (reported as a warning). `timeouts { create, update }`,
+  60 minutes by default; past the timeout the resource is left (tainted when new) with the last stage in
+  the error. `dispatch_mode = dryrun` fails at once. Destroy only forgets. Import by project id.
+- `ataila_project_member`: PUT/DELETE of a project membership with `role` (default `developer`) and the
+  recorded, not enforced, `gitlab_role`. Removal is not destroy-gated; a retired project refuses new
+  members and role changes (`project_retired`, final). Import by `<project_id>/<user_id>`.
+
+### Data sources
+
+- `ataila_project` (by id or short name), `ataila_projects` (filters `tenant_id`, `customer_id`, `status`,
+  `short_name`; every page), `ataila_project_stages`.
+
+### Tests
+
+- The mock implements projects, provisioning (one stage per poll; `live`, `simulate` and `dryrun`;
+  injected failures and stages waiting for an operator), operations `provision:<n>` and project members.
+- No attribute of a project in the state holds an IPv4 literal. The cross-CLI state check now includes a
+  project, its provisioning and a member.
+
 ## 0.3.0 (unreleased)
 
 Users, role grants and the AI gateway. Pins the platform's `/api/v1` contract with those paths (API 1.0.0).

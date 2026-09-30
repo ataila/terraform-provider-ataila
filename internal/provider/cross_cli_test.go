@@ -50,11 +50,15 @@ func TestCrossCLIState(t *testing.T) {
 	setup := func(t *testing.T) (pair, func(string)) {
 		m := newMock(t)
 		m.SetTokenAllowDestroy(true)
+		m.ProvisionInstantly(true)
 		user := m.AddUser("dana@example.com")
+		_, projectTenant := m.AddCustomer("SHOPS", "shops")
+		m.SetMembership(projectTenant, user, "member")
 		dir := t.TempDir()
 		write := func(description string) {
 			t.Helper()
-			if err := os.WriteFile(filepath.Join(dir, "main.tf"), []byte(crossConfig(description, user)), 0o600); err != nil {
+			cfg := crossConfig(description, user) + crossProjectConfig(projectTenant, user)
+			if err := os.WriteFile(filepath.Join(dir, "main.tf"), []byte(cfg), 0o600); err != nil {
 				t.Fatal(err)
 			}
 		}
@@ -176,6 +180,35 @@ output "tenant_created_at" {
   value = ataila_tenant.t.created_at
 }
 `, description, user)
+}
+
+// crossProjectConfig adds a project, its provisioning and a member. The
+// primary domain is written in mixed case, which the platform lower-cases.
+func crossProjectConfig(tenantID, user string) string {
+	return fmt.Sprintf(`
+resource "ataila_project" "p" {
+  tenant_id        = %q
+  short_name       = "cross"
+  gitlab_repo_slug = "cross-app"
+  primary_domain   = "Cross.Example.com"
+  long_name        = "Cross Shop"
+  enable_ai        = true
+}
+
+resource "ataila_project_provisioning" "p" {
+  project_id = ataila_project.p.id
+}
+
+resource "ataila_project_member" "m" {
+  project_id = ataila_project.p.id
+  user_id    = %q
+  role       = "viewer"
+}
+
+output "project_frontend" {
+  value = ataila_project.p.urls.frontend
+}
+`, tenantID, user)
 }
 
 // errorBlock is the CLI's first error, its title and text on one line.

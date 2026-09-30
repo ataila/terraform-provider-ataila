@@ -118,6 +118,9 @@ place, so switch once, not back and forth in parallel runs.
 | [`ataila_user_role_grant`](docs/resources/user_role_grant.md) | One role held by one user (additive) | Removes the role |
 | [`ataila_ai_gateway_key`](docs/resources/ai_gateway_key.md) | A virtual key of the AI gateway; value returned once, rotation by trigger | Deletes in the gateway, irreversibly; not gated |
 | [`ataila_ai_serving_tier`](docs/resources/ai_serving_tier.md) | The pin and enabled flag of an existing serving tier | Forgets only |
+| [`ataila_project`](docs/resources/project.md) | A project record and its settings; provisions nothing | Retires; gated |
+| [`ataila_project_provisioning`](docs/resources/project_provisioning.md) | Runs a project's provisioning and waits until it is converged | Forgets only |
+| [`ataila_project_member`](docs/resources/project_member.md) | A user's role in a project | Removes the membership |
 
 **Destroy is off by default and needs two switches**: `allow_destroy = true` on the provider **and** a token
 minted with destroy allowed. With the provider switch off, destroying a customer or a tenant fails at plan
@@ -131,6 +134,16 @@ what blocks the destroy.
 `customer_id` and `slug`) are fixed at create. Changing one fails the plan; the provider never replaces a
 customer or a tenant, because destroying a customer only archives it and an archived customer keeps its
 keys, so the re-create could never succeed.
+
+**Projects** are records first: `ataila_project` creates and changes the record (it stays `planned`), and
+`ataila_project_provisioning` runs the platform's stage engine and waits until the project is converged (every
+stage done, none stale), up to its `timeouts`. A change of the project marks the stages it affects stale
+(`stale_stages`); the next plan then shows an in-place update of the provisioning, whose apply re-applies just
+those stages. A project's `tenant_id`, `project_index`, `short_name`, `gitlab_repo_slug`, `primary_domain`,
+`deployment_backend` and `network_only` are frozen like the keys above. Destroying a project retires it (both
+switches): nothing on the substrate is removed, and its index, short name and domain stay reserved for good.
+Destroying a provisioning only forgets it; the API cannot undo provisioning. The platform's own projects
+(`is_self`) are read-only: the provider refuses to import or change them.
 
 **Warnings** the platform returns on a request that succeeded are reported as warnings, never as errors.
 
@@ -166,6 +179,9 @@ Import forms:
 | `ataila_user_role_grant` | `<user_id>/<role>` |
 | `ataila_ai_gateway_key` | the id, or `alias:<key_alias>` |
 | `ataila_ai_serving_tier` | the tier's key |
+| `ataila_project` | the id, or `short_name:<short_name>` |
+| `ataila_project_provisioning` | the project id |
+| `ataila_project_member` | `<project_id>/<user_id>` |
 
 ```shell
 tofu import ataila_customer.example short_name:EXAMPLE        # OpenTofu
@@ -186,6 +202,9 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_permission_catalog`](docs/data-sources/permission_catalog.md) | Every permission key, with whether it is grantable and mintable |
 | [`ataila_ai_serving_tiers`](docs/data-sources/ai_serving_tiers.md) | The AI gateway's serving tiers and how each resolves now |
 | [`ataila_ai_gateway`](docs/data-sources/ai_gateway.md) | The AI gateway's base URL and tier names |
+| [`ataila_project`](docs/data-sources/project.md) | One project, by id or short name, with its settings, outputs and stale stages |
+| [`ataila_projects`](docs/data-sources/projects.md) | Project summaries filtered by tenant, customer, status or short name (all pages) |
+| [`ataila_project_stages`](docs/data-sources/project_stages.md) | A project's provisioning stages with dependencies and latest runs |
 
 Further resources follow milestone by milestone; each ships with its documentation, examples and tests.
 
@@ -206,11 +225,11 @@ TLS with its own certificate authority, so they need no platform and no credenti
 
 ```shell
 # Terraform
-TF_ACC=1 TF_ACC_TERRAFORM_PATH="$(command -v terraform)" go test ./internal/provider/ -run '^TestAcc' -v
+TF_ACC=1 TF_ACC_TERRAFORM_PATH="$(command -v terraform)" go test ./internal/provider/ -run '^TestAcc' -v -timeout 30m
 
 # OpenTofu
 TF_ACC=1 TF_ACC_TERRAFORM_PATH="$(command -v tofu)" TF_ACC_PROVIDER_HOST=registry.opentofu.org \
-  go test ./internal/provider/ -run '^TestAcc' -v
+  go test ./internal/provider/ -run '^TestAcc' -v -timeout 30m
 ```
 
 ### State shared by both CLIs

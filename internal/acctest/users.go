@@ -86,6 +86,7 @@ func defaultPermissions() []mockPermission {
 	for _, f := range []feat{
 		{"ai-gateway", "AI gateway", "AI"},
 		{"api-tokens", "API tokens and service accounts", "Platform API"},
+		{"projects", "Projects and provisioning", "Platform API"},
 		{"tenancy", "Customers and tenants", "Platform API"},
 		{"users", "Users and role grants", "Platform API"},
 	} {
