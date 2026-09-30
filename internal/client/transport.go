@@ -35,7 +35,8 @@ const (
 
 // Retryable reports whether a status is retried. Only these four are: a rate
 // limit and the three answers a proxy or the API gives while it is briefly
-// unable to serve. Every other 4xx and 5xx is final.
+// unable to serve. Every other 4xx and 5xx is final, and so is a 503 whose
+// code says a component is absent rather than busy (APIError.IsFinalUnavailable).
 func Retryable(status int) bool {
 	switch status {
 	case http.StatusTooManyRequests, http.StatusBadGateway,
@@ -92,7 +93,7 @@ func (t *transport) Do(req *http.Request) (*http.Response, error) {
 		_ = resp.Body.Close()
 		apiErr := newAPIError(resp, body, attempt)
 
-		if !Retryable(resp.StatusCode) || attempt > t.maxRetries {
+		if !Retryable(resp.StatusCode) || attempt > t.maxRetries || apiErr.IsFinalUnavailable() {
 			return nil, apiErr
 		}
 		wait, ok := t.delay(attempt, resp.Header.Get("Retry-After"))

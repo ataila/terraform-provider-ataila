@@ -3,6 +3,44 @@
 All notable changes to this provider. Versions follow semantic versioning; until the first publication the
 provider stays at 0.x and any release may change.
 
+## 0.3.0 (unreleased)
+
+Users, role grants and the AI gateway. Pins the platform's `/api/v1` contract with those paths (API 1.0.0).
+
+### Resources
+
+- `ataila_user`: create (no password is sent or returned; provisioning warnings are warnings), read,
+  update, destroy = deactivate (destroy-gated; `is_active = false` is gated the same way at plan time).
+  `username` and `ad_username` are set at create only. E-mail compared case-insensitively. Import by id,
+  `email:<address>` or `username:<name>`; a service account is refused.
+- `ataila_user_role_grant`: grant (201) or adopt a held role (200, with a warning), read, remove (not
+  destroy-gated). The platform's token rules (`role_not_manageable_by_token`, `role_not_held_by_token`,
+  `token_cannot_change_own_roles`, `role_not_grantable`, …) are clear errors, never retried. Import by
+  `<user_id>/<role>`.
+- `ataila_ai_gateway_key`: create, read (the gateway's live values; a lost key is a warning), update in
+  place, rotate through `rotation_trigger`, delete (irreversible; not destroy-gated). The value is kept
+  from the create or rotation that returned it and never read again. `organization_id`, `env`, `app` and
+  `feature` are frozen. An adopted key's rotation fails the plan. Import by id or `alias:<key_alias>`.
+- `ataila_ai_serving_tier`: sets the pin and the enabled flag of an existing tier; destroy only forgets.
+  Import by key.
+
+### Data sources
+
+- `ataila_user`, `ataila_users` (every page), `ataila_permission_catalog`, `ataila_ai_serving_tiers`,
+  `ataila_ai_gateway`.
+
+### Behaviour
+
+- A 503 `gateway_not_configured`, `gateway_unreachable` or `vault_write_failed` is final: the AI
+  gateway is absent or unusable on that platform, and retrying cannot change it.
+- Money (`soft_budget_usd`, `spend_usd`) keeps float64 precision end to end.
+- Lists in a problem document are rendered as `a, b` in diagnostics.
+
+### Tests
+
+- The mock implements users, role grants, the permission catalogue, gateway keys, tiers and the gateway,
+  with a switch for a platform without a gateway, and the tenant blocker for live gateway keys.
+
 ## 0.2.1 (unreleased)
 
 Follows the platform's revised `/api/v1` contract (still API 1.0.0, unpublished).

@@ -107,6 +107,7 @@ func (m frozenInt64) PlanModifyInt64(_ context.Context, req planmodifier.Int64Re
 var destroyVerb = map[string]string{
 	"customer": "archive",
 	"tenant":   "delete",
+	"user":     "deactivate",
 }
 
 // destroyRefused is the diagnostic when the provider's allow_destroy is off.
@@ -117,6 +118,9 @@ func destroyRefused(resourceType, object, ident string) diag.Diagnostic {
 			"group stay, and an archived customer can never be changed or re-created.",
 		"tenant": "For a tenant, destroy means delete, which the platform allows only for an empty tenant " +
 			"that is not a customer's primary.",
+		"user": "For a user, destroy means deactivate: the person stays, cannot sign in, and keeps their " +
+			"e-mail address, so the same address cannot be created again (import it and set is_active = true " +
+			"instead). Setting is_active = false is a deactivation too, behind the same switches.",
 	}[object]
 	return diag.NewErrorDiagnostic(
 		fmt.Sprintf("Destroying %s %s is not allowed", article(object), object),
@@ -155,6 +159,12 @@ func destroyError(resourceType, object, ident string, err error) diag.Diagnostic
 				"the projects first, or remove the customer from the state.",
 			"tenant_is_primary": "A customer's primary tenant is never deleted: it goes with its customer, " +
 				"which is archived. Remove the tenant from the state instead.",
+			"cannot_deactivate_self": "The token's own account cannot be deactivated with that token. Remove " +
+				"the user from the state, or deactivate them in the portal.",
+			"last_active_admin": "The platform keeps at least one active admin. Make another person admin " +
+				"first, or remove this user from the state.",
+			"service_account_managed_elsewhere": "Service accounts are managed on the portal's service " +
+				"accounts page, not through this resource. Remove it from the state.",
 		}[apiErr.Code()]
 		if hint == "" && strings.HasPrefix(apiErr.Code(), "tenant_has_") {
 			hint = "Only an empty tenant can be deleted; blockers counts what still hangs off it. Move or " +
@@ -173,6 +183,9 @@ func destroyError(resourceType, object, ident string, err error) diag.Diagnostic
 }
 
 func article(noun string) string {
+	if strings.HasPrefix(noun, "user") {
+		return "a"
+	}
 	if strings.ContainsAny(noun[:1], "aeiou") {
 		return "an"
 	}
@@ -180,6 +193,48 @@ func article(noun string) string {
 }
 
 // ── API errors and warnings ──────────────────────────────────────────────────
+
+// warningAttrTypes is one element of a `warnings` attribute.
+var warningAttrTypes = map[string]attr.Type{"code": types.StringType, "message": types.StringType}
+
+// warningsValue is the `warnings` attribute: what did not go as planned in
+// the last request that changed the object.
+func warningsValue(ws []client.ApiWarning) types.List {
+	elems := make([]attr.Value, 0, len(ws))
+	for _, w := range ws {
+		elems = append(elems, types.ObjectValueMust(warningAttrTypes, map[string]attr.Value{
+			"code": types.StringValue(w.Code), "message": types.StringValue(w.Message)}))
+	}
+	return types.ListValueMust(types.ObjectType{AttrTypes: warningAttrTypes}, elems)
+}
+
+// keepWarnings is the `warnings` attribute on a read: a read changes
+// nothing, so the last change's warnings stay; none yet is an empty list.
+func keepWarnings(prior types.List) types.List {
+	if prior.IsNull() || prior.IsUnknown() {
+		return warningsValue(nil)
+	}
+	return prior
+}
+
+// gatewayUnavailable explains a final 503 from the AI gateway routes, or
+// returns nil for any other error.
+func gatewayUnavailable(doing string, err error) diag.Diagnostic {
+	var apiErr *client.APIError
+	if !errors.As(err, &apiErr) || !apiErr.IsFinalUnavailable() {
+		return nil
+	}
+	why := map[string]string{
+		client.CodeGatewayNotConfigured: "This platform has no AI gateway configured. The AI gateway resources " +
+			"and data sources need a platform with a gateway.",
+		client.CodeGatewayUnreachable: "The platform's AI gateway (or the Vault it keeps key values in) cannot be " +
+			"reached right now. Try again when it is back; the provider does not retry this.",
+		client.CodeVaultWriteFailed: "Vault did not store the key's value. " +
+			"key_removed_from_gateway says whether the minted key was removed again.",
+	}[apiErr.Code()]
+	return diag.NewErrorDiagnostic(fmt.Sprintf("The AI gateway is not available (%s)", apiErr.Code()),
+		fmt.Sprintf("While %s.\n\n%s\n\n%s", doing, why, apiErr.Detail()))
+}
 
 // apiError is the diagnostic for any other failed call.
 func apiError(doing string, err error) diag.Diagnostic {

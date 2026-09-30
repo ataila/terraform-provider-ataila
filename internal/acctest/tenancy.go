@@ -130,13 +130,16 @@ func wireTime(t time.Time) string {
 
 // ── test helpers: out-of-band changes, as an operator in the portal makes them
 
-// AddUser registers a platform user and returns its id.
+// AddUser registers a platform user by e-mail (first name = the address's
+// local part) and returns its id.
 func (m *MockAPI) AddUser(email string) string {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	id := uuid.NewString()
-	m.tenancy.users[id] = email
-	return id
+	local := email
+	if at := strings.Index(email, "@"); at > 0 {
+		local = email[:at]
+	}
+	return m.addPerson(email, local, "", "human").id
 }
 
 // SetGitLabOutcome sets what the GitLab step of the next customer creates
@@ -1245,6 +1248,7 @@ func (m *MockAPI) tenantsDelete(c *call, raw string) reply {
 		{"contracts", "tenant_has_contracts", t.contracts},
 		{"helpdesk_records", "tenant_has_helpdesk_records", t.helpdeskRecords},
 		{"attributed_resources", "tenant_has_attributed_resources", t.attributedResources},
+		{"ai_gateway_keys", "tenant_has_ai_gateway_keys", m.gateway.liveKeysOf(t.id)},
 	}
 	first := ""
 	for _, b := range codes {

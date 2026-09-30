@@ -28,7 +28,7 @@ terraform {
   required_providers {
     ataila = {
       source  = "ataila/ataila"
-      version = "~> 0.2"
+      version = "~> 0.3"
     }
   }
 }
@@ -114,6 +114,10 @@ place, so switch once, not back and forth in parallel runs.
 | [`ataila_customer`](docs/resources/customer.md) | A customer (company), with its primary tenant and GitLab group | Archives; gated |
 | [`ataila_tenant`](docs/resources/tenant.md) | A further tenant of a customer | Deletes an empty tenant; gated |
 | [`ataila_tenant_membership`](docs/resources/tenant_membership.md) | A user's role in a tenant | Removes the membership |
+| [`ataila_user`](docs/resources/user.md) | A person: created without a password, provisioned by the platform | Deactivates; gated |
+| [`ataila_user_role_grant`](docs/resources/user_role_grant.md) | One role held by one user (additive) | Removes the role |
+| [`ataila_ai_gateway_key`](docs/resources/ai_gateway_key.md) | A virtual key of the AI gateway; value returned once, rotation by trigger | Deletes in the gateway, irreversibly; not gated |
+| [`ataila_ai_serving_tier`](docs/resources/ai_serving_tier.md) | The pin and enabled flag of an existing serving tier | Forgets only |
 
 **Destroy is off by default and needs two switches**: `allow_destroy = true` on the provider **and** a token
 minted with destroy allowed. With the provider switch off, destroying a customer or a tenant fails at plan
@@ -140,6 +144,17 @@ the provider compares the domain case-folded (and internationalised domains in e
 `ataila_tenant` resource refuses to import it. A membership holding the legacy role `developer` can be
 imported and kept (leave `role` out, or set it to `developer`); planning to set `developer` fails the plan.
 
+**Users** are deactivated, never deleted, and keep their e-mail address: creating the same address again is
+refused; import the person and set `is_active = true`. `is_active = false` is a deactivation behind the same two
+switches as destroy. `username` and `ad_username` are set at create only. `roles` is read-only on the user; grant
+roles one by one with `ataila_user_role_grant` (a token grants only roles it carries itself, and never `admin`,
+`founder` or `ssh-console`).
+
+**The AI gateway** resources need a platform with a gateway: where none is configured, the platform answers
+503 `gateway_not_configured`, which the provider reports at once and never retries. A key's value is returned
+only by the create or rotation that produced it (with `expose_secret`), kept in the sensitive `secret`, and
+never read again.
+
 Import forms:
 
 | Resource | Import id |
@@ -147,6 +162,10 @@ Import forms:
 | `ataila_customer` | the id, or `short_name:<SHORT_NAME>` |
 | `ataila_tenant` | the id, or `slug:<slug>` |
 | `ataila_tenant_membership` | `<tenant_id>/<user_id>` |
+| `ataila_user` | the id, `email:<address>` or `username:<name>` |
+| `ataila_user_role_grant` | `<user_id>/<role>` |
+| `ataila_ai_gateway_key` | the id, or `alias:<key_alias>` |
+| `ataila_ai_serving_tier` | the tier's key |
 
 ```shell
 tofu import ataila_customer.example short_name:EXAMPLE        # OpenTofu
@@ -162,6 +181,11 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_customer`](docs/data-sources/customer.md) | One customer, by id, short name or GitLab group |
 | [`ataila_tenant`](docs/data-sources/tenant.md) | One tenant, by id or slug |
 | [`ataila_tenants`](docs/data-sources/tenants.md) | Every tenant, or every tenant of one customer (all pages) |
+| [`ataila_user`](docs/data-sources/user.md) | One user, by id, e-mail address or username |
+| [`ataila_users`](docs/data-sources/users.md) | Users filtered by address, username, kind, state, tenant, customer or role (all pages) |
+| [`ataila_permission_catalog`](docs/data-sources/permission_catalog.md) | Every permission key, with whether it is grantable and mintable |
+| [`ataila_ai_serving_tiers`](docs/data-sources/ai_serving_tiers.md) | The AI gateway's serving tiers and how each resolves now |
+| [`ataila_ai_gateway`](docs/data-sources/ai_gateway.md) | The AI gateway's base URL and tier names |
 
 Further resources follow milestone by milestone; each ships with its documentation, examples and tests.
 

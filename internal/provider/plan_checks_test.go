@@ -141,7 +141,7 @@ func replacingAttributes(t *testing.T, r resource.Resource) (replacing []string,
 
 // No attribute of a destroy-gated resource may force a replacement (F13).
 func TestNoTenancyAttributeForcesReplacement(t *testing.T) {
-	for _, r := range []resource.Resource{NewCustomerResource(), NewTenantResource()} {
+	for _, r := range []resource.Resource{NewCustomerResource(), NewTenantResource(), NewUserResource(), NewGatewayKeyResource()} {
 		replacing, ran := replacingAttributes(t, r)
 		if ran < 5 {
 			t.Errorf("%T: only %d plan modifiers ran; the check is not looking", r, ran)

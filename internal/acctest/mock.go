@@ -86,6 +86,8 @@ type MockAPI struct {
 
 	idempotent map[string]storedReply
 	tenancy    *tenancyState
+	users      *usersState
+	gateway    *gatewayState
 }
 
 type storedReply struct {
@@ -105,6 +107,9 @@ type reply struct {
 	body    any // nil for no body
 	problem bool
 	headers map[string]string
+	// replay, when set, is what an idempotent replay answers instead of body
+	// (a key's value is never stored for a replay).
+	replay any
 }
 
 // call is one request as the handlers see it.
@@ -126,7 +131,10 @@ func NewMockAPI(t testing.TB) *MockAPI {
 		faults:     map[string][]Fault{},
 		idempotent: map[string]storedReply{},
 		tenancy:    newTenancyState(),
+		gateway:    newGatewayState(),
 	}
+	principal, _ := m.whoami["principal"].(map[string]any)
+	m.users = newUsersState(principal, m.whoami["scopes"].([]string))
 	m.srv = httptest.NewTLSServer(http.HandlerFunc(m.serve))
 	t.Cleanup(m.srv.Close)
 	return m
@@ -159,16 +167,21 @@ func DefaultWhoami() map[string]any {
 			"kind":  "service",
 		},
 		"auth_kind":  "service_account",
-		"scopes":     []string{"tenancy-admin-global", "tenancy-read-global"},
+		"scopes":     defaultScopes(),
 		"expires_at": "2027-01-01T00:00:00Z",
 		"token": map[string]any{
 			"id":             "00000000-0000-4000-8000-0000000000aa",
 			"name":           "ci",
 			"prefix":         "mocktokn",
-			"granted_scopes": []string{"tenancy-admin-global", "tenancy-read-global"},
+			"granted_scopes": defaultScopes(),
 			"allow_destroy":  false,
 		},
 	}
+}
+
+func defaultScopes() []string {
+	return []string{"ai-gateway-admin-global", "ai-gateway-read-global", "tenancy-admin-global",
+		"tenancy-read-global", "users-admin-global", "users-read-global"}
 }
 
 // URL is the portal base URL (without /api/v1).
@@ -374,6 +387,9 @@ func (m *MockAPI) idempotently(c *call, key string) reply {
 		}
 		// The claimed request has finished: its answer is stored, and replayed.
 		rep := m.route(c)
+		if rep.replay != nil {
+			rep.body, rep.replay = rep.replay, nil
+		}
 		b, _ := json.Marshal(rep.body)
 		m.idempotent[key] = storedReply{hash: hash, status: rep.status, body: b}
 		rep.headers = map[string]string{"Idempotent-Replayed": "true"}
@@ -385,7 +401,11 @@ func (m *MockAPI) idempotently(c *call, key string) reply {
 	}
 	rep := m.route(c)
 	if rep.status < 500 {
-		b, _ := json.Marshal(rep.body)
+		stored := rep.body
+		if rep.replay != nil {
+			stored = rep.replay
+		}
+		b, _ := json.Marshal(stored)
 		m.idempotent[key] = storedReply{hash: hash, status: rep.status, body: b}
 	}
 	return rep
@@ -424,6 +444,10 @@ func (m *MockAPI) route(c *call) reply {
 	case c.path == "/customers" || strings.HasPrefix(c.path, "/customers/"),
 		c.path == "/tenants" || strings.HasPrefix(c.path, "/tenants/"):
 		return m.routeTenancy(c)
+	case c.path == "/users" || strings.HasPrefix(c.path, "/users/"), c.path == "/permissions":
+		return m.routeUsers(c)
+	case c.path == "/ai/gateway" || strings.HasPrefix(c.path, "/ai/gateway/"):
+		return m.routeGateway(c)
 	}
 	return c.problem(http.StatusNotFound, "not_found", "", nil)
 }

@@ -85,6 +85,13 @@ func (e *APIError) RequestID() string {
 // IsNotFound reports a 404.
 func (e *APIError) IsNotFound() bool { return e.StatusCode == http.StatusNotFound }
 
+// IsFinalUnavailable reports a 503 that retrying cannot cure: the AI gateway
+// is not configured on this platform or cannot be reached, or Vault refused to
+// store a key's value. The provider does not retry it.
+func (e *APIError) IsFinalUnavailable() bool {
+	return e.StatusCode == http.StatusServiceUnavailable && finalUnavailable[e.Code()]
+}
+
 // IsLicenceRefusal reports a 403 whose code starts with "licence_".
 func (e *APIError) IsLicenceRefusal() bool {
 	return e.StatusCode == http.StatusForbidden && strings.HasPrefix(e.Code(), LicenceCodePrefix)
@@ -229,6 +236,12 @@ func renderValue(v any) string {
 		parts := make([]string, 0, len(keys))
 		for _, k := range keys {
 			parts = append(parts, k+"="+renderValue(t[k]))
+		}
+		return strings.Join(parts, ", ")
+	case []interface{}:
+		parts := make([]string, 0, len(t))
+		for _, e := range t {
+			parts = append(parts, renderValue(e))
 		}
 		return strings.Join(parts, ", ")
 	case float64:

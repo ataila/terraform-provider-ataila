@@ -225,6 +225,108 @@ func (e CustomerPatchStatus) Valid() bool {
 	}
 }
 
+// Defines values for GatewayKeyEnv.
+const (
+	GatewayKeyEnvDev  GatewayKeyEnv = "dev"
+	GatewayKeyEnvProd GatewayKeyEnv = "prod"
+	GatewayKeyEnvUat  GatewayKeyEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the GatewayKeyEnv enum.
+func (e GatewayKeyEnv) Valid() bool {
+	switch e {
+	case GatewayKeyEnvDev:
+		return true
+	case GatewayKeyEnvProd:
+		return true
+	case GatewayKeyEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GatewayKeyLive.
+const (
+	Missing GatewayKeyLive = "missing"
+	NotRead GatewayKeyLive = "not_read"
+	Present GatewayKeyLive = "present"
+)
+
+// Valid indicates whether the value is a known member of the GatewayKeyLive enum.
+func (e GatewayKeyLive) Valid() bool {
+	switch e {
+	case Missing:
+		return true
+	case NotRead:
+		return true
+	case Present:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GatewayKeyOrigin.
+const (
+	GatewayKeyOriginAdopted GatewayKeyOrigin = "adopted"
+	GatewayKeyOriginApi     GatewayKeyOrigin = "api"
+)
+
+// Valid indicates whether the value is a known member of the GatewayKeyOrigin enum.
+func (e GatewayKeyOrigin) Valid() bool {
+	switch e {
+	case GatewayKeyOriginAdopted:
+		return true
+	case GatewayKeyOriginApi:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GatewayKeyCreateEnv.
+const (
+	GatewayKeyCreateEnvDev  GatewayKeyCreateEnv = "dev"
+	GatewayKeyCreateEnvProd GatewayKeyCreateEnv = "prod"
+	GatewayKeyCreateEnvUat  GatewayKeyCreateEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the GatewayKeyCreateEnv enum.
+func (e GatewayKeyCreateEnv) Valid() bool {
+	switch e {
+	case GatewayKeyCreateEnvDev:
+		return true
+	case GatewayKeyCreateEnvProd:
+		return true
+	case GatewayKeyCreateEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GatewayKeyPatchEnv.
+const (
+	GatewayKeyPatchEnvDev  GatewayKeyPatchEnv = "dev"
+	GatewayKeyPatchEnvProd GatewayKeyPatchEnv = "prod"
+	GatewayKeyPatchEnvUat  GatewayKeyPatchEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the GatewayKeyPatchEnv enum.
+func (e GatewayKeyPatchEnv) Valid() bool {
+	switch e {
+	case GatewayKeyPatchEnvDev:
+		return true
+	case GatewayKeyPatchEnvProd:
+		return true
+	case GatewayKeyPatchEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for MembershipRole.
 const (
 	MembershipRoleAdmin     MembershipRole = "admin"
@@ -276,30 +378,1380 @@ func (e MembershipPutRole) Valid() bool {
 	}
 }
 
+// Defines values for OperationDispatchMode.
+const (
+	OperationDispatchModeDryrun   OperationDispatchMode = "dryrun"
+	OperationDispatchModeLive     OperationDispatchMode = "live"
+	OperationDispatchModeSimulate OperationDispatchMode = "simulate"
+)
+
+// Valid indicates whether the value is a known member of the OperationDispatchMode enum.
+func (e OperationDispatchMode) Valid() bool {
+	switch e {
+	case OperationDispatchModeDryrun:
+		return true
+	case OperationDispatchModeLive:
+		return true
+	case OperationDispatchModeSimulate:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for OperationStatus.
 const (
-	AwaitingApproval OperationStatus = "awaiting_approval"
-	AwaitingOperator OperationStatus = "awaiting_operator"
-	Failed           OperationStatus = "failed"
-	Pending          OperationStatus = "pending"
-	Running          OperationStatus = "running"
-	Succeeded        OperationStatus = "succeeded"
+	OperationStatusAwaitingApproval OperationStatus = "awaiting_approval"
+	OperationStatusAwaitingOperator OperationStatus = "awaiting_operator"
+	OperationStatusFailed           OperationStatus = "failed"
+	OperationStatusPending          OperationStatus = "pending"
+	OperationStatusRunning          OperationStatus = "running"
+	OperationStatusSucceeded        OperationStatus = "succeeded"
 )
 
 // Valid indicates whether the value is a known member of the OperationStatus enum.
 func (e OperationStatus) Valid() bool {
 	switch e {
-	case AwaitingApproval:
+	case OperationStatusAwaitingApproval:
 		return true
-	case AwaitingOperator:
+	case OperationStatusAwaitingOperator:
 		return true
-	case Failed:
+	case OperationStatusFailed:
 		return true
-	case Pending:
+	case OperationStatusPending:
 		return true
-	case Running:
+	case OperationStatusRunning:
 		return true
-	case Succeeded:
+	case OperationStatusSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OrchestrationKind.
+const (
+	ApplyAll     OrchestrationKind = "apply-all"
+	ApplyPending OrchestrationKind = "apply-pending"
+	DeleteAll    OrchestrationKind = "delete-all"
+)
+
+// Valid indicates whether the value is a known member of the OrchestrationKind enum.
+func (e OrchestrationKind) Valid() bool {
+	switch e {
+	case ApplyAll:
+		return true
+	case ApplyPending:
+		return true
+	case DeleteAll:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OrchestrationStatus.
+const (
+	OrchestrationStatusAwaitingApproval OrchestrationStatus = "awaiting_approval"
+	OrchestrationStatusAwaitingOperator OrchestrationStatus = "awaiting_operator"
+	OrchestrationStatusFailed           OrchestrationStatus = "failed"
+	OrchestrationStatusPending          OrchestrationStatus = "pending"
+	OrchestrationStatusRunning          OrchestrationStatus = "running"
+	OrchestrationStatusSucceeded        OrchestrationStatus = "succeeded"
+)
+
+// Valid indicates whether the value is a known member of the OrchestrationStatus enum.
+func (e OrchestrationStatus) Valid() bool {
+	switch e {
+	case OrchestrationStatusAwaitingApproval:
+		return true
+	case OrchestrationStatusAwaitingOperator:
+		return true
+	case OrchestrationStatusFailed:
+		return true
+	case OrchestrationStatusPending:
+		return true
+	case OrchestrationStatusRunning:
+		return true
+	case OrchestrationStatusSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PermissionLevel.
+const (
+	PermissionLevelAdmin PermissionLevel = "admin"
+	PermissionLevelRead  PermissionLevel = "read"
+)
+
+// Valid indicates whether the value is a known member of the PermissionLevel enum.
+func (e PermissionLevel) Valid() bool {
+	switch e {
+	case PermissionLevelAdmin:
+		return true
+	case PermissionLevelRead:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PermissionScope.
+const (
+	PermissionScopeGlobal PermissionScope = "global"
+	PermissionScopeTenant PermissionScope = "tenant"
+)
+
+// Valid indicates whether the value is a known member of the PermissionScope enum.
+func (e PermissionScope) Valid() bool {
+	switch e {
+	case PermissionScopeGlobal:
+		return true
+	case PermissionScopeTenant:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectApiExposure.
+const (
+	ProjectApiExposureINTERNALONLY ProjectApiExposure = "INTERNAL_ONLY"
+	ProjectApiExposurePUBLIC       ProjectApiExposure = "PUBLIC"
+)
+
+// Valid indicates whether the value is a known member of the ProjectApiExposure enum.
+func (e ProjectApiExposure) Valid() bool {
+	switch e {
+	case ProjectApiExposureINTERNALONLY:
+		return true
+	case ProjectApiExposurePUBLIC:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectAppGateway.
+const (
+	ProjectAppGatewayDedicated ProjectAppGateway = "dedicated"
+	ProjectAppGatewayShared    ProjectAppGateway = "shared"
+)
+
+// Valid indicates whether the value is a known member of the ProjectAppGateway enum.
+func (e ProjectAppGateway) Valid() bool {
+	switch e {
+	case ProjectAppGatewayDedicated:
+		return true
+	case ProjectAppGatewayShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectDeploymentBackend.
+const (
+	ProjectDeploymentBackendK8s ProjectDeploymentBackend = "k8s"
+	ProjectDeploymentBackendVm  ProjectDeploymentBackend = "vm"
+)
+
+// Valid indicates whether the value is a known member of the ProjectDeploymentBackend enum.
+func (e ProjectDeploymentBackend) Valid() bool {
+	switch e {
+	case ProjectDeploymentBackendK8s:
+		return true
+	case ProjectDeploymentBackendVm:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectFrontendExposure.
+const (
+	ProjectFrontendExposureINTERNALONLY ProjectFrontendExposure = "INTERNAL_ONLY"
+	ProjectFrontendExposurePUBLIC       ProjectFrontendExposure = "PUBLIC"
+)
+
+// Valid indicates whether the value is a known member of the ProjectFrontendExposure enum.
+func (e ProjectFrontendExposure) Valid() bool {
+	switch e {
+	case ProjectFrontendExposureINTERNALONLY:
+		return true
+	case ProjectFrontendExposurePUBLIC:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectFrontendVariant.
+const (
+	ProjectFrontendVariantAngular ProjectFrontendVariant = "angular"
+	ProjectFrontendVariantNuxt4   ProjectFrontendVariant = "nuxt4"
+	ProjectFrontendVariantReact   ProjectFrontendVariant = "react"
+	ProjectFrontendVariantVue     ProjectFrontendVariant = "vue"
+)
+
+// Valid indicates whether the value is a known member of the ProjectFrontendVariant enum.
+func (e ProjectFrontendVariant) Valid() bool {
+	switch e {
+	case ProjectFrontendVariantAngular:
+		return true
+	case ProjectFrontendVariantNuxt4:
+		return true
+	case ProjectFrontendVariantReact:
+		return true
+	case ProjectFrontendVariantVue:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectMssqlEdition.
+const (
+	ProjectMssqlEditionEnterprise ProjectMssqlEdition = "enterprise"
+	ProjectMssqlEditionExpress    ProjectMssqlEdition = "express"
+	ProjectMssqlEditionStandard   ProjectMssqlEdition = "standard"
+)
+
+// Valid indicates whether the value is a known member of the ProjectMssqlEdition enum.
+func (e ProjectMssqlEdition) Valid() bool {
+	switch e {
+	case ProjectMssqlEditionEnterprise:
+		return true
+	case ProjectMssqlEditionExpress:
+		return true
+	case ProjectMssqlEditionStandard:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectProdMinioDisksPerVm.
+const (
+	ProjectProdMinioDisksPerVmN1 ProjectProdMinioDisksPerVm = 1
+	ProjectProdMinioDisksPerVmN2 ProjectProdMinioDisksPerVm = 2
+)
+
+// Valid indicates whether the value is a known member of the ProjectProdMinioDisksPerVm enum.
+func (e ProjectProdMinioDisksPerVm) Valid() bool {
+	switch e {
+	case ProjectProdMinioDisksPerVmN1:
+		return true
+	case ProjectProdMinioDisksPerVmN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectProdMinioNodeCount.
+const (
+	ProjectProdMinioNodeCountN2 ProjectProdMinioNodeCount = 2
+	ProjectProdMinioNodeCountN4 ProjectProdMinioNodeCount = 4
+)
+
+// Valid indicates whether the value is a known member of the ProjectProdMinioNodeCount enum.
+func (e ProjectProdMinioNodeCount) Valid() bool {
+	switch e {
+	case ProjectProdMinioNodeCountN2:
+		return true
+	case ProjectProdMinioNodeCountN4:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectStatus.
+const (
+	ProjectStatusActive       ProjectStatus = "active"
+	ProjectStatusPaused       ProjectStatus = "paused"
+	ProjectStatusPlanned      ProjectStatus = "planned"
+	ProjectStatusProvisioning ProjectStatus = "provisioning"
+	ProjectStatusRetired      ProjectStatus = "retired"
+)
+
+// Valid indicates whether the value is a known member of the ProjectStatus enum.
+func (e ProjectStatus) Valid() bool {
+	switch e {
+	case ProjectStatusActive:
+		return true
+	case ProjectStatusPaused:
+		return true
+	case ProjectStatusPlanned:
+		return true
+	case ProjectStatusProvisioning:
+		return true
+	case ProjectStatusRetired:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectWwwTemplate.
+const (
+	ProjectWwwTemplateTemplateBlog ProjectWwwTemplate = "template-blog"
+	ProjectWwwTemplateTemplateWww  ProjectWwwTemplate = "template-www"
+)
+
+// Valid indicates whether the value is a known member of the ProjectWwwTemplate enum.
+func (e ProjectWwwTemplate) Valid() bool {
+	switch e {
+	case ProjectWwwTemplateTemplateBlog:
+		return true
+	case ProjectWwwTemplateTemplateWww:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectCreateApiExposure.
+const (
+	ProjectCreateApiExposureINTERNALONLY ProjectCreateApiExposure = "INTERNAL_ONLY"
+	ProjectCreateApiExposurePUBLIC       ProjectCreateApiExposure = "PUBLIC"
+)
+
+// Valid indicates whether the value is a known member of the ProjectCreateApiExposure enum.
+func (e ProjectCreateApiExposure) Valid() bool {
+	switch e {
+	case ProjectCreateApiExposureINTERNALONLY:
+		return true
+	case ProjectCreateApiExposurePUBLIC:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectCreateAppGateway.
+const (
+	ProjectCreateAppGatewayDedicated ProjectCreateAppGateway = "dedicated"
+	ProjectCreateAppGatewayShared    ProjectCreateAppGateway = "shared"
+)
+
+// Valid indicates whether the value is a known member of the ProjectCreateAppGateway enum.
+func (e ProjectCreateAppGateway) Valid() bool {
+	switch e {
+	case ProjectCreateAppGatewayDedicated:
+		return true
+	case ProjectCreateAppGatewayShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectCreateDeploymentBackend.
+const (
+	ProjectCreateDeploymentBackendK8s ProjectCreateDeploymentBackend = "k8s"
+	ProjectCreateDeploymentBackendVm  ProjectCreateDeploymentBackend = "vm"
+)
+
+// Valid indicates whether the value is a known member of the ProjectCreateDeploymentBackend enum.
+func (e ProjectCreateDeploymentBackend) Valid() bool {
+	switch e {
+	case ProjectCreateDeploymentBackendK8s:
+		return true
+	case ProjectCreateDeploymentBackendVm:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectCreateFrontendExposure.
+const (
+	ProjectCreateFrontendExposureINTERNALONLY ProjectCreateFrontendExposure = "INTERNAL_ONLY"
+	ProjectCreateFrontendExposurePUBLIC       ProjectCreateFrontendExposure = "PUBLIC"
+)
+
+// Valid indicates whether the value is a known member of the ProjectCreateFrontendExposure enum.
+func (e ProjectCreateFrontendExposure) Valid() bool {
+	switch e {
+	case ProjectCreateFrontendExposureINTERNALONLY:
+		return true
+	case ProjectCreateFrontendExposurePUBLIC:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectCreateFrontendVariant.
+const (
+	ProjectCreateFrontendVariantAngular ProjectCreateFrontendVariant = "angular"
+	ProjectCreateFrontendVariantNuxt4   ProjectCreateFrontendVariant = "nuxt4"
+	ProjectCreateFrontendVariantReact   ProjectCreateFrontendVariant = "react"
+	ProjectCreateFrontendVariantVue     ProjectCreateFrontendVariant = "vue"
+)
+
+// Valid indicates whether the value is a known member of the ProjectCreateFrontendVariant enum.
+func (e ProjectCreateFrontendVariant) Valid() bool {
+	switch e {
+	case ProjectCreateFrontendVariantAngular:
+		return true
+	case ProjectCreateFrontendVariantNuxt4:
+		return true
+	case ProjectCreateFrontendVariantReact:
+		return true
+	case ProjectCreateFrontendVariantVue:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectCreateMssqlEdition.
+const (
+	ProjectCreateMssqlEditionEnterprise ProjectCreateMssqlEdition = "enterprise"
+	ProjectCreateMssqlEditionExpress    ProjectCreateMssqlEdition = "express"
+	ProjectCreateMssqlEditionStandard   ProjectCreateMssqlEdition = "standard"
+)
+
+// Valid indicates whether the value is a known member of the ProjectCreateMssqlEdition enum.
+func (e ProjectCreateMssqlEdition) Valid() bool {
+	switch e {
+	case ProjectCreateMssqlEditionEnterprise:
+		return true
+	case ProjectCreateMssqlEditionExpress:
+		return true
+	case ProjectCreateMssqlEditionStandard:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectCreateProdMinioDisksPerVm.
+const (
+	ProjectCreateProdMinioDisksPerVmN1 ProjectCreateProdMinioDisksPerVm = 1
+	ProjectCreateProdMinioDisksPerVmN2 ProjectCreateProdMinioDisksPerVm = 2
+)
+
+// Valid indicates whether the value is a known member of the ProjectCreateProdMinioDisksPerVm enum.
+func (e ProjectCreateProdMinioDisksPerVm) Valid() bool {
+	switch e {
+	case ProjectCreateProdMinioDisksPerVmN1:
+		return true
+	case ProjectCreateProdMinioDisksPerVmN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectCreateProdMinioNodeCount.
+const (
+	ProjectCreateProdMinioNodeCountN2 ProjectCreateProdMinioNodeCount = 2
+	ProjectCreateProdMinioNodeCountN4 ProjectCreateProdMinioNodeCount = 4
+)
+
+// Valid indicates whether the value is a known member of the ProjectCreateProdMinioNodeCount enum.
+func (e ProjectCreateProdMinioNodeCount) Valid() bool {
+	switch e {
+	case ProjectCreateProdMinioNodeCountN2:
+		return true
+	case ProjectCreateProdMinioNodeCountN4:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectCreateWwwTemplate.
+const (
+	ProjectCreateWwwTemplateTemplateBlog ProjectCreateWwwTemplate = "template-blog"
+	ProjectCreateWwwTemplateTemplateWww  ProjectCreateWwwTemplate = "template-www"
+)
+
+// Valid indicates whether the value is a known member of the ProjectCreateWwwTemplate enum.
+func (e ProjectCreateWwwTemplate) Valid() bool {
+	switch e {
+	case ProjectCreateWwwTemplateTemplateBlog:
+		return true
+	case ProjectCreateWwwTemplateTemplateWww:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectMemberGitlabRole.
+const (
+	ProjectMemberGitlabRoleDeveloper  ProjectMemberGitlabRole = "developer"
+	ProjectMemberGitlabRoleGuest      ProjectMemberGitlabRole = "guest"
+	ProjectMemberGitlabRoleMaintainer ProjectMemberGitlabRole = "maintainer"
+	ProjectMemberGitlabRoleReporter   ProjectMemberGitlabRole = "reporter"
+)
+
+// Valid indicates whether the value is a known member of the ProjectMemberGitlabRole enum.
+func (e ProjectMemberGitlabRole) Valid() bool {
+	switch e {
+	case ProjectMemberGitlabRoleDeveloper:
+		return true
+	case ProjectMemberGitlabRoleGuest:
+		return true
+	case ProjectMemberGitlabRoleMaintainer:
+		return true
+	case ProjectMemberGitlabRoleReporter:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectMemberRole.
+const (
+	ProjectMemberRoleAdmin     ProjectMemberRole = "admin"
+	ProjectMemberRoleDeveloper ProjectMemberRole = "developer"
+	ProjectMemberRoleMember    ProjectMemberRole = "member"
+	ProjectMemberRoleOwner     ProjectMemberRole = "owner"
+	ProjectMemberRoleViewer    ProjectMemberRole = "viewer"
+)
+
+// Valid indicates whether the value is a known member of the ProjectMemberRole enum.
+func (e ProjectMemberRole) Valid() bool {
+	switch e {
+	case ProjectMemberRoleAdmin:
+		return true
+	case ProjectMemberRoleDeveloper:
+		return true
+	case ProjectMemberRoleMember:
+		return true
+	case ProjectMemberRoleOwner:
+		return true
+	case ProjectMemberRoleViewer:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectMemberPutGitlabRole.
+const (
+	ProjectMemberPutGitlabRoleDeveloper  ProjectMemberPutGitlabRole = "developer"
+	ProjectMemberPutGitlabRoleGuest      ProjectMemberPutGitlabRole = "guest"
+	ProjectMemberPutGitlabRoleMaintainer ProjectMemberPutGitlabRole = "maintainer"
+	ProjectMemberPutGitlabRoleReporter   ProjectMemberPutGitlabRole = "reporter"
+)
+
+// Valid indicates whether the value is a known member of the ProjectMemberPutGitlabRole enum.
+func (e ProjectMemberPutGitlabRole) Valid() bool {
+	switch e {
+	case ProjectMemberPutGitlabRoleDeveloper:
+		return true
+	case ProjectMemberPutGitlabRoleGuest:
+		return true
+	case ProjectMemberPutGitlabRoleMaintainer:
+		return true
+	case ProjectMemberPutGitlabRoleReporter:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectMemberPutRole.
+const (
+	ProjectMemberPutRoleAdmin     ProjectMemberPutRole = "admin"
+	ProjectMemberPutRoleDeveloper ProjectMemberPutRole = "developer"
+	ProjectMemberPutRoleMember    ProjectMemberPutRole = "member"
+	ProjectMemberPutRoleOwner     ProjectMemberPutRole = "owner"
+	ProjectMemberPutRoleViewer    ProjectMemberPutRole = "viewer"
+)
+
+// Valid indicates whether the value is a known member of the ProjectMemberPutRole enum.
+func (e ProjectMemberPutRole) Valid() bool {
+	switch e {
+	case ProjectMemberPutRoleAdmin:
+		return true
+	case ProjectMemberPutRoleDeveloper:
+		return true
+	case ProjectMemberPutRoleMember:
+		return true
+	case ProjectMemberPutRoleOwner:
+		return true
+	case ProjectMemberPutRoleViewer:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectPatchApiExposure.
+const (
+	ProjectPatchApiExposureINTERNALONLY ProjectPatchApiExposure = "INTERNAL_ONLY"
+	ProjectPatchApiExposurePUBLIC       ProjectPatchApiExposure = "PUBLIC"
+)
+
+// Valid indicates whether the value is a known member of the ProjectPatchApiExposure enum.
+func (e ProjectPatchApiExposure) Valid() bool {
+	switch e {
+	case ProjectPatchApiExposureINTERNALONLY:
+		return true
+	case ProjectPatchApiExposurePUBLIC:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectPatchAppGateway.
+const (
+	ProjectPatchAppGatewayDedicated ProjectPatchAppGateway = "dedicated"
+	ProjectPatchAppGatewayShared    ProjectPatchAppGateway = "shared"
+)
+
+// Valid indicates whether the value is a known member of the ProjectPatchAppGateway enum.
+func (e ProjectPatchAppGateway) Valid() bool {
+	switch e {
+	case ProjectPatchAppGatewayDedicated:
+		return true
+	case ProjectPatchAppGatewayShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectPatchDeploymentBackend.
+const (
+	ProjectPatchDeploymentBackendK8s ProjectPatchDeploymentBackend = "k8s"
+	ProjectPatchDeploymentBackendVm  ProjectPatchDeploymentBackend = "vm"
+)
+
+// Valid indicates whether the value is a known member of the ProjectPatchDeploymentBackend enum.
+func (e ProjectPatchDeploymentBackend) Valid() bool {
+	switch e {
+	case ProjectPatchDeploymentBackendK8s:
+		return true
+	case ProjectPatchDeploymentBackendVm:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectPatchFrontendExposure.
+const (
+	ProjectPatchFrontendExposureINTERNALONLY ProjectPatchFrontendExposure = "INTERNAL_ONLY"
+	ProjectPatchFrontendExposurePUBLIC       ProjectPatchFrontendExposure = "PUBLIC"
+)
+
+// Valid indicates whether the value is a known member of the ProjectPatchFrontendExposure enum.
+func (e ProjectPatchFrontendExposure) Valid() bool {
+	switch e {
+	case ProjectPatchFrontendExposureINTERNALONLY:
+		return true
+	case ProjectPatchFrontendExposurePUBLIC:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectPatchFrontendVariant.
+const (
+	ProjectPatchFrontendVariantAngular ProjectPatchFrontendVariant = "angular"
+	ProjectPatchFrontendVariantNuxt4   ProjectPatchFrontendVariant = "nuxt4"
+	ProjectPatchFrontendVariantReact   ProjectPatchFrontendVariant = "react"
+	ProjectPatchFrontendVariantVue     ProjectPatchFrontendVariant = "vue"
+)
+
+// Valid indicates whether the value is a known member of the ProjectPatchFrontendVariant enum.
+func (e ProjectPatchFrontendVariant) Valid() bool {
+	switch e {
+	case ProjectPatchFrontendVariantAngular:
+		return true
+	case ProjectPatchFrontendVariantNuxt4:
+		return true
+	case ProjectPatchFrontendVariantReact:
+		return true
+	case ProjectPatchFrontendVariantVue:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectPatchMssqlEdition.
+const (
+	ProjectPatchMssqlEditionEnterprise ProjectPatchMssqlEdition = "enterprise"
+	ProjectPatchMssqlEditionExpress    ProjectPatchMssqlEdition = "express"
+	ProjectPatchMssqlEditionStandard   ProjectPatchMssqlEdition = "standard"
+)
+
+// Valid indicates whether the value is a known member of the ProjectPatchMssqlEdition enum.
+func (e ProjectPatchMssqlEdition) Valid() bool {
+	switch e {
+	case ProjectPatchMssqlEditionEnterprise:
+		return true
+	case ProjectPatchMssqlEditionExpress:
+		return true
+	case ProjectPatchMssqlEditionStandard:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectPatchProdMinioDisksPerVm.
+const (
+	ProjectPatchProdMinioDisksPerVmN1 ProjectPatchProdMinioDisksPerVm = 1
+	ProjectPatchProdMinioDisksPerVmN2 ProjectPatchProdMinioDisksPerVm = 2
+)
+
+// Valid indicates whether the value is a known member of the ProjectPatchProdMinioDisksPerVm enum.
+func (e ProjectPatchProdMinioDisksPerVm) Valid() bool {
+	switch e {
+	case ProjectPatchProdMinioDisksPerVmN1:
+		return true
+	case ProjectPatchProdMinioDisksPerVmN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectPatchProdMinioNodeCount.
+const (
+	ProjectPatchProdMinioNodeCountN2 ProjectPatchProdMinioNodeCount = 2
+	ProjectPatchProdMinioNodeCountN4 ProjectPatchProdMinioNodeCount = 4
+)
+
+// Valid indicates whether the value is a known member of the ProjectPatchProdMinioNodeCount enum.
+func (e ProjectPatchProdMinioNodeCount) Valid() bool {
+	switch e {
+	case ProjectPatchProdMinioNodeCountN2:
+		return true
+	case ProjectPatchProdMinioNodeCountN4:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectPatchWwwTemplate.
+const (
+	ProjectPatchWwwTemplateTemplateBlog ProjectPatchWwwTemplate = "template-blog"
+	ProjectPatchWwwTemplateTemplateWww  ProjectPatchWwwTemplate = "template-www"
+)
+
+// Valid indicates whether the value is a known member of the ProjectPatchWwwTemplate enum.
+func (e ProjectPatchWwwTemplate) Valid() bool {
+	switch e {
+	case ProjectPatchWwwTemplateTemplateBlog:
+		return true
+	case ProjectPatchWwwTemplateTemplateWww:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectSummaryDeploymentBackend.
+const (
+	ProjectSummaryDeploymentBackendK8s ProjectSummaryDeploymentBackend = "k8s"
+	ProjectSummaryDeploymentBackendVm  ProjectSummaryDeploymentBackend = "vm"
+)
+
+// Valid indicates whether the value is a known member of the ProjectSummaryDeploymentBackend enum.
+func (e ProjectSummaryDeploymentBackend) Valid() bool {
+	switch e {
+	case ProjectSummaryDeploymentBackendK8s:
+		return true
+	case ProjectSummaryDeploymentBackendVm:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectSummaryStatus.
+const (
+	ProjectSummaryStatusActive       ProjectSummaryStatus = "active"
+	ProjectSummaryStatusPaused       ProjectSummaryStatus = "paused"
+	ProjectSummaryStatusPlanned      ProjectSummaryStatus = "planned"
+	ProjectSummaryStatusProvisioning ProjectSummaryStatus = "provisioning"
+	ProjectSummaryStatusRetired      ProjectSummaryStatus = "retired"
+)
+
+// Valid indicates whether the value is a known member of the ProjectSummaryStatus enum.
+func (e ProjectSummaryStatus) Valid() bool {
+	switch e {
+	case ProjectSummaryStatusActive:
+		return true
+	case ProjectSummaryStatusPaused:
+		return true
+	case ProjectSummaryStatusPlanned:
+		return true
+	case ProjectSummaryStatusProvisioning:
+		return true
+	case ProjectSummaryStatusRetired:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectUpdatedApiExposure.
+const (
+	ProjectUpdatedApiExposureINTERNALONLY ProjectUpdatedApiExposure = "INTERNAL_ONLY"
+	ProjectUpdatedApiExposurePUBLIC       ProjectUpdatedApiExposure = "PUBLIC"
+)
+
+// Valid indicates whether the value is a known member of the ProjectUpdatedApiExposure enum.
+func (e ProjectUpdatedApiExposure) Valid() bool {
+	switch e {
+	case ProjectUpdatedApiExposureINTERNALONLY:
+		return true
+	case ProjectUpdatedApiExposurePUBLIC:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectUpdatedAppGateway.
+const (
+	ProjectUpdatedAppGatewayDedicated ProjectUpdatedAppGateway = "dedicated"
+	ProjectUpdatedAppGatewayShared    ProjectUpdatedAppGateway = "shared"
+)
+
+// Valid indicates whether the value is a known member of the ProjectUpdatedAppGateway enum.
+func (e ProjectUpdatedAppGateway) Valid() bool {
+	switch e {
+	case ProjectUpdatedAppGatewayDedicated:
+		return true
+	case ProjectUpdatedAppGatewayShared:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectUpdatedDeploymentBackend.
+const (
+	ProjectUpdatedDeploymentBackendK8s ProjectUpdatedDeploymentBackend = "k8s"
+	ProjectUpdatedDeploymentBackendVm  ProjectUpdatedDeploymentBackend = "vm"
+)
+
+// Valid indicates whether the value is a known member of the ProjectUpdatedDeploymentBackend enum.
+func (e ProjectUpdatedDeploymentBackend) Valid() bool {
+	switch e {
+	case ProjectUpdatedDeploymentBackendK8s:
+		return true
+	case ProjectUpdatedDeploymentBackendVm:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectUpdatedFrontendExposure.
+const (
+	ProjectUpdatedFrontendExposureINTERNALONLY ProjectUpdatedFrontendExposure = "INTERNAL_ONLY"
+	ProjectUpdatedFrontendExposurePUBLIC       ProjectUpdatedFrontendExposure = "PUBLIC"
+)
+
+// Valid indicates whether the value is a known member of the ProjectUpdatedFrontendExposure enum.
+func (e ProjectUpdatedFrontendExposure) Valid() bool {
+	switch e {
+	case ProjectUpdatedFrontendExposureINTERNALONLY:
+		return true
+	case ProjectUpdatedFrontendExposurePUBLIC:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectUpdatedFrontendVariant.
+const (
+	ProjectUpdatedFrontendVariantAngular ProjectUpdatedFrontendVariant = "angular"
+	ProjectUpdatedFrontendVariantNuxt4   ProjectUpdatedFrontendVariant = "nuxt4"
+	ProjectUpdatedFrontendVariantReact   ProjectUpdatedFrontendVariant = "react"
+	ProjectUpdatedFrontendVariantVue     ProjectUpdatedFrontendVariant = "vue"
+)
+
+// Valid indicates whether the value is a known member of the ProjectUpdatedFrontendVariant enum.
+func (e ProjectUpdatedFrontendVariant) Valid() bool {
+	switch e {
+	case ProjectUpdatedFrontendVariantAngular:
+		return true
+	case ProjectUpdatedFrontendVariantNuxt4:
+		return true
+	case ProjectUpdatedFrontendVariantReact:
+		return true
+	case ProjectUpdatedFrontendVariantVue:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectUpdatedMssqlEdition.
+const (
+	ProjectUpdatedMssqlEditionEnterprise ProjectUpdatedMssqlEdition = "enterprise"
+	ProjectUpdatedMssqlEditionExpress    ProjectUpdatedMssqlEdition = "express"
+	ProjectUpdatedMssqlEditionStandard   ProjectUpdatedMssqlEdition = "standard"
+)
+
+// Valid indicates whether the value is a known member of the ProjectUpdatedMssqlEdition enum.
+func (e ProjectUpdatedMssqlEdition) Valid() bool {
+	switch e {
+	case ProjectUpdatedMssqlEditionEnterprise:
+		return true
+	case ProjectUpdatedMssqlEditionExpress:
+		return true
+	case ProjectUpdatedMssqlEditionStandard:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectUpdatedProdMinioDisksPerVm.
+const (
+	ProjectUpdatedProdMinioDisksPerVmN1 ProjectUpdatedProdMinioDisksPerVm = 1
+	ProjectUpdatedProdMinioDisksPerVmN2 ProjectUpdatedProdMinioDisksPerVm = 2
+)
+
+// Valid indicates whether the value is a known member of the ProjectUpdatedProdMinioDisksPerVm enum.
+func (e ProjectUpdatedProdMinioDisksPerVm) Valid() bool {
+	switch e {
+	case ProjectUpdatedProdMinioDisksPerVmN1:
+		return true
+	case ProjectUpdatedProdMinioDisksPerVmN2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectUpdatedProdMinioNodeCount.
+const (
+	ProjectUpdatedProdMinioNodeCountN2 ProjectUpdatedProdMinioNodeCount = 2
+	ProjectUpdatedProdMinioNodeCountN4 ProjectUpdatedProdMinioNodeCount = 4
+)
+
+// Valid indicates whether the value is a known member of the ProjectUpdatedProdMinioNodeCount enum.
+func (e ProjectUpdatedProdMinioNodeCount) Valid() bool {
+	switch e {
+	case ProjectUpdatedProdMinioNodeCountN2:
+		return true
+	case ProjectUpdatedProdMinioNodeCountN4:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectUpdatedStatus.
+const (
+	ProjectUpdatedStatusActive       ProjectUpdatedStatus = "active"
+	ProjectUpdatedStatusPaused       ProjectUpdatedStatus = "paused"
+	ProjectUpdatedStatusPlanned      ProjectUpdatedStatus = "planned"
+	ProjectUpdatedStatusProvisioning ProjectUpdatedStatus = "provisioning"
+	ProjectUpdatedStatusRetired      ProjectUpdatedStatus = "retired"
+)
+
+// Valid indicates whether the value is a known member of the ProjectUpdatedStatus enum.
+func (e ProjectUpdatedStatus) Valid() bool {
+	switch e {
+	case ProjectUpdatedStatusActive:
+		return true
+	case ProjectUpdatedStatusPaused:
+		return true
+	case ProjectUpdatedStatusPlanned:
+		return true
+	case ProjectUpdatedStatusProvisioning:
+		return true
+	case ProjectUpdatedStatusRetired:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectUpdatedWwwTemplate.
+const (
+	ProjectUpdatedWwwTemplateTemplateBlog ProjectUpdatedWwwTemplate = "template-blog"
+	ProjectUpdatedWwwTemplateTemplateWww  ProjectUpdatedWwwTemplate = "template-www"
+)
+
+// Valid indicates whether the value is a known member of the ProjectUpdatedWwwTemplate enum.
+func (e ProjectUpdatedWwwTemplate) Valid() bool {
+	switch e {
+	case ProjectUpdatedWwwTemplateTemplateBlog:
+		return true
+	case ProjectUpdatedWwwTemplateTemplateWww:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProvisioningDispatchMode.
+const (
+	ProvisioningDispatchModeDryrun   ProvisioningDispatchMode = "dryrun"
+	ProvisioningDispatchModeLive     ProvisioningDispatchMode = "live"
+	ProvisioningDispatchModeSimulate ProvisioningDispatchMode = "simulate"
+)
+
+// Valid indicates whether the value is a known member of the ProvisioningDispatchMode enum.
+func (e ProvisioningDispatchMode) Valid() bool {
+	switch e {
+	case ProvisioningDispatchModeDryrun:
+		return true
+	case ProvisioningDispatchModeLive:
+		return true
+	case ProvisioningDispatchModeSimulate:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProvisioningState.
+const (
+	ProvisioningStateAttention    ProvisioningState = "attention"
+	ProvisioningStateComplete     ProvisioningState = "complete"
+	ProvisioningStateNeedsAction  ProvisioningState = "needs_action"
+	ProvisioningStateNotStarted   ProvisioningState = "not_started"
+	ProvisioningStateProvisioning ProvisioningState = "provisioning"
+)
+
+// Valid indicates whether the value is a known member of the ProvisioningState enum.
+func (e ProvisioningState) Valid() bool {
+	switch e {
+	case ProvisioningStateAttention:
+		return true
+	case ProvisioningStateComplete:
+		return true
+	case ProvisioningStateNeedsAction:
+		return true
+	case ProvisioningStateNotStarted:
+		return true
+	case ProvisioningStateProvisioning:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ServingTierSource.
+const (
+	Auto       ServingTierSource = "auto"
+	None       ServingTierSource = "none"
+	Pin        ServingTierSource = "pin"
+	PinOffline ServingTierSource = "pin-offline"
+)
+
+// Valid indicates whether the value is a known member of the ServingTierSource enum.
+func (e ServingTierSource) Valid() bool {
+	switch e {
+	case Auto:
+		return true
+	case None:
+		return true
+	case Pin:
+		return true
+	case PinOffline:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for StageGridState.
+const (
+	StageGridStateAttention    StageGridState = "attention"
+	StageGridStateComplete     StageGridState = "complete"
+	StageGridStateNeedsAction  StageGridState = "needs_action"
+	StageGridStateNotStarted   StageGridState = "not_started"
+	StageGridStateProvisioning StageGridState = "provisioning"
+)
+
+// Valid indicates whether the value is a known member of the StageGridState enum.
+func (e StageGridState) Valid() bool {
+	switch e {
+	case StageGridStateAttention:
+		return true
+	case StageGridStateComplete:
+		return true
+	case StageGridStateNeedsAction:
+		return true
+	case StageGridStateNotStarted:
+		return true
+	case StageGridStateProvisioning:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for StageGridItemStatus.
+const (
+	StageGridItemStatusFailed  StageGridItemStatus = "failed"
+	StageGridItemStatusManual  StageGridItemStatus = "manual"
+	StageGridItemStatusPartial StageGridItemStatus = "partial"
+	StageGridItemStatusPending StageGridItemStatus = "pending"
+	StageGridItemStatusRunning StageGridItemStatus = "running"
+	StageGridItemStatusSuccess StageGridItemStatus = "success"
+)
+
+// Valid indicates whether the value is a known member of the StageGridItemStatus enum.
+func (e StageGridItemStatus) Valid() bool {
+	switch e {
+	case StageGridItemStatusFailed:
+		return true
+	case StageGridItemStatusManual:
+		return true
+	case StageGridItemStatusPartial:
+		return true
+	case StageGridItemStatusPending:
+		return true
+	case StageGridItemStatusRunning:
+		return true
+	case StageGridItemStatusSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for StageStateStatus.
+const (
+	StageStateStatusFailed  StageStateStatus = "failed"
+	StageStateStatusManual  StageStateStatus = "manual"
+	StageStateStatusPartial StageStateStatus = "partial"
+	StageStateStatusPending StageStateStatus = "pending"
+	StageStateStatusRunning StageStateStatus = "running"
+	StageStateStatusSuccess StageStateStatus = "success"
+)
+
+// Valid indicates whether the value is a known member of the StageStateStatus enum.
+func (e StageStateStatus) Valid() bool {
+	switch e {
+	case StageStateStatusFailed:
+		return true
+	case StageStateStatusManual:
+		return true
+	case StageStateStatusPartial:
+		return true
+	case StageStateStatusPending:
+		return true
+	case StageStateStatusRunning:
+		return true
+	case StageStateStatusSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UserAuthMode.
+const (
+	Both  UserAuthMode = "both"
+	Local UserAuthMode = "local"
+	Sso   UserAuthMode = "sso"
+)
+
+// Valid indicates whether the value is a known member of the UserAuthMode enum.
+func (e UserAuthMode) Valid() bool {
+	switch e {
+	case Both:
+		return true
+	case Local:
+		return true
+	case Sso:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UserKcSyncStatus.
+const (
+	UserKcSyncStatusError    UserKcSyncStatus = "error"
+	UserKcSyncStatusOk       UserKcSyncStatus = "ok"
+	UserKcSyncStatusPending  UserKcSyncStatus = "pending"
+	UserKcSyncStatusUnlinked UserKcSyncStatus = "unlinked"
+)
+
+// Valid indicates whether the value is a known member of the UserKcSyncStatus enum.
+func (e UserKcSyncStatus) Valid() bool {
+	switch e {
+	case UserKcSyncStatusError:
+		return true
+	case UserKcSyncStatusOk:
+		return true
+	case UserKcSyncStatusPending:
+		return true
+	case UserKcSyncStatusUnlinked:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UserKind.
+const (
+	UserKindHuman   UserKind = "human"
+	UserKindService UserKind = "service"
+)
+
+// Valid indicates whether the value is a known member of the UserKind enum.
+func (e UserKind) Valid() bool {
+	switch e {
+	case UserKindHuman:
+		return true
+	case UserKindService:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UserLocale.
+const (
+	UserLocaleEn UserLocale = "en"
+	UserLocaleHu UserLocale = "hu"
+)
+
+// Valid indicates whether the value is a known member of the UserLocale enum.
+func (e UserLocale) Valid() bool {
+	switch e {
+	case UserLocaleEn:
+		return true
+	case UserLocaleHu:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UserProvisioningStatus.
+const (
+	UserProvisioningStatusError   UserProvisioningStatus = "error"
+	UserProvisioningStatusOk      UserProvisioningStatus = "ok"
+	UserProvisioningStatusPartial UserProvisioningStatus = "partial"
+	UserProvisioningStatusRunning UserProvisioningStatus = "running"
+)
+
+// Valid indicates whether the value is a known member of the UserProvisioningStatus enum.
+func (e UserProvisioningStatus) Valid() bool {
+	switch e {
+	case UserProvisioningStatusError:
+		return true
+	case UserProvisioningStatusOk:
+		return true
+	case UserProvisioningStatusPartial:
+		return true
+	case UserProvisioningStatusRunning:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UserCreateLocale.
+const (
+	UserCreateLocaleEn UserCreateLocale = "en"
+	UserCreateLocaleHu UserCreateLocale = "hu"
+)
+
+// Valid indicates whether the value is a known member of the UserCreateLocale enum.
+func (e UserCreateLocale) Valid() bool {
+	switch e {
+	case UserCreateLocaleEn:
+		return true
+	case UserCreateLocaleHu:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UserPatchLocale.
+const (
+	UserPatchLocaleEn UserPatchLocale = "en"
+	UserPatchLocaleHu UserPatchLocale = "hu"
+)
+
+// Valid indicates whether the value is a known member of the UserPatchLocale enum.
+func (e UserPatchLocale) Valid() bool {
+	switch e {
+	case UserPatchLocaleEn:
+		return true
+	case UserPatchLocaleHu:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for VaultPathEnv.
+const (
+	VaultPathEnvDev VaultPathEnv = "dev"
+	VaultPathEnvUat VaultPathEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the VaultPathEnv enum.
+func (e VaultPathEnv) Valid() bool {
+	switch e {
+	case VaultPathEnvDev:
+		return true
+	case VaultPathEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AiGatewayKeysListParamsEnv.
+const (
+	AiGatewayKeysListParamsEnvDev  AiGatewayKeysListParamsEnv = "dev"
+	AiGatewayKeysListParamsEnvProd AiGatewayKeysListParamsEnv = "prod"
+	AiGatewayKeysListParamsEnvUat  AiGatewayKeysListParamsEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the AiGatewayKeysListParamsEnv enum.
+func (e AiGatewayKeysListParamsEnv) Valid() bool {
+	switch e {
+	case AiGatewayKeysListParamsEnvDev:
+		return true
+	case AiGatewayKeysListParamsEnvProd:
+		return true
+	case AiGatewayKeysListParamsEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AiGatewayKeysListParamsOrigin.
+const (
+	AiGatewayKeysListParamsOriginAdopted AiGatewayKeysListParamsOrigin = "adopted"
+	AiGatewayKeysListParamsOriginApi     AiGatewayKeysListParamsOrigin = "api"
+)
+
+// Valid indicates whether the value is a known member of the AiGatewayKeysListParamsOrigin enum.
+func (e AiGatewayKeysListParamsOrigin) Valid() bool {
+	switch e {
+	case AiGatewayKeysListParamsOriginAdopted:
+		return true
+	case AiGatewayKeysListParamsOriginApi:
 		return true
 	default:
 		return false
@@ -340,6 +1792,63 @@ func (e CustomersGetParamsInclude) Valid() bool {
 	default:
 		return false
 	}
+}
+
+// Defines values for ProjectsListParamsStatus.
+const (
+	ProjectsListParamsStatusActive       ProjectsListParamsStatus = "active"
+	ProjectsListParamsStatusPaused       ProjectsListParamsStatus = "paused"
+	ProjectsListParamsStatusPlanned      ProjectsListParamsStatus = "planned"
+	ProjectsListParamsStatusProvisioning ProjectsListParamsStatus = "provisioning"
+	ProjectsListParamsStatusRetired      ProjectsListParamsStatus = "retired"
+)
+
+// Valid indicates whether the value is a known member of the ProjectsListParamsStatus enum.
+func (e ProjectsListParamsStatus) Valid() bool {
+	switch e {
+	case ProjectsListParamsStatusActive:
+		return true
+	case ProjectsListParamsStatusPaused:
+		return true
+	case ProjectsListParamsStatusPlanned:
+		return true
+	case ProjectsListParamsStatusProvisioning:
+		return true
+	case ProjectsListParamsStatusRetired:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UsersListParamsKind.
+const (
+	UsersListParamsKindAll     UsersListParamsKind = "all"
+	UsersListParamsKindHuman   UsersListParamsKind = "human"
+	UsersListParamsKindService UsersListParamsKind = "service"
+)
+
+// Valid indicates whether the value is a known member of the UsersListParamsKind enum.
+func (e UsersListParamsKind) Valid() bool {
+	switch e {
+	case UsersListParamsKindAll:
+		return true
+	case UsersListParamsKindHuman:
+		return true
+	case UsersListParamsKindService:
+		return true
+	default:
+		return false
+	}
+}
+
+// AiGateway defines model for AiGateway.
+type AiGateway struct {
+	// BaseUrl The OpenAI-compatible base URL clients call (ends in `/v1`), with `Authorization: Bearer <key>`. From the same gateway credential the keys are minted against.
+	BaseUrl string `json:"base_url"`
+
+	// Tiers Every serving tier name in the catalogue, sorted.
+	Tiers []string `json:"tiers"`
 }
 
 // ApiWarning Something that did not go as planned, on a request that still succeeded
@@ -470,11 +1979,165 @@ type CustomerPatchEdition string
 // CustomerPatchStatus defines model for CustomerPatch.Status.
 type CustomerPatchStatus string
 
+// GatewayKey defines model for GatewayKey.
+type GatewayKey struct {
+	// App Frozen.
+	App string `json:"app"`
+
+	// BudgetDuration The soft budget's period, e.g. `30d`.
+	BudgetDuration *string   `json:"budget_duration,omitempty"`
+	CreatedAt      time.Time `json:"created_at"`
+	CreatedBy      *string   `json:"created_by,omitempty"`
+
+	// Env Frozen.
+	Env GatewayKeyEnv `json:"env"`
+
+	// Feature Frozen.
+	Feature *string `json:"feature,omitempty"`
+	Id      string  `json:"id"`
+
+	// KeyAlias `<organisation-slug>-<env>-<app>[-<feature>]` for a key created here; an adopted key keeps the alias it had. Unique among live keys.
+	KeyAlias string `json:"key_alias"`
+
+	// Live `present`: `models` and the limits are LiteLLM's live values; `missing`: LiteLLM no longer has the key (the registry values are shown); `not_read`: a list, which shows registry values only.
+	Live GatewayKeyLive `json:"live"`
+
+	// Models Tier names the key may call.
+	Models []string `json:"models"`
+
+	// OrganizationId The tenant (organisation) that owns the key. Frozen.
+	OrganizationId string           `json:"organization_id"`
+	Origin         GatewayKeyOrigin `json:"origin"`
+	ProjectId      *string          `json:"project_id,omitempty"`
+	RotatedAt      *time.Time       `json:"rotated_at,omitempty"`
+	RpmLimit       *int             `json:"rpm_limit,omitempty"`
+
+	// Secret The key's value (`sk-…`). Present ONLY in the response to the create or rotation that produced it, and only when that request set `expose_secret: true`; null everywhere else, including an idempotent replay of that same request. The value is always stored in Vault at `vault_path`; the API never returns it again.
+	Secret *string `json:"secret,omitempty"`
+
+	// SoftBudgetUsd SOFT budget in US dollars: the gateway alerts when it is reached and NEVER blocks. There is no hard limit in v1.
+	SoftBudgetUsd *float32 `json:"soft_budget_usd,omitempty"`
+
+	// SpendUsd Spend LiteLLM has recorded for this key (shadow USD). Only on a read of one key.
+	SpendUsd *float32 `json:"spend_usd,omitempty"`
+
+	// TokenHashPrefix The first 12 characters of LiteLLM's SHA-256 of the key, to find it in LiteLLM's own records. Never the value.
+	TokenHashPrefix *string   `json:"token_hash_prefix,omitempty"`
+	TpmLimit        *int      `json:"tpm_limit,omitempty"`
+	UpdatedAt       time.Time `json:"updated_at"`
+	VaultField      *string   `json:"vault_field,omitempty"`
+
+	// VaultPath Where the value is stored (a KV v2 path under `secret/`). Null for an adopted key whose location was never recorded.
+	VaultPath *string       `json:"vault_path,omitempty"`
+	Warnings  *[]ApiWarning `json:"warnings,omitempty"`
+}
+
+// GatewayKeyEnv Frozen.
+type GatewayKeyEnv string
+
+// GatewayKeyLive `present`: `models` and the limits are LiteLLM's live values; `missing`: LiteLLM no longer has the key (the registry values are shown); `not_read`: a list, which shows registry values only.
+type GatewayKeyLive string
+
+// GatewayKeyOrigin defines model for GatewayKey.Origin.
+type GatewayKeyOrigin string
+
+// GatewayKeyCreate defines model for GatewayKeyCreate.
+type GatewayKeyCreate struct {
+	App            string              `json:"app"`
+	BudgetDuration *string             `json:"budget_duration,omitempty"`
+	Env            GatewayKeyCreateEnv `json:"env"`
+
+	// ExposeSecret Return the key's value in THIS response (`secret`). It is stored in Vault either way and never returned again.
+	ExposeSecret *bool   `json:"expose_secret,omitempty"`
+	Feature      *string `json:"feature,omitempty"`
+
+	// Models Tier names from the serving-tier catalogue. A tier that exists but serves nothing right now is accepted with a `tier_not_serving` warning.
+	Models []string `json:"models"`
+
+	// OrganizationId The owning tenant.
+	OrganizationId string `json:"organization_id"`
+
+	// ProjectId Optional: a project of that tenant the key serves.
+	ProjectId *string `json:"project_id,omitempty"`
+	RpmLimit  *int    `json:"rpm_limit,omitempty"`
+
+	// SoftBudgetUsd SOFT budget in US dollars: the gateway alerts when it is reached and NEVER blocks. There is no hard limit in v1.
+	SoftBudgetUsd *float32 `json:"soft_budget_usd,omitempty"`
+	TpmLimit      *int     `json:"tpm_limit,omitempty"`
+}
+
+// GatewayKeyCreateEnv defines model for GatewayKeyCreate.Env.
+type GatewayKeyCreateEnv string
+
+// GatewayKeyPage defines model for GatewayKeyPage.
+type GatewayKeyPage struct {
+	Items      []GatewayKey `json:"items"`
+	NextCursor *string      `json:"next_cursor,omitempty"`
+}
+
+// GatewayKeyPatch A JSON Merge Patch (RFC 7396). “null“ clears a limit, the soft budget,
+// its duration or the project; “models“ cannot be null. The key's value is
+// never changed here (that is a rotation).
+type GatewayKeyPatch struct {
+	// App Frozen.
+	App *string `json:"app,omitempty"`
+
+	// BudgetDuration null clears it.
+	BudgetDuration *string `json:"budget_duration,omitempty"`
+
+	// Env Frozen.
+	Env *GatewayKeyPatchEnv `json:"env,omitempty"`
+
+	// Feature Frozen.
+	Feature *string   `json:"feature,omitempty"`
+	Models  *[]string `json:"models,omitempty"`
+
+	// OrganizationId Frozen.
+	OrganizationId *string `json:"organization_id,omitempty"`
+
+	// ProjectId null clears it.
+	ProjectId *string `json:"project_id,omitempty"`
+
+	// RpmLimit null clears it.
+	RpmLimit *int `json:"rpm_limit,omitempty"`
+
+	// SoftBudgetUsd SOFT budget in US dollars: the gateway alerts when it is reached and NEVER blocks. There is no hard limit in v1. null clears it.
+	SoftBudgetUsd *float32 `json:"soft_budget_usd,omitempty"`
+
+	// TpmLimit null clears it.
+	TpmLimit *int `json:"tpm_limit,omitempty"`
+}
+
+// GatewayKeyPatchEnv defines model for GatewayKeyPatch.Env.
+type GatewayKeyPatchEnv string
+
+// GatewayKeyRotation defines model for GatewayKeyRotation.
+type GatewayKeyRotation struct {
+	// ExposeSecret Return the NEW value in this response (`secret`). It is stored in Vault either way.
+	ExposeSecret *bool `json:"expose_secret,omitempty"`
+}
+
 // GitLabGroupStatus The customer's top-level GitLab group as GitLab reports it right now.
 type GitLabGroupStatus struct {
 	Exists   bool    `json:"exists"`
 	FullPath *string `json:"full_path,omitempty"`
 	WebUrl   *string `json:"web_url,omitempty"`
+}
+
+// GitLabRepository defines model for GitLabRepository.
+type GitLabRepository struct {
+	// Kind `app` or `www`.
+	Kind string `json:"kind"`
+
+	// Path `<customer group>/<repository>`.
+	Path    string `json:"path"`
+	Primary bool   `json:"primary"`
+}
+
+// KubernetesNamespace defines model for KubernetesNamespace.
+type KubernetesNamespace struct {
+	Env       string `json:"env"`
+	Namespace string `json:"namespace"`
 }
 
 // LicenceSummary defines model for LicenceSummary.
@@ -523,19 +2186,79 @@ type Meta struct {
 
 // Operation defines model for Operation.
 type Operation struct {
-	CreatedAt    *time.Time              `json:"created_at,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+
+	// DispatchMode For work that dispatches pipelines: `dryrun` means this platform fakes the dispatch, nothing is executed, and the operation can never succeed; `simulate` means stages are marked done without running (see `simulated`).
+	DispatchMode *OperationDispatchMode  `json:"dispatch_mode,omitempty"`
 	Error        *map[string]interface{} `json:"error,omitempty"`
 	Id           string                  `json:"id"`
 	Kind         string                  `json:"kind"`
 	Message      *string                 `json:"message,omitempty"`
 	ResourceId   *string                 `json:"resource_id,omitempty"`
 	ResourceType *string                 `json:"resource_type,omitempty"`
-	Status       OperationStatus         `json:"status"`
-	UpdatedAt    *time.Time              `json:"updated_at,omitempty"`
+
+	// Simulated For project provisioning: the result rests on SIMULATED stages (`dispatch_mode` `simulate`). A succeeded simulated operation provisioned nothing.
+	Simulated *bool `json:"simulated,omitempty"`
+
+	// Stage For work done in stages (project provisioning): the stage it is on, or the one it stopped at.
+	Stage     *string         `json:"stage,omitempty"`
+	Status    OperationStatus `json:"status"`
+	UpdatedAt *time.Time      `json:"updated_at,omitempty"`
 }
+
+// OperationDispatchMode defines model for Operation.DispatchMode.
+type OperationDispatchMode string
 
 // OperationStatus defines model for Operation.Status.
 type OperationStatus string
+
+// Orchestration defines model for Orchestration.
+type Orchestration struct {
+	CurrentStage *string           `json:"current_stage,omitempty"`
+	Kind         OrchestrationKind `json:"kind"`
+	OperationId  string            `json:"operation_id"`
+
+	// Stale Its worker stopped heartbeating; it is resumed by the platform, not by a new start.
+	Stale     bool                `json:"stale"`
+	StartedAt *time.Time          `json:"started_at,omitempty"`
+	Status    OrchestrationStatus `json:"status"`
+	UpdatedAt *time.Time          `json:"updated_at,omitempty"`
+}
+
+// OrchestrationKind defines model for Orchestration.Kind.
+type OrchestrationKind string
+
+// OrchestrationStatus defines model for Orchestration.Status.
+type OrchestrationStatus string
+
+// Permission defines model for Permission.
+type Permission struct {
+	Category    string `json:"category"`
+	Description string `json:"description"`
+	Feature     string `json:"feature"`
+
+	// Grantable May be granted to a person (`PUT /users/{id}/roles/{key}`). A key that is not grantable is still honoured for those who hold it.
+	Grantable bool            `json:"grantable"`
+	Key       string          `json:"key"`
+	Label     string          `json:"label"`
+	Level     PermissionLevel `json:"level"`
+
+	// Mintable May be carried by an API token.
+	Mintable bool            `json:"mintable"`
+	Scope    PermissionScope `json:"scope"`
+}
+
+// PermissionLevel defines model for Permission.Level.
+type PermissionLevel string
+
+// PermissionScope defines model for Permission.Scope.
+type PermissionScope string
+
+// PermissionPage defines model for PermissionPage.
+type PermissionPage struct {
+	Items      []Permission `json:"items"`
+	NextCursor *string      `json:"next_cursor,omitempty"`
+}
 
 // Problem The OpenAPI shape of an error. Extra members may appear (for example the
 // licence refusal's “state“/“remedy“ or a validation “errors“ list).
@@ -549,6 +2272,617 @@ type Problem struct {
 	Type                 string                 `json:"type"`
 	AdditionalProperties map[string]interface{} `json:"-"`
 }
+
+// Project defines model for Project.
+type Project struct {
+	// AllowPublicHttpsEgress Kubernetes projects: allow egress to public HTTPS.
+	AllowPublicHttpsEgress *bool               `json:"allow_public_https_egress,omitempty"`
+	ApiExposure            *ProjectApiExposure `json:"api_exposure,omitempty"`
+
+	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own (ADR-009).
+	AppGateway          *ProjectAppGateway       `json:"app_gateway,omitempty"`
+	CreatedAt           time.Time                `json:"created_at"`
+	CustomerId          *string                  `json:"customer_id"`
+	DeploymentBackend   ProjectDeploymentBackend `json:"deployment_backend"`
+	Description         *string                  `json:"description,omitempty"`
+	EnableAi            *bool                    `json:"enable_ai,omitempty"`
+	EnableDrDbReplica   *bool                    `json:"enable_dr_db_replica,omitempty"`
+	EnableDrMinioMirror *bool                    `json:"enable_dr_minio_mirror,omitempty"`
+	EnableFullstackApp  *bool                    `json:"enable_fullstack_app,omitempty"`
+
+	// EnableIis IIS/.NET hosting (ADR-036). VM backend only.
+	EnableIis   *bool `json:"enable_iis,omitempty"`
+	EnableMinio *bool `json:"enable_minio,omitempty"`
+
+	// EnableMssql SQL Server (ADR-036). VM backend only.
+	EnableMssql                    *bool                    `json:"enable_mssql,omitempty"`
+	EnableRedis                    *bool                    `json:"enable_redis,omitempty"`
+	EnableStaticSite               *bool                    `json:"enable_static_site,omitempty"`
+	EnableSynologyMinioReplication *bool                    `json:"enable_synology_minio_replication,omitempty"`
+	EnableUatAppPublic             *bool                    `json:"enable_uat_app_public,omitempty"`
+	EnableUatWwwPublic             *bool                    `json:"enable_uat_www_public,omitempty"`
+	EnableWebWww                   *bool                    `json:"enable_web_www,omitempty"`
+	FrontendExposure               *ProjectFrontendExposure `json:"frontend_exposure,omitempty"`
+	FrontendVariant                *ProjectFrontendVariant  `json:"frontend_variant,omitempty"`
+	GithubRepoUrl                  *string                  `json:"github_repo_url,omitempty"`
+	GithubUser                     *string                  `json:"github_user,omitempty"`
+	GitlabRepoSlug                 string                   `json:"gitlab_repo_slug"`
+	HasMobile                      *bool                    `json:"has_mobile,omitempty"`
+	Id                             string                   `json:"id"`
+
+	// ImportExistingRepo The GitLab repository already holds code: provisioning does not seed it from the template.
+	ImportExistingRepo  *bool                       `json:"import_existing_repo,omitempty"`
+	IsSelf              bool                        `json:"is_self"`
+	LongName            string                      `json:"long_name"`
+	MssqlEdition        *ProjectMssqlEdition        `json:"mssql_edition,omitempty"`
+	NetworkOnly         bool                        `json:"network_only"`
+	Outputs             *ProjectOutputs             `json:"outputs,omitempty"`
+	PrimaryDomain       string                      `json:"primary_domain"`
+	ProdMinioDisksPerVm *ProjectProdMinioDisksPerVm `json:"prod_minio_disks_per_vm,omitempty"`
+	ProdMinioNodeCount  *ProjectProdMinioNodeCount  `json:"prod_minio_node_count,omitempty"`
+	ProjectIndex        int                         `json:"project_index"`
+	RegisteredBy        *string                     `json:"registered_by"`
+	ShortName           string                      `json:"short_name"`
+
+	// Status Read-only. `planned` until provisioning starts, `active` once every stage is done.
+	Status             ProjectStatus       `json:"status"`
+	TenantId           string              `json:"tenant_id"`
+	Warnings           *[]ApiWarning       `json:"warnings,omitempty"`
+	WindowsVmCountDev  *int                `json:"windows_vm_count_dev,omitempty"`
+	WindowsVmCountProd *int                `json:"windows_vm_count_prod,omitempty"`
+	WindowsVmCountUat  *int                `json:"windows_vm_count_uat,omitempty"`
+	WwwTemplate        *ProjectWwwTemplate `json:"www_template,omitempty"`
+}
+
+// ProjectApiExposure defines model for Project.ApiExposure.
+type ProjectApiExposure string
+
+// ProjectAppGateway `shared` rides the environment's app gateway; `dedicated` gets its own (ADR-009).
+type ProjectAppGateway string
+
+// ProjectDeploymentBackend defines model for Project.DeploymentBackend.
+type ProjectDeploymentBackend string
+
+// ProjectFrontendExposure defines model for Project.FrontendExposure.
+type ProjectFrontendExposure string
+
+// ProjectFrontendVariant defines model for Project.FrontendVariant.
+type ProjectFrontendVariant string
+
+// ProjectMssqlEdition defines model for Project.MssqlEdition.
+type ProjectMssqlEdition string
+
+// ProjectProdMinioDisksPerVm defines model for Project.ProdMinioDisksPerVm.
+type ProjectProdMinioDisksPerVm int
+
+// ProjectProdMinioNodeCount defines model for Project.ProdMinioNodeCount.
+type ProjectProdMinioNodeCount int
+
+// ProjectStatus Read-only. `planned` until provisioning starts, `active` once every stage is done.
+type ProjectStatus string
+
+// ProjectWwwTemplate defines model for Project.WwwTemplate.
+type ProjectWwwTemplate string
+
+// ProjectCreate defines model for ProjectCreate.
+type ProjectCreate struct {
+	// AllowPublicHttpsEgress Kubernetes projects: allow egress to public HTTPS.
+	AllowPublicHttpsEgress *bool                     `json:"allow_public_https_egress,omitempty"`
+	ApiExposure            *ProjectCreateApiExposure `json:"api_exposure,omitempty"`
+
+	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own (ADR-009).
+	AppGateway *ProjectCreateAppGateway `json:"app_gateway,omitempty"`
+
+	// DeploymentBackend Frozen.
+	DeploymentBackend   *ProjectCreateDeploymentBackend `json:"deployment_backend,omitempty"`
+	Description         *string                         `json:"description,omitempty"`
+	EnableAi            *bool                           `json:"enable_ai,omitempty"`
+	EnableDrDbReplica   *bool                           `json:"enable_dr_db_replica,omitempty"`
+	EnableDrMinioMirror *bool                           `json:"enable_dr_minio_mirror,omitempty"`
+	EnableFullstackApp  *bool                           `json:"enable_fullstack_app,omitempty"`
+
+	// EnableIis IIS/.NET hosting (ADR-036). VM backend only.
+	EnableIis   *bool `json:"enable_iis,omitempty"`
+	EnableMinio *bool `json:"enable_minio,omitempty"`
+
+	// EnableMssql SQL Server (ADR-036). VM backend only.
+	EnableMssql                    *bool                          `json:"enable_mssql,omitempty"`
+	EnableRedis                    *bool                          `json:"enable_redis,omitempty"`
+	EnableStaticSite               *bool                          `json:"enable_static_site,omitempty"`
+	EnableSynologyMinioReplication *bool                          `json:"enable_synology_minio_replication,omitempty"`
+	EnableUatAppPublic             *bool                          `json:"enable_uat_app_public,omitempty"`
+	EnableUatWwwPublic             *bool                          `json:"enable_uat_www_public,omitempty"`
+	EnableWebWww                   *bool                          `json:"enable_web_www,omitempty"`
+	FrontendExposure               *ProjectCreateFrontendExposure `json:"frontend_exposure,omitempty"`
+	FrontendVariant                *ProjectCreateFrontendVariant  `json:"frontend_variant,omitempty"`
+	GithubRepoUrl                  *string                        `json:"github_repo_url,omitempty"`
+	GithubUser                     *string                        `json:"github_user,omitempty"`
+
+	// GitlabRepoSlug The repository name in the customer's GitLab group; unique within the customer. Frozen.
+	GitlabRepoSlug string `json:"gitlab_repo_slug"`
+	HasMobile      *bool  `json:"has_mobile,omitempty"`
+
+	// ImportExistingRepo The GitLab repository already holds code: provisioning does not seed it from the template.
+	ImportExistingRepo *bool                      `json:"import_existing_repo,omitempty"`
+	LongName           string                     `json:"long_name"`
+	MssqlEdition       *ProjectCreateMssqlEdition `json:"mssql_edition,omitempty"`
+
+	// NetworkOnly Register the network zone only: no app, no web site. Forces `enable_static_site` and `enable_fullstack_app` off. Frozen.
+	NetworkOnly *bool `json:"network_only,omitempty"`
+
+	// PrimaryDomain Frozen.
+	PrimaryDomain       string                            `json:"primary_domain"`
+	ProdMinioDisksPerVm *ProjectCreateProdMinioDisksPerVm `json:"prod_minio_disks_per_vm,omitempty"`
+	ProdMinioNodeCount  *ProjectCreateProdMinioNodeCount  `json:"prod_minio_node_count,omitempty"`
+
+	// ProjectIndex The third octet of the project's networks, estate-wide unique. Omit it and the server allocates one above the highest in use (never below 4). Frozen.
+	ProjectIndex *int `json:"project_index,omitempty"`
+
+	// ShortName Lowercase letters and digits, 2-11, starting with a letter. Estate-wide unique. Frozen.
+	ShortName string `json:"short_name"`
+
+	// TenantId The owning tenant. Frozen.
+	TenantId           string                    `json:"tenant_id"`
+	WindowsVmCountDev  *int                      `json:"windows_vm_count_dev,omitempty"`
+	WindowsVmCountProd *int                      `json:"windows_vm_count_prod,omitempty"`
+	WindowsVmCountUat  *int                      `json:"windows_vm_count_uat,omitempty"`
+	WwwTemplate        *ProjectCreateWwwTemplate `json:"www_template,omitempty"`
+}
+
+// ProjectCreateApiExposure defines model for ProjectCreate.ApiExposure.
+type ProjectCreateApiExposure string
+
+// ProjectCreateAppGateway `shared` rides the environment's app gateway; `dedicated` gets its own (ADR-009).
+type ProjectCreateAppGateway string
+
+// ProjectCreateDeploymentBackend Frozen.
+type ProjectCreateDeploymentBackend string
+
+// ProjectCreateFrontendExposure defines model for ProjectCreate.FrontendExposure.
+type ProjectCreateFrontendExposure string
+
+// ProjectCreateFrontendVariant defines model for ProjectCreate.FrontendVariant.
+type ProjectCreateFrontendVariant string
+
+// ProjectCreateMssqlEdition defines model for ProjectCreate.MssqlEdition.
+type ProjectCreateMssqlEdition string
+
+// ProjectCreateProdMinioDisksPerVm defines model for ProjectCreate.ProdMinioDisksPerVm.
+type ProjectCreateProdMinioDisksPerVm int
+
+// ProjectCreateProdMinioNodeCount defines model for ProjectCreate.ProdMinioNodeCount.
+type ProjectCreateProdMinioNodeCount int
+
+// ProjectCreateWwwTemplate defines model for ProjectCreate.WwwTemplate.
+type ProjectCreateWwwTemplate string
+
+// ProjectMember defines model for ProjectMember.
+type ProjectMember struct {
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+
+	// GitlabRole RECORDED, NOT ENFORCED: nothing creates the GitLab user or its GitLab membership from this value.
+	GitlabRole *ProjectMemberGitlabRole `json:"gitlab_role,omitempty"`
+	ProjectId  string                   `json:"project_id"`
+	Role       ProjectMemberRole        `json:"role"`
+	UserId     string                   `json:"user_id"`
+}
+
+// ProjectMemberGitlabRole defines model for ProjectMember.GitlabRole.
+type ProjectMemberGitlabRole string
+
+// ProjectMemberRole defines model for ProjectMember.Role.
+type ProjectMemberRole string
+
+// ProjectMemberPage defines model for ProjectMemberPage.
+type ProjectMemberPage struct {
+	Items      []ProjectMember `json:"items"`
+	NextCursor *string         `json:"next_cursor,omitempty"`
+}
+
+// ProjectMemberPut defines model for ProjectMemberPut.
+type ProjectMemberPut struct {
+	// GitlabRole Recorded, not enforced. `maintainer` is refused for a person who is not ATAILA staff (ADR-029 P4).
+	GitlabRole *ProjectMemberPutGitlabRole `json:"gitlab_role,omitempty"`
+	Role       *ProjectMemberPutRole       `json:"role,omitempty"`
+}
+
+// ProjectMemberPutGitlabRole defines model for ProjectMemberPut.GitlabRole.
+type ProjectMemberPutGitlabRole string
+
+// ProjectMemberPutRole defines model for ProjectMemberPut.Role.
+type ProjectMemberPutRole string
+
+// ProjectOutputs What the project's compiled manifest names, curated: never an internal
+// address, a machine's host name or a production Vault path.
+type ProjectOutputs struct {
+	GitlabRepositories   *[]GitLabRepository    `json:"gitlab_repositories,omitempty"`
+	HarborNamespace      *string                `json:"harbor_namespace,omitempty"`
+	KubernetesNamespaces *[]KubernetesNamespace `json:"kubernetes_namespaces,omitempty"`
+	Urls                 ProjectUrls            `json:"urls"`
+
+	// VaultPaths dev and uat only. A VM-backend project's paths embed its machines' host names and are not listed.
+	VaultPaths *[]VaultPath `json:"vault_paths,omitempty"`
+}
+
+// ProjectPage defines model for ProjectPage.
+type ProjectPage struct {
+	Items      []ProjectSummary `json:"items"`
+	NextCursor *string          `json:"next_cursor,omitempty"`
+}
+
+// ProjectPatch A JSON Merge Patch (RFC 7396). Frozen members are accepted only with the
+// current value. “status“ is not writable in v1.
+type ProjectPatch struct {
+	AllowPublicHttpsEgress *bool                    `json:"allow_public_https_egress,omitempty"`
+	ApiExposure            *ProjectPatchApiExposure `json:"api_exposure,omitempty"`
+	AppGateway             *ProjectPatchAppGateway  `json:"app_gateway,omitempty"`
+
+	// DeploymentBackend Frozen.
+	DeploymentBackend *ProjectPatchDeploymentBackend `json:"deployment_backend,omitempty"`
+
+	// Description null clears it.
+	Description                    *string                       `json:"description,omitempty"`
+	EnableAi                       *bool                         `json:"enable_ai,omitempty"`
+	EnableDrDbReplica              *bool                         `json:"enable_dr_db_replica,omitempty"`
+	EnableDrMinioMirror            *bool                         `json:"enable_dr_minio_mirror,omitempty"`
+	EnableFullstackApp             *bool                         `json:"enable_fullstack_app,omitempty"`
+	EnableIis                      *bool                         `json:"enable_iis,omitempty"`
+	EnableMinio                    *bool                         `json:"enable_minio,omitempty"`
+	EnableMssql                    *bool                         `json:"enable_mssql,omitempty"`
+	EnableRedis                    *bool                         `json:"enable_redis,omitempty"`
+	EnableStaticSite               *bool                         `json:"enable_static_site,omitempty"`
+	EnableSynologyMinioReplication *bool                         `json:"enable_synology_minio_replication,omitempty"`
+	EnableUatAppPublic             *bool                         `json:"enable_uat_app_public,omitempty"`
+	EnableUatWwwPublic             *bool                         `json:"enable_uat_www_public,omitempty"`
+	EnableWebWww                   *bool                         `json:"enable_web_www,omitempty"`
+	FrontendExposure               *ProjectPatchFrontendExposure `json:"frontend_exposure,omitempty"`
+	FrontendVariant                *ProjectPatchFrontendVariant  `json:"frontend_variant,omitempty"`
+
+	// GithubRepoUrl null clears it.
+	GithubRepoUrl *string `json:"github_repo_url,omitempty"`
+
+	// GithubUser null clears it.
+	GithubUser *string `json:"github_user,omitempty"`
+
+	// GitlabRepoSlug Frozen.
+	GitlabRepoSlug     *string                   `json:"gitlab_repo_slug,omitempty"`
+	HasMobile          *bool                     `json:"has_mobile,omitempty"`
+	ImportExistingRepo *bool                     `json:"import_existing_repo,omitempty"`
+	LongName           *string                   `json:"long_name,omitempty"`
+	MssqlEdition       *ProjectPatchMssqlEdition `json:"mssql_edition,omitempty"`
+
+	// NetworkOnly Frozen.
+	NetworkOnly *bool `json:"network_only,omitempty"`
+
+	// PrimaryDomain Frozen.
+	PrimaryDomain       *string                          `json:"primary_domain,omitempty"`
+	ProdMinioDisksPerVm *ProjectPatchProdMinioDisksPerVm `json:"prod_minio_disks_per_vm,omitempty"`
+	ProdMinioNodeCount  *ProjectPatchProdMinioNodeCount  `json:"prod_minio_node_count,omitempty"`
+
+	// ProjectIndex Frozen.
+	ProjectIndex *int `json:"project_index,omitempty"`
+
+	// ShortName Frozen.
+	ShortName *string `json:"short_name,omitempty"`
+
+	// TenantId Frozen.
+	TenantId           *string                  `json:"tenant_id,omitempty"`
+	WindowsVmCountDev  *int                     `json:"windows_vm_count_dev,omitempty"`
+	WindowsVmCountProd *int                     `json:"windows_vm_count_prod,omitempty"`
+	WindowsVmCountUat  *int                     `json:"windows_vm_count_uat,omitempty"`
+	WwwTemplate        *ProjectPatchWwwTemplate `json:"www_template,omitempty"`
+}
+
+// ProjectPatchApiExposure defines model for ProjectPatch.ApiExposure.
+type ProjectPatchApiExposure string
+
+// ProjectPatchAppGateway defines model for ProjectPatch.AppGateway.
+type ProjectPatchAppGateway string
+
+// ProjectPatchDeploymentBackend defines model for ProjectPatch.DeploymentBackend.
+type ProjectPatchDeploymentBackend string
+
+// ProjectPatchFrontendExposure defines model for ProjectPatch.FrontendExposure.
+type ProjectPatchFrontendExposure string
+
+// ProjectPatchFrontendVariant defines model for ProjectPatch.FrontendVariant.
+type ProjectPatchFrontendVariant string
+
+// ProjectPatchMssqlEdition defines model for ProjectPatch.MssqlEdition.
+type ProjectPatchMssqlEdition string
+
+// ProjectPatchProdMinioDisksPerVm defines model for ProjectPatch.ProdMinioDisksPerVm.
+type ProjectPatchProdMinioDisksPerVm int
+
+// ProjectPatchProdMinioNodeCount defines model for ProjectPatch.ProdMinioNodeCount.
+type ProjectPatchProdMinioNodeCount int
+
+// ProjectPatchWwwTemplate defines model for ProjectPatch.WwwTemplate.
+type ProjectPatchWwwTemplate string
+
+// ProjectSummary defines model for ProjectSummary.
+type ProjectSummary struct {
+	CreatedAt         time.Time                       `json:"created_at"`
+	CustomerId        *string                         `json:"customer_id"`
+	DeploymentBackend ProjectSummaryDeploymentBackend `json:"deployment_backend"`
+	GitlabRepoSlug    string                          `json:"gitlab_repo_slug"`
+	Id                string                          `json:"id"`
+
+	// IsSelf One of ATAILA's own platform projects: readable, never writable through v1.
+	IsSelf        bool                 `json:"is_self"`
+	LongName      string               `json:"long_name"`
+	NetworkOnly   bool                 `json:"network_only"`
+	PrimaryDomain string               `json:"primary_domain"`
+	ProjectIndex  int                  `json:"project_index"`
+	ShortName     string               `json:"short_name"`
+	Status        ProjectSummaryStatus `json:"status"`
+	TenantId      string               `json:"tenant_id"`
+}
+
+// ProjectSummaryDeploymentBackend defines model for ProjectSummary.DeploymentBackend.
+type ProjectSummaryDeploymentBackend string
+
+// ProjectSummaryStatus defines model for ProjectSummary.Status.
+type ProjectSummaryStatus string
+
+// ProjectUpdated defines model for ProjectUpdated.
+type ProjectUpdated struct {
+	// AllowPublicHttpsEgress Kubernetes projects: allow egress to public HTTPS.
+	AllowPublicHttpsEgress *bool                      `json:"allow_public_https_egress,omitempty"`
+	ApiExposure            *ProjectUpdatedApiExposure `json:"api_exposure,omitempty"`
+
+	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own (ADR-009).
+	AppGateway          *ProjectUpdatedAppGateway       `json:"app_gateway,omitempty"`
+	CreatedAt           time.Time                       `json:"created_at"`
+	CustomerId          *string                         `json:"customer_id"`
+	DeploymentBackend   ProjectUpdatedDeploymentBackend `json:"deployment_backend"`
+	Description         *string                         `json:"description,omitempty"`
+	EnableAi            *bool                           `json:"enable_ai,omitempty"`
+	EnableDrDbReplica   *bool                           `json:"enable_dr_db_replica,omitempty"`
+	EnableDrMinioMirror *bool                           `json:"enable_dr_minio_mirror,omitempty"`
+	EnableFullstackApp  *bool                           `json:"enable_fullstack_app,omitempty"`
+
+	// EnableIis IIS/.NET hosting (ADR-036). VM backend only.
+	EnableIis   *bool `json:"enable_iis,omitempty"`
+	EnableMinio *bool `json:"enable_minio,omitempty"`
+
+	// EnableMssql SQL Server (ADR-036). VM backend only.
+	EnableMssql                    *bool                           `json:"enable_mssql,omitempty"`
+	EnableRedis                    *bool                           `json:"enable_redis,omitempty"`
+	EnableStaticSite               *bool                           `json:"enable_static_site,omitempty"`
+	EnableSynologyMinioReplication *bool                           `json:"enable_synology_minio_replication,omitempty"`
+	EnableUatAppPublic             *bool                           `json:"enable_uat_app_public,omitempty"`
+	EnableUatWwwPublic             *bool                           `json:"enable_uat_www_public,omitempty"`
+	EnableWebWww                   *bool                           `json:"enable_web_www,omitempty"`
+	FrontendExposure               *ProjectUpdatedFrontendExposure `json:"frontend_exposure,omitempty"`
+	FrontendVariant                *ProjectUpdatedFrontendVariant  `json:"frontend_variant,omitempty"`
+	GithubRepoUrl                  *string                         `json:"github_repo_url,omitempty"`
+	GithubUser                     *string                         `json:"github_user,omitempty"`
+	GitlabRepoSlug                 string                          `json:"gitlab_repo_slug"`
+	HasMobile                      *bool                           `json:"has_mobile,omitempty"`
+	Id                             string                          `json:"id"`
+
+	// ImportExistingRepo The GitLab repository already holds code: provisioning does not seed it from the template.
+	ImportExistingRepo  *bool                              `json:"import_existing_repo,omitempty"`
+	IsSelf              bool                               `json:"is_self"`
+	LongName            string                             `json:"long_name"`
+	MssqlEdition        *ProjectUpdatedMssqlEdition        `json:"mssql_edition,omitempty"`
+	NetworkOnly         bool                               `json:"network_only"`
+	Outputs             *ProjectOutputs                    `json:"outputs,omitempty"`
+	PrimaryDomain       string                             `json:"primary_domain"`
+	ProdMinioDisksPerVm *ProjectUpdatedProdMinioDisksPerVm `json:"prod_minio_disks_per_vm,omitempty"`
+	ProdMinioNodeCount  *ProjectUpdatedProdMinioNodeCount  `json:"prod_minio_node_count,omitempty"`
+	ProjectIndex        int                                `json:"project_index"`
+	RegisteredBy        *string                            `json:"registered_by"`
+	ShortName           string                             `json:"short_name"`
+
+	// StaleStages The provisioning stages this change left stale, in apply order: stages already done whose substrate the change affects. `POST /projects/{id}/provisioning` re-applies them.
+	StaleStages *[]string `json:"stale_stages,omitempty"`
+
+	// Status Read-only. `planned` until provisioning starts, `active` once every stage is done.
+	Status             ProjectUpdatedStatus       `json:"status"`
+	TenantId           string                     `json:"tenant_id"`
+	Warnings           *[]ApiWarning              `json:"warnings,omitempty"`
+	WindowsVmCountDev  *int                       `json:"windows_vm_count_dev,omitempty"`
+	WindowsVmCountProd *int                       `json:"windows_vm_count_prod,omitempty"`
+	WindowsVmCountUat  *int                       `json:"windows_vm_count_uat,omitempty"`
+	WwwTemplate        *ProjectUpdatedWwwTemplate `json:"www_template,omitempty"`
+}
+
+// ProjectUpdatedApiExposure defines model for ProjectUpdated.ApiExposure.
+type ProjectUpdatedApiExposure string
+
+// ProjectUpdatedAppGateway `shared` rides the environment's app gateway; `dedicated` gets its own (ADR-009).
+type ProjectUpdatedAppGateway string
+
+// ProjectUpdatedDeploymentBackend defines model for ProjectUpdated.DeploymentBackend.
+type ProjectUpdatedDeploymentBackend string
+
+// ProjectUpdatedFrontendExposure defines model for ProjectUpdated.FrontendExposure.
+type ProjectUpdatedFrontendExposure string
+
+// ProjectUpdatedFrontendVariant defines model for ProjectUpdated.FrontendVariant.
+type ProjectUpdatedFrontendVariant string
+
+// ProjectUpdatedMssqlEdition defines model for ProjectUpdated.MssqlEdition.
+type ProjectUpdatedMssqlEdition string
+
+// ProjectUpdatedProdMinioDisksPerVm defines model for ProjectUpdated.ProdMinioDisksPerVm.
+type ProjectUpdatedProdMinioDisksPerVm int
+
+// ProjectUpdatedProdMinioNodeCount defines model for ProjectUpdated.ProdMinioNodeCount.
+type ProjectUpdatedProdMinioNodeCount int
+
+// ProjectUpdatedStatus Read-only. `planned` until provisioning starts, `active` once every stage is done.
+type ProjectUpdatedStatus string
+
+// ProjectUpdatedWwwTemplate defines model for ProjectUpdated.WwwTemplate.
+type ProjectUpdatedWwwTemplate string
+
+// ProjectUrls defines model for ProjectUrls.
+type ProjectUrls struct {
+	// Ai The AI endpoint (`ai.`).
+	Ai *string `json:"ai,omitempty"`
+
+	// Backend The application API (`api.`).
+	Backend *string `json:"backend,omitempty"`
+
+	// Frontend The application front end (`app.`).
+	Frontend *string `json:"frontend,omitempty"`
+
+	// Static The public web site (`www.`).
+	Static *string `json:"static,omitempty"`
+}
+
+// Provisioning defines model for Provisioning.
+type Provisioning struct {
+	// Converged Every stage is done and none is stale — done by a real or by a simulated run.
+	Converged bool `json:"converged"`
+
+	// DispatchMode `dryrun`: this platform fakes pipeline dispatch, so no stage is ever executed and provisioning never completes. `simulate`: each stage is marked done after a few seconds without running, so a walk can reach `converged` while `provisioned` stays false.
+	DispatchMode      ProvisioningDispatchMode `json:"dispatch_mode"`
+	Done              int                      `json:"done"`
+	FailedStages      []string                 `json:"failed_stages"`
+	Message           *string                  `json:"message,omitempty"`
+	NeedsActionStages []string                 `json:"needs_action_stages"`
+
+	// Orchestration The orchestration running on the project, if any.
+	Orchestration *Orchestration `json:"orchestration,omitempty"`
+	Percent       int            `json:"percent"`
+	ProjectId     string         `json:"project_id"`
+
+	// Provisioned Converged, and on real runs only: no stage is simulated. The one field that says the substrate exists.
+	Provisioned   bool     `json:"provisioned"`
+	RunningStages []string `json:"running_stages"`
+
+	// Simulated At least one stage's latest run was SIMULATED (`dispatch_mode` `simulate`): marked done, never run.
+	Simulated   bool              `json:"simulated"`
+	Stages      []StageState      `json:"stages"`
+	StaleStages []string          `json:"stale_stages"`
+	State       ProvisioningState `json:"state"`
+	Total       int               `json:"total"`
+}
+
+// ProvisioningDispatchMode `dryrun`: this platform fakes pipeline dispatch, so no stage is ever executed and provisioning never completes. `simulate`: each stage is marked done after a few seconds without running, so a walk can reach `converged` while `provisioned` stays false.
+type ProvisioningDispatchMode string
+
+// ProvisioningState defines model for Provisioning.State.
+type ProvisioningState string
+
+// RoleGrant defines model for RoleGrant.
+type RoleGrant struct {
+	GrantedAt *time.Time    `json:"granted_at,omitempty"`
+	Role      string        `json:"role"`
+	UserId    string        `json:"user_id"`
+	Warnings  *[]ApiWarning `json:"warnings,omitempty"`
+}
+
+// RoleGrantPage defines model for RoleGrantPage.
+type RoleGrantPage struct {
+	Items      []RoleGrant `json:"items"`
+	NextCursor *string     `json:"next_cursor,omitempty"`
+}
+
+// ServingTier defines model for ServingTier.
+type ServingTier struct {
+	// CandidateModels Every model loaded on the fleet right now: the values `pinned_model` may take without `allow_unloaded_pin`.
+	CandidateModels []string `json:"candidate_models"`
+	Category        string   `json:"category"`
+	Enabled         bool     `json:"enabled"`
+	Key             string   `json:"key"`
+	Label           string   `json:"label"`
+
+	// PinnedModel Served model name; null = auto-assign.
+	PinnedModel *string `json:"pinned_model"`
+
+	// Resolved A loaded model backs the tier right now.
+	Resolved bool `json:"resolved"`
+
+	// ResolvedModel The served model backing it right now.
+	ResolvedModel *string `json:"resolved_model"`
+	Role          *string `json:"role,omitempty"`
+	Sort          int     `json:"sort"`
+
+	// Source `pin`: the pin is loaded and serves; `auto`: auto-assigned; `pin-offline`: pinned to a model that is not loaded, so the tier is hidden; `none`: nothing serves it.
+	Source    ServingTierSource `json:"source"`
+	UpdatedAt *time.Time        `json:"updated_at,omitempty"`
+	Warnings  *[]ApiWarning     `json:"warnings,omitempty"`
+}
+
+// ServingTierSource `pin`: the pin is loaded and serves; `auto`: auto-assigned; `pin-offline`: pinned to a model that is not loaded, so the tier is hidden; `none`: nothing serves it.
+type ServingTierSource string
+
+// ServingTierPage defines model for ServingTierPage.
+type ServingTierPage struct {
+	Items      []ServingTier `json:"items"`
+	NextCursor *string       `json:"next_cursor,omitempty"`
+}
+
+// ServingTierPut Set the pin and/or the enabled flag of an EXISTING tier (tiers exist
+// only by migration). An omitted member is left unchanged.
+type ServingTierPut struct {
+	// AllowUnloadedPin Accept a `pinned_model` that is not loaded. The tier then serves nothing, and the gateway drops it, until that model is loaded.
+	AllowUnloadedPin *bool `json:"allow_unloaded_pin,omitempty"`
+
+	// Enabled false hides the tier from every client.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// PinnedModel A served model name, or null to return the tier to auto-assign. A name that is not in `candidate_models` is refused (`model_not_loaded`) unless `allow_unloaded_pin` is true; sending the tier's CURRENT pin is always accepted.
+	PinnedModel *string `json:"pinned_model,omitempty"`
+}
+
+// StageGrid defines model for StageGrid.
+type StageGrid struct {
+	Percent   int             `json:"percent"`
+	ProjectId string          `json:"project_id"`
+	Stages    []StageGridItem `json:"stages"`
+	State     StageGridState  `json:"state"`
+}
+
+// StageGridState defines model for StageGrid.State.
+type StageGridState string
+
+// StageGridItem defines model for StageGridItem.
+type StageGridItem struct {
+	// Blocked Pending, and a stage it depends on is not done.
+	Blocked bool `json:"blocked"`
+
+	// Deferred Kept for visibility; never applied automatically.
+	Deferred     bool       `json:"deferred"`
+	Deps         []string   `json:"deps"`
+	ErrorMessage *string    `json:"error_message,omitempty"`
+	FinishedAt   *time.Time `json:"finished_at,omitempty"`
+	Key          string     `json:"key"`
+
+	// Simulated Its latest run was simulated.
+	Simulated     *bool               `json:"simulated,omitempty"`
+	Stale         bool                `json:"stale"`
+	StartedAt     *time.Time          `json:"started_at,omitempty"`
+	Status        StageGridItemStatus `json:"status"`
+	Title         string              `json:"title"`
+	VerifyState   *string             `json:"verify_state,omitempty"`
+	VerifySummary *string             `json:"verify_summary,omitempty"`
+}
+
+// StageGridItemStatus defines model for StageGridItem.Status.
+type StageGridItemStatus string
+
+// StageState defines model for StageState.
+type StageState struct {
+	Key string `json:"key"`
+
+	// Simulated Its latest run was simulated.
+	Simulated *bool `json:"simulated,omitempty"`
+
+	// Stale Done against an older manifest; re-applied by the next provisioning start.
+	Stale bool `json:"stale"`
+
+	// Status `manual`: the stage needs an operator.
+	Status StageStateStatus `json:"status"`
+}
+
+// StageStateStatus `manual`: the stage needs an operator.
+type StageStateStatus string
 
 // Tenant defines model for Tenant.
 type Tenant struct {
@@ -606,6 +2940,141 @@ type TenantPatch struct {
 	Slug *string `json:"slug,omitempty"`
 }
 
+// User defines model for User.
+type User struct {
+	// AdUsername The Windows (Active Directory) account name. Frozen after create.
+	AdUsername *string `json:"ad_username"`
+
+	// AuthMode Which sign-in routes the person may use. Read-only in v1.
+	AuthMode  *UserAuthMode `json:"auth_mode"`
+	CreatedAt time.Time     `json:"created_at"`
+
+	// Email The person's e-mail address and local sign-in name; unique. Stored and returned entirely LOWER-CASED (local part included), surrounding whitespace dropped, and a `Name <address>` form reduced to the address. Compare case-insensitively. Null only on a legacy row that never had one.
+	Email *string `json:"email"`
+
+	// FirstName Null only on a legacy row created before first/last names existed.
+	FirstName *string `json:"first_name"`
+
+	// GitlabLinked A GitLab account exists for them.
+	GitlabLinked bool   `json:"gitlab_linked"`
+	Id           string `json:"id"`
+
+	// IsActive False once deactivated (`DELETE`). `PATCH` with `true` re-activates.
+	IsActive bool `json:"is_active"`
+
+	// IsInternal ATAILA staff. Read-only in v1.
+	IsInternal bool `json:"is_internal"`
+
+	// KcSyncStatus The last Keycloak projection of this person: `unlinked` (no SSO account), `pending`, `ok` or `error`. Writes through v1 converge Keycloak before answering; the portal also re-converges every 900 s.
+	KcSyncStatus UserKcSyncStatus `json:"kc_sync_status"`
+
+	// KeycloakLinked An SSO (Keycloak) account exists for them.
+	KeycloakLinked bool `json:"keycloak_linked"`
+
+	// Kind Read-only. `service` accounts are managed on the portal's service accounts page; every write on one here is a 409.
+	Kind     UserKind   `json:"kind"`
+	LastName *string    `json:"last_name,omitempty"`
+	Locale   UserLocale `json:"locale"`
+
+	// Name `first_name` and `last_name` joined; read-only.
+	Name string `json:"name"`
+
+	// NeedsGitAccess Whether the person is meant to have a GitLab account.
+	NeedsGitAccess bool `json:"needs_git_access"`
+
+	// ProvisioningStatus The outcome of the newest provisioning run (username, SSO account, GitLab account, GitLab group): `ok`; `partial` when a step was skipped (typically no GitLab account wanted); `error` when a step failed. Null when the person was never provisioned.
+	ProvisioningStatus *UserProvisioningStatus `json:"provisioning_status"`
+
+	// Roles Every role the person holds, sorted.
+	Roles []string `json:"roles"`
+
+	// UpdatedAt The last change; equal to `created_at` until the first change.
+	UpdatedAt time.Time `json:"updated_at"`
+
+	// Username The sign-in handle and directory account name. Set at create (derived from the name when omitted). Frozen once `keycloak_linked` is true.
+	Username *string       `json:"username"`
+	Warnings *[]ApiWarning `json:"warnings,omitempty"`
+}
+
+// UserAuthMode defines model for User.AuthMode.
+type UserAuthMode string
+
+// UserKcSyncStatus The last Keycloak projection of this person: `unlinked` (no SSO account), `pending`, `ok` or `error`. Writes through v1 converge Keycloak before answering; the portal also re-converges every 900 s.
+type UserKcSyncStatus string
+
+// UserKind Read-only. `service` accounts are managed on the portal's service accounts page; every write on one here is a 409.
+type UserKind string
+
+// UserLocale defines model for User.Locale.
+type UserLocale string
+
+// UserProvisioningStatus defines model for User.ProvisioningStatus.
+type UserProvisioningStatus string
+
+// UserCreate No password: a person created through the API cannot sign in until an
+// operator resets their password or they reset it themselves (PLAN D29).
+type UserCreate struct {
+	// AdUsername The Windows account name, when `firstname.lastname` is too long. Lower-case letters, digits, '.', '_' and '-', 1-20 characters, not ending in '.'. Frozen after create.
+	AdUsername *string `json:"ad_username,omitempty"`
+
+	// Email The person's e-mail address and local sign-in name; unique. Stored and returned entirely LOWER-CASED (local part included), surrounding whitespace dropped, and a `Name <address>` form reduced to the address. Compare case-insensitively.
+	Email     openapi_types.Email `json:"email"`
+	FirstName string              `json:"first_name"`
+	LastName  *string             `json:"last_name,omitempty"`
+	Locale    *UserCreateLocale   `json:"locale,omitempty"`
+
+	// NeedsGitAccess Create their GitLab account now (and later whenever it is switched on).
+	NeedsGitAccess *bool `json:"needs_git_access,omitempty"`
+
+	// Username Lower-case letters, digits, '.', '_' and '-', 1-20 characters, not ending in '.'. Omit to derive `firstname.lastname`, folded to ASCII (or `ad_username` when given).
+	Username *string `json:"username,omitempty"`
+}
+
+// UserCreateLocale defines model for UserCreate.Locale.
+type UserCreateLocale string
+
+// UserPage defines model for UserPage.
+type UserPage struct {
+	Items      []User  `json:"items"`
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// UserPatch A JSON Merge Patch (RFC 7396): an omitted member is left unchanged;
+// “last_name: null“ clears it and “null“ is refused for every other field.
+type UserPatch struct {
+	// AdUsername Frozen.
+	AdUsername *string `json:"ad_username,omitempty"`
+
+	// Email The person's e-mail address and local sign-in name; unique. Stored and returned entirely LOWER-CASED (local part included), surrounding whitespace dropped, and a `Name <address>` form reduced to the address. Compare case-insensitively. A change answers with a `email_keyed_grants_affected` warning.
+	Email     *openapi_types.Email `json:"email,omitempty"`
+	FirstName *string              `json:"first_name,omitempty"`
+
+	// IsActive `false` deactivates exactly like `DELETE` (same refusals, same destroy gate); `true` re-activates.
+	IsActive *bool `json:"is_active,omitempty"`
+
+	// LastName null clears it.
+	LastName *string          `json:"last_name,omitempty"`
+	Locale   *UserPatchLocale `json:"locale,omitempty"`
+
+	// NeedsGitAccess Switching it on creates the GitLab account now. Switching it off does not remove one.
+	NeedsGitAccess *bool `json:"needs_git_access,omitempty"`
+
+	// Username Lower-case letters, digits, '.', '_' and '-', 1-20 characters, not ending in '.'. Frozen once `keycloak_linked` is true.
+	Username *string `json:"username,omitempty"`
+}
+
+// UserPatchLocale defines model for UserPatch.Locale.
+type UserPatchLocale string
+
+// VaultPath defines model for VaultPath.
+type VaultPath struct {
+	Env  VaultPathEnv `json:"env"`
+	Path string       `json:"path"`
+}
+
+// VaultPathEnv defines model for VaultPath.Env.
+type VaultPathEnv string
+
 // Whoami defines model for Whoami.
 type Whoami struct {
 	AuthKind  string          `json:"auth_kind"`
@@ -630,6 +3099,41 @@ type WhoamiToken struct {
 	Id            string   `json:"id"`
 	Name          string   `json:"name"`
 	Prefix        string   `json:"prefix"`
+}
+
+// AiGatewayKeysListParams defines parameters for AiGatewayKeysList.
+type AiGatewayKeysListParams struct {
+	// OrganizationId Only this tenant's keys.
+	OrganizationId *string                     `form:"organization_id,omitempty" json:"organization_id,omitempty"`
+	Env            *AiGatewayKeysListParamsEnv `form:"env,omitempty" json:"env,omitempty"`
+
+	// App Exact app.
+	App    *string                        `form:"app,omitempty" json:"app,omitempty"`
+	Origin *AiGatewayKeysListParamsOrigin `form:"origin,omitempty" json:"origin,omitempty"`
+
+	// KeyAlias Exact alias: at most one live key. Finds the `id` to import a key by its name.
+	KeyAlias *string `form:"key_alias,omitempty" json:"key_alias,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// AiGatewayKeysListParamsEnv defines parameters for AiGatewayKeysList.
+type AiGatewayKeysListParamsEnv string
+
+// AiGatewayKeysListParamsOrigin defines parameters for AiGatewayKeysList.
+type AiGatewayKeysListParamsOrigin string
+
+// AiGatewayTiersListParams defines parameters for AiGatewayTiersList.
+type AiGatewayTiersListParams struct {
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
 
 // CustomersListParams defines parameters for CustomersList.
@@ -660,6 +3164,49 @@ type CustomersGetParams struct {
 // CustomersGetParamsInclude defines parameters for CustomersGet.
 type CustomersGetParamsInclude string
 
+// PermissionsListParams defines parameters for PermissionsList.
+type PermissionsListParams struct {
+	// Feature Only this feature's keys.
+	Feature *string `form:"feature,omitempty" json:"feature,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// ProjectsListParams defines parameters for ProjectsList.
+type ProjectsListParams struct {
+	// TenantId Only this tenant's.
+	TenantId *string `form:"tenant_id,omitempty" json:"tenant_id,omitempty"`
+
+	// CustomerId Only this customer's, across its tenants.
+	CustomerId *string                   `form:"customer_id,omitempty" json:"customer_id,omitempty"`
+	Status     *ProjectsListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// ShortName Exact short name.
+	ShortName *string `form:"short_name,omitempty" json:"short_name,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// ProjectsListParamsStatus defines parameters for ProjectsList.
+type ProjectsListParamsStatus string
+
+// ProjectMembersListParams defines parameters for ProjectMembersList.
+type ProjectMembersListParams struct {
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
 // TenantsListParams defines parameters for TenantsList.
 type TenantsListParams struct {
 	// CustomerId Only this customer's tenants.
@@ -684,6 +3231,61 @@ type TenantMembershipsListParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
 
+// UsersListParams defines parameters for UsersList.
+type UsersListParams struct {
+	// Email Exact address, compared lower-cased.
+	Email *string `form:"email,omitempty" json:"email,omitempty"`
+
+	// Username Exact username, case-insensitive.
+	Username *string `form:"username,omitempty" json:"username,omitempty"`
+
+	// Kind `human` (default) leaves service accounts out.
+	Kind     *UsersListParamsKind `form:"kind,omitempty" json:"kind,omitempty"`
+	IsActive *bool                `form:"is_active,omitempty" json:"is_active,omitempty"`
+
+	// TenantId Only members of this tenant.
+	TenantId *openapi_types.UUID `form:"tenant_id,omitempty" json:"tenant_id,omitempty"`
+
+	// CustomerId Only members of one of this customer's tenants.
+	CustomerId *string `form:"customer_id,omitempty" json:"customer_id,omitempty"`
+
+	// Role Only holders of this role.
+	Role *string `form:"role,omitempty" json:"role,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// UsersListParamsKind defines parameters for UsersList.
+type UsersListParamsKind string
+
+// UserRolesListParams defines parameters for UserRolesList.
+type UserRolesListParams struct {
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// AiGatewayKeysCreateJSONRequestBody defines body for AiGatewayKeysCreate for application/json ContentType.
+type AiGatewayKeysCreateJSONRequestBody = GatewayKeyCreate
+
+// AiGatewayKeysUpdateJSONRequestBody defines body for AiGatewayKeysUpdate for application/json ContentType.
+type AiGatewayKeysUpdateJSONRequestBody = GatewayKeyPatch
+
+// AiGatewayKeysUpdateApplicationMergePatchPlusJSONRequestBody defines body for AiGatewayKeysUpdate for application/merge-patch+json ContentType.
+type AiGatewayKeysUpdateApplicationMergePatchPlusJSONRequestBody = GatewayKeyPatch
+
+// AiGatewayKeysRotateJSONRequestBody defines body for AiGatewayKeysRotate for application/json ContentType.
+type AiGatewayKeysRotateJSONRequestBody = GatewayKeyRotation
+
+// AiGatewayTiersPutJSONRequestBody defines body for AiGatewayTiersPut for application/json ContentType.
+type AiGatewayTiersPutJSONRequestBody = ServingTierPut
+
 // CustomersCreateJSONRequestBody defines body for CustomersCreate for application/json ContentType.
 type CustomersCreateJSONRequestBody = CustomerCreate
 
@@ -692,6 +3294,18 @@ type CustomersUpdateJSONRequestBody = CustomerPatch
 
 // CustomersUpdateApplicationMergePatchPlusJSONRequestBody defines body for CustomersUpdate for application/merge-patch+json ContentType.
 type CustomersUpdateApplicationMergePatchPlusJSONRequestBody = CustomerPatch
+
+// ProjectsCreateJSONRequestBody defines body for ProjectsCreate for application/json ContentType.
+type ProjectsCreateJSONRequestBody = ProjectCreate
+
+// ProjectsUpdateJSONRequestBody defines body for ProjectsUpdate for application/json ContentType.
+type ProjectsUpdateJSONRequestBody = ProjectPatch
+
+// ProjectsUpdateApplicationMergePatchPlusJSONRequestBody defines body for ProjectsUpdate for application/merge-patch+json ContentType.
+type ProjectsUpdateApplicationMergePatchPlusJSONRequestBody = ProjectPatch
+
+// ProjectMembersPutJSONRequestBody defines body for ProjectMembersPut for application/json ContentType.
+type ProjectMembersPutJSONRequestBody = ProjectMemberPut
 
 // TenantsCreateJSONRequestBody defines body for TenantsCreate for application/json ContentType.
 type TenantsCreateJSONRequestBody = TenantCreate
@@ -704,6 +3318,15 @@ type TenantsUpdateApplicationMergePatchPlusJSONRequestBody = TenantPatch
 
 // TenantMembershipsPutJSONRequestBody defines body for TenantMembershipsPut for application/json ContentType.
 type TenantMembershipsPutJSONRequestBody = MembershipPut
+
+// UsersCreateJSONRequestBody defines body for UsersCreate for application/json ContentType.
+type UsersCreateJSONRequestBody = UserCreate
+
+// UsersUpdateJSONRequestBody defines body for UsersUpdate for application/json ContentType.
+type UsersUpdateJSONRequestBody = UserPatch
+
+// UsersUpdateApplicationMergePatchPlusJSONRequestBody defines body for UsersUpdate for application/merge-patch+json ContentType.
+type UsersUpdateApplicationMergePatchPlusJSONRequestBody = UserPatch
 
 // Getter for additional properties for Problem. Returns the specified
 // element and whether it was found
@@ -929,6 +3552,133 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 // The interface specification for the client above.
 type ClientInterface interface {
 
+	// AiGatewayGet The AI gateway
+	//
+	// The OpenAI-compatible base URL and the serving-tier names. The base URL
+	// comes from the gateway credential the keys are minted against, so it always
+	// names the gateway that issued them.
+	//
+	// Corresponds with GET /ai/gateway (the `AiGatewayGet` operationId).
+	AiGatewayGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayKeysList List virtual keys
+	//
+	// Registry data only (`live` is `not_read`): the list does not call the gateway and works when it is down. Read one key for its live allowlist, limits and spend.
+	//
+	// Corresponds with GET /ai/gateway/keys (the `AiGatewayKeysList` operationId).
+	AiGatewayKeysList(ctx context.Context, params *AiGatewayKeysListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayKeysCreateWithBody Create a virtual key
+	//
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /ai/gateway/keys (the `AiGatewayKeysCreate` operationId).
+	AiGatewayKeysCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayKeysCreate Create a virtual key
+	//
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /ai/gateway/keys (the `AiGatewayKeysCreate` operationId).
+	AiGatewayKeysCreate(ctx context.Context, body AiGatewayKeysCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayKeysDelete Delete a virtual key
+	//
+	// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the Vault leaf and pointer the portal wrote for it (an adopted key's Vault leaf belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
+	//
+	// Corresponds with DELETE /ai/gateway/keys/{key_id} (the `AiGatewayKeysDelete` operationId).
+	AiGatewayKeysDelete(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayKeysGet One virtual key
+	//
+	// The registry row with the key's LIVE allowlist, limits and spend from the gateway. `live` is `missing` when the gateway no longer has the key. Never the key's value.
+	//
+	// Corresponds with GET /ai/gateway/keys/{key_id} (the `AiGatewayKeysGet` operationId).
+	AiGatewayKeysGet(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayKeysUpdateWithBody Change a virtual key
+	//
+	// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+	AiGatewayKeysUpdateWithBody(ctx context.Context, keyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayKeysUpdate Change a virtual key
+	//
+	// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+	AiGatewayKeysUpdate(ctx context.Context, keyId string, body AiGatewayKeysUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBody Change a virtual key
+	//
+	// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type.
+	//
+	// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+	AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, keyId string, body AiGatewayKeysUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayKeysRotateWithBody Rotate a virtual key
+	//
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /ai/gateway/keys/{key_id}/rotations (the `AiGatewayKeysRotate` operationId).
+	AiGatewayKeysRotateWithBody(ctx context.Context, keyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayKeysRotate Rotate a virtual key
+	//
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /ai/gateway/keys/{key_id}/rotations (the `AiGatewayKeysRotate` operationId).
+	AiGatewayKeysRotate(ctx context.Context, keyId string, body AiGatewayKeysRotateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayTiersList List serving tiers
+	//
+	// Corresponds with GET /ai/gateway/tiers (the `AiGatewayTiersList` operationId).
+	AiGatewayTiersList(ctx context.Context, params *AiGatewayTiersListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayTiersGet One serving tier
+	//
+	// Corresponds with GET /ai/gateway/tiers/{key} (the `AiGatewayTiersGet` operationId).
+	AiGatewayTiersGet(ctx context.Context, key string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayTiersPutWithBody Pin or enable a serving tier
+	//
+	// Sets `pinned_model` and/or `enabled` on an existing tier; an omitted member is left unchanged, `pinned_model: null` returns the tier to auto-assign. The gateway is then reconciled at once (a `reconcile_not_applied` warning says when it could not be reached; the periodic reconcile applies the change later). A pin changes what EVERY client of the tier gets. Destroying a tier in Terraform only forgets it: there is no delete.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
+	AiGatewayTiersPutWithBody(ctx context.Context, key string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiGatewayTiersPut Pin or enable a serving tier
+	//
+	// Sets `pinned_model` and/or `enabled` on an existing tier; an omitted member is left unchanged, `pinned_model: null` returns the tier to auto-assign. The gateway is then reconciled at once (a `reconcile_not_applied` warning says when it could not be reached; the periodic reconcile applies the change later). A pin changes what EVERY client of the tier gets. Destroying a tier in Terraform only forgets it: there is no delete.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
+	AiGatewayTiersPut(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CustomersList List customers
 	//
 	// Corresponds with GET /customers (the `CustomersList` operationId).
@@ -1016,6 +3766,139 @@ type ClientInterface interface {
 	// Corresponds with GET /operations/{operation_id} (the `OperationsGet` operationId).
 	OperationsGet(ctx context.Context, operationId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// PermissionsList The permission catalogue
+	//
+	// Every fine-grained permission key the portal honours, `<feature>-<level>-<scope>`. `grantable` says whether it may be granted to a person; `mintable` whether an API token may carry it (v1 tokens carry `-global` keys only, never `admin`, `founder` or `ssh-console`). The roles catalogue also holds role names that are not permission keys (`user`, `admin`, …); those can be granted too.
+	//
+	// Corresponds with GET /permissions (the `PermissionsList` operationId).
+	PermissionsList(ctx context.Context, params *PermissionsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectsList List projects
+	//
+	// Slim items: no `outputs`. Read one project for those.
+	//
+	// Corresponds with GET /projects (the `ProjectsList` operationId).
+	ProjectsList(ctx context.Context, params *ProjectsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectsCreateWithBody Register a project
+	//
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /projects (the `ProjectsCreate` operationId).
+	ProjectsCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectsCreate Register a project
+	//
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /projects (the `ProjectsCreate` operationId).
+	ProjectsCreate(ctx context.Context, body ProjectsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectsDelete Retire a project
+	//
+	// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, Vault path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
+	//
+	// Corresponds with DELETE /projects/{project_id} (the `ProjectsDelete` operationId).
+	ProjectsDelete(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectsGet One project
+	//
+	// Corresponds with GET /projects/{project_id} (the `ProjectsGet` operationId).
+	ProjectsGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectsUpdateWithBody Change a project
+	//
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+	ProjectsUpdateWithBody(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectsUpdate Change a project
+	//
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+	ProjectsUpdate(ctx context.Context, projectId string, body ProjectsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectsUpdateWithApplicationMergePatchPlusJSONBody Change a project
+	//
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type.
+	//
+	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+	ProjectsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectMembersList A project's members
+	//
+	// Corresponds with GET /projects/{project_id}/members (the `ProjectMembersList` operationId).
+	ProjectMembersList(ctx context.Context, projectId string, params *ProjectMembersListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectMembersDelete Remove a member
+	//
+	// Removes the membership. Not destroy-gated: it needs the write permission only. Allowed on a retired project.
+	//
+	// Corresponds with DELETE /projects/{project_id}/members/{user_id} (the `ProjectMembersDelete` operationId).
+	ProjectMembersDelete(ctx context.Context, projectId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectMembersGet One project member
+	//
+	// Corresponds with GET /projects/{project_id}/members/{user_id} (the `ProjectMembersGet` operationId).
+	ProjectMembersGet(ctx context.Context, projectId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectMembersPutWithBody Add a member or change their role
+	//
+	// 201 when the membership was created, 200 when an existing one was set. `gitlab_role` is recorded and NOT enforced: nothing is changed in GitLab.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
+	ProjectMembersPutWithBody(ctx context.Context, projectId string, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectMembersPut Add a member or change their role
+	//
+	// 201 when the membership was created, 200 when an existing one was set. `gitlab_role` is recorded and NOT enforced: nothing is changed in GitLab.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
+	ProjectMembersPut(ctx context.Context, projectId string, userId string, body ProjectMembersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectProvisioningGet A project's provisioning state
+	//
+	// Read from the database only. `converged` is true when every stage is done and none is stale; `provisioned` additionally requires that no stage was simulated. On a platform whose `dispatch_mode` is `dryrun` nothing is ever executed and provisioning never completes; under `simulate` stages are marked done without running, so `converged` can be true while `provisioned` is false.
+	//
+	// Corresponds with GET /projects/{project_id}/provisioning (the `ProjectProvisioningGet` operationId).
+	ProjectProvisioningGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectProvisioningStart Start provisioning
+	//
+	// Starts the stage engine and answers 202 with an operation (`provision:<id>`) to poll at `GET /operations/{id}`. When stages are stale it re-applies exactly those (apply-pending); otherwise it applies every stage not yet done (apply-all). The operation is `awaiting_operator` when a stage needs a person in the portal, and never succeeds on a `dryrun` platform; on a `simulate` platform it succeeds with `simulated: true` and provisions nothing. Send an `Idempotency-Key`: a retry with the same key gets the same operation and never starts a second orchestration.
+	//
+	// Corresponds with POST /projects/{project_id}/provisioning (the `ProjectProvisioningStart` operationId).
+	ProjectProvisioningStart(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectStagesList A project's provisioning stages
+	//
+	// The stage grid of the portal's Plan page, read-only and from the database only.
+	//
+	// Corresponds with GET /projects/{project_id}/stages (the `ProjectStagesList` operationId).
+	ProjectStagesList(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// TenantsList List tenants
 	//
 	// Corresponds with GET /tenants (the `TenantsList` operationId).
@@ -1037,7 +3920,7 @@ type ClientInterface interface {
 
 	// TenantsDelete Delete an empty tenant
 	//
-	// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource. Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+	// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 	//
 	// Corresponds with DELETE /tenants/{tenant_id} (the `TenantsDelete` operationId).
 	TenantsDelete(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -1115,10 +3998,379 @@ type ClientInterface interface {
 	// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
 	TenantMembershipsPut(ctx context.Context, tenantId string, userId string, body TenantMembershipsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// UsersList List users
+	//
+	// Corresponds with GET /users (the `UsersList` operationId).
+	UsersList(ctx context.Context, params *UsersListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UsersCreateWithBody Create a person
+	//
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. `Idempotency-Key` is honoured.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /users (the `UsersCreate` operationId).
+	UsersCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UsersCreate Create a person
+	//
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. `Idempotency-Key` is honoured.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /users (the `UsersCreate` operationId).
+	UsersCreate(ctx context.Context, body UsersCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UsersDelete Deactivate a user
+	//
+	// Answers 200 with the deactivated user, so that `warnings` can say which downstream step did not complete. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a `warnings` entry (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal (app.ataila.eu) is not disabled; disable it there.
+	//
+	// Corresponds with DELETE /users/{user_id} (the `UsersDelete` operationId).
+	UsersDelete(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UsersGet One user
+	//
+	// Corresponds with GET /users/{user_id} (the `UsersGet` operationId).
+	UsersGet(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UsersUpdateWithBody Change a user
+	//
+	// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+	UsersUpdateWithBody(ctx context.Context, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UsersUpdate Change a user
+	//
+	// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+	UsersUpdate(ctx context.Context, userId string, body UsersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UsersUpdateWithApplicationMergePatchPlusJSONBody Change a user
+	//
+	// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type.
+	//
+	// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+	UsersUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, userId string, body UsersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UserRolesList A user's role grants
+	//
+	// Corresponds with GET /users/{user_id}/roles (the `UserRolesList` operationId).
+	UserRolesList(ctx context.Context, userId string, params *UserRolesListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UserRolesDelete Revoke a role
+	//
+	// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+	//
+	// Corresponds with DELETE /users/{user_id}/roles/{role} (the `UserRolesDelete` operationId).
+	UserRolesDelete(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UserRolesGet One role grant
+	//
+	// Corresponds with GET /users/{user_id}/roles/{role} (the `UserRolesGet` operationId).
+	UserRolesGet(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UserRolesPut Grant a role
+	//
+	// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+	//
+	// Corresponds with PUT /users/{user_id}/roles/{role} (the `UserRolesPut` operationId).
+	UserRolesPut(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// WhoamiGet The calling principal
 	//
 	// Corresponds with GET /whoami (the `WhoamiGet` operationId).
 	WhoamiGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+// AiGatewayGet The AI gateway
+//
+// The OpenAI-compatible base URL and the serving-tier names. The base URL
+// comes from the gateway credential the keys are minted against, so it always
+// names the gateway that issued them.
+//
+// Corresponds with GET /ai/gateway (the `AiGatewayGet` operationId).
+func (c *Client) AiGatewayGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayGetRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayKeysList List virtual keys
+//
+// Registry data only (`live` is `not_read`): the list does not call the gateway and works when it is down. Read one key for its live allowlist, limits and spend.
+//
+// Corresponds with GET /ai/gateway/keys (the `AiGatewayKeysList` operationId).
+func (c *Client) AiGatewayKeysList(ctx context.Context, params *AiGatewayKeysListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayKeysListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayKeysCreateWithBody Create a virtual key
+//
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /ai/gateway/keys (the `AiGatewayKeysCreate` operationId).
+func (c *Client) AiGatewayKeysCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayKeysCreateRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayKeysCreate Create a virtual key
+//
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /ai/gateway/keys (the `AiGatewayKeysCreate` operationId).
+func (c *Client) AiGatewayKeysCreate(ctx context.Context, body AiGatewayKeysCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayKeysCreateRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayKeysDelete Delete a virtual key
+//
+// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the Vault leaf and pointer the portal wrote for it (an adopted key's Vault leaf belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
+//
+// Corresponds with DELETE /ai/gateway/keys/{key_id} (the `AiGatewayKeysDelete` operationId).
+func (c *Client) AiGatewayKeysDelete(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayKeysDeleteRequest(c.Server, keyId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayKeysGet One virtual key
+//
+// The registry row with the key's LIVE allowlist, limits and spend from the gateway. `live` is `missing` when the gateway no longer has the key. Never the key's value.
+//
+// Corresponds with GET /ai/gateway/keys/{key_id} (the `AiGatewayKeysGet` operationId).
+func (c *Client) AiGatewayKeysGet(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayKeysGetRequest(c.Server, keyId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayKeysUpdateWithBody Change a virtual key
+//
+// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+func (c *Client) AiGatewayKeysUpdateWithBody(ctx context.Context, keyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayKeysUpdateRequestWithBody(c.Server, keyId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayKeysUpdate Change a virtual key
+//
+// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+func (c *Client) AiGatewayKeysUpdate(ctx context.Context, keyId string, body AiGatewayKeysUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayKeysUpdateRequest(c.Server, keyId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBody Change a virtual key
+//
+// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type.
+//
+// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+func (c *Client) AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, keyId string, body AiGatewayKeysUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayKeysUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, keyId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayKeysRotateWithBody Rotate a virtual key
+//
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /ai/gateway/keys/{key_id}/rotations (the `AiGatewayKeysRotate` operationId).
+func (c *Client) AiGatewayKeysRotateWithBody(ctx context.Context, keyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayKeysRotateRequestWithBody(c.Server, keyId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayKeysRotate Rotate a virtual key
+//
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /ai/gateway/keys/{key_id}/rotations (the `AiGatewayKeysRotate` operationId).
+func (c *Client) AiGatewayKeysRotate(ctx context.Context, keyId string, body AiGatewayKeysRotateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayKeysRotateRequest(c.Server, keyId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayTiersList List serving tiers
+//
+// Corresponds with GET /ai/gateway/tiers (the `AiGatewayTiersList` operationId).
+func (c *Client) AiGatewayTiersList(ctx context.Context, params *AiGatewayTiersListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayTiersListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayTiersGet One serving tier
+//
+// Corresponds with GET /ai/gateway/tiers/{key} (the `AiGatewayTiersGet` operationId).
+func (c *Client) AiGatewayTiersGet(ctx context.Context, key string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayTiersGetRequest(c.Server, key)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayTiersPutWithBody Pin or enable a serving tier
+//
+// Sets `pinned_model` and/or `enabled` on an existing tier; an omitted member is left unchanged, `pinned_model: null` returns the tier to auto-assign. The gateway is then reconciled at once (a `reconcile_not_applied` warning says when it could not be reached; the periodic reconcile applies the change later). A pin changes what EVERY client of the tier gets. Destroying a tier in Terraform only forgets it: there is no delete.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
+func (c *Client) AiGatewayTiersPutWithBody(ctx context.Context, key string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayTiersPutRequestWithBody(c.Server, key, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiGatewayTiersPut Pin or enable a serving tier
+//
+// Sets `pinned_model` and/or `enabled` on an existing tier; an omitted member is left unchanged, `pinned_model: null` returns the tier to auto-assign. The gateway is then reconciled at once (a `reconcile_not_applied` warning says when it could not be reached; the periodic reconcile applies the change later). A pin changes what EVERY client of the tier gets. Destroying a tier in Terraform only forgets it: there is no delete.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
+func (c *Client) AiGatewayTiersPut(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayTiersPutRequest(c.Server, key, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 // CustomersList List customers
@@ -1308,6 +4560,309 @@ func (c *Client) OperationsGet(ctx context.Context, operationId string, reqEdito
 	return c.Client.Do(req)
 }
 
+// PermissionsList The permission catalogue
+//
+// Every fine-grained permission key the portal honours, `<feature>-<level>-<scope>`. `grantable` says whether it may be granted to a person; `mintable` whether an API token may carry it (v1 tokens carry `-global` keys only, never `admin`, `founder` or `ssh-console`). The roles catalogue also holds role names that are not permission keys (`user`, `admin`, …); those can be granted too.
+//
+// Corresponds with GET /permissions (the `PermissionsList` operationId).
+func (c *Client) PermissionsList(ctx context.Context, params *PermissionsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPermissionsListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectsList List projects
+//
+// Slim items: no `outputs`. Read one project for those.
+//
+// Corresponds with GET /projects (the `ProjectsList` operationId).
+func (c *Client) ProjectsList(ctx context.Context, params *ProjectsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectsListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectsCreateWithBody Register a project
+//
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /projects (the `ProjectsCreate` operationId).
+func (c *Client) ProjectsCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectsCreateRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectsCreate Register a project
+//
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /projects (the `ProjectsCreate` operationId).
+func (c *Client) ProjectsCreate(ctx context.Context, body ProjectsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectsCreateRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectsDelete Retire a project
+//
+// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, Vault path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
+//
+// Corresponds with DELETE /projects/{project_id} (the `ProjectsDelete` operationId).
+func (c *Client) ProjectsDelete(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectsDeleteRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectsGet One project
+//
+// Corresponds with GET /projects/{project_id} (the `ProjectsGet` operationId).
+func (c *Client) ProjectsGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectsGetRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectsUpdateWithBody Change a project
+//
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+func (c *Client) ProjectsUpdateWithBody(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectsUpdateRequestWithBody(c.Server, projectId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectsUpdate Change a project
+//
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+func (c *Client) ProjectsUpdate(ctx context.Context, projectId string, body ProjectsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectsUpdateRequest(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectsUpdateWithApplicationMergePatchPlusJSONBody Change a project
+//
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type.
+//
+// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+func (c *Client) ProjectsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectsUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectMembersList A project's members
+//
+// Corresponds with GET /projects/{project_id}/members (the `ProjectMembersList` operationId).
+func (c *Client) ProjectMembersList(ctx context.Context, projectId string, params *ProjectMembersListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectMembersListRequest(c.Server, projectId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectMembersDelete Remove a member
+//
+// Removes the membership. Not destroy-gated: it needs the write permission only. Allowed on a retired project.
+//
+// Corresponds with DELETE /projects/{project_id}/members/{user_id} (the `ProjectMembersDelete` operationId).
+func (c *Client) ProjectMembersDelete(ctx context.Context, projectId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectMembersDeleteRequest(c.Server, projectId, userId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectMembersGet One project member
+//
+// Corresponds with GET /projects/{project_id}/members/{user_id} (the `ProjectMembersGet` operationId).
+func (c *Client) ProjectMembersGet(ctx context.Context, projectId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectMembersGetRequest(c.Server, projectId, userId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectMembersPutWithBody Add a member or change their role
+//
+// 201 when the membership was created, 200 when an existing one was set. `gitlab_role` is recorded and NOT enforced: nothing is changed in GitLab.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
+func (c *Client) ProjectMembersPutWithBody(ctx context.Context, projectId string, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectMembersPutRequestWithBody(c.Server, projectId, userId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectMembersPut Add a member or change their role
+//
+// 201 when the membership was created, 200 when an existing one was set. `gitlab_role` is recorded and NOT enforced: nothing is changed in GitLab.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
+func (c *Client) ProjectMembersPut(ctx context.Context, projectId string, userId string, body ProjectMembersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectMembersPutRequest(c.Server, projectId, userId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectProvisioningGet A project's provisioning state
+//
+// Read from the database only. `converged` is true when every stage is done and none is stale; `provisioned` additionally requires that no stage was simulated. On a platform whose `dispatch_mode` is `dryrun` nothing is ever executed and provisioning never completes; under `simulate` stages are marked done without running, so `converged` can be true while `provisioned` is false.
+//
+// Corresponds with GET /projects/{project_id}/provisioning (the `ProjectProvisioningGet` operationId).
+func (c *Client) ProjectProvisioningGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectProvisioningGetRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectProvisioningStart Start provisioning
+//
+// Starts the stage engine and answers 202 with an operation (`provision:<id>`) to poll at `GET /operations/{id}`. When stages are stale it re-applies exactly those (apply-pending); otherwise it applies every stage not yet done (apply-all). The operation is `awaiting_operator` when a stage needs a person in the portal, and never succeeds on a `dryrun` platform; on a `simulate` platform it succeeds with `simulated: true` and provisions nothing. Send an `Idempotency-Key`: a retry with the same key gets the same operation and never starts a second orchestration.
+//
+// Corresponds with POST /projects/{project_id}/provisioning (the `ProjectProvisioningStart` operationId).
+func (c *Client) ProjectProvisioningStart(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectProvisioningStartRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectStagesList A project's provisioning stages
+//
+// The stage grid of the portal's Plan page, read-only and from the database only.
+//
+// Corresponds with GET /projects/{project_id}/stages (the `ProjectStagesList` operationId).
+func (c *Client) ProjectStagesList(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectStagesListRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // TenantsList List tenants
 //
 // Corresponds with GET /tenants (the `TenantsList` operationId).
@@ -1359,7 +4914,7 @@ func (c *Client) TenantsCreate(ctx context.Context, body TenantsCreateJSONReques
 
 // TenantsDelete Delete an empty tenant
 //
-// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource. Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 //
 // Corresponds with DELETE /tenants/{tenant_id} (the `TenantsDelete` operationId).
 func (c *Client) TenantsDelete(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -1537,6 +5092,218 @@ func (c *Client) TenantMembershipsPut(ctx context.Context, tenantId string, user
 	return c.Client.Do(req)
 }
 
+// UsersList List users
+//
+// Corresponds with GET /users (the `UsersList` operationId).
+func (c *Client) UsersList(ctx context.Context, params *UsersListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsersListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UsersCreateWithBody Create a person
+//
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. `Idempotency-Key` is honoured.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /users (the `UsersCreate` operationId).
+func (c *Client) UsersCreateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsersCreateRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UsersCreate Create a person
+//
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. `Idempotency-Key` is honoured.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /users (the `UsersCreate` operationId).
+func (c *Client) UsersCreate(ctx context.Context, body UsersCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsersCreateRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UsersDelete Deactivate a user
+//
+// Answers 200 with the deactivated user, so that `warnings` can say which downstream step did not complete. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a `warnings` entry (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal (app.ataila.eu) is not disabled; disable it there.
+//
+// Corresponds with DELETE /users/{user_id} (the `UsersDelete` operationId).
+func (c *Client) UsersDelete(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsersDeleteRequest(c.Server, userId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UsersGet One user
+//
+// Corresponds with GET /users/{user_id} (the `UsersGet` operationId).
+func (c *Client) UsersGet(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsersGetRequest(c.Server, userId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UsersUpdateWithBody Change a user
+//
+// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+func (c *Client) UsersUpdateWithBody(ctx context.Context, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsersUpdateRequestWithBody(c.Server, userId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UsersUpdate Change a user
+//
+// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+func (c *Client) UsersUpdate(ctx context.Context, userId string, body UsersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsersUpdateRequest(c.Server, userId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UsersUpdateWithApplicationMergePatchPlusJSONBody Change a user
+//
+// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type.
+//
+// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+func (c *Client) UsersUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, userId string, body UsersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUsersUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, userId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UserRolesList A user's role grants
+//
+// Corresponds with GET /users/{user_id}/roles (the `UserRolesList` operationId).
+func (c *Client) UserRolesList(ctx context.Context, userId string, params *UserRolesListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserRolesListRequest(c.Server, userId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UserRolesDelete Revoke a role
+//
+// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+//
+// Corresponds with DELETE /users/{user_id}/roles/{role} (the `UserRolesDelete` operationId).
+func (c *Client) UserRolesDelete(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserRolesDeleteRequest(c.Server, userId, role)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UserRolesGet One role grant
+//
+// Corresponds with GET /users/{user_id}/roles/{role} (the `UserRolesGet` operationId).
+func (c *Client) UserRolesGet(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserRolesGetRequest(c.Server, userId, role)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UserRolesPut Grant a role
+//
+// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+//
+// Corresponds with PUT /users/{user_id}/roles/{role} (the `UserRolesPut` operationId).
+func (c *Client) UserRolesPut(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserRolesPutRequest(c.Server, userId, role)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // WhoamiGet The calling principal
 //
 // Corresponds with GET /whoami (the `WhoamiGet` operationId).
@@ -1550,6 +5317,519 @@ func (c *Client) WhoamiGet(ctx context.Context, reqEditors ...RequestEditorFn) (
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+// NewAiGatewayGetRequest constructs an http.Request for the AiGatewayGet method
+func NewAiGatewayGetRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiGatewayKeysListRequest constructs an http.Request for the AiGatewayKeysList method
+func NewAiGatewayKeysListRequest(server string, params *AiGatewayKeysListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway/keys")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.OrganizationId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "organization_id", *params.OrganizationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Env != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "env", *params.Env, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.App != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "app", *params.App, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Origin != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "origin", *params.Origin, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.KeyAlias != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "key_alias", *params.KeyAlias, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiGatewayKeysCreateRequest calls the generic AiGatewayKeysCreate builder with application/json body
+func NewAiGatewayKeysCreateRequest(server string, body AiGatewayKeysCreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAiGatewayKeysCreateRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewAiGatewayKeysCreateRequestWithBody constructs an http.Request for the AiGatewayKeysCreate method, with any body, and a specified content type
+func NewAiGatewayKeysCreateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway/keys")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAiGatewayKeysDeleteRequest constructs an http.Request for the AiGatewayKeysDelete method
+func NewAiGatewayKeysDeleteRequest(server string, keyId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "key_id", keyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway/keys/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiGatewayKeysGetRequest constructs an http.Request for the AiGatewayKeysGet method
+func NewAiGatewayKeysGetRequest(server string, keyId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "key_id", keyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway/keys/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiGatewayKeysUpdateRequest calls the generic AiGatewayKeysUpdate builder with application/json body
+func NewAiGatewayKeysUpdateRequest(server string, keyId string, body AiGatewayKeysUpdateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAiGatewayKeysUpdateRequestWithBody(server, keyId, "application/json", bodyReader)
+}
+
+// NewAiGatewayKeysUpdateRequestWithApplicationMergePatchPlusJSONBody calls the generic AiGatewayKeysUpdate builder with application/merge-patch+json body
+func NewAiGatewayKeysUpdateRequestWithApplicationMergePatchPlusJSONBody(server string, keyId string, body AiGatewayKeysUpdateApplicationMergePatchPlusJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAiGatewayKeysUpdateRequestWithBody(server, keyId, "application/merge-patch+json", bodyReader)
+}
+
+// NewAiGatewayKeysUpdateRequestWithBody constructs an http.Request for the AiGatewayKeysUpdate method, with any body, and a specified content type
+func NewAiGatewayKeysUpdateRequestWithBody(server string, keyId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "key_id", keyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway/keys/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAiGatewayKeysRotateRequest calls the generic AiGatewayKeysRotate builder with application/json body
+func NewAiGatewayKeysRotateRequest(server string, keyId string, body AiGatewayKeysRotateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAiGatewayKeysRotateRequestWithBody(server, keyId, "application/json", bodyReader)
+}
+
+// NewAiGatewayKeysRotateRequestWithBody constructs an http.Request for the AiGatewayKeysRotate method, with any body, and a specified content type
+func NewAiGatewayKeysRotateRequestWithBody(server string, keyId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "key_id", keyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway/keys/%s/rotations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAiGatewayTiersListRequest constructs an http.Request for the AiGatewayTiersList method
+func NewAiGatewayTiersListRequest(server string, params *AiGatewayTiersListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway/tiers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiGatewayTiersGetRequest constructs an http.Request for the AiGatewayTiersGet method
+func NewAiGatewayTiersGetRequest(server string, key string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "key", key, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway/tiers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiGatewayTiersPutRequest calls the generic AiGatewayTiersPut builder with application/json body
+func NewAiGatewayTiersPutRequest(server string, key string, body AiGatewayTiersPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAiGatewayTiersPutRequestWithBody(server, key, "application/json", bodyReader)
+}
+
+// NewAiGatewayTiersPutRequestWithBody constructs an http.Request for the AiGatewayTiersPut method, with any body, and a specified content type
+func NewAiGatewayTiersPutRequestWithBody(server string, key string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "key", key, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway/tiers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
 }
 
 // NewCustomersListRequest constructs an http.Request for the CustomersList method
@@ -1891,6 +6171,675 @@ func NewOperationsGetRequest(server string, operationId string) (*http.Request, 
 	}
 
 	operationPath := fmt.Sprintf("/operations/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPermissionsListRequest constructs an http.Request for the PermissionsList method
+func NewPermissionsListRequest(server string, params *PermissionsListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/permissions")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Feature != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "feature", *params.Feature, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectsListRequest constructs an http.Request for the ProjectsList method
+func NewProjectsListRequest(server string, params *ProjectsListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.TenantId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tenant_id", *params.TenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CustomerId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "customer_id", *params.CustomerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.ShortName != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "short_name", *params.ShortName, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectsCreateRequest calls the generic ProjectsCreate builder with application/json body
+func NewProjectsCreateRequest(server string, body ProjectsCreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewProjectsCreateRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewProjectsCreateRequestWithBody constructs an http.Request for the ProjectsCreate method, with any body, and a specified content type
+func NewProjectsCreateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewProjectsDeleteRequest constructs an http.Request for the ProjectsDelete method
+func NewProjectsDeleteRequest(server string, projectId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectsGetRequest constructs an http.Request for the ProjectsGet method
+func NewProjectsGetRequest(server string, projectId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectsUpdateRequest calls the generic ProjectsUpdate builder with application/json body
+func NewProjectsUpdateRequest(server string, projectId string, body ProjectsUpdateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewProjectsUpdateRequestWithBody(server, projectId, "application/json", bodyReader)
+}
+
+// NewProjectsUpdateRequestWithApplicationMergePatchPlusJSONBody calls the generic ProjectsUpdate builder with application/merge-patch+json body
+func NewProjectsUpdateRequestWithApplicationMergePatchPlusJSONBody(server string, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewProjectsUpdateRequestWithBody(server, projectId, "application/merge-patch+json", bodyReader)
+}
+
+// NewProjectsUpdateRequestWithBody constructs an http.Request for the ProjectsUpdate method, with any body, and a specified content type
+func NewProjectsUpdateRequestWithBody(server string, projectId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewProjectMembersListRequest constructs an http.Request for the ProjectMembersList method
+func NewProjectMembersListRequest(server string, projectId string, params *ProjectMembersListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/members", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectMembersDeleteRequest constructs an http.Request for the ProjectMembersDelete method
+func NewProjectMembersDeleteRequest(server string, projectId string, userId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/members/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectMembersGetRequest constructs an http.Request for the ProjectMembersGet method
+func NewProjectMembersGetRequest(server string, projectId string, userId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/members/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectMembersPutRequest calls the generic ProjectMembersPut builder with application/json body
+func NewProjectMembersPutRequest(server string, projectId string, userId string, body ProjectMembersPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewProjectMembersPutRequestWithBody(server, projectId, userId, "application/json", bodyReader)
+}
+
+// NewProjectMembersPutRequestWithBody constructs an http.Request for the ProjectMembersPut method, with any body, and a specified content type
+func NewProjectMembersPutRequestWithBody(server string, projectId string, userId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/members/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewProjectProvisioningGetRequest constructs an http.Request for the ProjectProvisioningGet method
+func NewProjectProvisioningGetRequest(server string, projectId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/provisioning", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectProvisioningStartRequest constructs an http.Request for the ProjectProvisioningStart method
+func NewProjectProvisioningStartRequest(server string, projectId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/provisioning", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectStagesListRequest constructs an http.Request for the ProjectStagesList method
+func NewProjectStagesListRequest(server string, projectId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/stages", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -2373,6 +7322,518 @@ func NewTenantMembershipsPutRequestWithBody(server string, tenantId string, user
 	return req, nil
 }
 
+// NewUsersListRequest constructs an http.Request for the UsersList method
+func NewUsersListRequest(server string, params *UsersListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Email != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "email", *params.Email, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Username != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "username", *params.Username, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Kind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "kind", *params.Kind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.IsActive != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "is_active", *params.IsActive, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.TenantId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tenant_id", *params.TenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.CustomerId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "customer_id", *params.CustomerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Role != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "role", *params.Role, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUsersCreateRequest calls the generic UsersCreate builder with application/json body
+func NewUsersCreateRequest(server string, body UsersCreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUsersCreateRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUsersCreateRequestWithBody constructs an http.Request for the UsersCreate method, with any body, and a specified content type
+func NewUsersCreateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUsersDeleteRequest constructs an http.Request for the UsersDelete method
+func NewUsersDeleteRequest(server string, userId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUsersGetRequest constructs an http.Request for the UsersGet method
+func NewUsersGetRequest(server string, userId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUsersUpdateRequest calls the generic UsersUpdate builder with application/json body
+func NewUsersUpdateRequest(server string, userId string, body UsersUpdateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUsersUpdateRequestWithBody(server, userId, "application/json", bodyReader)
+}
+
+// NewUsersUpdateRequestWithApplicationMergePatchPlusJSONBody calls the generic UsersUpdate builder with application/merge-patch+json body
+func NewUsersUpdateRequestWithApplicationMergePatchPlusJSONBody(server string, userId string, body UsersUpdateApplicationMergePatchPlusJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUsersUpdateRequestWithBody(server, userId, "application/merge-patch+json", bodyReader)
+}
+
+// NewUsersUpdateRequestWithBody constructs an http.Request for the UsersUpdate method, with any body, and a specified content type
+func NewUsersUpdateRequestWithBody(server string, userId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUserRolesListRequest constructs an http.Request for the UserRolesList method
+func NewUserRolesListRequest(server string, userId string, params *UserRolesListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s/roles", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUserRolesDeleteRequest constructs an http.Request for the UserRolesDelete method
+func NewUserRolesDeleteRequest(server string, userId string, role string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "role", role, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s/roles/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUserRolesGetRequest constructs an http.Request for the UserRolesGet method
+func NewUserRolesGetRequest(server string, userId string, role string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "role", role, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s/roles/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUserRolesPutRequest constructs an http.Request for the UserRolesPut method
+func NewUserRolesPutRequest(server string, userId string, role string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "role", role, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s/roles/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewWhoamiGetRequest constructs an http.Request for the WhoamiGet method
 func NewWhoamiGetRequest(server string) (*http.Request, error) {
 	var err error
@@ -2443,6 +7904,145 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+
+	// AiGatewayGetWithResponse The AI gateway
+	//
+	// The OpenAI-compatible base URL and the serving-tier names. The base URL
+	// comes from the gateway credential the keys are minted against, so it always
+	// names the gateway that issued them.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/gateway (the `AiGatewayGet` operationId).
+	AiGatewayGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AiGatewayGetResponse, error)
+
+	// AiGatewayKeysListWithResponse List virtual keys
+	//
+	// Registry data only (`live` is `not_read`): the list does not call the gateway and works when it is down. Read one key for its live allowlist, limits and spend.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/gateway/keys (the `AiGatewayKeysList` operationId).
+	AiGatewayKeysListWithResponse(ctx context.Context, params *AiGatewayKeysListParams, reqEditors ...RequestEditorFn) (*AiGatewayKeysListResponse, error)
+
+	// AiGatewayKeysCreateWithBodyWithResponse Create a virtual key
+	//
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /ai/gateway/keys (the `AiGatewayKeysCreate` operationId).
+	AiGatewayKeysCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiGatewayKeysCreateResponse, error)
+
+	// AiGatewayKeysCreateWithResponse Create a virtual key
+	//
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /ai/gateway/keys (the `AiGatewayKeysCreate` operationId).
+	AiGatewayKeysCreateWithResponse(ctx context.Context, body AiGatewayKeysCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayKeysCreateResponse, error)
+
+	// AiGatewayKeysDeleteWithResponse Delete a virtual key
+	//
+	// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the Vault leaf and pointer the portal wrote for it (an adopted key's Vault leaf belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /ai/gateway/keys/{key_id} (the `AiGatewayKeysDelete` operationId).
+	AiGatewayKeysDeleteWithResponse(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*AiGatewayKeysDeleteResponse, error)
+
+	// AiGatewayKeysGetWithResponse One virtual key
+	//
+	// The registry row with the key's LIVE allowlist, limits and spend from the gateway. `live` is `missing` when the gateway no longer has the key. Never the key's value.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/gateway/keys/{key_id} (the `AiGatewayKeysGet` operationId).
+	AiGatewayKeysGetWithResponse(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*AiGatewayKeysGetResponse, error)
+
+	// AiGatewayKeysUpdateWithBodyWithResponse Change a virtual key
+	//
+	// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+	AiGatewayKeysUpdateWithBodyWithResponse(ctx context.Context, keyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiGatewayKeysUpdateResponse, error)
+
+	// AiGatewayKeysUpdateWithResponse Change a virtual key
+	//
+	// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+	AiGatewayKeysUpdateWithResponse(ctx context.Context, keyId string, body AiGatewayKeysUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayKeysUpdateResponse, error)
+
+	// AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a virtual key
+	//
+	// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+	AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, keyId string, body AiGatewayKeysUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayKeysUpdateResponse, error)
+
+	// AiGatewayKeysRotateWithBodyWithResponse Rotate a virtual key
+	//
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /ai/gateway/keys/{key_id}/rotations (the `AiGatewayKeysRotate` operationId).
+	AiGatewayKeysRotateWithBodyWithResponse(ctx context.Context, keyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiGatewayKeysRotateResponse, error)
+
+	// AiGatewayKeysRotateWithResponse Rotate a virtual key
+	//
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /ai/gateway/keys/{key_id}/rotations (the `AiGatewayKeysRotate` operationId).
+	AiGatewayKeysRotateWithResponse(ctx context.Context, keyId string, body AiGatewayKeysRotateJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayKeysRotateResponse, error)
+
+	// AiGatewayTiersListWithResponse List serving tiers
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/gateway/tiers (the `AiGatewayTiersList` operationId).
+	AiGatewayTiersListWithResponse(ctx context.Context, params *AiGatewayTiersListParams, reqEditors ...RequestEditorFn) (*AiGatewayTiersListResponse, error)
+
+	// AiGatewayTiersGetWithResponse One serving tier
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/gateway/tiers/{key} (the `AiGatewayTiersGet` operationId).
+	AiGatewayTiersGetWithResponse(ctx context.Context, key string, reqEditors ...RequestEditorFn) (*AiGatewayTiersGetResponse, error)
+
+	// AiGatewayTiersPutWithBodyWithResponse Pin or enable a serving tier
+	//
+	// Sets `pinned_model` and/or `enabled` on an existing tier; an omitted member is left unchanged, `pinned_model: null` returns the tier to auto-assign. The gateway is then reconciled at once (a `reconcile_not_applied` warning says when it could not be reached; the periodic reconcile applies the change later). A pin changes what EVERY client of the tier gets. Destroying a tier in Terraform only forgets it: there is no delete.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
+	AiGatewayTiersPutWithBodyWithResponse(ctx context.Context, key string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiGatewayTiersPutResponse, error)
+
+	// AiGatewayTiersPutWithResponse Pin or enable a serving tier
+	//
+	// Sets `pinned_model` and/or `enabled` on an existing tier; an omitted member is left unchanged, `pinned_model: null` returns the tier to auto-assign. The gateway is then reconciled at once (a `reconcile_not_applied` warning says when it could not be reached; the periodic reconcile applies the change later). A pin changes what EVERY client of the tier gets. Destroying a tier in Terraform only forgets it: there is no delete.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
+	AiGatewayTiersPutWithResponse(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayTiersPutResponse, error)
 
 	// CustomersListWithResponse List customers
 	//
@@ -2541,6 +8141,159 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /operations/{operation_id} (the `OperationsGet` operationId).
 	OperationsGetWithResponse(ctx context.Context, operationId string, reqEditors ...RequestEditorFn) (*OperationsGetResponse, error)
 
+	// PermissionsListWithResponse The permission catalogue
+	//
+	// Every fine-grained permission key the portal honours, `<feature>-<level>-<scope>`. `grantable` says whether it may be granted to a person; `mintable` whether an API token may carry it (v1 tokens carry `-global` keys only, never `admin`, `founder` or `ssh-console`). The roles catalogue also holds role names that are not permission keys (`user`, `admin`, …); those can be granted too.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /permissions (the `PermissionsList` operationId).
+	PermissionsListWithResponse(ctx context.Context, params *PermissionsListParams, reqEditors ...RequestEditorFn) (*PermissionsListResponse, error)
+
+	// ProjectsListWithResponse List projects
+	//
+	// Slim items: no `outputs`. Read one project for those.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects (the `ProjectsList` operationId).
+	ProjectsListWithResponse(ctx context.Context, params *ProjectsListParams, reqEditors ...RequestEditorFn) (*ProjectsListResponse, error)
+
+	// ProjectsCreateWithBodyWithResponse Register a project
+	//
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects (the `ProjectsCreate` operationId).
+	ProjectsCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProjectsCreateResponse, error)
+
+	// ProjectsCreateWithResponse Register a project
+	//
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects (the `ProjectsCreate` operationId).
+	ProjectsCreateWithResponse(ctx context.Context, body ProjectsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectsCreateResponse, error)
+
+	// ProjectsDeleteWithResponse Retire a project
+	//
+	// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, Vault path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /projects/{project_id} (the `ProjectsDelete` operationId).
+	ProjectsDeleteWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectsDeleteResponse, error)
+
+	// ProjectsGetWithResponse One project
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id} (the `ProjectsGet` operationId).
+	ProjectsGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectsGetResponse, error)
+
+	// ProjectsUpdateWithBodyWithResponse Change a project
+	//
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+	ProjectsUpdateWithBodyWithResponse(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProjectsUpdateResponse, error)
+
+	// ProjectsUpdateWithResponse Change a project
+	//
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+	ProjectsUpdateWithResponse(ctx context.Context, projectId string, body ProjectsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectsUpdateResponse, error)
+
+	// ProjectsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a project
+	//
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+	ProjectsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectsUpdateResponse, error)
+
+	// ProjectMembersListWithResponse A project's members
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/members (the `ProjectMembersList` operationId).
+	ProjectMembersListWithResponse(ctx context.Context, projectId string, params *ProjectMembersListParams, reqEditors ...RequestEditorFn) (*ProjectMembersListResponse, error)
+
+	// ProjectMembersDeleteWithResponse Remove a member
+	//
+	// Removes the membership. Not destroy-gated: it needs the write permission only. Allowed on a retired project.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /projects/{project_id}/members/{user_id} (the `ProjectMembersDelete` operationId).
+	ProjectMembersDeleteWithResponse(ctx context.Context, projectId string, userId string, reqEditors ...RequestEditorFn) (*ProjectMembersDeleteResponse, error)
+
+	// ProjectMembersGetWithResponse One project member
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/members/{user_id} (the `ProjectMembersGet` operationId).
+	ProjectMembersGetWithResponse(ctx context.Context, projectId string, userId string, reqEditors ...RequestEditorFn) (*ProjectMembersGetResponse, error)
+
+	// ProjectMembersPutWithBodyWithResponse Add a member or change their role
+	//
+	// 201 when the membership was created, 200 when an existing one was set. `gitlab_role` is recorded and NOT enforced: nothing is changed in GitLab.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
+	ProjectMembersPutWithBodyWithResponse(ctx context.Context, projectId string, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProjectMembersPutResponse, error)
+
+	// ProjectMembersPutWithResponse Add a member or change their role
+	//
+	// 201 when the membership was created, 200 when an existing one was set. `gitlab_role` is recorded and NOT enforced: nothing is changed in GitLab.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
+	ProjectMembersPutWithResponse(ctx context.Context, projectId string, userId string, body ProjectMembersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectMembersPutResponse, error)
+
+	// ProjectProvisioningGetWithResponse A project's provisioning state
+	//
+	// Read from the database only. `converged` is true when every stage is done and none is stale; `provisioned` additionally requires that no stage was simulated. On a platform whose `dispatch_mode` is `dryrun` nothing is ever executed and provisioning never completes; under `simulate` stages are marked done without running, so `converged` can be true while `provisioned` is false.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/provisioning (the `ProjectProvisioningGet` operationId).
+	ProjectProvisioningGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectProvisioningGetResponse, error)
+
+	// ProjectProvisioningStartWithResponse Start provisioning
+	//
+	// Starts the stage engine and answers 202 with an operation (`provision:<id>`) to poll at `GET /operations/{id}`. When stages are stale it re-applies exactly those (apply-pending); otherwise it applies every stage not yet done (apply-all). The operation is `awaiting_operator` when a stage needs a person in the portal, and never succeeds on a `dryrun` platform; on a `simulate` platform it succeeds with `simulated: true` and provisions nothing. Send an `Idempotency-Key`: a retry with the same key gets the same operation and never starts a second orchestration.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/provisioning (the `ProjectProvisioningStart` operationId).
+	ProjectProvisioningStartWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectProvisioningStartResponse, error)
+
+	// ProjectStagesListWithResponse A project's provisioning stages
+	//
+	// The stage grid of the portal's Plan page, read-only and from the database only.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/stages (the `ProjectStagesList` operationId).
+	ProjectStagesListWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectStagesListResponse, error)
+
 	// TenantsListWithResponse List tenants
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -2564,7 +8317,7 @@ type ClientWithResponsesInterface interface {
 
 	// TenantsDeleteWithResponse Delete an empty tenant
 	//
-	// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource. Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+	// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -2652,12 +8405,969 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
 	TenantMembershipsPutWithResponse(ctx context.Context, tenantId string, userId string, body TenantMembershipsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantMembershipsPutResponse, error)
 
+	// UsersListWithResponse List users
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /users (the `UsersList` operationId).
+	UsersListWithResponse(ctx context.Context, params *UsersListParams, reqEditors ...RequestEditorFn) (*UsersListResponse, error)
+
+	// UsersCreateWithBodyWithResponse Create a person
+	//
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. `Idempotency-Key` is honoured.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /users (the `UsersCreate` operationId).
+	UsersCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UsersCreateResponse, error)
+
+	// UsersCreateWithResponse Create a person
+	//
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. `Idempotency-Key` is honoured.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /users (the `UsersCreate` operationId).
+	UsersCreateWithResponse(ctx context.Context, body UsersCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*UsersCreateResponse, error)
+
+	// UsersDeleteWithResponse Deactivate a user
+	//
+	// Answers 200 with the deactivated user, so that `warnings` can say which downstream step did not complete. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a `warnings` entry (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal (app.ataila.eu) is not disabled; disable it there.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /users/{user_id} (the `UsersDelete` operationId).
+	UsersDeleteWithResponse(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*UsersDeleteResponse, error)
+
+	// UsersGetWithResponse One user
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /users/{user_id} (the `UsersGet` operationId).
+	UsersGetWithResponse(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*UsersGetResponse, error)
+
+	// UsersUpdateWithBodyWithResponse Change a user
+	//
+	// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+	UsersUpdateWithBodyWithResponse(ctx context.Context, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UsersUpdateResponse, error)
+
+	// UsersUpdateWithResponse Change a user
+	//
+	// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+	UsersUpdateWithResponse(ctx context.Context, userId string, body UsersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*UsersUpdateResponse, error)
+
+	// UsersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a user
+	//
+	// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+	UsersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, userId string, body UsersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*UsersUpdateResponse, error)
+
+	// UserRolesListWithResponse A user's role grants
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /users/{user_id}/roles (the `UserRolesList` operationId).
+	UserRolesListWithResponse(ctx context.Context, userId string, params *UserRolesListParams, reqEditors ...RequestEditorFn) (*UserRolesListResponse, error)
+
+	// UserRolesDeleteWithResponse Revoke a role
+	//
+	// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /users/{user_id}/roles/{role} (the `UserRolesDelete` operationId).
+	UserRolesDeleteWithResponse(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*UserRolesDeleteResponse, error)
+
+	// UserRolesGetWithResponse One role grant
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /users/{user_id}/roles/{role} (the `UserRolesGet` operationId).
+	UserRolesGetWithResponse(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*UserRolesGetResponse, error)
+
+	// UserRolesPutWithResponse Grant a role
+	//
+	// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /users/{user_id}/roles/{role} (the `UserRolesPut` operationId).
+	UserRolesPutWithResponse(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*UserRolesPutResponse, error)
+
 	// WhoamiGetWithResponse The calling principal
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /whoami (the `WhoamiGet` operationId).
 	WhoamiGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*WhoamiGetResponse, error)
+}
+
+type AiGatewayGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AiGateway
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiGatewayGetResponse) GetJSON200() *AiGateway {
+	return r.JSON200
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r AiGatewayGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r AiGatewayGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiGatewayKeysListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *GatewayKeyPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiGatewayKeysListResponse) GetJSON200() *GatewayKeyPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayKeysListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayKeysListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayKeysListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayKeysListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayKeysListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayKeysListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiGatewayKeysCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *GatewayKey
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r AiGatewayKeysCreateResponse) GetJSON201() *GatewayKey {
+	return r.JSON201
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r AiGatewayKeysCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r AiGatewayKeysCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AiGatewayKeysCreateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r AiGatewayKeysCreateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r AiGatewayKeysCreateResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r AiGatewayKeysCreateResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r AiGatewayKeysCreateResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r AiGatewayKeysCreateResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayKeysCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayKeysCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayKeysCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayKeysCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayKeysCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayKeysCreateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiGatewayKeysDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiGatewayKeysDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiGatewayKeysDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r AiGatewayKeysDeleteResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r AiGatewayKeysDeleteResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r AiGatewayKeysDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r AiGatewayKeysDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayKeysDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayKeysDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayKeysDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayKeysDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayKeysDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayKeysDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiGatewayKeysGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *GatewayKey
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiGatewayKeysGetResponse) GetJSON200() *GatewayKey {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiGatewayKeysGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiGatewayKeysGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r AiGatewayKeysGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r AiGatewayKeysGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayKeysGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayKeysGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayKeysGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayKeysGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayKeysGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayKeysGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiGatewayKeysUpdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *GatewayKey
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiGatewayKeysUpdateResponse) GetJSON200() *GatewayKey {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiGatewayKeysUpdateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiGatewayKeysUpdateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r AiGatewayKeysUpdateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r AiGatewayKeysUpdateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AiGatewayKeysUpdateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r AiGatewayKeysUpdateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r AiGatewayKeysUpdateResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r AiGatewayKeysUpdateResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r AiGatewayKeysUpdateResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r AiGatewayKeysUpdateResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayKeysUpdateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayKeysUpdateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayKeysUpdateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayKeysUpdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayKeysUpdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayKeysUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiGatewayKeysRotateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *GatewayKey
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiGatewayKeysRotateResponse) GetJSON200() *GatewayKey {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiGatewayKeysRotateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiGatewayKeysRotateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r AiGatewayKeysRotateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r AiGatewayKeysRotateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r AiGatewayKeysRotateResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r AiGatewayKeysRotateResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r AiGatewayKeysRotateResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r AiGatewayKeysRotateResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayKeysRotateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayKeysRotateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayKeysRotateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayKeysRotateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayKeysRotateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayKeysRotateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiGatewayTiersListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServingTierPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiGatewayTiersListResponse) GetJSON200() *ServingTierPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayTiersListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayTiersListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayTiersListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayTiersListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayTiersListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayTiersListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiGatewayTiersGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServingTier
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiGatewayTiersGetResponse) GetJSON200() *ServingTier {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiGatewayTiersGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiGatewayTiersGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayTiersGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayTiersGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayTiersGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayTiersGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayTiersGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayTiersGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AiGatewayTiersPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServingTier
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiGatewayTiersPutResponse) GetJSON200() *ServingTier {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AiGatewayTiersPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AiGatewayTiersPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AiGatewayTiersPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r AiGatewayTiersPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayTiersPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayTiersPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayTiersPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayTiersPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayTiersPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayTiersPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
 }
 
 type CustomersListResponse struct {
@@ -3144,6 +9854,994 @@ func (r OperationsGetResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r OperationsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PermissionsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PermissionPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PermissionsListResponse) GetJSON200() *PermissionPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r PermissionsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r PermissionsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r PermissionsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PermissionsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PermissionsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PermissionsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ProjectPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectsListResponse) GetJSON200() *ProjectPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectsCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *Project
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r ProjectsCreateResponse) GetJSON201() *Project {
+	return r.JSON201
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ProjectsCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ProjectsCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ProjectsCreateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ProjectsCreateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectsCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectsCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectsCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectsCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectsCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectsCreateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectsDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectsDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectsDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectsDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectsDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ProjectsDeleteResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ProjectsDeleteResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectsDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectsDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectsDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectsDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectsDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectsDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Project
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectsGetResponse) GetJSON200() *Project {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectsUpdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ProjectUpdated
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectsUpdateResponse) GetJSON200() *ProjectUpdated {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectsUpdateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectsUpdateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ProjectsUpdateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ProjectsUpdateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ProjectsUpdateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ProjectsUpdateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectsUpdateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectsUpdateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectsUpdateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectsUpdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectsUpdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectsUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectMembersListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ProjectMemberPage
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectMembersListResponse) GetJSON200() *ProjectMemberPage {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectMembersListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectMembersListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectMembersListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectMembersListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectMembersListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectMembersListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectMembersListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectMembersListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectMembersDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectMembersDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectMembersDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ProjectMembersDeleteResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ProjectMembersDeleteResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectMembersDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectMembersDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectMembersDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectMembersDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectMembersDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectMembersDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectMembersGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ProjectMember
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectMembersGetResponse) GetJSON200() *ProjectMember {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectMembersGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectMembersGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectMembersGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectMembersGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectMembersGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectMembersGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectMembersGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectMembersGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectMembersPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ProjectMember
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *ProjectMember
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectMembersPutResponse) GetJSON200() *ProjectMember {
+	return r.JSON200
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r ProjectMembersPutResponse) GetJSON201() *ProjectMember {
+	return r.JSON201
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectMembersPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectMembersPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ProjectMembersPutResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ProjectMembersPutResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ProjectMembersPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ProjectMembersPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectMembersPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectMembersPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectMembersPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectMembersPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectMembersPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectMembersPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectProvisioningGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Provisioning
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectProvisioningGetResponse) GetJSON200() *Provisioning {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectProvisioningGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectProvisioningGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectProvisioningGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectProvisioningGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectProvisioningGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectProvisioningGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectProvisioningGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectProvisioningGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectProvisioningStartResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *Operation
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r ProjectProvisioningStartResponse) GetJSON202() *Operation {
+	return r.JSON202
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectProvisioningStartResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectProvisioningStartResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ProjectProvisioningStartResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ProjectProvisioningStartResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectProvisioningStartResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectProvisioningStartResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectProvisioningStartResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectProvisioningStartResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectProvisioningStartResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectProvisioningStartResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ProjectStagesListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *StageGrid
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectStagesListResponse) GetJSON200() *StageGrid {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectStagesListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectStagesListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectStagesListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectStagesListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectStagesListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectStagesListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectStagesListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectStagesListResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -3806,6 +11504,781 @@ func (r TenantMembershipsPutResponse) ContentType() string {
 	return ""
 }
 
+type UsersListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *UserPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UsersListResponse) GetJSON200() *UserPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UsersListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UsersListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UsersListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UsersListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UsersListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UsersListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UsersCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *User
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r UsersCreateResponse) GetJSON201() *User {
+	return r.JSON201
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r UsersCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r UsersCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r UsersCreateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r UsersCreateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UsersCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UsersCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UsersCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UsersCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UsersCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UsersCreateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UsersDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *User
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UsersDeleteResponse) GetJSON200() *User {
+	return r.JSON200
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r UsersDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r UsersDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UsersDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UsersDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r UsersDeleteResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r UsersDeleteResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UsersDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UsersDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UsersDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UsersDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UsersDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UsersDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UsersGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *User
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UsersGetResponse) GetJSON200() *User {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UsersGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UsersGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UsersGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UsersGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UsersGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UsersGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UsersGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UsersGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UsersUpdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *User
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UsersUpdateResponse) GetJSON200() *User {
+	return r.JSON200
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r UsersUpdateResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r UsersUpdateResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UsersUpdateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UsersUpdateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r UsersUpdateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r UsersUpdateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r UsersUpdateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r UsersUpdateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UsersUpdateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UsersUpdateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UsersUpdateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UsersUpdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UsersUpdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UsersUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UserRolesListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RoleGrantPage
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UserRolesListResponse) GetJSON200() *RoleGrantPage {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UserRolesListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UserRolesListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UserRolesListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UserRolesListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UserRolesListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UserRolesListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UserRolesListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UserRolesListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UserRolesDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r UserRolesDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r UserRolesDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UserRolesDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UserRolesDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r UserRolesDeleteResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r UserRolesDeleteResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UserRolesDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UserRolesDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UserRolesDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UserRolesDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UserRolesDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UserRolesDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UserRolesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RoleGrant
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UserRolesGetResponse) GetJSON200() *RoleGrant {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UserRolesGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UserRolesGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UserRolesGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UserRolesGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UserRolesGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UserRolesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UserRolesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UserRolesGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type UserRolesPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *RoleGrant
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *RoleGrant
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Problem
+	// ApplicationproblemJSON400 the response for an HTTP 400 `application/problem+json` response
+	ApplicationproblemJSON400 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UserRolesPutResponse) GetJSON200() *RoleGrant {
+	return r.JSON200
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r UserRolesPutResponse) GetJSON201() *RoleGrant {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r UserRolesPutResponse) GetJSON400() *Problem {
+	return r.JSON400
+}
+
+// GetApplicationproblemJSON400 returns the response for an HTTP 400 `application/problem+json` response
+func (r UserRolesPutResponse) GetApplicationproblemJSON400() *Problem {
+	return r.ApplicationproblemJSON400
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r UserRolesPutResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r UserRolesPutResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UserRolesPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UserRolesPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r UserRolesPutResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r UserRolesPutResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r UserRolesPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r UserRolesPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UserRolesPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UserRolesPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UserRolesPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UserRolesPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UserRolesPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UserRolesPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type WhoamiGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -3859,6 +12332,235 @@ func (r WhoamiGetResponse) ContentType() string {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
 	return ""
+}
+
+// AiGatewayGetWithResponse The AI gateway
+//
+// The OpenAI-compatible base URL and the serving-tier names. The base URL
+// comes from the gateway credential the keys are minted against, so it always
+// names the gateway that issued them.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/gateway (the `AiGatewayGet` operationId).
+func (c *ClientWithResponses) AiGatewayGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AiGatewayGetResponse, error) {
+	rsp, err := c.AiGatewayGet(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayGetResponse(rsp)
+}
+
+// AiGatewayKeysListWithResponse List virtual keys
+//
+// Registry data only (`live` is `not_read`): the list does not call the gateway and works when it is down. Read one key for its live allowlist, limits and spend.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/gateway/keys (the `AiGatewayKeysList` operationId).
+func (c *ClientWithResponses) AiGatewayKeysListWithResponse(ctx context.Context, params *AiGatewayKeysListParams, reqEditors ...RequestEditorFn) (*AiGatewayKeysListResponse, error) {
+	rsp, err := c.AiGatewayKeysList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayKeysListResponse(rsp)
+}
+
+// AiGatewayKeysCreateWithBodyWithResponse Create a virtual key
+//
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /ai/gateway/keys (the `AiGatewayKeysCreate` operationId).
+func (c *ClientWithResponses) AiGatewayKeysCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiGatewayKeysCreateResponse, error) {
+	rsp, err := c.AiGatewayKeysCreateWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayKeysCreateResponse(rsp)
+}
+
+// AiGatewayKeysCreateWithResponse Create a virtual key
+//
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /ai/gateway/keys (the `AiGatewayKeysCreate` operationId).
+func (c *ClientWithResponses) AiGatewayKeysCreateWithResponse(ctx context.Context, body AiGatewayKeysCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayKeysCreateResponse, error) {
+	rsp, err := c.AiGatewayKeysCreate(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayKeysCreateResponse(rsp)
+}
+
+// AiGatewayKeysDeleteWithResponse Delete a virtual key
+//
+// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the Vault leaf and pointer the portal wrote for it (an adopted key's Vault leaf belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /ai/gateway/keys/{key_id} (the `AiGatewayKeysDelete` operationId).
+func (c *ClientWithResponses) AiGatewayKeysDeleteWithResponse(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*AiGatewayKeysDeleteResponse, error) {
+	rsp, err := c.AiGatewayKeysDelete(ctx, keyId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayKeysDeleteResponse(rsp)
+}
+
+// AiGatewayKeysGetWithResponse One virtual key
+//
+// The registry row with the key's LIVE allowlist, limits and spend from the gateway. `live` is `missing` when the gateway no longer has the key. Never the key's value.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/gateway/keys/{key_id} (the `AiGatewayKeysGet` operationId).
+func (c *ClientWithResponses) AiGatewayKeysGetWithResponse(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*AiGatewayKeysGetResponse, error) {
+	rsp, err := c.AiGatewayKeysGet(ctx, keyId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayKeysGetResponse(rsp)
+}
+
+// AiGatewayKeysUpdateWithBodyWithResponse Change a virtual key
+//
+// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+func (c *ClientWithResponses) AiGatewayKeysUpdateWithBodyWithResponse(ctx context.Context, keyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiGatewayKeysUpdateResponse, error) {
+	rsp, err := c.AiGatewayKeysUpdateWithBody(ctx, keyId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayKeysUpdateResponse(rsp)
+}
+
+// AiGatewayKeysUpdateWithResponse Change a virtual key
+//
+// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+func (c *ClientWithResponses) AiGatewayKeysUpdateWithResponse(ctx context.Context, keyId string, body AiGatewayKeysUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayKeysUpdateResponse, error) {
+	rsp, err := c.AiGatewayKeysUpdate(ctx, keyId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayKeysUpdateResponse(rsp)
+}
+
+// AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a virtual key
+//
+// Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /ai/gateway/keys/{key_id} (the `AiGatewayKeysUpdate` operationId).
+func (c *ClientWithResponses) AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, keyId string, body AiGatewayKeysUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayKeysUpdateResponse, error) {
+	rsp, err := c.AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBody(ctx, keyId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayKeysUpdateResponse(rsp)
+}
+
+// AiGatewayKeysRotateWithBodyWithResponse Rotate a virtual key
+//
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /ai/gateway/keys/{key_id}/rotations (the `AiGatewayKeysRotate` operationId).
+func (c *ClientWithResponses) AiGatewayKeysRotateWithBodyWithResponse(ctx context.Context, keyId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiGatewayKeysRotateResponse, error) {
+	rsp, err := c.AiGatewayKeysRotateWithBody(ctx, keyId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayKeysRotateResponse(rsp)
+}
+
+// AiGatewayKeysRotateWithResponse Rotate a virtual key
+//
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /ai/gateway/keys/{key_id}/rotations (the `AiGatewayKeysRotate` operationId).
+func (c *ClientWithResponses) AiGatewayKeysRotateWithResponse(ctx context.Context, keyId string, body AiGatewayKeysRotateJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayKeysRotateResponse, error) {
+	rsp, err := c.AiGatewayKeysRotate(ctx, keyId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayKeysRotateResponse(rsp)
+}
+
+// AiGatewayTiersListWithResponse List serving tiers
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/gateway/tiers (the `AiGatewayTiersList` operationId).
+func (c *ClientWithResponses) AiGatewayTiersListWithResponse(ctx context.Context, params *AiGatewayTiersListParams, reqEditors ...RequestEditorFn) (*AiGatewayTiersListResponse, error) {
+	rsp, err := c.AiGatewayTiersList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayTiersListResponse(rsp)
+}
+
+// AiGatewayTiersGetWithResponse One serving tier
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/gateway/tiers/{key} (the `AiGatewayTiersGet` operationId).
+func (c *ClientWithResponses) AiGatewayTiersGetWithResponse(ctx context.Context, key string, reqEditors ...RequestEditorFn) (*AiGatewayTiersGetResponse, error) {
+	rsp, err := c.AiGatewayTiersGet(ctx, key, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayTiersGetResponse(rsp)
+}
+
+// AiGatewayTiersPutWithBodyWithResponse Pin or enable a serving tier
+//
+// Sets `pinned_model` and/or `enabled` on an existing tier; an omitted member is left unchanged, `pinned_model: null` returns the tier to auto-assign. The gateway is then reconciled at once (a `reconcile_not_applied` warning says when it could not be reached; the periodic reconcile applies the change later). A pin changes what EVERY client of the tier gets. Destroying a tier in Terraform only forgets it: there is no delete.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
+func (c *ClientWithResponses) AiGatewayTiersPutWithBodyWithResponse(ctx context.Context, key string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiGatewayTiersPutResponse, error) {
+	rsp, err := c.AiGatewayTiersPutWithBody(ctx, key, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayTiersPutResponse(rsp)
+}
+
+// AiGatewayTiersPutWithResponse Pin or enable a serving tier
+//
+// Sets `pinned_model` and/or `enabled` on an existing tier; an omitted member is left unchanged, `pinned_model: null` returns the tier to auto-assign. The gateway is then reconciled at once (a `reconcile_not_applied` warning says when it could not be reached; the periodic reconcile applies the change later). A pin changes what EVERY client of the tier gets. Destroying a tier in Terraform only forgets it: there is no delete.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
+func (c *ClientWithResponses) AiGatewayTiersPutWithResponse(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayTiersPutResponse, error) {
+	rsp, err := c.AiGatewayTiersPut(ctx, key, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayTiersPutResponse(rsp)
 }
 
 // CustomersListWithResponse List customers
@@ -4018,6 +12720,261 @@ func (c *ClientWithResponses) OperationsGetWithResponse(ctx context.Context, ope
 	return ParseOperationsGetResponse(rsp)
 }
 
+// PermissionsListWithResponse The permission catalogue
+//
+// Every fine-grained permission key the portal honours, `<feature>-<level>-<scope>`. `grantable` says whether it may be granted to a person; `mintable` whether an API token may carry it (v1 tokens carry `-global` keys only, never `admin`, `founder` or `ssh-console`). The roles catalogue also holds role names that are not permission keys (`user`, `admin`, …); those can be granted too.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /permissions (the `PermissionsList` operationId).
+func (c *ClientWithResponses) PermissionsListWithResponse(ctx context.Context, params *PermissionsListParams, reqEditors ...RequestEditorFn) (*PermissionsListResponse, error) {
+	rsp, err := c.PermissionsList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePermissionsListResponse(rsp)
+}
+
+// ProjectsListWithResponse List projects
+//
+// Slim items: no `outputs`. Read one project for those.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects (the `ProjectsList` operationId).
+func (c *ClientWithResponses) ProjectsListWithResponse(ctx context.Context, params *ProjectsListParams, reqEditors ...RequestEditorFn) (*ProjectsListResponse, error) {
+	rsp, err := c.ProjectsList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectsListResponse(rsp)
+}
+
+// ProjectsCreateWithBodyWithResponse Register a project
+//
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects (the `ProjectsCreate` operationId).
+func (c *ClientWithResponses) ProjectsCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProjectsCreateResponse, error) {
+	rsp, err := c.ProjectsCreateWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectsCreateResponse(rsp)
+}
+
+// ProjectsCreateWithResponse Register a project
+//
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects (the `ProjectsCreate` operationId).
+func (c *ClientWithResponses) ProjectsCreateWithResponse(ctx context.Context, body ProjectsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectsCreateResponse, error) {
+	rsp, err := c.ProjectsCreate(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectsCreateResponse(rsp)
+}
+
+// ProjectsDeleteWithResponse Retire a project
+//
+// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, Vault path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /projects/{project_id} (the `ProjectsDelete` operationId).
+func (c *ClientWithResponses) ProjectsDeleteWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectsDeleteResponse, error) {
+	rsp, err := c.ProjectsDelete(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectsDeleteResponse(rsp)
+}
+
+// ProjectsGetWithResponse One project
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id} (the `ProjectsGet` operationId).
+func (c *ClientWithResponses) ProjectsGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectsGetResponse, error) {
+	rsp, err := c.ProjectsGet(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectsGetResponse(rsp)
+}
+
+// ProjectsUpdateWithBodyWithResponse Change a project
+//
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+func (c *ClientWithResponses) ProjectsUpdateWithBodyWithResponse(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProjectsUpdateResponse, error) {
+	rsp, err := c.ProjectsUpdateWithBody(ctx, projectId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectsUpdateResponse(rsp)
+}
+
+// ProjectsUpdateWithResponse Change a project
+//
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+func (c *ClientWithResponses) ProjectsUpdateWithResponse(ctx context.Context, projectId string, body ProjectsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectsUpdateResponse, error) {
+	rsp, err := c.ProjectsUpdate(ctx, projectId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectsUpdateResponse(rsp)
+}
+
+// ProjectsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a project
+//
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
+func (c *ClientWithResponses) ProjectsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectsUpdateResponse, error) {
+	rsp, err := c.ProjectsUpdateWithApplicationMergePatchPlusJSONBody(ctx, projectId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectsUpdateResponse(rsp)
+}
+
+// ProjectMembersListWithResponse A project's members
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/members (the `ProjectMembersList` operationId).
+func (c *ClientWithResponses) ProjectMembersListWithResponse(ctx context.Context, projectId string, params *ProjectMembersListParams, reqEditors ...RequestEditorFn) (*ProjectMembersListResponse, error) {
+	rsp, err := c.ProjectMembersList(ctx, projectId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectMembersListResponse(rsp)
+}
+
+// ProjectMembersDeleteWithResponse Remove a member
+//
+// Removes the membership. Not destroy-gated: it needs the write permission only. Allowed on a retired project.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /projects/{project_id}/members/{user_id} (the `ProjectMembersDelete` operationId).
+func (c *ClientWithResponses) ProjectMembersDeleteWithResponse(ctx context.Context, projectId string, userId string, reqEditors ...RequestEditorFn) (*ProjectMembersDeleteResponse, error) {
+	rsp, err := c.ProjectMembersDelete(ctx, projectId, userId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectMembersDeleteResponse(rsp)
+}
+
+// ProjectMembersGetWithResponse One project member
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/members/{user_id} (the `ProjectMembersGet` operationId).
+func (c *ClientWithResponses) ProjectMembersGetWithResponse(ctx context.Context, projectId string, userId string, reqEditors ...RequestEditorFn) (*ProjectMembersGetResponse, error) {
+	rsp, err := c.ProjectMembersGet(ctx, projectId, userId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectMembersGetResponse(rsp)
+}
+
+// ProjectMembersPutWithBodyWithResponse Add a member or change their role
+//
+// 201 when the membership was created, 200 when an existing one was set. `gitlab_role` is recorded and NOT enforced: nothing is changed in GitLab.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
+func (c *ClientWithResponses) ProjectMembersPutWithBodyWithResponse(ctx context.Context, projectId string, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProjectMembersPutResponse, error) {
+	rsp, err := c.ProjectMembersPutWithBody(ctx, projectId, userId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectMembersPutResponse(rsp)
+}
+
+// ProjectMembersPutWithResponse Add a member or change their role
+//
+// 201 when the membership was created, 200 when an existing one was set. `gitlab_role` is recorded and NOT enforced: nothing is changed in GitLab.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
+func (c *ClientWithResponses) ProjectMembersPutWithResponse(ctx context.Context, projectId string, userId string, body ProjectMembersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectMembersPutResponse, error) {
+	rsp, err := c.ProjectMembersPut(ctx, projectId, userId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectMembersPutResponse(rsp)
+}
+
+// ProjectProvisioningGetWithResponse A project's provisioning state
+//
+// Read from the database only. `converged` is true when every stage is done and none is stale; `provisioned` additionally requires that no stage was simulated. On a platform whose `dispatch_mode` is `dryrun` nothing is ever executed and provisioning never completes; under `simulate` stages are marked done without running, so `converged` can be true while `provisioned` is false.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/provisioning (the `ProjectProvisioningGet` operationId).
+func (c *ClientWithResponses) ProjectProvisioningGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectProvisioningGetResponse, error) {
+	rsp, err := c.ProjectProvisioningGet(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectProvisioningGetResponse(rsp)
+}
+
+// ProjectProvisioningStartWithResponse Start provisioning
+//
+// Starts the stage engine and answers 202 with an operation (`provision:<id>`) to poll at `GET /operations/{id}`. When stages are stale it re-applies exactly those (apply-pending); otherwise it applies every stage not yet done (apply-all). The operation is `awaiting_operator` when a stage needs a person in the portal, and never succeeds on a `dryrun` platform; on a `simulate` platform it succeeds with `simulated: true` and provisions nothing. Send an `Idempotency-Key`: a retry with the same key gets the same operation and never starts a second orchestration.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/provisioning (the `ProjectProvisioningStart` operationId).
+func (c *ClientWithResponses) ProjectProvisioningStartWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectProvisioningStartResponse, error) {
+	rsp, err := c.ProjectProvisioningStart(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectProvisioningStartResponse(rsp)
+}
+
+// ProjectStagesListWithResponse A project's provisioning stages
+//
+// The stage grid of the portal's Plan page, read-only and from the database only.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/stages (the `ProjectStagesList` operationId).
+func (c *ClientWithResponses) ProjectStagesListWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectStagesListResponse, error) {
+	rsp, err := c.ProjectStagesList(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectStagesListResponse(rsp)
+}
+
 // TenantsListWithResponse List tenants
 //
 // Returns a wrapper object for the known response body format(s).
@@ -4059,7 +13016,7 @@ func (c *ClientWithResponses) TenantsCreateWithResponse(ctx context.Context, bod
 
 // TenantsDeleteWithResponse Delete an empty tenant
 //
-// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource. Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -4207,6 +13164,184 @@ func (c *ClientWithResponses) TenantMembershipsPutWithResponse(ctx context.Conte
 	return ParseTenantMembershipsPutResponse(rsp)
 }
 
+// UsersListWithResponse List users
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /users (the `UsersList` operationId).
+func (c *ClientWithResponses) UsersListWithResponse(ctx context.Context, params *UsersListParams, reqEditors ...RequestEditorFn) (*UsersListResponse, error) {
+	rsp, err := c.UsersList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsersListResponse(rsp)
+}
+
+// UsersCreateWithBodyWithResponse Create a person
+//
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. `Idempotency-Key` is honoured.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /users (the `UsersCreate` operationId).
+func (c *ClientWithResponses) UsersCreateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UsersCreateResponse, error) {
+	rsp, err := c.UsersCreateWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsersCreateResponse(rsp)
+}
+
+// UsersCreateWithResponse Create a person
+//
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. `Idempotency-Key` is honoured.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /users (the `UsersCreate` operationId).
+func (c *ClientWithResponses) UsersCreateWithResponse(ctx context.Context, body UsersCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*UsersCreateResponse, error) {
+	rsp, err := c.UsersCreate(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsersCreateResponse(rsp)
+}
+
+// UsersDeleteWithResponse Deactivate a user
+//
+// Answers 200 with the deactivated user, so that `warnings` can say which downstream step did not complete. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a `warnings` entry (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal (app.ataila.eu) is not disabled; disable it there.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /users/{user_id} (the `UsersDelete` operationId).
+func (c *ClientWithResponses) UsersDeleteWithResponse(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*UsersDeleteResponse, error) {
+	rsp, err := c.UsersDelete(ctx, userId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsersDeleteResponse(rsp)
+}
+
+// UsersGetWithResponse One user
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /users/{user_id} (the `UsersGet` operationId).
+func (c *ClientWithResponses) UsersGetWithResponse(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*UsersGetResponse, error) {
+	rsp, err := c.UsersGet(ctx, userId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsersGetResponse(rsp)
+}
+
+// UsersUpdateWithBodyWithResponse Change a user
+//
+// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+func (c *ClientWithResponses) UsersUpdateWithBodyWithResponse(ctx context.Context, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UsersUpdateResponse, error) {
+	rsp, err := c.UsersUpdateWithBody(ctx, userId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsersUpdateResponse(rsp)
+}
+
+// UsersUpdateWithResponse Change a user
+//
+// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+func (c *ClientWithResponses) UsersUpdateWithResponse(ctx context.Context, userId string, body UsersUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*UsersUpdateResponse, error) {
+	rsp, err := c.UsersUpdate(ctx, userId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsersUpdateResponse(rsp)
+}
+
+// UsersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a user
+//
+// Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /users/{user_id} (the `UsersUpdate` operationId).
+func (c *ClientWithResponses) UsersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, userId string, body UsersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*UsersUpdateResponse, error) {
+	rsp, err := c.UsersUpdateWithApplicationMergePatchPlusJSONBody(ctx, userId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUsersUpdateResponse(rsp)
+}
+
+// UserRolesListWithResponse A user's role grants
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /users/{user_id}/roles (the `UserRolesList` operationId).
+func (c *ClientWithResponses) UserRolesListWithResponse(ctx context.Context, userId string, params *UserRolesListParams, reqEditors ...RequestEditorFn) (*UserRolesListResponse, error) {
+	rsp, err := c.UserRolesList(ctx, userId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserRolesListResponse(rsp)
+}
+
+// UserRolesDeleteWithResponse Revoke a role
+//
+// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /users/{user_id}/roles/{role} (the `UserRolesDelete` operationId).
+func (c *ClientWithResponses) UserRolesDeleteWithResponse(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*UserRolesDeleteResponse, error) {
+	rsp, err := c.UserRolesDelete(ctx, userId, role, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserRolesDeleteResponse(rsp)
+}
+
+// UserRolesGetWithResponse One role grant
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /users/{user_id}/roles/{role} (the `UserRolesGet` operationId).
+func (c *ClientWithResponses) UserRolesGetWithResponse(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*UserRolesGetResponse, error) {
+	rsp, err := c.UserRolesGet(ctx, userId, role, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserRolesGetResponse(rsp)
+}
+
+// UserRolesPutWithResponse Grant a role
+//
+// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /users/{user_id}/roles/{role} (the `UserRolesPut` operationId).
+func (c *ClientWithResponses) UserRolesPutWithResponse(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*UserRolesPutResponse, error) {
+	rsp, err := c.UserRolesPut(ctx, userId, role, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserRolesPutResponse(rsp)
+}
+
 // WhoamiGetWithResponse The calling principal
 //
 // Returns a wrapper object for the known response body format(s).
@@ -4218,6 +13353,710 @@ func (c *ClientWithResponses) WhoamiGetWithResponse(ctx context.Context, reqEdit
 		return nil, err
 	}
 	return ParseWhoamiGetResponse(rsp)
+}
+
+// ParseAiGatewayGetResponse parses an HTTP response from a AiGatewayGetWithResponse call
+func ParseAiGatewayGetResponse(rsp *http.Response) (*AiGatewayGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AiGateway
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiGatewayKeysListResponse parses an HTTP response from a AiGatewayKeysListWithResponse call
+func ParseAiGatewayKeysListResponse(rsp *http.Response) (*AiGatewayKeysListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayKeysListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest GatewayKeyPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiGatewayKeysCreateResponse parses an HTTP response from a AiGatewayKeysCreateWithResponse call
+func ParseAiGatewayKeysCreateResponse(rsp *http.Response) (*AiGatewayKeysCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayKeysCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest GatewayKey
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiGatewayKeysDeleteResponse parses an HTTP response from a AiGatewayKeysDeleteWithResponse call
+func ParseAiGatewayKeysDeleteResponse(rsp *http.Response) (*AiGatewayKeysDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayKeysDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiGatewayKeysGetResponse parses an HTTP response from a AiGatewayKeysGetWithResponse call
+func ParseAiGatewayKeysGetResponse(rsp *http.Response) (*AiGatewayKeysGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayKeysGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest GatewayKey
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiGatewayKeysUpdateResponse parses an HTTP response from a AiGatewayKeysUpdateWithResponse call
+func ParseAiGatewayKeysUpdateResponse(rsp *http.Response) (*AiGatewayKeysUpdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayKeysUpdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest GatewayKey
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiGatewayKeysRotateResponse parses an HTTP response from a AiGatewayKeysRotateWithResponse call
+func ParseAiGatewayKeysRotateResponse(rsp *http.Response) (*AiGatewayKeysRotateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayKeysRotateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest GatewayKey
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiGatewayTiersListResponse parses an HTTP response from a AiGatewayTiersListWithResponse call
+func ParseAiGatewayTiersListResponse(rsp *http.Response) (*AiGatewayTiersListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayTiersListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServingTierPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiGatewayTiersGetResponse parses an HTTP response from a AiGatewayTiersGetWithResponse call
+func ParseAiGatewayTiersGetResponse(rsp *http.Response) (*AiGatewayTiersGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayTiersGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServingTier
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAiGatewayTiersPutResponse parses an HTTP response from a AiGatewayTiersPutWithResponse call
+func ParseAiGatewayTiersPutResponse(rsp *http.Response) (*AiGatewayTiersPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayTiersPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServingTier
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParseCustomersListResponse parses an HTTP response from a CustomersListWithResponse call
@@ -4588,6 +14427,805 @@ func ParseOperationsGetResponse(rsp *http.Response) (*OperationsGetResponse, err
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePermissionsListResponse parses an HTTP response from a PermissionsListWithResponse call
+func ParsePermissionsListResponse(rsp *http.Response) (*PermissionsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PermissionsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PermissionPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectsListResponse parses an HTTP response from a ProjectsListWithResponse call
+func ParseProjectsListResponse(rsp *http.Response) (*ProjectsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProjectPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectsCreateResponse parses an HTTP response from a ProjectsCreateWithResponse call
+func ParseProjectsCreateResponse(rsp *http.Response) (*ProjectsCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectsCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest Project
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectsDeleteResponse parses an HTTP response from a ProjectsDeleteWithResponse call
+func ParseProjectsDeleteResponse(rsp *http.Response) (*ProjectsDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectsDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectsGetResponse parses an HTTP response from a ProjectsGetWithResponse call
+func ParseProjectsGetResponse(rsp *http.Response) (*ProjectsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Project
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectsUpdateResponse parses an HTTP response from a ProjectsUpdateWithResponse call
+func ParseProjectsUpdateResponse(rsp *http.Response) (*ProjectsUpdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectsUpdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProjectUpdated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectMembersListResponse parses an HTTP response from a ProjectMembersListWithResponse call
+func ParseProjectMembersListResponse(rsp *http.Response) (*ProjectMembersListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectMembersListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProjectMemberPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectMembersDeleteResponse parses an HTTP response from a ProjectMembersDeleteWithResponse call
+func ParseProjectMembersDeleteResponse(rsp *http.Response) (*ProjectMembersDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectMembersDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectMembersGetResponse parses an HTTP response from a ProjectMembersGetWithResponse call
+func ParseProjectMembersGetResponse(rsp *http.Response) (*ProjectMembersGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectMembersGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProjectMember
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectMembersPutResponse parses an HTTP response from a ProjectMembersPutWithResponse call
+func ParseProjectMembersPutResponse(rsp *http.Response) (*ProjectMembersPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectMembersPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProjectMember
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest ProjectMember
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectProvisioningGetResponse parses an HTTP response from a ProjectProvisioningGetWithResponse call
+func ParseProjectProvisioningGetResponse(rsp *http.Response) (*ProjectProvisioningGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectProvisioningGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Provisioning
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectProvisioningStartResponse parses an HTTP response from a ProjectProvisioningStartWithResponse call
+func ParseProjectProvisioningStartResponse(rsp *http.Response) (*ProjectProvisioningStartResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectProvisioningStartResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest Operation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseProjectStagesListResponse parses an HTTP response from a ProjectStagesListWithResponse call
+func ParseProjectStagesListResponse(rsp *http.Response) (*ProjectStagesListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectStagesListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest StageGrid
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
 
 	case rsp.Header.Get("Content-Type") == "application/json" && true:
 		var dest Problem
@@ -5115,6 +15753,649 @@ func ParseTenantMembershipsPutResponse(rsp *http.Response) (*TenantMembershipsPu
 			return nil, err
 		}
 		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUsersListResponse parses an HTTP response from a UsersListWithResponse call
+func ParseUsersListResponse(rsp *http.Response) (*UsersListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UsersListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest UserPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUsersCreateResponse parses an HTTP response from a UsersCreateWithResponse call
+func ParseUsersCreateResponse(rsp *http.Response) (*UsersCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UsersCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest User
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUsersDeleteResponse parses an HTTP response from a UsersDeleteWithResponse call
+func ParseUsersDeleteResponse(rsp *http.Response) (*UsersDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UsersDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest User
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUsersGetResponse parses an HTTP response from a UsersGetWithResponse call
+func ParseUsersGetResponse(rsp *http.Response) (*UsersGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UsersGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest User
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUsersUpdateResponse parses an HTTP response from a UsersUpdateWithResponse call
+func ParseUsersUpdateResponse(rsp *http.Response) (*UsersUpdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UsersUpdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest User
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUserRolesListResponse parses an HTTP response from a UserRolesListWithResponse call
+func ParseUserRolesListResponse(rsp *http.Response) (*UserRolesListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UserRolesListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RoleGrantPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUserRolesDeleteResponse parses an HTTP response from a UserRolesDeleteWithResponse call
+func ParseUserRolesDeleteResponse(rsp *http.Response) (*UserRolesDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UserRolesDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUserRolesGetResponse parses an HTTP response from a UserRolesGetWithResponse call
+func ParseUserRolesGetResponse(rsp *http.Response) (*UserRolesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UserRolesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RoleGrant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUserRolesPutResponse parses an HTTP response from a UserRolesPutWithResponse call
+func ParseUserRolesPutResponse(rsp *http.Response) (*UserRolesPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UserRolesPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RoleGrant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest RoleGrant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
 
 	case rsp.Header.Get("Content-Type") == "application/json" && true:
 		var dest Problem
