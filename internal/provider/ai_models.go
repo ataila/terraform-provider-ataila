@@ -270,6 +270,14 @@ func (r *aiModelResource) ModifyPlan(ctx context.Context, req resource.ModifyPla
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	// Benchmarks the platform stores with other number spellings ("70.10"
+	// as 70.1) are no change.
+	if pb, ok := plan["benchmarks"].(types.Map); ok {
+		if sb, ok := state["benchmarks"].(types.Map); ok && !pb.Equal(sb) && sameBenchmarks(ctx, pb, sb) {
+			resp.Diagnostics.Append(resp.Plan.SetAttribute(ctx, path.Root("benchmarks"), sb)...)
+			plan["benchmarks"] = sb
+		}
+	}
 	if !plan["repo"].Equal(state["repo"]) {
 		return
 	}

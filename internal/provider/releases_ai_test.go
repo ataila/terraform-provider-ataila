@@ -358,6 +358,23 @@ func TestAccAIModel_Lifecycle(t *testing.T) {
 	})
 }
 
+// Benchmarks written with another number spelling than the platform's are
+// no change (the case after an import).
+func TestAccAIModel_BenchmarkSpelling(t *testing.T) {
+	newMock(t)
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: protoV6,
+		Steps: []resource.TestStep{
+			{Config: modelHCL("example-lab/bench-model", `benchmarks = { mmlu = "71.5" }`)},
+			{Config: modelHCL("example-lab/bench-model", `benchmarks = { mmlu = "71.50" }`), PlanOnly: true},
+			{
+				Config: modelHCL("example-lab/bench-model", `benchmarks = { mmlu = "72" }`),
+				Check:  resource.TestCheckResourceAttr(modelAddr, "benchmarks.mmlu", "72"),
+			},
+		},
+	})
+}
+
 // The platform keeps a row that records weights; destroy reports the remedy
 // and does not retry.
 func TestAccAIModel_DeleteRefused(t *testing.T) {
