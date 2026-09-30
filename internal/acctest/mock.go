@@ -89,6 +89,8 @@ type MockAPI struct {
 	users      *usersState
 	gateway    *gatewayState
 	projects   *projectsState
+	licence    *licenceState
+	brand      *brandState
 }
 
 type storedReply struct {
@@ -134,6 +136,8 @@ func NewMockAPI(t testing.TB) *MockAPI {
 		tenancy:    newTenancyState(),
 		gateway:    newGatewayState(),
 		projects:   newProjectsState(),
+		licence:    newLicenceState(),
+		brand:      newBrandState(),
 	}
 	principal, _ := m.whoami["principal"].(map[string]any)
 	m.users = newUsersState(principal, m.whoami["scopes"].([]string))
@@ -182,7 +186,8 @@ func DefaultWhoami() map[string]any {
 }
 
 func defaultScopes() []string {
-	return []string{"ai-gateway-admin-global", "ai-gateway-read-global", "projects-admin-global",
+	return []string{"ai-gateway-admin-global", "ai-gateway-read-global", "brand-center-admin-global",
+		"brand-center-read-global", "licence-admin-global", "licence-read-global", "projects-admin-global",
 		"projects-read-global", "tenancy-admin-global", "tenancy-read-global", "users-admin-global",
 		"users-read-global"}
 }
@@ -456,6 +461,10 @@ func (m *MockAPI) route(c *call) reply {
 		return m.routeGateway(c)
 	case c.path == "/projects" || strings.HasPrefix(c.path, "/projects/"):
 		return m.routeProjects(c)
+	case c.path == "/licence" || strings.HasPrefix(c.path, "/licence/"):
+		return m.routeLicence(c)
+	case c.path == "/brand" || strings.HasPrefix(c.path, "/brand/"):
+		return m.routeBrand(c)
 	}
 	return c.problem(http.StatusNotFound, "not_found", "", nil)
 }

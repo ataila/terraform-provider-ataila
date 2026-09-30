@@ -226,6 +226,10 @@ func (p *ataProvider) DataSources(_ context.Context) []func() datasource.DataSou
 		NewProjectDataSource,
 		NewProjectsDataSource,
 		NewProjectStagesDataSource,
+		NewLicenceDataSource,
+		NewLicenceSocketFactsDataSource,
+		NewBrandDataSource,
+		NewBrandAssetDataSource,
 	}
 }
 
@@ -241,6 +245,9 @@ func (p *ataProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewProjectResource,
 		NewProjectProvisioningResource,
 		NewProjectMemberResource,
+		NewLicenceBundleResource,
+		NewBrandResource,
+		NewBrandAssetResource,
 	}
 }
 

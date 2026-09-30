@@ -121,6 +121,9 @@ place, so switch once, not back and forth in parallel runs.
 | [`ataila_project`](docs/resources/project.md) | A project record and its settings; provisions nothing | Retires; gated |
 | [`ataila_project_provisioning`](docs/resources/project_provisioning.md) | Runs a project's provisioning and waits until it is converged | Forgets only |
 | [`ataila_project_member`](docs/resources/project_member.md) | A user's role in a project | Removes the membership |
+| [`ataila_licence_bundle`](docs/resources/licence_bundle.md) | The licence bundle installed on the platform (singleton) | Forgets only |
+| [`ataila_brand`](docs/resources/brand.md) | The platform's brand: name, colour, title, logo (singleton) | Forgets only |
+| [`ataila_brand_asset`](docs/resources/brand_asset.md) | A logo or favicon, content-addressed; readable without signing in | Forgets only |
 
 **Destroy is off by default and needs two switches**: `allow_destroy = true` on the provider **and** a token
 minted with destroy allowed. With the provider switch off, destroying a customer or a tenant fails at plan
@@ -144,6 +147,13 @@ those stages. A project's `tenant_id`, `project_index`, `short_name`, `gitlab_re
 switches): nothing on the substrate is removed, and its index, short name and domain stay reserved for good.
 Destroying a provisioning only forgets it; the API cannot undo provisioning. The platform's own projects
 (`is_self`) are read-only: the provider refuses to import or change them.
+
+**The licence and the brand are singletons** (import id `current`) that destroy only forgets. The licence
+bundle is compared by the digest of its document: the installed one is adopted without being sent again,
+and an older one is refused (`stale_epoch`), never retried. Every brand write names the version last read
+(`If-Match`); when the brand changed outside the configuration after that read, the error says so, and the
+next plan shows the change. Brand assets are content-addressed: a changed file is a new asset (the old one
+stays served; the platform has no delete).
 
 **Warnings** the platform returns on a request that succeeded are reported as warnings, never as errors.
 
@@ -182,6 +192,9 @@ Import forms:
 | `ataila_project` | the id, or `short_name:<short_name>` |
 | `ataila_project_provisioning` | the project id |
 | `ataila_project_member` | `<project_id>/<user_id>` |
+| `ataila_licence_bundle` | `current` |
+| `ataila_brand` | `current` |
+| `ataila_brand_asset` | the asset id |
 
 ```shell
 tofu import ataila_customer.example short_name:EXAMPLE        # OpenTofu
@@ -205,6 +218,10 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_project`](docs/data-sources/project.md) | One project, by id or short name, with its settings, outputs and stale stages |
 | [`ataila_projects`](docs/data-sources/projects.md) | Project summaries filtered by tenant, customer, status or short name (all pages) |
 | [`ataila_project_stages`](docs/data-sources/project_stages.md) | A project's provisioning stages with dependencies and latest runs |
+| [`ataila_licence`](docs/data-sources/licence.md) | The licence state, tier, modules, term and document digest (never the bundle) |
+| [`ataila_licence_socket_facts`](docs/data-sources/licence_socket_facts.md) | The socket census and whether its hash chain is intact |
+| [`ataila_brand`](docs/data-sources/brand.md) | The platform's brand |
+| [`ataila_brand_asset`](docs/data-sources/brand_asset.md) | One brand asset, by id or sha256 |
 
 Further resources follow milestone by milestone; each ships with its documentation, examples and tests.
 

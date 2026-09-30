@@ -4,11 +4,14 @@
 package provider_test
 
 import (
+	"encoding/base64"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/ataila/terraform-provider-ataila/internal/acctest"
 )
 
 // Environment variables naming the two CLIs for TestCrossCLIState.
@@ -57,7 +60,7 @@ func TestCrossCLIState(t *testing.T) {
 		dir := t.TempDir()
 		write := func(description string) {
 			t.Helper()
-			cfg := crossConfig(description, user) + crossProjectConfig(projectTenant, user)
+			cfg := crossConfig(description, user) + crossProjectConfig(projectTenant, user) + crossBrandConfig()
 			if err := os.WriteFile(filepath.Join(dir, "main.tf"), []byte(cfg), 0o600); err != nil {
 				t.Fatal(err)
 			}
@@ -209,6 +212,29 @@ output "project_frontend" {
   value = ataila_project.p.urls.frontend
 }
 `, tenantID, user)
+}
+
+// crossBrandConfig adds the licence bundle, the brand (its colour in upper
+// case, which the platform lower-cases) and a brand asset.
+func crossBrandConfig() string {
+	png := []byte("\x89PNG\r\n\x1a\n\x00\x00\x00\x0dIHDR\x00\x00\x01\x90\x00\x00\x00\xc8\x08\x06\x00\x00\x00")
+	return fmt.Sprintf(`
+resource "ataila_licence_bundle" "l" {
+  bundle = %q
+}
+
+resource "ataila_brand_asset" "a" {
+  kind           = "logo"
+  content_base64 = %q
+}
+
+resource "ataila_brand" "b" {
+  product_name  = "Cross Cloud"
+  brand_color   = "#ABCDEF"
+  page_title    = "Cross"
+  logo_asset_id = ataila_brand_asset.a.id
+}
+`, acctest.MockBundle(3, acctest.MockInstanceID, "mock-valid"), base64.StdEncoding.EncodeToString(png))
 }
 
 // errorBlock is the CLI's first error, its title and text on one line.

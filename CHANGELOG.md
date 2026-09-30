@@ -3,6 +3,37 @@
 All notable changes to this provider. Versions follow semantic versioning; until the first publication the
 provider stays at 0.x and any release may change.
 
+## 0.5.0 (2026-09-30)
+
+Licence and brand. Same contract as 0.4.0 (platform release 1.0.162, API 1.0.0).
+
+### Resources
+
+- `ataila_licence_bundle` (singleton): installs the configured `acplic1.` bundle (`bundle`, sensitive)
+  with `PUT /licence/bundle`, unless the platform already holds the same document (compared by
+  `document_digest`, the sha256 of the bundle's document), which is adopted without sending it. A
+  document installed outside the configuration shows as an update of `document_digest`, never a
+  replacement. `stale_epoch` (an older bundle) is an error that is not retried. Destroy only forgets.
+  Import with `current`.
+- `ataila_brand` (singleton): replaces the v1 fields with `PUT /brand` and `If-Match` naming the version
+  last read; a 412 is reported as a change outside Terraform since the last read ("run plan again") and
+  never retried. The attribution line and `first_party` are not attributes. Asset references are
+  validated by the platform. Destroy only forgets. Import with `current`.
+- `ataila_brand_asset`: uploads a logo or favicon from `source` (a path) or `content_base64`; the
+  content's sha256 is computed at plan time and a changed file replaces the resource. Bytes already
+  stored as the same kind are adopted (warning); as the other kind they are refused. A 503
+  `storage_unavailable` is final. Destroy only forgets (the file stays served). Import by asset id.
+
+### Data sources
+
+- `ataila_licence` (never the bundle; the serial is sensitive), `ataila_licence_socket_facts`,
+  `ataila_brand`, `ataila_brand_asset` (by id or sha256).
+
+### Tests
+
+- The mock implements the licence (bundles, epochs, digests, masking of the serial), the socket census,
+  the brand (If-Match, 412, no-op replace) and content-addressed assets.
+
 ## 0.4.0 (2026-09-30)
 
 Projects. Pins the platform's `/api/v1` contract of platform release 1.0.162 (API 1.0.0).

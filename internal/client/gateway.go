@@ -30,6 +30,7 @@ var finalUnavailable = map[string]bool{
 	CodeGatewayNotConfigured: true,
 	CodeGatewayUnreachable:   true,
 	CodeVaultWriteFailed:     true,
+	CodeStorageUnavailable:   true,
 }
 
 // GatewayKeyData is a virtual key as the API answers it, decoded by hand so
