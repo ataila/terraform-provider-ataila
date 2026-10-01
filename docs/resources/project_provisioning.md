@@ -60,7 +60,7 @@ output "shop_provisioned" {
 - `operation_id` (String) The last provisioning operation the provider started or waited for (`provision:<n>`).
 - `provisioned` (Boolean) Converged on real runs only (no stage simulated): the substrate exists.
 - `simulated` (Boolean) At least one stage's latest run was simulated: marked done, never run.
-- `stages` (List of Object) The stages in apply order: `key`, `status` (`pending`, `running`, `success`, `failed`, `partial` or `manual`), `stale`, `simulated`, and `last_run_id` and `last_run_at` (RFC 3339) of the stage's newest run in the portal's run history (null when it never ran). The `ataila_project_stages` data source has more detail. (see [below for nested schema](#nestedatt--stages))
+- `stages` (Attributes List) The stages in apply order. The `ataila_project_stages` data source has more detail. (see [below for nested schema](#nestedatt--stages))
 - `stale_stages` (List of String) Stages done against older settings, in apply order.
 - `state` (String) `not_started`, `provisioning`, `complete`, `attention` (a stage failed) or `needs_action` (a stage waits for an operator).
 
@@ -78,12 +78,12 @@ Optional:
 
 Read-Only:
 
-- `key` (String)
-- `last_run_at` (String)
-- `last_run_id` (String)
-- `simulated` (Boolean)
-- `stale` (Boolean)
-- `status` (String)
+- `key` (String) The stage's key, stable across runs and the same as `Operation.stage`.
+- `last_run_at` (String) When that run was created (dispatched). Null exactly when `last_run_id` is.
+- `last_run_id` (String) The id of this stage's newest provisioning run in the portal's run history: the run `status` is taken from. A run id, not an operation id (`/operations/provision:<id>` names the orchestration that walked the stages). Null when the stage has never run, or when its last success was undone by a later teardown (the stage then reads `pending`).
+- `simulated` (Boolean) Its latest run was simulated.
+- `stale` (Boolean) Done against an older manifest; re-applied by the next provisioning start.
+- `status` (String) `pending`, `running`, `success`, `failed`, `partial` or `manual` (the stage needs an operator).
 
 ## Import
 

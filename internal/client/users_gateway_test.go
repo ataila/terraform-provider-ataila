@@ -92,11 +92,14 @@ func TestRoleGrantCalls(t *testing.T) {
 		t.Errorf("second grant: %v %v", granted, err)
 	}
 	for role, code := range map[string]string{
-		"admin":                  "role_not_manageable_by_token",
-		"api-tokens-read-global": "role_not_held_by_token",
-		"users-read-tenant":      "role_not_grantable",
-		"no-such-role":           "unknown_role",
-		"Bad Role":               "unknown_role",
+		"admin": "role_not_manageable_by_token",
+		// Since platform 1.0.187 no token grants a key of the api-tokens
+		// feature, whatever it carries.
+		"api-tokens-read-global":  "role_not_manageable_by_token",
+		"api-tokens-admin-global": "role_not_manageable_by_token",
+		"users-read-tenant":       "role_not_grantable",
+		"no-such-role":            "unknown_role",
+		"Bad Role":                "unknown_role",
 	} {
 		_, _, err := api.GrantRole(ctx, id, role)
 		if e := apiErr(t, err); e.Code() != code {
@@ -117,14 +120,23 @@ func TestRoleGrantCalls(t *testing.T) {
 		t.Errorf("last role: %v", e)
 	}
 
-	perms, err := api.ListPermissions(ctx, "users")
-	if err != nil || len(perms) != 4 {
-		t.Fatalf("users permissions: %d %v", len(perms), err)
-	}
-	for _, p := range perms {
-		if p.Grantable != (p.Scope == "global") || p.Mintable != p.Grantable {
-			t.Errorf("%s grantable %v mintable %v", p.Key, p.Grantable, p.Mintable)
+	for _, feature := range []string{"users", "api-tokens"} {
+		perms, err := api.ListPermissions(ctx, feature)
+		if err != nil || len(perms) != 4 {
+			t.Fatalf("%s permissions: %d %v", feature, len(perms), err)
 		}
+		for _, p := range perms {
+			// No token carries an api-tokens key (platform 1.0.187).
+			mintable := p.Grantable && feature != "api-tokens"
+			if p.Grantable != (p.Scope == "global") || p.Mintable != mintable {
+				t.Errorf("%s grantable %v mintable %v", p.Key, p.Grantable, p.Mintable)
+			}
+		}
+	}
+	// A key the token does not carry.
+	m.SetScopes("users-admin-global", "users-read-global")
+	if _, _, err := api.GrantRole(ctx, id, "projects-read-global"); apiErr(t, err).Code() != "role_not_held_by_token" {
+		t.Errorf("grant of a key the token lacks: %v", err)
 	}
 }
 

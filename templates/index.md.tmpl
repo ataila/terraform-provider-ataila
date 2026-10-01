@@ -44,7 +44,8 @@ access](https://github.com/ataila/terraform-provider-ataila#installing-without-i
   Nothing else is retried.
 - A refusal by the platform licence (HTTP 403 with a code starting `licence_`) is final; the error
   quotes the remedy the platform gives.
-- Every create carries a fresh `Idempotency-Key`, so a retried create never runs twice.
+- Every operation that declares an `Idempotency-Key` (the creates, release promotions, key rotations,
+  node-cache changes) carries a fresh one, so a retried request never runs twice.
 - Destroying platform objects needs `allow_destroy = true` here **and** a token minted with destroy allowed.
   Without the first, the destroy fails at plan time, before any request; without the second, the platform
   refuses it. To stop managing an object without destroying it, remove it from the state

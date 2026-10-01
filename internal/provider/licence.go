@@ -494,12 +494,7 @@ func (d *socketFactsDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 		MarkdownDescription: "The socket census the licence counts: the latest measurement per node, and " +
 			"whether the census hash chain is intact. Read-only; the census runs on its own schedule.",
 		Attributes: map[string]dschema.Attribute{
-			"facts": dschema.ListAttribute{
-				MarkdownDescription: "Per node: `node_name`, `cluster`, `sockets`, `cores_per_socket`, `source` " +
-					"and `measured_at` (RFC 3339).",
-				Computed:    true,
-				ElementType: types.ObjectType{AttrTypes: socketFactTypes},
-			},
+			"facts": dataNestedList("The latest measurement per node.", socketFactTypes, contractDoc("SocketFact")),
 			"total": dschema.Int64Attribute{MarkdownDescription: "Sum of `sockets`; null before the first census.", Computed: true},
 			"chain": dschema.SingleNestedAttribute{
 				MarkdownDescription: "The census hash chain: `rows`, `intact`, and `first_broken_row` when not intact.",

@@ -4,13 +4,15 @@
 package client
 
 import (
-	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"testing"
@@ -280,19 +282,14 @@ func TestStandardHeaders(t *testing.T) {
 	}
 }
 
-// post sends a create through the same transport the generated client uses.
-func post(t *testing.T, api *API, body string) {
+// create sends POST /customers through the generated client, which carries
+// the contract's Idempotency-Key parameter.
+func create(t *testing.T, api *API, shortName string) {
 	t.Helper()
-	req, err := http.NewRequest(http.MethodPost, api.BaseURL()+"/customers", bytes.NewReader([]byte(body)))
-	if err != nil {
-		t.Fatal(err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-	resp, err := api.transport.Do(req)
-	if err != nil {
+	if _, err := api.CreateCustomer(context.Background(), CustomerCreate{ShortName: shortName, LongName: shortName,
+		GitlabGroup: "example", PrimaryContactEmail: "it@example.com", PrimaryContactName: "IT"}); err != nil {
 		t.Fatalf("POST: %v", err)
 	}
-	_ = resp.Body.Close()
 }
 
 func TestIdempotencyKeyFreshPerCreateAndStableAcrossRetries(t *testing.T) {
@@ -302,8 +299,8 @@ func TestIdempotencyKeyFreshPerCreateAndStableAcrossRetries(t *testing.T) {
 		{status: 201, body: `{}`},
 	}}
 	api, _ := newTestAPI(t, s)
-	post(t, api, `{"name":"first"}`)
-	post(t, api, `{"name":"second"}`)
+	create(t, api, "FIRST")
+	create(t, api, "SECOND")
 
 	if s.count() != 3 {
 		t.Fatalf("requests = %d, want 3", s.count())
@@ -320,8 +317,93 @@ func TestIdempotencyKeyFreshPerCreateAndStableAcrossRetries(t *testing.T) {
 	if k1 == k2 {
 		t.Errorf("two creates shared the key %q", k1)
 	}
-	if s.bodies[0] != s.bodies[1] || s.bodies[1] != `{"name":"first"}` {
+	if s.bodies[0] != s.bodies[1] || !strings.Contains(s.bodies[1], `"short_name":"FIRST"`) {
 		t.Errorf("the retried body differs: %q vs %q", s.bodies[0], s.bodies[1])
+	}
+}
+
+// TestIdempotencyKeyOnEveryDeclaringOperation checks, against the vendored
+// contract, that the client sends an Idempotency-Key on every operation that
+// declares the header parameter, and on no other.
+func TestIdempotencyKeyOnEveryDeclaringOperation(t *testing.T) {
+	raw, err := os.ReadFile(filepath.Join("..", "..", "api", "openapi-v1.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var spec struct {
+		Paths map[string]map[string]struct {
+			Parameters []struct {
+				Name string `json:"name"`
+				In   string `json:"in"`
+			} `json:"parameters"`
+		} `json:"paths"`
+	}
+	if err := json.Unmarshal(raw, &spec); err != nil {
+		t.Fatal(err)
+	}
+	declared := map[string]bool{} // "METHOD /path/{param}"
+	for p, ops := range spec.Paths {
+		for method, op := range ops {
+			for _, prm := range op.Parameters {
+				if prm.In == "header" && prm.Name == IdempotencyHeader {
+					declared[strings.ToUpper(method)+" "+p] = true
+				}
+			}
+		}
+	}
+	if len(declared) == 0 {
+		t.Fatal("the contract declares no Idempotency-Key parameter")
+	}
+
+	s := &scripted{}
+	api, _ := newTestAPI(t, s)
+	ctx := context.Background()
+	// Every client call of an operation that declares the key, plus calls
+	// that must not carry one. Answers are empty: only the requests count.
+	calls := map[string]func(){
+		"POST /customers": func() {
+			_, _ = api.CreateCustomer(ctx, CustomerCreate{PrimaryContactEmail: "it@example.com"})
+		},
+		"POST /tenants":         func() { _, _ = api.CreateTenant(ctx, TenantCreate{}) },
+		"POST /users":           func() { _, _ = api.CreateUser(ctx, UserCreate{Email: "dana@example.com"}) },
+		"POST /projects":        func() { _, _ = api.CreateProject(ctx, map[string]any{}) },
+		"POST /ai-models":       func() { _, _ = api.CreateAIModel(ctx, map[string]any{}) },
+		"POST /ai/gateway/keys": func() { _, _ = api.CreateGatewayKey(ctx, map[string]any{}) },
+		"POST /ai/gateway/keys/{key_id}/rotations":        func() { _, _ = api.RotateGatewayKey(ctx, "k1", false) },
+		"POST /brand/assets":                              func() { _, _, _ = api.UploadBrandAsset(ctx, "logo", []byte("x"), "") },
+		"POST /projects/{project_id}/provisioning":        func() { _, _, _ = api.StartProvisioning(ctx, "1") },
+		"POST /projects/{project_id}/release-promotions":  func() { _, _ = api.RequestPromotion(ctx, "1", ReleasePromotionCreate{}) },
+		"PUT /ai-models/{model_id}/node-caches/{node}":    func() { _, _, _ = api.CacheModel(ctx, "1", "n") },
+		"DELETE /ai-models/{model_id}/node-caches/{node}": func() { _, _ = api.UncacheModel(ctx, "1", "n") },
+		"GET /customers/{customer_id} (no key)":           func() { _, _ = api.GetCustomer(ctx, "1") },
+		"DELETE /customers/{customer_id} (no key)":        func() { _ = api.ArchiveCustomer(ctx, "1") },
+		"PATCH /ai-models/{model_id} (no key)":            func() { _, _ = api.UpdateAIModel(ctx, "1", Patch{}) },
+		"PUT /projects/{project_id}/prod-lock (no key)":   func() { _, _ = api.PutProdLock(ctx, "1", true, "") },
+		"PUT /users/{user_id}/roles/{role} (no key)":      func() { _, _, _ = api.GrantRole(ctx, "1", "r") },
+		"DELETE /ai/gateway/keys/{key_id} (no key)":       func() { _ = api.DeleteGatewayKey(ctx, "k1") },
+		"PUT /tenants/{tenant_id}/memberships/{user_id} (no key)": func() {
+			_, _, _ = api.PutMembership(ctx, "1", "1", "member")
+		},
+	}
+	for name, call := range calls {
+		before := s.count()
+		call()
+		if s.count() == before {
+			t.Errorf("%s: no request was sent", name)
+			continue
+		}
+		key := s.seen[s.count()-1].Header.Get(IdempotencyHeader)
+		op, noKey := strings.CutSuffix(name, " (no key)")
+		switch {
+		case noKey && key != "":
+			t.Errorf("%s carried an Idempotency-Key", op)
+		case !noKey && key == "":
+			t.Errorf("%s carried no Idempotency-Key", op)
+		}
+		delete(declared, name)
+	}
+	for op := range declared {
+		t.Errorf("the contract declares an Idempotency-Key on %s, which this test does not call", op)
 	}
 }
 

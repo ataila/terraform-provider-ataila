@@ -31,7 +31,7 @@ output "ai_a_status" {
 
 ### Read-Only
 
-- `cluster` (Object) The DGX cluster it belongs to: `name`, `role`. Live (monitoring); null when `monitoring_reachable` is false. (see [below for nested schema](#nestedatt--cluster))
+- `cluster` (Attributes) The DGX cluster it belongs to: `name`, `role`. Live (monitoring); null when `monitoring_reachable` is false. (see [below for nested schema](#nestedatt--cluster))
 - `collector_stale` (Boolean) The node's collector is stale. Live (monitoring); null when `monitoring_reachable` is false.
 - `cpu_util_pct` (Number) CPU use. Live (monitoring); null when `monitoring_reachable` is false.
 - `disk_used_pct` (Number) Disk use. Live (monitoring); null when `monitoring_reachable` is false.
@@ -43,7 +43,7 @@ output "ai_a_status" {
 - `load1` (Number) Load average. Live (monitoring); null when `monitoring_reachable` is false.
 - `mem_used_pct` (Number) Memory use. Live (monitoring); null when `monitoring_reachable` is false.
 - `mgmt_ip` (String) Its management address.
-- `models` (List of Object) The loaded models: `model`, `served_name`, `engine`, `port`, `tensor_parallel`, `max_model_len`, `cluster`, `tiers`. Live (monitoring); null when `monitoring_reachable` is false. (see [below for nested schema](#nestedatt--models))
+- `models` (Attributes List) The loaded models: `model`, `served_name`, `engine`, `port`, `tensor_parallel`, `max_model_len`, `cluster`, `tiers`. Live (monitoring); null when `monitoring_reachable` is false. (see [below for nested schema](#nestedatt--models))
 - `monitoring_reachable` (Boolean) False: monitoring could not be read, and every live field is null. The read does not fail.
 - `online` (Boolean) Online. Live (monitoring); null when `monitoring_reachable` is false.
 - `parent_host` (String) The host of a virtual node.
@@ -63,8 +63,8 @@ output "ai_a_status" {
 
 Read-Only:
 
-- `name` (String)
-- `role` (String)
+- `name` (String) The cluster's name (`name` of a DGX cluster).
+- `role` (String) The node's role in it: `head` or `worker`. Other values may appear.
 
 
 <a id="nestedatt--models"></a>
@@ -72,11 +72,11 @@ Read-Only:
 
 Read-Only:
 
-- `cluster` (String)
-- `engine` (String)
-- `max_model_len` (Number)
-- `model` (String)
-- `port` (Number)
-- `served_name` (String)
-- `tensor_parallel` (Number)
-- `tiers` (List of String)
+- `cluster` (String) The DGX cluster serving it, when it is served by a cluster rather than by this node alone.
+- `engine` (String) The serving engine, e.g. `vllm` or `ollama`. Other values may appear.
+- `max_model_len` (Number) The longest context, in tokens, it is served with, when reported.
+- `model` (String) The model as the serving engine names it (its repo or path).
+- `port` (Number) The serving port (a node can run several).
+- `served_name` (String) The name clients call it by on the node's OpenAI-compatible endpoint; null when not reported.
+- `tensor_parallel` (Number) How many GPUs the model is spread across, when reported.
+- `tiers` (List of String) Serving tiers it backs right now.

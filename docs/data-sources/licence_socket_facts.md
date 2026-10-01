@@ -26,7 +26,7 @@ output "sockets_counted" {
 ### Read-Only
 
 - `chain` (Attributes) The census hash chain: `rows`, `intact`, and `first_broken_row` when not intact. (see [below for nested schema](#nestedatt--chain))
-- `facts` (List of Object) Per node: `node_name`, `cluster`, `sockets`, `cores_per_socket`, `source` and `measured_at` (RFC 3339). (see [below for nested schema](#nestedatt--facts))
+- `facts` (Attributes List) The latest measurement per node. (see [below for nested schema](#nestedatt--facts))
 - `total` (Number) Sum of `sockets`; null before the first census.
 
 <a id="nestedatt--chain"></a>
@@ -44,9 +44,9 @@ Read-Only:
 
 Read-Only:
 
-- `cluster` (String)
-- `cores_per_socket` (Number)
-- `measured_at` (String)
-- `node_name` (String)
-- `sockets` (Number)
-- `source` (String)
+- `cluster` (String) The virtualisation cluster the node belongs to, e.g. `prod` or `nonprod`; null when not recorded.
+- `cores_per_socket` (Number) Cores per socket, when measured.
+- `measured_at` (String) When it was measured.
+- `node_name` (String) The node's name in its cluster.
+- `sockets` (Number) CPU sockets measured on the node; never zero.
+- `source` (String) Where the count came from: today always the virtualisation cluster's own report of the node. Other values may appear.

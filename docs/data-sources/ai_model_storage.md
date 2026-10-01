@@ -26,8 +26,8 @@ output "central_shares" {
 ### Read-Only
 
 - `captured_at` (String) The newest scan; null when nothing was ever scanned. RFC 3339 in UTC.
-- `nas` (List of Object) Free space per central-store share, as last scanned: `name`, `mount`, `kind`, `total_gb`, `free_gb`, `captured_at`. (see [below for nested schema](#nestedatt--nas))
-- `nodes` (List of Object) Each node's local disk, as last scanned, with the models cached on it (`cached`: `name`, `repo`, `size_gb`, `cached_at`): `name`, `mount`, `kind`, `total_gb`, `free_gb`, `captured_at`. (see [below for nested schema](#nestedatt--nodes))
+- `nas` (Attributes List) Free space per central-store share, as last scanned: `name`, `mount`, `kind`, `total_gb`, `free_gb`, `captured_at`. (see [below for nested schema](#nestedatt--nas))
+- `nodes` (Attributes List) Each node's local disk, as last scanned, with the models cached on it (`cached`: `name`, `repo`, `size_gb`, `cached_at`): `name`, `mount`, `kind`, `total_gb`, `free_gb`, `captured_at`. (see [below for nested schema](#nestedatt--nodes))
 - `shares` (List of String) The central-store shares the store actions can use.
 
 <a id="nestedatt--nas"></a>
@@ -35,12 +35,12 @@ output "central_shares" {
 
 Read-Only:
 
-- `captured_at` (String)
-- `free_gb` (Number)
-- `kind` (String)
-- `mount` (String)
-- `name` (String)
-- `total_gb` (Number)
+- `captured_at` (String) When it was last scanned; null when never. RFC 3339 in UTC.
+- `free_gb` (Number) Free space in GB, as last scanned.
+- `kind` (String) The kind of disk, as the scan reported it: `nvme`, `hdd` or `raid`. Other values may appear.
+- `mount` (String) Where the storage is mounted, as the scan reported it.
+- `name` (String) The share's name, or the node's hostname.
+- `total_gb` (Number) Total capacity in GB, as last scanned.
 
 
 <a id="nestedatt--nodes"></a>
@@ -48,20 +48,20 @@ Read-Only:
 
 Read-Only:
 
-- `cached` (List of Object) (see [below for nested schema](#nestedobjatt--nodes--cached))
-- `captured_at` (String)
-- `free_gb` (Number)
-- `kind` (String)
-- `mount` (String)
-- `name` (String)
-- `total_gb` (Number)
+- `cached` (Attributes List) The models with a complete copy on this node, largest first. (see [below for nested schema](#nestedatt--nodes--cached))
+- `captured_at` (String) When it was last scanned; null when never. RFC 3339 in UTC.
+- `free_gb` (Number) Free space in GB, as last scanned.
+- `kind` (String) The kind of disk, as the scan reported it: `nvme`, `hdd` or `raid`. Other values may appear.
+- `mount` (String) Where the storage is mounted, as the scan reported it.
+- `name` (String) The share's name, or the node's hostname.
+- `total_gb` (Number) Total capacity in GB, as last scanned.
 
-<a id="nestedobjatt--nodes--cached"></a>
+<a id="nestedatt--nodes--cached"></a>
 ### Nested Schema for `nodes.cached`
 
 Read-Only:
 
-- `cached_at` (String)
-- `name` (String)
-- `repo` (String)
-- `size_gb` (Number)
+- `cached_at` (String) When the copy was last made or checked. RFC 3339 in UTC.
+- `name` (String) The model's `display_name`.
+- `repo` (String) The model's Hugging Face repo id.
+- `size_gb` (Number) The copy's size on the node's disk in GB, when measured.

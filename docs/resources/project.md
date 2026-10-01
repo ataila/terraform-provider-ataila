@@ -97,26 +97,26 @@ output "shop_frontend_url" {
 
 - `created_at` (String) When the project was created: RFC 3339 in UTC, compared as an instant.
 - `customer_id` (String) Id of the customer of the owning tenant (null for a tenant without a customer, which only the platform's own projects have).
-- `gitlab_repositories` (List of Object) The project's GitLab repositories: `path` (`<group>/<repository>`), `kind` (`app` or `www`) and `primary`. (see [below for nested schema](#nestedatt--gitlab_repositories))
+- `gitlab_repositories` (Attributes List) The project's GitLab repositories: `path` (`<group>/<repository>`), `kind` (`app` or `www`) and `primary`. (see [below for nested schema](#nestedatt--gitlab_repositories))
 - `id` (String) Project id, assigned by the platform.
 - `image_registry_namespace` (String) The project's container registry namespace.
 - `is_self` (Boolean) One of the platform's own projects: readable, never writable through the API.
-- `kubernetes_namespaces` (List of Object) The project's Kubernetes namespaces, by `env`. (see [below for nested schema](#nestedatt--kubernetes_namespaces))
+- `kubernetes_namespaces` (Attributes List) The project's Kubernetes namespaces, by `env`. (see [below for nested schema](#nestedatt--kubernetes_namespaces))
 - `registered_by` (String) Id of the user or service account that created the project, when known.
-- `secret_paths` (List of Object) Where the project's development and UAT secrets live in the secrets store, by `env` (`dev` or `uat`). Production paths are never listed, nor the paths of a `vm` backend project. (see [below for nested schema](#nestedatt--secret_paths))
+- `secret_paths` (Attributes List) Where the project's development and UAT secrets live in the secrets store, by `env` (`dev` or `uat`). Production paths are never listed, nor the paths of a `vm` backend project. (see [below for nested schema](#nestedatt--secret_paths))
 - `stale_stages` (List of String) Provisioning stages done against an older version of the project's settings, in apply order. The next provisioning run (`ataila_project_provisioning`) re-applies exactly these.
 - `status` (String) `planned` until provisioning starts, then `provisioning`, `active` once every stage is done, `paused`, or `retired`. Read-only.
 - `urls` (Attributes) The project's public addresses, each null when the project has none: `static` (the web site), `frontend` (the application), `backend` (its API) and `ai` (its AI endpoint). (see [below for nested schema](#nestedatt--urls))
-- `warnings` (List of Object) What did not go as planned in the last change made through the provider (for example stale stages that could not be recorded). Empty when everything went as planned. (see [below for nested schema](#nestedatt--warnings))
+- `warnings` (Attributes List) What did not go as planned in the last change made through the provider (for example stale stages that could not be recorded). Empty when everything went as planned. (see [below for nested schema](#nestedatt--warnings))
 
 <a id="nestedatt--gitlab_repositories"></a>
 ### Nested Schema for `gitlab_repositories`
 
 Read-Only:
 
-- `kind` (String)
-- `path` (String)
-- `primary` (Boolean)
+- `kind` (String) `app` or `www`. Other values may appear.
+- `path` (String) `<customer group>/<repository>`.
+- `primary` (Boolean) The project's main repository.
 
 
 <a id="nestedatt--kubernetes_namespaces"></a>
@@ -124,8 +124,8 @@ Read-Only:
 
 Read-Only:
 
-- `env` (String)
-- `namespace` (String)
+- `env` (String) The environment, e.g. `dev`.
+- `namespace` (String) The namespace's name.
 
 
 <a id="nestedatt--secret_paths"></a>
@@ -133,8 +133,8 @@ Read-Only:
 
 Read-Only:
 
-- `env` (String)
-- `path` (String)
+- `env` (String) The environment: `dev` or `uat`.
+- `path` (String) The location in the secrets store.
 
 
 <a id="nestedatt--urls"></a>
@@ -153,8 +153,8 @@ Read-Only:
 
 Read-Only:
 
-- `code` (String)
-- `message` (String)
+- `code` (String) The stable, machine-readable reason, e.g. `gitlab_group_failed`. Each operation names the warnings it can give.
+- `message` (String) What happened, for a person. The wording may change.
 
 ## Import
 

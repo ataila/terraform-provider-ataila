@@ -165,34 +165,12 @@ func specValues(m map[string]any, specs []fieldSpec) map[string]attr.Value {
 	return out
 }
 
-// specDataAttributes are computed data source attributes for the specs.
-func specDataAttributes(specs []fieldSpec) map[string]dschema.Attribute {
-	out := make(map[string]dschema.Attribute, len(specs))
-	for _, f := range specs {
-		doc := f.doc
-		switch f.kind {
-		case fFloat:
-			out[f.name] = dschema.Float64Attribute{MarkdownDescription: doc, Computed: true}
-		case fInt:
-			out[f.name] = dschema.Int64Attribute{MarkdownDescription: doc, Computed: true}
-		case fBool:
-			out[f.name] = dschema.BoolAttribute{MarkdownDescription: doc, Computed: true}
-		case fStrings:
-			out[f.name] = dschema.ListAttribute{MarkdownDescription: doc, Computed: true, ElementType: types.StringType}
-		case fObject:
-			out[f.name] = dschema.ObjectAttribute{MarkdownDescription: doc, Computed: true, AttributeTypes: specTypes(f.sub)}
-		case fObjects:
-			out[f.name] = dschema.ListAttribute{MarkdownDescription: doc, Computed: true,
-				ElementType: types.ObjectType{AttrTypes: specTypes(f.sub)}}
-		case fStringMap:
-			out[f.name] = dschema.MapAttribute{MarkdownDescription: doc, Computed: true, ElementType: types.StringType}
-		case fTime:
-			out[f.name] = dschema.StringAttribute{MarkdownDescription: doc + " RFC 3339 in UTC.", Computed: true}
-		default:
-			out[f.name] = dschema.StringAttribute{MarkdownDescription: doc, Computed: true}
-		}
-	}
-	return out
+// specDataAttributes are computed data source attributes for the specs, of
+// the objects of the contract schema named: nested objects and lists of
+// objects are nested attributes, each member described by its spec or, where
+// the spec has no text, by the contract.
+func specDataAttributes(specs []fieldSpec, schema string) map[string]dschema.Attribute {
+	return dataNestedAttrs(specTypes(specs), specDoc(specs, schema), nil)
 }
 
 // fieldNames lists the members of a nested spec for a description.

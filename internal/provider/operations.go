@@ -10,8 +10,22 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+
 	"github.com/ataila/terraform-provider-ataila/internal/client"
 )
+
+// acceptedOperation is the operation of a 202, whose Id is the one the
+// Location header names. A replayed answer (Idempotent-Replayed: one of this
+// request's own retries had already reached the platform) is logged: the work
+// was started once, by that earlier attempt.
+func acceptedOperation(ctx context.Context, acc *client.Accepted, doing string) *client.Operation {
+	if acc.Replayed {
+		tflog.Info(ctx, "the platform replayed its stored answer to an earlier attempt of this request; nothing was started twice",
+			map[string]any{"operation_id": acc.Operation.Id, "while": doing})
+	}
+	return acc.Operation
+}
 
 // pollOperation polls GET /operations/{id} until the operation ends
 // (succeeded or failed), until stop says the caller has seen enough, or until

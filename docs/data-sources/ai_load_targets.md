@@ -25,23 +25,23 @@ output "loadable_targets" {
 
 ### Read-Only
 
-- `targets` (List of Object) The targets, by hostname: `hostname`, `online`, `status`, `gpu_count`, `tensor_parallel`, `per_gpu_gb`, `vram_total_gb`, `usable_vram_gb`, `loaded_models`, `loadable`, `engine`, `is_cluster`, `members`. `loadable` is false for fit-only targets (DGX clusters, Kubernetes nodes). (see [below for nested schema](#nestedatt--targets))
+- `targets` (Attributes List) The targets, by hostname. `loadable` is false for fit-only targets (DGX clusters, Kubernetes nodes). (see [below for nested schema](#nestedatt--targets))
 
 <a id="nestedatt--targets"></a>
 ### Nested Schema for `targets`
 
 Read-Only:
 
-- `engine` (String)
-- `gpu_count` (Number)
-- `hostname` (String)
-- `is_cluster` (Boolean)
-- `loadable` (Boolean)
-- `loaded_models` (List of String)
-- `members` (List of String)
-- `online` (Boolean)
-- `per_gpu_gb` (Number)
-- `status` (String)
-- `tensor_parallel` (Number)
-- `usable_vram_gb` (Number)
-- `vram_total_gb` (Number)
+- `engine` (String) The serving engine a load here uses: `vllm` (a node), `k8s-vllm` (a Kubernetes node) or `spark-vllm` (a DGX cluster). Other values may appear.
+- `gpu_count` (Number) GPUs: counted live when the node is online, estimated from its static budget otherwise; a cluster counts one per member.
+- `hostname` (String) A node, or a DGX cluster by name.
+- `is_cluster` (Boolean) The target is a DGX cluster.
+- `loadable` (Boolean) False for fit-only targets (DGX clusters, Kubernetes nodes).
+- `loaded_models` (List of String) The served names of the models loaded here right now; empty when none is, or when monitoring cannot be read.
+- `members` (List of String) A cluster's member hostnames, head first; null for a node.
+- `online` (Boolean) The node (for a cluster: its head) is up, as monitoring sees it; false also when monitoring cannot be read.
+- `per_gpu_gb` (Number) VRAM per GPU in GB.
+- `status` (String) As the AI node list reports it (`serving`, `loaded_idle`, `idle`, `offline`, `standby`, `powered_off`); for a DGX cluster `active` or `forming` while it is one. Other values may appear.
+- `tensor_parallel` (Number) How many GPUs one model is spread across when served here.
+- `usable_vram_gb` (Number) The weight budget in GB: the share of the serving GPUs' VRAM a model's weights may take, the rest being left for its working memory. A model fits when its `size_gb` is at most this.
+- `vram_total_gb` (Number) `gpu_count` times `per_gpu_gb`, in GB.

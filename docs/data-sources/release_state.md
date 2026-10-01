@@ -38,16 +38,16 @@ output "shop_versions" {
 - `prod_data_locked` (Boolean) The PROD data lock.
 - `prod_data_locked_at` (String) When it was locked.
 - `prod_data_locked_by` (String) Who locked it.
-- `versions` (List of Object) `env`, `component`, `last_reported_version`, `last_reported_at` (RFC 3339), `last_reported_by` and `source_env`. (see [below for nested schema](#nestedatt--versions))
+- `versions` (Attributes List) Last reported versions, per environment and component. (see [below for nested schema](#nestedatt--versions))
 
 <a id="nestedatt--versions"></a>
 ### Nested Schema for `versions`
 
 Read-Only:
 
-- `component` (String)
-- `env` (String)
-- `last_reported_at` (String)
-- `last_reported_by` (String)
-- `last_reported_version` (String)
-- `source_env` (String)
+- `component` (String) `app-api` (the application and its API), `www` (the web site) or `database`.
+- `env` (String) The environment.
+- `last_reported_at` (String) When it reported it.
+- `last_reported_by` (String) An operator's e-mail or `pipeline:<id>`.
+- `last_reported_version` (String) The version the pipeline reported running.
+- `source_env` (String) The environment it was promoted from.

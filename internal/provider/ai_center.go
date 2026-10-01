@@ -147,11 +147,7 @@ func (d *aiNodesDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 		Attributes: map[string]dschema.Attribute{
 			"monitoring_reachable": dschema.BoolAttribute{
 				MarkdownDescription: "False: monitoring could not be read and every live field is null.", Computed: true},
-			"nodes": dschema.ListAttribute{
-				MarkdownDescription: "The nodes, by hostname: " + fieldNames(aiNodeSpec) + ". See `ataila_ai_node` for each field.",
-				Computed:            true,
-				ElementType:         types.ObjectType{AttrTypes: specTypes(aiNodeSpec)},
-			},
+			"nodes": dataNestedList("The nodes, by hostname.", specTypes(aiNodeSpec), specDoc(aiNodeSpec, "AiNode")),
 		},
 	}
 }
@@ -181,7 +177,7 @@ func (d *aiNodeDataSource) Metadata(_ context.Context, req datasource.MetadataRe
 }
 
 func (d *aiNodeDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
-	attrs := specDataAttributes(aiNodeSpec)
+	attrs := specDataAttributes(aiNodeSpec, "AiNode")
 	attrs["hostname"] = dschema.StringAttribute{MarkdownDescription: "The node's hostname.", Required: true}
 	resp.Schema = dschema.Schema{
 		MarkdownDescription: "One AI node (AI Center, read-only), by hostname. Live fields are null when monitoring " +
@@ -226,12 +222,7 @@ func (d *dgxClustersDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 		Attributes: map[string]dschema.Attribute{
 			"name": dschema.StringAttribute{MarkdownDescription: "Only the cluster with this name.", Optional: true,
 				Validators: []validator.String{stringvalidator.LengthAtMost(40)}},
-			"clusters": dschema.ListAttribute{
-				MarkdownDescription: "The clusters, by name: " + fieldNames(clusterSpec) + ". `members`: " +
-					fieldNames(clusterMemberSpec) + "; `serve`: `recipe`, `model`, `served_at`; times RFC 3339 in UTC.",
-				Computed:    true,
-				ElementType: types.ObjectType{AttrTypes: specTypes(clusterSpec)},
-			},
+			"clusters": dataNestedList("The clusters, by name.", specTypes(clusterSpec), specDoc(clusterSpec, "DgxCluster")),
 		},
 	}
 }
@@ -269,11 +260,7 @@ func (d *launchCatalogDataSource) Schema(_ context.Context, _ datasource.SchemaR
 		Attributes: map[string]dschema.Attribute{
 			"host":    dschema.StringAttribute{MarkdownDescription: "Only the entries of this host.", Optional: true},
 			"enabled": dschema.BoolAttribute{MarkdownDescription: "Only enabled (or disabled) entries.", Optional: true},
-			"entries": dschema.ListAttribute{
-				MarkdownDescription: "The entries, by key: " + fieldNames(launchSpec) + ".",
-				Computed:            true,
-				ElementType:         types.ObjectType{AttrTypes: specTypes(launchSpec)},
-			},
+			"entries": dataNestedList("The entries, by key.", specTypes(launchSpec), specDoc(launchSpec, "LaunchCatalogEntry")),
 		},
 	}
 }
@@ -316,7 +303,7 @@ func (d *modelStorageDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 	resp.Schema = dschema.Schema{
 		MarkdownDescription: "Model storage as last scanned: the central-store shares and each node's local disk " +
 			"with the models cached on it. Nothing is scanned by the read. Needs `ai-models-read-global`.",
-		Attributes: specDataAttributes(storageSpec),
+		Attributes: specDataAttributes(storageSpec, "Storage"),
 	}
 }
 
@@ -347,12 +334,8 @@ func (d *loadTargetsDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 		MarkdownDescription: "The nodes and DGX clusters a model can be served on, with their VRAM budget: live " +
 			"values when monitoring answers, static fallbacks otherwise.",
 		Attributes: map[string]dschema.Attribute{
-			"targets": dschema.ListAttribute{
-				MarkdownDescription: "The targets, by hostname: " + fieldNames(loadTargetSpec) + ". `loadable` is false " +
-					"for fit-only targets (DGX clusters, Kubernetes nodes).",
-				Computed:    true,
-				ElementType: types.ObjectType{AttrTypes: specTypes(loadTargetSpec)},
-			},
+			"targets": dataNestedList("The targets, by hostname. `loadable` is false for fit-only targets (DGX "+
+				"clusters, Kubernetes nodes).", specTypes(loadTargetSpec), specDoc(loadTargetSpec, "LoadTarget")),
 		},
 	}
 }
@@ -382,7 +365,7 @@ func (d *aiModelDataSource) Metadata(_ context.Context, req datasource.MetadataR
 }
 
 func (d *aiModelDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
-	attrs := specDataAttributes(aiModelSpec)
+	attrs := specDataAttributes(aiModelSpec, "AiModel")
 	attrs["id"] = dschema.StringAttribute{MarkdownDescription: "The model's id. Give `id` or `repo`.", Optional: true, Computed: true,
 		Validators: []validator.String{stringvalidator.RegexMatches(rxIntID, "must be a model id")}}
 	attrs["repo"] = dschema.StringAttribute{MarkdownDescription: "The Hugging Face repo id. Give `id` or `repo`.", Optional: true, Computed: true}
@@ -452,11 +435,8 @@ func (d *aiModelsDataSource) Schema(_ context.Context, _ datasource.SchemaReques
 			"status":       filter("Only models with this status: `planned`, `pulling`, `owned` or `serving`."),
 			"category":     filter("Only models of this category."),
 			"gateway_tier": filter("Only models of this gateway tier."),
-			"models": dschema.ListAttribute{
-				MarkdownDescription: "The models, with the attributes of the `ataila_ai_model` data source.",
-				Computed:            true,
-				ElementType:         types.ObjectType{AttrTypes: specTypes(aiModelSpec)},
-			},
+			"models": dataNestedList("The models, with the attributes of the `ataila_ai_model` data source.",
+				specTypes(aiModelSpec), specDoc(aiModelSpec, "AiModel")),
 		},
 	}
 }

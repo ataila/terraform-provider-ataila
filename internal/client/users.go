@@ -89,7 +89,7 @@ func (a *API) GetUser(ctx context.Context, id string) (*User, error) {
 
 // CreateUser sends POST /users. No password is ever sent or returned.
 func (a *API) CreateUser(ctx context.Context, body UserCreate) (*User, error) {
-	rsp, err := a.raw.UsersCreateWithResponse(ctx, body)
+	rsp, err := a.raw.UsersCreateWithResponse(ctx, &UsersCreateParams{IdempotencyKey: a.idempotencyKey()}, body)
 	if err != nil {
 		return nil, err
 	}

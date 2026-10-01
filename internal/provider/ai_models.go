@@ -170,8 +170,7 @@ func (r *aiModelResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 		case fBool:
 			attrs[f.name] = schema.BoolAttribute{MarkdownDescription: f.doc, Computed: true}
 		case fObjects:
-			attrs[f.name] = schema.ListAttribute{MarkdownDescription: f.doc, Computed: true,
-				ElementType: types.ObjectType{AttrTypes: specTypes(f.sub)}}
+			attrs[f.name] = resourceNestedList(f.doc, specTypes(f.sub), specDoc(f.sub, "NodeCacheRef"), nil)
 		case fTime:
 			attrs[f.name] = schema.StringAttribute{MarkdownDescription: f.doc + " RFC 3339 in UTC.", Computed: true,
 				CustomType: TimestampType{}}
@@ -665,12 +664,13 @@ func (r *nodeCacheResource) Create(ctx context.Context, req resource.CreateReque
 	if !r.dispatchesLive(doing, &resp.Diagnostics) {
 		return
 	}
-	existing, op, err := r.data.API.CacheModel(ctx, plan.ModelID.ValueString(), plan.Node.ValueString())
+	existing, acc, err := r.data.API.CacheModel(ctx, plan.ModelID.ValueString(), plan.Node.ValueString())
 	if err != nil {
 		resp.Diagnostics.Append(nodeCacheError(doing, err))
 		return
 	}
-	if op != nil {
+	if acc != nil {
+		op := acceptedOperation(ctx, acc, doing)
 		if !r.runStore(ctx, op, wait, doing, &resp.Diagnostics) {
 			return
 		}
@@ -747,7 +747,7 @@ func (r *nodeCacheResource) Delete(ctx context.Context, req resource.DeleteReque
 	if !r.dispatchesLive(doing, &resp.Diagnostics) {
 		return
 	}
-	op, err := r.data.API.UncacheModel(ctx, state.ModelID.ValueString(), state.Node.ValueString())
+	acc, err := r.data.API.UncacheModel(ctx, state.ModelID.ValueString(), state.Node.ValueString())
 	if isNotFound(err) {
 		return
 	}
@@ -755,7 +755,7 @@ func (r *nodeCacheResource) Delete(ctx context.Context, req resource.DeleteReque
 		resp.Diagnostics.Append(nodeCacheError(doing, err))
 		return
 	}
-	r.runStore(ctx, op, wait, doing, &resp.Diagnostics)
+	r.runStore(ctx, acceptedOperation(ctx, acc, doing), wait, doing, &resp.Diagnostics)
 }
 
 func (r *nodeCacheResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

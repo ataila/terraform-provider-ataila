@@ -11,10 +11,15 @@
 //   - TLS trust, including a private certificate authority;
 //   - retries with backoff on 429, 502, 503 and 504 only, honouring
 //     Retry-After; nothing else is retried;
-//   - a fresh Idempotency-Key on every create (POST), reused by that
-//     request's own retries so a retried create cannot run twice;
+//   - a fresh Idempotency-Key, the contract's header parameter, on every
+//     operation that declares it (the creates, release promotions, key
+//     rotations, the node-cache PUT and DELETE), reused by that request's
+//     own retries so a retried request cannot run twice;
+//   - on a 202, the operation to poll from the Location header and whether
+//     the answer replays an earlier request (Idempotent-Replayed);
 //   - RFC 9457 problem details turned into *APIError, with a licence refusal
 //     (403 with a code starting "licence_") treated as final.
 package client
 
 //go:generate go tool oapi-codegen -config oapi-codegen.yaml -o client.gen.go ../../api/openapi-v1.json
+//go:generate go run ../../scripts/gendesc -in ../../api/openapi-v1.json -out descriptions.gen.go

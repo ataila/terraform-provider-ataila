@@ -81,9 +81,9 @@ func projectDataAttributes() map[string]schema.Attribute {
 			},
 		},
 		"image_registry_namespace": c("image_registry_namespace"),
-		"gitlab_repositories":      schema.ListAttribute{MarkdownDescription: projectDocs["gitlab_repositories"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectRepoTypes}},
-		"kubernetes_namespaces":    schema.ListAttribute{MarkdownDescription: projectDocs["kubernetes_namespaces"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectNSTypes}},
-		"secret_paths":             schema.ListAttribute{MarkdownDescription: projectDocs["secret_paths"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectSecretTypes}},
+		"gitlab_repositories":      dataNestedList(projectDocs["gitlab_repositories"], projectRepoTypes, contractDoc("GitLabRepository")),
+		"kubernetes_namespaces":    dataNestedList(projectDocs["kubernetes_namespaces"], projectNSTypes, contractDoc("KubernetesNamespace")),
+		"secret_paths":             dataNestedList(projectDocs["secret_paths"], projectSecretTypes, contractDoc("SecretPath")),
 	}
 	for _, s := range projectSettings {
 		switch s.kind {
@@ -337,15 +337,7 @@ func (d *projectStagesDataSource) Schema(_ context.Context, _ datasource.SchemaR
 				Computed:            true,
 			},
 			"percent": schema.Int64Attribute{MarkdownDescription: "Share of the stages done, 0-100.", Computed: true},
-			"stages": schema.ListAttribute{
-				MarkdownDescription: "The stages: `key`, `title`, `deps` (the stages it needs), `deferred` (never " +
-					"applied automatically), `status`, `blocked` (pending while a dependency is not done), " +
-					"`stale`, `simulated`, `started_at` and `finished_at` (RFC 3339, of the latest run), " +
-					"`last_run_id` and `last_run_at` (that run in the portal's run history; null when it never ran), " +
-					"`error_message`, `verify_state` and `verify_summary`.",
-				Computed:    true,
-				ElementType: types.ObjectType{AttrTypes: stageGridTypes},
-			},
+			"stages":  dataNestedList("Every stage, in catalogue order.", stageGridTypes, contractDoc("StageGridItem")),
 		},
 	}
 }

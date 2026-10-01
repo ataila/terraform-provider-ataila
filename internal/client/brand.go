@@ -99,7 +99,7 @@ func (a *API) UploadBrandAsset(ctx context.Context, kind string, content []byte,
 	if filename != "" {
 		body.Filename = &filename
 	}
-	rsp, err := a.raw.BrandAssetsCreateWithResponse(ctx, body)
+	rsp, err := a.raw.BrandAssetsCreateWithResponse(ctx, &BrandAssetsCreateParams{IdempotencyKey: a.idempotencyKey()}, body)
 	if err != nil {
 		return nil, false, err
 	}

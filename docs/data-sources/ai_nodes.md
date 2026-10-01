@@ -29,60 +29,60 @@ output "fleet" {
 ### Read-Only
 
 - `monitoring_reachable` (Boolean) False: monitoring could not be read and every live field is null.
-- `nodes` (List of Object) The nodes, by hostname: `hostname`, `site`, `mgmt_ip`, `gpu_class`, `specs_summary`, `services`, `is_virtual`, `parent_host`, `vmid`, `monitoring_reachable`, `status`, `online`, `role`, `cluster`, `uptime_seconds`, `cpu_util_pct`, `load1`, `mem_used_pct`, `disk_used_pct`, `gpu_count`, `gpu_util_avg_pct`, `vram_used_bytes`, `vram_total_bytes`, `gpu_temp_max_c`, `throttle_active`, `collector_stale`, `models`. See `ataila_ai_node` for each field. (see [below for nested schema](#nestedatt--nodes))
+- `nodes` (Attributes List) The nodes, by hostname. (see [below for nested schema](#nestedatt--nodes))
 
 <a id="nestedatt--nodes"></a>
 ### Nested Schema for `nodes`
 
 Read-Only:
 
-- `cluster` (Object) (see [below for nested schema](#nestedobjatt--nodes--cluster))
-- `collector_stale` (Boolean)
-- `cpu_util_pct` (Number)
-- `disk_used_pct` (Number)
-- `gpu_class` (String)
-- `gpu_count` (Number)
-- `gpu_temp_max_c` (Number)
-- `gpu_util_avg_pct` (Number)
-- `hostname` (String)
-- `is_virtual` (Boolean)
-- `load1` (Number)
-- `mem_used_pct` (Number)
-- `mgmt_ip` (String)
-- `models` (List of Object) (see [below for nested schema](#nestedobjatt--nodes--models))
-- `monitoring_reachable` (Boolean)
-- `online` (Boolean)
-- `parent_host` (String)
-- `role` (String)
-- `services` (List of String)
-- `site` (String)
-- `specs_summary` (String)
-- `status` (String)
-- `throttle_active` (Boolean)
-- `uptime_seconds` (Number)
-- `vmid` (Number)
-- `vram_total_bytes` (Number)
-- `vram_used_bytes` (Number)
+- `cluster` (Attributes) The DGX cluster it belongs to: `name`, `role`. Live (monitoring); null when `monitoring_reachable` is false. (see [below for nested schema](#nestedatt--nodes--cluster))
+- `collector_stale` (Boolean) The node's collector is stale. Live (monitoring); null when `monitoring_reachable` is false.
+- `cpu_util_pct` (Number) CPU use. Live (monitoring); null when `monitoring_reachable` is false.
+- `disk_used_pct` (Number) Disk use. Live (monitoring); null when `monitoring_reachable` is false.
+- `gpu_class` (String) For example `rtx-3090` or `gb10`.
+- `gpu_count` (Number) GPUs. Live (monitoring); null when `monitoring_reachable` is false.
+- `gpu_temp_max_c` (Number) Hottest GPU. Live (monitoring); null when `monitoring_reachable` is false.
+- `gpu_util_avg_pct` (Number) Average GPU use. Live (monitoring); null when `monitoring_reachable` is false.
+- `hostname` (String) The node's hostname.
+- `is_virtual` (Boolean) A GPU virtual machine on a hybrid host.
+- `load1` (Number) Load average. Live (monitoring); null when `monitoring_reachable` is false.
+- `mem_used_pct` (Number) Memory use. Live (monitoring); null when `monitoring_reachable` is false.
+- `mgmt_ip` (String) Its management address.
+- `models` (Attributes List) The loaded models: `model`, `served_name`, `engine`, `port`, `tensor_parallel`, `max_model_len`, `cluster`, `tiers`. Live (monitoring); null when `monitoring_reachable` is false. (see [below for nested schema](#nestedatt--nodes--models))
+- `monitoring_reachable` (Boolean) False: monitoring could not be read, and every live field is null. The read does not fail.
+- `online` (Boolean) Online. Live (monitoring); null when `monitoring_reachable` is false.
+- `parent_host` (String) The host of a virtual node.
+- `role` (String) Its role. Live (monitoring); null when `monitoring_reachable` is false.
+- `services` (List of String) The services it runs.
+- `site` (String) Its site.
+- `specs_summary` (String) A summary of its hardware.
+- `status` (String) `serving`, `loaded_idle`, `idle`, `offline`, `standby` or `powered_off`. Live (monitoring); null when `monitoring_reachable` is false.
+- `throttle_active` (Boolean) A GPU is throttling. Live (monitoring); null when `monitoring_reachable` is false.
+- `uptime_seconds` (Number) Uptime. Live (monitoring); null when `monitoring_reachable` is false.
+- `vmid` (Number) The virtual machine id of a virtual node.
+- `vram_total_bytes` (Number) VRAM in total. Live (monitoring); null when `monitoring_reachable` is false.
+- `vram_used_bytes` (Number) VRAM used. Live (monitoring); null when `monitoring_reachable` is false.
 
-<a id="nestedobjatt--nodes--cluster"></a>
+<a id="nestedatt--nodes--cluster"></a>
 ### Nested Schema for `nodes.cluster`
 
 Read-Only:
 
-- `name` (String)
-- `role` (String)
+- `name` (String) The cluster's name (`name` of a DGX cluster).
+- `role` (String) The node's role in it: `head` or `worker`. Other values may appear.
 
 
-<a id="nestedobjatt--nodes--models"></a>
+<a id="nestedatt--nodes--models"></a>
 ### Nested Schema for `nodes.models`
 
 Read-Only:
 
-- `cluster` (String)
-- `engine` (String)
-- `max_model_len` (Number)
-- `model` (String)
-- `port` (Number)
-- `served_name` (String)
-- `tensor_parallel` (Number)
-- `tiers` (List of String)
+- `cluster` (String) The DGX cluster serving it, when it is served by a cluster rather than by this node alone.
+- `engine` (String) The serving engine, e.g. `vllm` or `ollama`. Other values may appear.
+- `max_model_len` (Number) The longest context, in tokens, it is served with, when reported.
+- `model` (String) The model as the serving engine names it (its repo or path).
+- `port` (Number) The serving port (a node can run several).
+- `served_name` (String) The name clients call it by on the node's OpenAI-compatible endpoint; null when not reported.
+- `tensor_parallel` (Number) How many GPUs the model is spread across, when reported.
+- `tiers` (List of String) Serving tiers it backs right now.

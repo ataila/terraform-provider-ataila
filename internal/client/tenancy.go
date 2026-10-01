@@ -112,7 +112,7 @@ func (a *API) GetCustomer(ctx context.Context, id string) (*Customer, error) {
 // CreateCustomer sends POST /customers. The answer's warnings say what did
 // not go as planned on a create that still succeeded.
 func (a *API) CreateCustomer(ctx context.Context, body CustomerCreate) (*Customer, error) {
-	rsp, err := a.raw.CustomersCreateWithResponse(ctx, body)
+	rsp, err := a.raw.CustomersCreateWithResponse(ctx, &CustomersCreateParams{IdempotencyKey: a.idempotencyKey()}, body)
 	if err != nil {
 		return nil, err
 	}
@@ -197,7 +197,7 @@ func (a *API) GetTenant(ctx context.Context, id string) (*Tenant, error) {
 
 // CreateTenant sends POST /tenants.
 func (a *API) CreateTenant(ctx context.Context, body TenantCreate) (*Tenant, error) {
-	rsp, err := a.raw.TenantsCreateWithResponse(ctx, body)
+	rsp, err := a.raw.TenantsCreateWithResponse(ctx, &TenantsCreateParams{IdempotencyKey: a.idempotencyKey()}, body)
 	if err != nil {
 		return nil, err
 	}

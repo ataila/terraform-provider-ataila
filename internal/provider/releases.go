@@ -276,11 +276,12 @@ func (r *promotionResource) Create(ctx context.Context, req resource.CreateReque
 				"without a report). That is how every non-live platform behaves, so the resource is created with the "+
 				"status the provider sees.", earlyMode, plan.ident()))
 	}
-	op, err := r.data.API.RequestPromotion(ctx, plan.ProjectID.ValueString(), body)
+	acc, err := r.data.API.RequestPromotion(ctx, plan.ProjectID.ValueString(), body)
 	if err != nil {
 		resp.Diagnostics.Append(promotionError(plan.ident(), err))
 		return
 	}
+	op := acceptedOperation(ctx, acc, "promoting "+plan.ident())
 	native, _ := client.ReleaseOperationID(op.Id)
 	if native == "" && op.ResourceId != nil {
 		native = *op.ResourceId
@@ -643,12 +644,8 @@ func (d *releaseStateDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				Validators:          []validator.String{stringvalidator.RegexMatches(rxIntID, "must be a project id")},
 			},
 			"deployment_backend": dschema.StringAttribute{MarkdownDescription: "`k8s` or `vm`; only `k8s` projects take promotions through the API.", Computed: true},
-			"versions": dschema.ListAttribute{
-				MarkdownDescription: "`env`, `component`, `last_reported_version`, `last_reported_at` (RFC 3339), " +
-					"`last_reported_by` and `source_env`.",
-				Computed:    true,
-				ElementType: types.ObjectType{AttrTypes: reportedVersionTypes},
-			},
+			"versions": dataNestedList("Last reported versions, per environment and component.", reportedVersionTypes,
+				contractDoc("ReportedVersion")),
 			"prod_data_locked":        dschema.BoolAttribute{MarkdownDescription: "The PROD data lock.", Computed: true},
 			"prod_data_locked_at":     dschema.StringAttribute{MarkdownDescription: "When it was locked.", CustomType: TimestampType{}, Computed: true},
 			"prod_data_locked_by":     dschema.StringAttribute{MarkdownDescription: "Who locked it.", Computed: true},

@@ -162,15 +162,8 @@ func (r *provisioningResource) Schema(ctx context.Context, _ resource.SchemaRequ
 				Computed:      true,
 				PlanModifiers: keepString,
 			},
-			"stages": schema.ListAttribute{
-				MarkdownDescription: "The stages in apply order: `key`, `status` (`pending`, `running`, " +
-					"`success`, `failed`, `partial` or `manual`), `stale`, `simulated`, and `last_run_id` and " +
-					"`last_run_at` (RFC 3339) of the stage's newest run in the portal's run history (null when it " +
-					"never ran). The `ataila_project_stages` data source has more detail.",
-				Computed:      true,
-				ElementType:   types.ObjectType{AttrTypes: stageStateTypes},
-				PlanModifiers: keepList,
-			},
+			"stages": resourceNestedList("The stages in apply order. The `ataila_project_stages` data source has "+
+				"more detail.", stageStateTypes, contractDoc("StageState"), keepList),
 			"stale_stages": schema.ListAttribute{
 				MarkdownDescription: "Stages done against older settings, in apply order.",
 				Computed:            true,
@@ -298,13 +291,15 @@ func (r *provisioningResource) provision(ctx context.Context, plan provisioningM
 	ctx, cancel := context.WithTimeout(ctx, wait)
 	defer cancel()
 
-	op, running, err := r.data.API.StartProvisioning(ctx, projectID)
+	acc, running, err := r.data.API.StartProvisioning(ctx, projectID)
 	if err != nil {
 		diags.Append(provisioningStartError(what, err))
 		return nil, false
 	}
 	opID := running
-	if op != nil {
+	var op *client.Operation
+	if acc != nil {
+		op = acceptedOperation(ctx, acc, "provisioning the "+what)
 		opID = op.Id
 	} else {
 		diags.AddWarning("Provisioning was already running",

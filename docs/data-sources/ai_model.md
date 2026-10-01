@@ -49,7 +49,7 @@ output "coder_status" {
 - `model_card_url` (String) The model card.
 - `nas_path` (String) Where the central copy is; null without one.
 - `nas_volume` (String) **Read-only**: the central-store share holding the weights; null without a central copy.
-- `node_caches` (List of Object) The node caches: `node`, `state`, `size_gb`. (see [below for nested schema](#nestedatt--node_caches))
+- `node_caches` (Attributes List) The node caches: `node`, `state`, `size_gb`. (see [below for nested schema](#nestedatt--node_caches))
 - `notes` (String) Notes.
 - `offline_ready` (Boolean) **Read-only**: a node holds a cached copy.
 - `org` (String) The Hugging Face organisation.
@@ -71,6 +71,6 @@ output "coder_status" {
 
 Read-Only:
 
-- `node` (String)
-- `size_gb` (Number)
-- `state` (String)
+- `node` (String) The AI node's hostname.
+- `size_gb` (Number) The copy's size on the node's disk in GB, when measured.
+- `state` (String) `cached` once the copy is complete; `pulling` while it is made; `absent` or `failed` when a copy was removed or did not finish. Other values may appear.

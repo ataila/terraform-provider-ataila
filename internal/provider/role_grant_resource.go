@@ -112,8 +112,9 @@ func grantError(doing, role string, err error) diag.Diagnostic {
 	}
 	text := map[string][2]string{
 		"role_not_manageable_by_token": {"An API token cannot grant or revoke " + role,
-			"admin, founder and ssh-console are never granted or revoked by an API token. A person who holds " +
-				"the role grants it in the portal."},
+			"admin, founder, ssh-console and the keys of the api-tokens feature are never granted or revoked by " +
+				"an API token (managing tokens takes a portal session). A person who holds the role grants it in " +
+				"the portal."},
 		"role_not_held_by_token": {"The token does not carry the role " + role,
 			"An API token grants or revokes only roles within its own scopes. Use a token minted with " + role +
 				" (a key its owner holds), or grant it in the portal."},

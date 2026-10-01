@@ -34,54 +34,54 @@ output "serving_models" {
 
 ### Read-Only
 
-- `models` (List of Object) The models, with the attributes of the `ataila_ai_model` data source. (see [below for nested schema](#nestedatt--models))
+- `models` (Attributes List) The models, with the attributes of the `ataila_ai_model` data source. (see [below for nested schema](#nestedatt--models))
 
 <a id="nestedatt--models"></a>
 ### Nested Schema for `models`
 
 Read-Only:
 
-- `architecture` (String)
-- `benchmarks` (Map of String)
-- `category` (String)
-- `context_window` (String)
-- `created_at` (String)
-- `description` (String)
-- `dgx_recipe` (String)
-- `display_name` (String)
-- `frontier_equiv` (String)
-- `gated` (Boolean)
-- `gateway_tier` (String)
-- `id` (String)
-- `license` (String)
-- `location` (String)
-- `min_target` (String)
-- `model_card_url` (String)
-- `nas_path` (String)
-- `nas_volume` (String)
-- `node_caches` (List of Object) (see [below for nested schema](#nestedobjatt--models--node_caches))
-- `notes` (String)
-- `offline_ready` (Boolean)
-- `org` (String)
-- `param_count_b` (Number)
-- `params` (String)
-- `published` (String)
-- `quant` (String)
-- `repo` (String)
-- `serving_node` (String)
-- `size_gb` (Number)
-- `status` (String)
-- `strong_axis` (String)
-- `summary` (String)
-- `updated_at` (String)
-- `vendor` (String)
-- `vendor_country` (String)
+- `architecture` (String) The architecture.
+- `benchmarks` (Map of String) Benchmark results by name. Values that read as numbers are sent as numbers.
+- `category` (String) The category.
+- `context_window` (String) The context window.
+- `created_at` (String) When the row was created. RFC 3339 in UTC.
+- `description` (String) A description.
+- `dgx_recipe` (String) The recipe a DGX cluster serves it with, if any.
+- `display_name` (String) Display name; the platform's default is the repo's last part.
+- `frontier_equiv` (String) The frontier model it compares with.
+- `gated` (Boolean) The Hugging Face repo needs an accept-click to pull. Platform default `false`.
+- `gateway_tier` (String) The AI gateway tier it serves.
+- `id` (String) The model's id, assigned by the platform.
+- `license` (String) The licence.
+- `location` (String) **Read-only**: `synology` (the central store on the NAS), `local` (node caches only), `both`, or null.
+- `min_target` (String) The smallest target it fits.
+- `model_card_url` (String) The model card.
+- `nas_path` (String) Where the central copy is; null without one.
+- `nas_volume` (String) **Read-only**: the central-store share holding the weights; null without a central copy.
+- `node_caches` (Attributes List) The node caches: `node`, `state`, `size_gb`. (see [below for nested schema](#nestedatt--models--node_caches))
+- `notes` (String) Notes.
+- `offline_ready` (Boolean) **Read-only**: a node holds a cached copy.
+- `org` (String) The Hugging Face organisation.
+- `param_count_b` (Number) Parameters in billions.
+- `params` (String) Parameters in human form, for example `480B (35B active)`.
+- `published` (String) When it was published.
+- `quant` (String) The quantization.
+- `repo` (String) The Hugging Face repo id.
+- `serving_node` (String) The node that serves it.
+- `size_gb` (Number) Size of the weights in GB.
+- `status` (String) **Read-only**: `planned`, `pulling`, `owned` or `serving`, set by the store actions.
+- `strong_axis` (String) What it is strong at.
+- `summary` (String) A summary.
+- `updated_at` (String) When it last changed. RFC 3339 in UTC.
+- `vendor` (String) The lab that built the model (the organisation may be a quantizer).
+- `vendor_country` (String) The vendor's country.
 
-<a id="nestedobjatt--models--node_caches"></a>
+<a id="nestedatt--models--node_caches"></a>
 ### Nested Schema for `models.node_caches`
 
 Read-Only:
 
-- `node` (String)
-- `size_gb` (Number)
-- `state` (String)
+- `node` (String) The AI node's hostname.
+- `size_gb` (Number) The copy's size on the node's disk in GB, when measured.
+- `state` (String) `cached` once the copy is complete; `pulling` while it is made; `absent` or `failed` when a copy was removed or did not finish. Other values may appear.

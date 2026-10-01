@@ -61,15 +61,6 @@ func decodeRecord(op string, resp *http.Response, body []byte, want ...int) (Rec
 	return r, nil
 }
 
-// withIdempotencyKey sets one Idempotency-Key on a request; the transport's
-// retries of that request reuse it.
-func withIdempotencyKey(key string) RequestEditorFn {
-	return func(_ context.Context, req *http.Request) error {
-		req.Header.Set(IdempotencyHeader, key)
-		return nil
-	}
-}
-
 // ── the catalogue ────────────────────────────────────────────────────────────
 
 // ListAIModels reads every page of GET /ai-models with the API's filters.
@@ -111,7 +102,8 @@ func (a *API) CreateAIModel(ctx context.Context, body map[string]any) (Record, e
 	if err != nil {
 		return nil, err
 	}
-	rsp, err := a.raw.AiModelsCreateWithBodyWithResponse(ctx, "application/json", r)
+	rsp, err := a.raw.AiModelsCreateWithBodyWithResponse(ctx,
+		&AiModelsCreateParams{IdempotencyKey: a.idempotencyKey()}, "application/json", r)
 	if err != nil {
 		return nil, err
 	}
@@ -160,15 +152,17 @@ func (a *API) GetNodeCache(ctx context.Context, modelID, node string) (Record, e
 
 // CacheModel sends PUT /ai-models/{id}/node-caches/{node} under one
 // Idempotency-Key. It returns the cache when the node already holds one
-// (200), or the operation of the store run it started (202).
-func (a *API) CacheModel(ctx context.Context, modelID, node string) (Record, *Operation, error) {
-	rsp, err := a.raw.AiModelsNodeCachesPutWithResponse(ctx, modelID, node, withIdempotencyKey(NewIdempotencyKey()))
+// (200), or the store run it started (202).
+func (a *API) CacheModel(ctx context.Context, modelID, node string) (Record, *Accepted, error) {
+	rsp, err := a.raw.AiModelsNodeCachesPutWithResponse(ctx, modelID, node,
+		&AiModelsNodeCachesPutParams{IdempotencyKey: a.idempotencyKey()})
 	if err != nil {
 		return nil, nil, err
 	}
 	switch {
-	case rsp.JSON202 != nil:
-		return nil, rsp.JSON202, nil
+	case rsp.StatusCode() == http.StatusAccepted:
+		acc, err := accepted(cachePath("PUT", modelID, node), rsp.HTTPResponse, rsp.JSON202)
+		return nil, acc, err
 	case rsp.StatusCode() == http.StatusOK:
 		c, err := decodeRecord(cachePath("PUT", modelID, node), rsp.HTTPResponse, rsp.Body, http.StatusOK)
 		return c, nil, err
@@ -177,20 +171,17 @@ func (a *API) CacheModel(ctx context.Context, modelID, node string) (Record, *Op
 }
 
 // UncacheModel sends DELETE /ai-models/{id}/node-caches/{node} under one
-// Idempotency-Key and returns the store run's operation.
-func (a *API) UncacheModel(ctx context.Context, modelID, node string) (*Operation, error) {
-	rsp, err := a.raw.AiModelsNodeCachesDeleteWithResponse(ctx, modelID, node, withIdempotencyKey(NewIdempotencyKey()))
+// Idempotency-Key and returns the store run it started.
+func (a *API) UncacheModel(ctx context.Context, modelID, node string) (*Accepted, error) {
+	rsp, err := a.raw.AiModelsNodeCachesDeleteWithResponse(ctx, modelID, node,
+		&AiModelsNodeCachesDeleteParams{IdempotencyKey: a.idempotencyKey()})
 	if err != nil {
 		return nil, err
 	}
 	if rsp.StatusCode() != http.StatusAccepted {
 		return nil, unexpected(cachePath("DELETE", modelID, node), rsp.HTTPResponse)
 	}
-	var op Operation
-	if err := json.Unmarshal(rsp.Body, &op); err != nil {
-		return nil, fmt.Errorf("%s: %w", cachePath("DELETE", modelID, node), err)
-	}
-	return &op, nil
+	return accepted(cachePath("DELETE", modelID, node), rsp.HTTPResponse, rsp.JSON202)
 }
 
 // GetModelStorage reads GET /ai-models/storage.

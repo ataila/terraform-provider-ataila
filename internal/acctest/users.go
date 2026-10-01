@@ -46,7 +46,10 @@ var (
 // holders may grant.
 var (
 	tokenUnmanageable = map[string]bool{"admin": true, "founder": true, "ssh-console": true}
-	privilegedRoles   = map[string]bool{"founder": true, "ssh-console": true}
+	// tokenFeature is the feature whose keys an API token never carries,
+	// grants or revokes (platform 1.0.187): managing tokens takes a session.
+	tokenFeature    = "api-tokens"
+	privilegedRoles = map[string]bool{"founder": true, "ssh-console": true}
 )
 
 type mockPerson struct {
@@ -954,7 +957,7 @@ func (m *MockAPI) roleChange(c *call, p *mockPerson, role string, add bool) (boo
 			return refuse(http.StatusForbidden, "token_cannot_change_own_roles",
 				"An API token cannot change the roles of its own account")
 		}
-		if touched && tokenUnmanageable[role] {
+		if touched && (tokenUnmanageable[role] || strings.HasPrefix(role, tokenFeature+"-")) {
 			return refuse(http.StatusForbidden, "role_not_manageable_by_token", "An API token can never grant or revoke "+role)
 		}
 		if touched && !m.scopes()[role] {
@@ -1062,7 +1065,7 @@ func (m *MockAPI) permissionsList(c *call) reply {
 		if (q.Has("feature") && p.feature != q.Get("feature")) || (after != "" && p.key <= after) {
 			continue
 		}
-		mintable := p.grantable && p.scope == "global"
+		mintable := p.grantable && p.scope == "global" && p.feature != tokenFeature
 		items = append(items, map[string]any{
 			"key": p.key, "feature": p.feature, "level": p.level, "scope": p.scope, "category": p.category,
 			"label": p.label, "description": p.description, "grantable": p.grantable, "mintable": mintable,

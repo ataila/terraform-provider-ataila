@@ -55,7 +55,8 @@ type transport struct {
 	backoffBase time.Duration
 	backoffMax  time.Duration
 
-	// Seams for tests.
+	// Seams for tests. newKey makes the Idempotency-Keys API.idempotencyKey
+	// hands to the generated client.
 	sleep  func(ctx context.Context, d time.Duration) error
 	newKey func() string
 }
@@ -64,9 +65,9 @@ func (t *transport) Do(req *http.Request) (*http.Response, error) {
 	req.Header.Set("Authorization", "Bearer "+t.token)
 	req.Header.Set("User-Agent", t.userAgent)
 	req.Header.Set("Accept", "application/json, "+ProblemContentType)
-	if req.Method == http.MethodPost && req.Header.Get(IdempotencyHeader) == "" {
-		req.Header.Set(IdempotencyHeader, t.newKey())
-	}
+	// The Idempotency-Key is the contract's own header parameter, set by the
+	// caller through the generated client (API.idempotencyKey); every retry
+	// below sends this same request, and so the same key.
 
 	ctx := req.Context()
 	for attempt := 1; ; attempt++ {

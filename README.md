@@ -36,7 +36,7 @@ terraform {
   required_providers {
     ataila = {
       source  = "ataila/ataila"
-      version = "~> 0.7.0"
+      version = "~> 0.8.0"
     }
   }
 }
@@ -74,7 +74,7 @@ terraform init && terraform plan
 
 `source = "ataila/ataila"` resolves to `registry.opentofu.org/ataila/ataila` under OpenTofu and to
 `registry.terraform.io/ataila/ataila` under Terraform; the same release is published to both. While the version
-is 0.x a minor release may break, hence `~> 0.7.0` (0.7.x only).
+is 0.x a minor release may break, hence `~> 0.8.0` (0.8.x only).
 
 ### Switching between OpenTofu and Terraform
 
@@ -92,6 +92,12 @@ registry.opentofu.org/ataila/ataila, but that provider isn't available* (Terrafo
 load plugin schemas … unavailable provider "registry.opentofu.org/ataila/ataila"*). After it,
 `terraform plan` shows no changes. Both commands ask for confirmation; `-auto-approve` skips it. A remote backend is changed in
 place, so switch once, not back and forth in parallel runs.
+
+### Upgrading
+
+From 0.7.x to 0.8.0 nothing changes in a configuration or a state: the schema versions are the same, and
+`plan` shows no changes. (Nested lists and objects of the data sources and resources became nested attributes so
+that each member is documented; their values and types are unchanged.)
 
 ### Upgrading from 0.6.x to 0.7.0
 
@@ -164,7 +170,11 @@ Without any network at all, leave the `direct` block out. The configuration keep
 - Treats a licence refusal (403 whose `code` starts with `licence_`) as final and quotes the platform's remedy.
 - Turns every error, an RFC 9457 problem document, into a diagnostic with its title, detail, `code` and
   `request_id`, so an operator can find the request in the platform's logs.
-- Sends a fresh `Idempotency-Key` with every create; that create's own retries reuse it, so a create never runs twice.
+- Sends a fresh `Idempotency-Key`, the contract's header parameter, on every operation that declares it (the
+  creates, release promotions, key rotations, the node-cache `PUT` and `DELETE`); that request's own retries
+  reuse it, so it never runs twice.
+- On a `202`, polls the operation the `Location` header names, and logs when the answer was the stored one of an
+  earlier attempt (`Idempotent-Replayed`).
 - A 404 on start means a wrong endpoint or a platform whose public API is switched off.
 
 ### Resources
@@ -381,8 +391,10 @@ provider_installation {
 `api/openapi-v1.json` is the pinned OpenAPI document of the platform's `/api/v1`, exported from the platform
 release the provider is built against. `internal/client/client.gen.go` is generated from it with oapi-codegen;
 the rest of `internal/client` is a thin hand-written wrapper (transport, retries, errors, TLS).
-`TestGeneratedClientIsCurrent` fails whenever the two are out of step. To move to a newer contract: replace
-the JSON, run `go generate ./...`, and commit both. A vendored contract may differ from the platform's export
+`TestGeneratedClientIsCurrent` fails whenever the two are out of step. `internal/client/descriptions.gen.go`
+holds the contract's property descriptions (`scripts/gendesc`), which document the members of nested attributes
+where the provider has no text of its own. To move to a newer contract: replace the JSON, run
+`go generate ./internal/client` and then `go generate ./...`, and commit everything. A vendored contract may differ from the platform's export
 only where the leak guard requires it; the CHANGELOG names every such edit.
 
 ## Repository layout
@@ -402,6 +414,7 @@ scripts/ci/acc-domains.sh   splits the acceptance tests into CI domains
 scripts/ci/signing-key.sh   imports and checks the release signing key
 scripts/ci/mirror-github.sh pushes the default branch or a tag to the public mirror
 scripts/mirror/             builds the air-gapped mirror bundle of a release
+scripts/gendesc/            writes the contract's property descriptions as Go
 scripts/github-release/     publishes a release's signed files as its GitHub release
 ```
 

@@ -170,7 +170,8 @@ func (a *API) CreateGatewayKey(ctx context.Context, body map[string]any) (*Gatew
 	if err != nil {
 		return nil, err
 	}
-	rsp, err := a.raw.AiGatewayKeysCreateWithBodyWithResponse(ctx, "application/json", r)
+	rsp, err := a.raw.AiGatewayKeysCreateWithBodyWithResponse(ctx,
+		&AiGatewayKeysCreateParams{IdempotencyKey: a.idempotencyKey()}, "application/json", r)
 	if err != nil {
 		return nil, err
 	}
@@ -196,7 +197,8 @@ func (a *API) RotateGatewayKey(ctx context.Context, id string, exposeSecret bool
 	if err != nil {
 		return nil, err
 	}
-	rsp, err := a.raw.AiGatewayKeysRotateWithBodyWithResponse(ctx, id, "application/json", r)
+	rsp, err := a.raw.AiGatewayKeysRotateWithBodyWithResponse(ctx, id,
+		&AiGatewayKeysRotateParams{IdempotencyKey: a.idempotencyKey()}, "application/json", r)
 	if err != nil {
 		return nil, err
 	}

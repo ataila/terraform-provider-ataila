@@ -96,9 +96,10 @@ type MockAPI struct {
 }
 
 type storedReply struct {
-	hash   string
-	status int
-	body   []byte
+	hash    string
+	status  int
+	body    []byte
+	headers map[string]string // the answer's own headers (Location, ETag), replayed with it
 	// running counts the 429s still to answer while a claimed request is
 	// "still running"; pending marks such a claim.
 	running int
@@ -358,7 +359,10 @@ func (m *MockAPI) serve(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var rep reply
-	if key := r.Header.Get("Idempotency-Key"); r.Method == http.MethodPost && key != "" {
+	if key := r.Header.Get("Idempotency-Key"); key != "" {
+		// The contract declares the key on the creates, the promotions, the
+		// key rotations and the node-cache PUT and DELETE; the provider sends
+		// it on those only.
 		rep = m.idempotently(c, key)
 	} else {
 		rep = m.route(c)
@@ -406,13 +410,13 @@ func (m *MockAPI) idempotently(c *call, key string) reply {
 			rep.body, rep.replay = rep.replay, nil
 		}
 		b, _ := json.Marshal(rep.body)
-		m.idempotent[key] = storedReply{hash: hash, status: rep.status, body: b}
-		rep.headers = map[string]string{"Idempotent-Replayed": "true"}
+		m.idempotent[key] = storedReply{hash: hash, status: rep.status, body: b, headers: rep.headers}
+		rep.headers = replayedHeaders(rep.headers)
 		return rep
 	}
 	if ok {
 		return reply{status: stored.status, body: json.RawMessage(stored.body),
-			problem: stored.status >= 400, headers: map[string]string{"Idempotent-Replayed": "true"}}
+			problem: stored.status >= 400, headers: replayedHeaders(stored.headers)}
 	}
 	rep := m.route(c)
 	if rep.status < 500 {
@@ -421,9 +425,20 @@ func (m *MockAPI) idempotently(c *call, key string) reply {
 			stored = rep.replay
 		}
 		b, _ := json.Marshal(stored)
-		m.idempotent[key] = storedReply{hash: hash, status: rep.status, body: b}
+		m.idempotent[key] = storedReply{hash: hash, status: rep.status, body: b, headers: rep.headers}
 	}
 	return rep
+}
+
+// replayedHeaders are a stored answer's headers, marked Idempotent-Replayed.
+func replayedHeaders(h map[string]string) map[string]string {
+	out := map[string]string{"Idempotent-Replayed": "true"}
+	for k, v := range h {
+		if k != "Retry-After" {
+			out[k] = v
+		}
+	}
+	return out
 }
 
 // requestHash identifies a request for idempotency: method, path, query, body.

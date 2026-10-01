@@ -106,7 +106,7 @@ func TestAccUserRoleGrant_Refusals(t *testing.T) {
 		Steps: []resource.TestStep{
 			{Config: providerBlock(false) + userHCL("granted@example.com")},
 			{Config: grantHCL("admin"), ExpectError: words("An API token cannot grant or revoke admin")},
-			{Config: grantHCL("api-tokens-read-global"), ExpectError: words("The token does not carry the role api-tokens-read-global")},
+			{Config: grantHCL("api-tokens-read-global"), ExpectError: words("An API token cannot grant or revoke api-tokens-read-global")},
 			{Config: grantHCL("users-read-tenant"), ExpectError: words("The role users-read-tenant is not grantable")},
 			{Config: grantHCL("no-such-role"), ExpectError: words("No such role: no-such-role")},
 			{

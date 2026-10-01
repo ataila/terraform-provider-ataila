@@ -32,7 +32,7 @@ output "shop_stages_not_done" {
 ### Read-Only
 
 - `percent` (Number) Share of the stages done, 0-100.
-- `stages` (List of Object) The stages: `key`, `title`, `deps` (the stages it needs), `deferred` (never applied automatically), `status`, `blocked` (pending while a dependency is not done), `stale`, `simulated`, `started_at` and `finished_at` (RFC 3339, of the latest run), `last_run_id` and `last_run_at` (that run in the portal's run history; null when it never ran), `error_message`, `verify_state` and `verify_summary`. (see [below for nested schema](#nestedatt--stages))
+- `stages` (Attributes List) Every stage, in catalogue order. (see [below for nested schema](#nestedatt--stages))
 - `state` (String) `not_started`, `provisioning`, `complete`, `attention` or `needs_action`.
 
 <a id="nestedatt--stages"></a>
@@ -40,18 +40,18 @@ output "shop_stages_not_done" {
 
 Read-Only:
 
-- `blocked` (Boolean)
-- `deferred` (Boolean)
-- `deps` (List of String)
-- `error_message` (String)
-- `finished_at` (String)
-- `key` (String)
-- `last_run_at` (String)
-- `last_run_id` (String)
-- `simulated` (Boolean)
-- `stale` (Boolean)
-- `started_at` (String)
-- `status` (String)
-- `title` (String)
-- `verify_state` (String)
-- `verify_summary` (String)
+- `blocked` (Boolean) Pending, and a stage it depends on is not done.
+- `deferred` (Boolean) Kept for visibility; never applied automatically.
+- `deps` (List of String) The keys of the stages it depends on.
+- `error_message` (String) Why the latest run failed, as it reported it.
+- `finished_at` (String) When the latest run ended; null while it runs or when it has not.
+- `key` (String) The stage's key, stable across runs and the same as `Operation.stage`.
+- `last_run_at` (String) When that run was created (dispatched). Null exactly when `last_run_id` is.
+- `last_run_id` (String) The id of this stage's newest provisioning run in the portal's run history: the run `status` is taken from. A run id, not an operation id (`/operations/provision:<id>` names the orchestration that walked the stages). Null when the stage has never run, or when its last success was undone by a later teardown (the stage then reads `pending`).
+- `simulated` (Boolean) Its latest run was simulated.
+- `stale` (Boolean) Done against an older manifest; re-applied by the next provisioning start.
+- `started_at` (String) When the latest run started; null when it has not.
+- `status` (String) `pending`, `running`, `success`, `failed`, `partial` or `manual` (the stage needs an operator).
+- `title` (String) The stage's name, for a person.
+- `verify_state` (String) The stage's latest verification, a check that what it provisioned is there: `pending`, `running`, `verified`, `not_verified` or `error`; null when never verified. Other values may appear.
+- `verify_summary` (String) What that verification found, for a person.

@@ -71,7 +71,7 @@ resource "ataila_ai_model" "coder" {
 - `location` (String) **Read-only**: `synology` (the central store on the NAS), `local` (node caches only), `both`, or null.
 - `nas_path` (String) Where the central copy is; null without one.
 - `nas_volume` (String) **Read-only**: the central-store share holding the weights; null without a central copy.
-- `node_caches` (List of Object) The node caches: `node`, `state`, `size_gb`. (see [below for nested schema](#nestedatt--node_caches))
+- `node_caches` (Attributes List) The node caches: `node`, `state`, `size_gb`. (see [below for nested schema](#nestedatt--node_caches))
 - `offline_ready` (Boolean) **Read-only**: a node holds a cached copy.
 - `status` (String) **Read-only**: `planned`, `pulling`, `owned` or `serving`, set by the store actions.
 - `updated_at` (String) When it last changed. RFC 3339 in UTC.
@@ -81,9 +81,9 @@ resource "ataila_ai_model" "coder" {
 
 Read-Only:
 
-- `node` (String)
-- `size_gb` (Number)
-- `state` (String)
+- `node` (String) The AI node's hostname.
+- `size_gb` (Number) The copy's size on the node's disk in GB, when measured.
+- `state` (String) `cached` once the copy is complete; `pulling` while it is made; `absent` or `failed` when a copy was removed or did not finish. Other values may appear.
 
 ## Import
 

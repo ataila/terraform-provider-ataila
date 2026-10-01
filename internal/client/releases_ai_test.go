@@ -6,6 +6,8 @@ package client
 import (
 	"context"
 	"testing"
+
+	"github.com/ataila/terraform-provider-ataila/internal/acctest"
 )
 
 func TestReleaseCalls(t *testing.T) {
@@ -14,10 +16,11 @@ func TestReleaseCalls(t *testing.T) {
 	_, tenant := m.AddCustomer("EXAMPLE", "example")
 	project := m.AddTestProject(tenant, "shop", "k8s")
 	v := "1.0.0"
-	op, err := api.RequestPromotion(ctx, project, ReleasePromotionCreate{Component: "app-api", TargetEnv: "dev", Version: &v})
-	if err != nil || op.Id != "release:1" || op.Status != OperationStatusRunning {
-		t.Fatalf("promote: %+v %v", op, err)
+	acc, err := api.RequestPromotion(ctx, project, ReleasePromotionCreate{Component: "app-api", TargetEnv: "dev", Version: &v})
+	if err != nil || acc.Operation.Id != "release:1" || acc.Operation.Status != OperationStatusRunning || acc.Replayed {
+		t.Fatalf("promote: %+v %v", acc, err)
 	}
+	op := acc.Operation
 	native, ok := ReleaseOperationID(op.Id)
 	if !ok || native != "1" {
 		t.Fatalf("native id %q", native)
@@ -78,6 +81,30 @@ func TestReleaseCalls(t *testing.T) {
 	}
 }
 
+// A 202 whose answer was lost on the way back: the retry, under the same
+// Idempotency-Key, gets the stored answer with its Location, marked replayed,
+// and nothing is booked twice.
+func TestAcceptedReplayAfterALostAnswer(t *testing.T) {
+	m, api := mockAPI(t, 1)
+	ctx := context.Background()
+	_, tenant := m.AddCustomer("EXAMPLE", "example")
+	project := m.AddTestProject(tenant, "shop", "k8s")
+	m.InjectFaults("/projects/"+project+"/release-promotions",
+		acctest.Fault{Status: 502, Method: "POST", AfterHandling: true, RetryAfter: "0"})
+	v := "1.0.0"
+	acc, err := api.RequestPromotion(ctx, project, ReleasePromotionCreate{Component: "app-api", TargetEnv: "dev", Version: &v})
+	if err != nil || !acc.Replayed || acc.Operation.Id != "release:1" {
+		t.Fatalf("promotion after a lost answer: %+v %v", acc, err)
+	}
+	reqs := m.Requests()
+	if k1, k2 := reqs[len(reqs)-2].Header.Get(IdempotencyHeader), reqs[len(reqs)-1].Header.Get(IdempotencyHeader); k1 == "" || k1 != k2 {
+		t.Errorf("the retry's key %q, the first attempt's %q", k2, k1)
+	}
+	if all, err := api.ListReleaseOperations(ctx, project); err != nil || len(all) != 1 {
+		t.Fatalf("booked %d times (%v), want once", len(all), err)
+	}
+}
+
 func TestAIModelCalls(t *testing.T) {
 	m, api := mockAPI(t, 1)
 	ctx := context.Background()
@@ -94,10 +121,11 @@ func TestAIModelCalls(t *testing.T) {
 		t.Fatalf("duplicate: %v", err)
 	}
 	m.GiveCentralCopy(id)
-	_, op, err := api.CacheModel(ctx, id, "ai-a")
-	if err != nil || op == nil || op.Id != "model-store-run:1" {
-		t.Fatalf("cache: %+v %v", op, err)
+	_, acc, err := api.CacheModel(ctx, id, "ai-a")
+	if err != nil || acc == nil || acc.Operation.Id != "model-store-run:1" {
+		t.Fatalf("cache: %+v %v", acc, err)
 	}
+	op := acc.Operation
 	reqs := m.Requests()
 	if k := reqs[len(reqs)-1].Header.Get(IdempotencyHeader); k == "" {
 		t.Error("the node-cache PUT carried no Idempotency-Key")

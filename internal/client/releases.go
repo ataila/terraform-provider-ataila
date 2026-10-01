@@ -63,15 +63,13 @@ func listPages[T any](op string, get func(cursor *string) (*http.Response, []byt
 // RequestPromotion sends POST /projects/{id}/release-promotions and returns
 // the operation (release:<id>). The request carries a fresh Idempotency-Key
 // that its own retries reuse, so a retry never books a second deployment.
-func (a *API) RequestPromotion(ctx context.Context, projectID string, body ReleasePromotionCreate) (*Operation, error) {
-	rsp, err := a.raw.ReleasePromotionsCreateWithResponse(ctx, projectID, body)
+func (a *API) RequestPromotion(ctx context.Context, projectID string, body ReleasePromotionCreate) (*Accepted, error) {
+	rsp, err := a.raw.ReleasePromotionsCreateWithResponse(ctx, projectID,
+		&ReleasePromotionsCreateParams{IdempotencyKey: a.idempotencyKey()}, body)
 	if err != nil {
 		return nil, err
 	}
-	if rsp.JSON202 == nil {
-		return nil, unexpected("POST /projects/"+projectID+"/release-promotions", rsp.HTTPResponse)
-	}
-	return rsp.JSON202, nil
+	return accepted("POST /projects/"+projectID+"/release-promotions", rsp.HTTPResponse, rsp.JSON202)
 }
 
 // GetReleaseOperation reads GET /release-operations/{id}.

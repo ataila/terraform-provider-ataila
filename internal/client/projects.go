@@ -128,7 +128,8 @@ func (a *API) CreateProject(ctx context.Context, body map[string]any) (ProjectDa
 	if err != nil {
 		return nil, err
 	}
-	rsp, err := a.raw.ProjectsCreateWithBodyWithResponse(ctx, "application/json", r)
+	rsp, err := a.raw.ProjectsCreateWithBodyWithResponse(ctx,
+		&ProjectsCreateParams{IdempotencyKey: a.idempotencyKey()}, "application/json", r)
 	if err != nil {
 		return nil, err
 	}
@@ -175,8 +176,9 @@ func (a *API) GetProvisioning(ctx context.Context, id string) (*Provisioning, er
 // StartProvisioning sends POST /projects/{id}/provisioning. When an
 // orchestration already holds the project, running is the operation id it
 // names (409 orchestration_in_progress) and err is nil: the caller adopts it.
-func (a *API) StartProvisioning(ctx context.Context, id string) (op *Operation, running string, err error) {
-	rsp, err := a.raw.ProjectProvisioningStartWithResponse(ctx, id)
+func (a *API) StartProvisioning(ctx context.Context, id string) (acc *Accepted, running string, err error) {
+	rsp, err := a.raw.ProjectProvisioningStartWithResponse(ctx, id,
+		&ProjectProvisioningStartParams{IdempotencyKey: a.idempotencyKey()})
 	if err != nil {
 		var apiErr *APIError
 		if errors.As(err, &apiErr) && apiErr.StatusCode == http.StatusConflict &&
@@ -189,10 +191,8 @@ func (a *API) StartProvisioning(ctx context.Context, id string) (op *Operation, 
 		}
 		return nil, "", err
 	}
-	if rsp.JSON202 == nil {
-		return nil, "", unexpected("POST /projects/"+id+"/provisioning", rsp.HTTPResponse)
-	}
-	return rsp.JSON202, "", nil
+	acc, err = accepted("POST /projects/"+id+"/provisioning", rsp.HTTPResponse, rsp.JSON202)
+	return acc, "", err
 }
 
 // GetStages reads GET /projects/{id}/stages.

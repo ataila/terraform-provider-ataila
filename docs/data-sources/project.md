@@ -57,12 +57,12 @@ output "shop_repositories" {
 - `github_repo_url` (String) A GitHub repository linked to the project. Leaving it out clears it.
 - `github_user` (String) A GitHub user linked to the project. Leaving it out clears it.
 - `gitlab_repo_slug` (String) Name of the application repository in the customer's GitLab group, `^[a-z][a-z0-9-]{1,40}$`, unique within the customer. **Frozen.**
-- `gitlab_repositories` (List of Object) The project's GitLab repositories: `path` (`<group>/<repository>`), `kind` (`app` or `www`) and `primary`. (see [below for nested schema](#nestedatt--gitlab_repositories))
+- `gitlab_repositories` (Attributes List) The project's GitLab repositories: `path` (`<group>/<repository>`), `kind` (`app` or `www`) and `primary`. (see [below for nested schema](#nestedatt--gitlab_repositories))
 - `has_mobile` (Boolean) Include a mobile application. Platform default `false`.
 - `image_registry_namespace` (String) The project's container registry namespace.
 - `import_existing_repo` (Boolean) The GitLab repository already holds code: provisioning does not seed it from the template. Platform default `false`.
 - `is_self` (Boolean) One of the platform's own projects: readable, never writable through the API.
-- `kubernetes_namespaces` (List of Object) The project's Kubernetes namespaces, by `env`. (see [below for nested schema](#nestedatt--kubernetes_namespaces))
+- `kubernetes_namespaces` (Attributes List) The project's Kubernetes namespaces, by `env`. (see [below for nested schema](#nestedatt--kubernetes_namespaces))
 - `long_name` (String) Display name, 2-60 characters. Quotes, apostrophes, backslashes and control characters are refused because the name is copied into generated project files.
 - `mssql_edition` (String) SQL Server edition. Platform default `express`.
 - `network_only` (Boolean) Register the network zone only: no application and no web site. Forces `enable_static_site` and `enable_fullstack_app` off. Platform default `false`. **Frozen.**
@@ -71,7 +71,7 @@ output "shop_repositories" {
 - `prod_object_storage_node_count` (Number) Object storage nodes in production: 2 or 4. Platform default 2.
 - `project_index` (Number) The project's index, 1-99, unique on the platform; it numbers the project's networks. Omit it and the platform allocates one above the highest in use (never below 4). **Frozen.**
 - `registered_by` (String) Id of the user or service account that created the project, when known.
-- `secret_paths` (List of Object) Where the project's development and UAT secrets live in the secrets store, by `env` (`dev` or `uat`). Production paths are never listed, nor the paths of a `vm` backend project. (see [below for nested schema](#nestedatt--secret_paths))
+- `secret_paths` (Attributes List) Where the project's development and UAT secrets live in the secrets store, by `env` (`dev` or `uat`). Production paths are never listed, nor the paths of a `vm` backend project. (see [below for nested schema](#nestedatt--secret_paths))
 - `stale_stages` (List of String) Provisioning stages done against an older version of the project's settings, in apply order. The next provisioning run (`ataila_project_provisioning`) re-applies exactly these.
 - `status` (String) `planned` until provisioning starts, then `provisioning`, `active` once every stage is done, `paused`, or `retired`. Read-only.
 - `tenant_id` (String) Id of the tenant that owns the project. **Frozen.**
@@ -86,9 +86,9 @@ output "shop_repositories" {
 
 Read-Only:
 
-- `kind` (String)
-- `path` (String)
-- `primary` (Boolean)
+- `kind` (String) `app` or `www`. Other values may appear.
+- `path` (String) `<customer group>/<repository>`.
+- `primary` (Boolean) The project's main repository.
 
 
 <a id="nestedatt--kubernetes_namespaces"></a>
@@ -96,8 +96,8 @@ Read-Only:
 
 Read-Only:
 
-- `env` (String)
-- `namespace` (String)
+- `env` (String) The environment, e.g. `dev`.
+- `namespace` (String) The namespace's name.
 
 
 <a id="nestedatt--secret_paths"></a>
@@ -105,8 +105,8 @@ Read-Only:
 
 Read-Only:
 
-- `env` (String)
-- `path` (String)
+- `env` (String) The environment: `dev` or `uat`.
+- `path` (String) The location in the secrets store.
 
 
 <a id="nestedatt--urls"></a>

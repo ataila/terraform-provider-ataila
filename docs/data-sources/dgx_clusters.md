@@ -29,42 +29,42 @@ output "clusters" {
 
 ### Read-Only
 
-- `clusters` (List of Object) The clusters, by name: `id`, `name`, `topology`, `interconnect`, `members`, `crosslink_subnet`, `status`, `serve`, `error_message`, `notes`, `created_at`, `updated_at`. `members`: `hostname`, `role`, `crosslink_ip`, `mgmt_ip`; `serve`: `recipe`, `model`, `served_at`; times RFC 3339 in UTC. (see [below for nested schema](#nestedatt--clusters))
+- `clusters` (Attributes List) The clusters, by name. (see [below for nested schema](#nestedatt--clusters))
 
 <a id="nestedatt--clusters"></a>
 ### Nested Schema for `clusters`
 
 Read-Only:
 
-- `created_at` (String)
-- `crosslink_subnet` (String)
-- `error_message` (String)
-- `id` (String)
-- `interconnect` (String)
-- `members` (List of Object) (see [below for nested schema](#nestedobjatt--clusters--members))
-- `name` (String)
-- `notes` (String)
-- `serve` (Object) (see [below for nested schema](#nestedobjatt--clusters--serve))
-- `status` (String)
-- `topology` (String)
-- `updated_at` (String)
+- `created_at` (String) When the cluster was defined. RFC 3339 in UTC.
+- `crosslink_subnet` (String) The subnet (CIDR) of the members' interconnect addresses.
+- `error_message` (String) Why the last change failed, when `status` is `error`.
+- `id` (String) The cluster's id.
+- `interconnect` (String) The interconnect the members share: `direct-cable`, or the switch they are connected through. Other values may appear.
+- `members` (Attributes List) The member nodes, head first. (see [below for nested schema](#nestedatt--clusters--members))
+- `name` (String) The cluster's name, unique; a load target names it so.
+- `notes` (String) Free-form notes of the platform's operators.
+- `serve` (Attributes) What the cluster serves; null when nothing is recorded. (see [below for nested schema](#nestedatt--clusters--serve))
+- `status` (String) As recorded: `defined`, `forming`, `active`, `breaking` or `error`. This read does not converge a cluster that is mid-change (the portal's DGX page does).
+- `topology` (String) How the members are wired: `pair-direct` (two nodes, cabled to each other), `pair-switch` (two nodes through a switch), `ring3` (three nodes in a ring) or `quad-switch` (four nodes through a switch). Other values may appear.
+- `updated_at` (String) The last change; equal to `created_at` until the first change. RFC 3339 in UTC.
 
-<a id="nestedobjatt--clusters--members"></a>
+<a id="nestedatt--clusters--members"></a>
 ### Nested Schema for `clusters.members`
 
 Read-Only:
 
-- `crosslink_ip` (String)
-- `hostname` (String)
-- `mgmt_ip` (String)
-- `role` (String)
+- `crosslink_ip` (String) The member's address on the cluster's own interconnect (`crosslink_subnet`).
+- `hostname` (String) The member's hostname.
+- `mgmt_ip` (String) The member's management address.
+- `role` (String) `head` or `worker`. Other values may appear.
 
 
-<a id="nestedobjatt--clusters--serve"></a>
+<a id="nestedatt--clusters--serve"></a>
 ### Nested Schema for `clusters.serve`
 
 Read-Only:
 
-- `model` (String)
-- `recipe` (String)
-- `served_at` (String)
+- `model` (String) The model it serves.
+- `recipe` (String) The serving recipe the cluster runs, by name.
+- `served_at` (String) When serving started, if recorded (a value that is not a timestamp reads as null). RFC 3339 in UTC.

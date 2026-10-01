@@ -38,10 +38,11 @@ func TestProjectCalls(t *testing.T) {
 	}
 
 	// Start, and a second start adopts the running operation.
-	op, running, err := api.StartProvisioning(ctx, id)
-	if err != nil || op == nil || running != "" || op.Id != "provision:1" {
-		t.Fatalf("start: %+v %q %v", op, running, err)
+	acc, running, err := api.StartProvisioning(ctx, id)
+	if err != nil || acc == nil || running != "" || acc.Operation.Id != "provision:1" || acc.Replayed {
+		t.Fatalf("start: %+v %q %v", acc, running, err)
 	}
+	op := acc.Operation
 	op2, running, err := api.StartProvisioning(ctx, id)
 	if err != nil || op2 != nil || running != "provision:1" {
 		t.Fatalf("second start: %+v %q %v", op2, running, err)

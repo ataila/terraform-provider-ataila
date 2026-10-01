@@ -173,12 +173,10 @@ func (r *projectResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			},
 		},
 		"image_registry_namespace": schema.StringAttribute{MarkdownDescription: d["image_registry_namespace"], Computed: true},
-		"gitlab_repositories":      schema.ListAttribute{MarkdownDescription: d["gitlab_repositories"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectRepoTypes}},
-		"kubernetes_namespaces":    schema.ListAttribute{MarkdownDescription: d["kubernetes_namespaces"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectNSTypes}},
-		"secret_paths":             schema.ListAttribute{MarkdownDescription: d["secret_paths"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectSecretTypes}},
-		"warnings": schema.ListAttribute{
-			MarkdownDescription: d["warnings"], Computed: true, ElementType: types.ObjectType{AttrTypes: warningAttrTypes},
-		},
+		"gitlab_repositories":      resourceNestedList(d["gitlab_repositories"], projectRepoTypes, contractDoc("GitLabRepository"), nil),
+		"kubernetes_namespaces":    resourceNestedList(d["kubernetes_namespaces"], projectNSTypes, contractDoc("KubernetesNamespace"), nil),
+		"secret_paths":             resourceNestedList(d["secret_paths"], projectSecretTypes, contractDoc("SecretPath"), nil),
+		"warnings":                 resourceNestedList(d["warnings"], warningAttrTypes, contractDoc("ApiWarning"), nil),
 	}
 	for _, s := range projectSettings {
 		attrs[s.name] = projectSettingResourceAttribute(s)

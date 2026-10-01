@@ -32,17 +32,17 @@ output "launchable" {
 
 ### Read-Only
 
-- `entries` (List of Object) The entries, by key: `key`, `host`, `label`, `model`, `engine`, `port`, `enabled`. (see [below for nested schema](#nestedatt--entries))
+- `entries` (Attributes List) The entries, by key. (see [below for nested schema](#nestedatt--entries))
 
 <a id="nestedatt--entries"></a>
 ### Nested Schema for `entries`
 
 Read-Only:
 
-- `enabled` (Boolean)
-- `engine` (String)
-- `host` (String)
-- `key` (String)
-- `label` (String)
-- `model` (String)
-- `port` (Number)
+- `enabled` (Boolean) The entry is offered for loading in the portal.
+- `engine` (String) The serving engine: `vllm`, `ollama` or `spark-vllm` (a DGX cluster). Other values may appear.
+- `host` (String) The node (for a cluster: its head).
+- `key` (String) The entry's stable key, unique.
+- `label` (String) The name the portal shows for the entry.
+- `model` (String) The model it loads, as the serving engine names it.
+- `port` (Number) The port the loaded model answers on.
