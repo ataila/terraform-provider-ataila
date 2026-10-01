@@ -5,8 +5,9 @@
 #
 # Every push:  toolchain probe · lint · leak guard · unit tests ·
 #              acceptance (oldest + newest OpenTofu, oldest + newest Terraform,
-#              four domains each) · cross-CLI state and state upgrade
-#              (oldest pair, newest pair) · build
+#              two shards of domains each, from one compiled test binary) ·
+#              cross-CLI state and state upgrade (oldest pair, newest pair) ·
+#              build
 # main:        also the strict leak guard, then the push to the public mirror
 # A v* tag:    all of the above, then goreleaser archives + SHA256SUMS +
 #              detached signature, the air-gapped mirror bundle, the tag pushed
@@ -146,9 +147,27 @@ unit:
     - go test ./... -count=1 -coverprofile=coverage.out
     - go tool cover -func=coverage.out | tail -n 1
 
+# The acceptance tests compiled once, with the provider binary, so that the
+# acceptance jobs need neither Go nor the Go cache: restoring that cache, tens
+# of thousands of files, side by side on one runner took up to ten minutes,
+# far longer than the tests. Static (no cgo), so that it runs on any runner.
+test-binary:
+  stage: check
+  extends: .go
+  script:
+    - mkdir -p bin
+    - CGO_ENABLED=0 go test -c -o bin/provider.test ./internal/provider/
+    - CGO_ENABLED=0 go build -o bin/terraform-provider-ataila .
+    - ls -l bin/
+  artifacts:
+    paths:
+      - bin/
+    expire_in: 1 day
+
 acceptance:
   stage: test
-  extends: .go
+  cache: []
+  needs: [test-binary]
   parallel:
     matrix:
       # Oldest and newest supported release of each CLI. The oldest is the
@@ -156,9 +175,7 @@ acceptance:
       # runs the tests in two shards of domains (scripts/ci/acc-domains.sh),
       # one job each, so that no job runs long; the lint job checks that
       # every acceptance test is in exactly one domain and that each list
-      # below names every domain once. Two shards, not four: four jobs per
-      # CLI version spent more time restoring the cache side by side than
-      # testing.
+      # below names every domain once.
       - ACC_CLI: tofu
         ACC_CLI_VERSION: ["1.6.0", "1.12.6"]
         ACC_DOMAIN: [tenancy+users-gateway, projects-releases+ai-licence-brand]
@@ -166,14 +183,15 @@ acceptance:
         ACC_CLI_VERSION: ["1.6.0", "1.16.4"]
         ACC_DOMAIN: [tenancy+users-gateway, projects-releases+ai-licence-brand]
   script:
+    - source scripts/ci/toolchain.sh
     - ensure_cli "$ACC_CLI" "$ACC_CLI_VERSION"
-    # Built before the tests start, so the link step never competes with them.
-    - export ATAILA_PROVIDER_DIR="$(mktemp -d)"
-    - go build -o "$ATAILA_PROVIDER_DIR/terraform-provider-ataila" .
+    - chmod +x bin/provider.test bin/terraform-provider-ataila
+    - export ATAILA_PROVIDER_DIR="$CI_PROJECT_DIR/bin"
     - export TF_ACC=1 TF_ACC_TERRAFORM_PATH="$CLI_PATH"
     - if [ "$ACC_CLI" = tofu ]; then export TF_ACC_PROVIDER_HOST=registry.opentofu.org; fi
     - run=$(bash scripts/ci/acc-domains.sh "$ACC_DOMAIN")
-    - go test ./internal/provider/ -run "$run" -count=1 -v -timeout 15m > acceptance.log 2>&1 || { cat acceptance.log; exit 1; }
+    # Run in the package's directory, as go test runs it.
+    - (cd internal/provider && "$CI_PROJECT_DIR/bin/provider.test" -test.run "$run" -test.count=1 -test.v -test.timeout 15m) > acceptance.log 2>&1 || { cat acceptance.log; exit 1; }
     - cat acceptance.log
     # A run in which the acceptance tests silently skipped is a failure.
     - |
@@ -280,6 +298,8 @@ release:
     - job: lint
       artifacts: false
     - job: unit
+      artifacts: false
+    - job: test-binary
       artifacts: false
     - job: acceptance
       artifacts: false

@@ -409,7 +409,8 @@ The primary repository and the only build are on the company's GitLab. Every pus
 (gofmt, go vet, tidy modules, generated files current, every acceptance test in one CI domain), the leak guard,
 unit tests, the acceptance matrix (OpenTofu 1.6.0 and 1.12.6, Terraform 1.6.0 and 1.16.4, each in two shards of
 domains), the cross-CLI state check and the state upgrade check (the oldest pair and the newest pair) and
-cross-platform builds. Only lint saves the Go cache; every other job only restores it. The default branch and every tag also run the strict leak guard ([Leak guard](#leak-guard)); nothing
+cross-platform builds. The acceptance jobs run one test binary that `test-binary` compiled, so they need neither
+Go nor the Go cache; of the jobs that do, only lint saves that cache. The default branch and every tag also run the strict leak guard ([Leak guard](#leak-guard)); nothing
 leaves GitLab unless it passed on that commit.
 
 A `vX.Y.Z` tag (it must match `version` in `main.go`) additionally runs:

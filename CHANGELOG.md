@@ -73,8 +73,10 @@ Codes the platform sends changed with them: the 503 `vault_write_failed` is `sec
 - README: "Source and issues", "Signing key", "Public mirror", and the version constraint `~> 0.7.0` (also in
   the provider example).
 - The acceptance tests are split into four domains and run in two shards per CLI version (8 jobs); lint checks
-  that every acceptance test is in exactly one domain and every domain in the CI matrix. Only lint saves the Go
-  cache: twenty jobs saving it at once filled the runners' disks and took longer than the tests.
+  that every acceptance test is in exactly one domain and every domain in the CI matrix. The acceptance jobs
+  run one test binary compiled by `test-binary` and need neither Go nor the Go cache, and only lint saves that
+  cache: restoring it side by side, and twenty jobs saving it at once, took longer than the tests and filled the
+  runners' disks.
 - The cross-CLI stage also runs the state upgrade check: a state written by the previous release's binary,
   built from its tag, plans clean under this release in both CLIs and both orders.
 
