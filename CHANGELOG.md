@@ -3,6 +3,17 @@
 All notable changes to this provider. Versions follow semantic versioning; until the first publication the
 provider stays at 0.x and any release may change.
 
+## Unreleased
+
+### CI
+
+- Temporary files live under the build directory (`TMPDIR` is `$CI_PROJECT_DIR/.tmp`) and a default
+  `after_script` removes them, and stops a gpg-agent the release job started, whether the job passed or not:
+  the cross-CLI jobs left three directories in the runner's `/tmp` on every run.
+- The state upgrade check upgrades from the newest release tag older than the version in `main.go`, and reads
+  the schema versions that release wrote from its state instead of assuming 0. Once v0.7.0 existed, it was
+  picked on main and failed the check, which expected a 0.6.x state.
+
 ## 0.7.0 (2026-10-01)
 
 **Breaking, before publication.** Pins the platform's `/api/v1` contract of platform release 1.0.176

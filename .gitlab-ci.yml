@@ -243,11 +243,21 @@ cross-cli-state:
     # Under $TMPDIR, $CI_PROJECT_DIR/.tmp (see default:after_script).
     - export ATAILA_PROVIDER_DIR="$(mktemp -d)"
     - go build -o "$ATAILA_PROVIDER_DIR/terraform-provider-ataila" .
-    # The previous release: the newest v* tag that is not this pipeline's own.
+    # The previous release: the newest vX.Y.Z tag older than the version in
+    # main.go, which is the release this commit is or leads to (so on main
+    # after a release, still the one before it until the version moves on).
     - git fetch --quiet --tags --force origin
-    - previous=$(git tag --list 'v*' --sort=-v:refname | grep -vxF "${CI_COMMIT_TAG:-none}" | head -n 1)
-    - test -n "$previous" || { echo "No earlier release tag to upgrade from."; exit 1; }
-    - echo "upgrading a state of $previous"
+    - |
+      base=$(sed -n 's/^var version = "\(.*\)"$/\1/p' main.go)
+      previous=""
+      for t in $(git tag --list 'v*' --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$'); do
+        if [ "$t" != "v$base" ] && [ "$(printf '%s\n' "$t" "v$base" | sort -V | head -n 1)" = "$t" ]; then
+          previous="$t"
+          break
+        fi
+      done
+      test -n "$previous" || { echo "No release tag older than $base to upgrade from."; exit 1; }
+      echo "upgrading a state of $previous to $base"
     - export ATAILA_PREVIOUS_PROVIDER_DIR="$(mktemp -d)"
     - prevsrc="$(mktemp -d)"
     - git archive "$previous" | tar -x -C "$prevsrc"

@@ -349,9 +349,11 @@ ATAILA_CROSS_CLI_TERRAFORM="$(command -v terraform)" ATAILA_CROSS_CLI_TOFU="$(co
   go test ./internal/provider/ -run '^TestCrossCLIState$' -v
 ```
 
-`TestCrossCLIStateUpgrade` writes a state with the previous release's binary (schema version 0) and plans it
-with this release in both CLIs and both orders: no changes, and the state at schema version 1 after a refresh.
-It also needs the previous release, built from its tag (CI builds the newest earlier `v*` tag):
+`TestCrossCLIStateUpgrade` writes a state with the previous release's binary and plans it with this release in
+both CLIs and both orders: no changes, and the state at this release's schema versions after a refresh (from
+0.6.x that is the upgrade from version 0 to 1; the versions the previous release wrote are read from its state).
+It also needs the previous release, built from its tag; CI builds the newest `vX.Y.Z` tag older than the version
+in `main.go`:
 
 ```shell
 ATAILA_PREVIOUS_PROVIDER_DIR=/path/to/previous/release \
