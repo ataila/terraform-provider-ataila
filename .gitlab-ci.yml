@@ -66,10 +66,15 @@ default:
       - if [ -d "$CI_PROJECT_DIR/.cache" ]; then chmod -R u+w "$CI_PROJECT_DIR/.cache"; fi
 
 .go:
-  cache:
+  # The runners keep the cache locally, one archive per runner. Only lint
+  # saves it; every other job restores it and saves nothing. When twenty jobs
+  # of one pipeline each wrote the whole cache back at once, the archives
+  # filled the runners' disks and saving took longer than the tests.
+  cache: &go_cache
     key: go-$GO_VERSION
     paths:
       - .cache/
+    policy: pull
   before_script:
     - source scripts/ci/toolchain.sh
     - ensure_go
@@ -84,6 +89,10 @@ toolchain:probe:
 lint:
   stage: check
   extends: .go
+  # The one job that saves the Go cache (toolchain, modules, build cache).
+  cache:
+    <<: *go_cache
+    policy: pull-push
   script:
     - echo "== gofmt"
     - unformatted=$(gofmt -l $(git ls-files '*.go'))
@@ -92,7 +101,7 @@ lint:
     - go vet ./...
     - echo "== go.mod and go.sum are tidy"
     - go mod tidy -diff
-    - echo "== every acceptance test is in exactly one CI domain"
+    - echo "== every acceptance test is in exactly one CI domain, every domain in the matrix"
     - bash scripts/ci/acc-domains.sh --check
     - echo "== generated client and docs are current"
     - ensure_cli terraform "$DOCS_TERRAFORM_VERSION"
@@ -144,15 +153,18 @@ acceptance:
     matrix:
       # Oldest and newest supported release of each CLI. The oldest is the
       # minimum the README declares; raise both together. Each CLI version
-      # runs the tests in domains (scripts/ci/acc-domains.sh), one job each,
-      # so that no job runs long; the lint job checks that every acceptance
-      # test is in exactly one domain.
+      # runs the tests in two shards of domains (scripts/ci/acc-domains.sh),
+      # one job each, so that no job runs long; the lint job checks that
+      # every acceptance test is in exactly one domain and that each list
+      # below names every domain once. Two shards, not four: four jobs per
+      # CLI version spent more time restoring the cache side by side than
+      # testing.
       - ACC_CLI: tofu
         ACC_CLI_VERSION: ["1.6.0", "1.12.6"]
-        ACC_DOMAIN: [tenancy, users-gateway, projects-releases, ai-licence-brand]
+        ACC_DOMAIN: [tenancy+users-gateway, projects-releases+ai-licence-brand]
       - ACC_CLI: terraform
         ACC_CLI_VERSION: ["1.6.0", "1.16.4"]
-        ACC_DOMAIN: [tenancy, users-gateway, projects-releases, ai-licence-brand]
+        ACC_DOMAIN: [tenancy+users-gateway, projects-releases+ai-licence-brand]
   script:
     - ensure_cli "$ACC_CLI" "$ACC_CLI_VERSION"
     # Built before the tests start, so the link step never competes with them.

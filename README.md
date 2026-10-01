@@ -323,7 +323,8 @@ go generate ./...             # regenerates internal/client from api/openapi-v1.
 
 The acceptance tests run the real CLI against an in-process mock of `/api/v1` (`internal/acctest`), served over
 TLS with its own certificate authority, so they need no platform and no credentials. Run them once per CLI
-(CI runs them in four domains per CLI version, `scripts/ci/acc-domains.sh`, so that no job runs long):
+(CI splits them into four domains, `scripts/ci/acc-domains.sh`, and runs two shards of two domains per CLI
+version, so that no job runs long):
 
 ```shell
 # Terraform
@@ -406,9 +407,9 @@ scripts/github-release/     publishes a release's signed files as its GitHub rel
 
 The primary repository and the only build are on the company's GitLab. Every push runs: a toolchain probe, lint
 (gofmt, go vet, tidy modules, generated files current, every acceptance test in one CI domain), the leak guard,
-unit tests, the acceptance matrix (OpenTofu 1.6.0 and 1.12.6, Terraform 1.6.0 and 1.16.4, each in four domains),
-the cross-CLI state check and the state upgrade check (the oldest pair and the newest pair) and cross-platform
-builds. The default branch and every tag also run the strict leak guard ([Leak guard](#leak-guard)); nothing
+unit tests, the acceptance matrix (OpenTofu 1.6.0 and 1.12.6, Terraform 1.6.0 and 1.16.4, each in two shards of
+domains), the cross-CLI state check and the state upgrade check (the oldest pair and the newest pair) and
+cross-platform builds. Only lint saves the Go cache; every other job only restores it. The default branch and every tag also run the strict leak guard ([Leak guard](#leak-guard)); nothing
 leaves GitLab unless it passed on that commit.
 
 A `vX.Y.Z` tag (it must match `version` in `main.go`) additionally runs:
