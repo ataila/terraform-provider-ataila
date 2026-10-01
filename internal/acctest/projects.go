@@ -129,6 +129,7 @@ var projectFrozen = []string{"project_index", "short_name", "gitlab_repo_slug", 
 type mockStage struct {
 	status, started, finished, errMsg string
 	simulated                         bool
+	runID                             string
 }
 
 type mockProjectMember struct {
@@ -166,6 +167,7 @@ type projectsState struct {
 	failStage    map[string]bool
 	manualStage  map[string]int // polls a stage waits for an operator; <0 for good
 	instant      bool           // a start runs every stage at once
+	nextRun      int            // stage run ids
 }
 
 func newProjectsState() *projectsState {
@@ -729,26 +731,38 @@ func (m *MockAPI) projectsCreate(c *call) reply {
 	if r := crossField(c, be, merged); r != nil {
 		return *r
 	}
-	for _, other := range m.projects.projects {
-		if other.customerID == *t.customerID && other.slug == *slug {
-			return c.problem(http.StatusConflict, "gitlab_repo_slug_taken",
-				fmt.Sprintf("The customer already has a project with repository '%s'.", *slug), map[string]any{"field": "gitlab_repo_slug"})
-		}
-	}
+	// Reservations are checked in a fixed order; the first conflict is the
+	// code, and every one is listed.
 	d := strings.ToLower(strings.TrimSpace(*domain))
-	taken := func(code string) reply {
-		return c.problem(http.StatusConflict, code, "A project already holds that value.",
-			map[string]any{"field": strings.TrimSuffix(code, "_taken")})
+	ids := make([]int, 0, len(m.projects.projects))
+	for id := range m.projects.projects {
+		ids = append(ids, id)
 	}
-	for _, other := range m.projects.projects {
-		switch {
-		case index != nil && other.index == *index:
-			return taken("project_index_taken")
-		case other.short == *short:
-			return taken("short_name_taken")
-		case other.domain == d:
-			return taken("primary_domain_taken")
+	sort.Ints(ids)
+	var conflicts []map[string]any
+	add := func(key string, value any, holder int) {
+		conflicts = append(conflicts, map[string]any{"key": key, "value": value, "project_id": strconv.Itoa(holder)})
+	}
+	for _, check := range []string{"short_name", "project_index", "primary_domain", "gitlab_repo_slug"} {
+		for _, id := range ids {
+			other := m.projects.projects[id]
+			switch {
+			case check == "short_name" && other.short == *short:
+				add(check, *short, id)
+			case check == "project_index" && index != nil && other.index == *index:
+				add(check, *index, id)
+			case check == "primary_domain" && other.domain == d:
+				add(check, d, id)
+			case check == "gitlab_repo_slug" && other.customerID == *t.customerID && other.slug == *slug:
+				add(check, *slug, id)
+			}
 		}
+	}
+	if len(conflicts) > 0 {
+		key := conflicts[0]["key"].(string)
+		return c.problem(http.StatusConflict, key+"_taken",
+			fmt.Sprintf("%s %v is already held by project %s.", key, conflicts[0]["value"], conflicts[0]["project_id"]),
+			map[string]any{"field": key, "conflicts": conflicts})
 	}
 	idx := 0
 	if index != nil {
@@ -906,7 +920,12 @@ func (m *MockAPI) provisioningView(p *mockProject) map[string]any {
 			stale = append(stale, st.key)
 		}
 		simulated = simulated || s.simulated
-		stages = append(stages, map[string]any{"key": st.key, "status": s.status, "stale": p.stale[st.key], "simulated": s.simulated})
+		var runAt any
+		if s.runID != "" {
+			runAt = s.started
+		}
+		stages = append(stages, map[string]any{"key": st.key, "status": s.status, "stale": p.stale[st.key],
+			"simulated": s.simulated, "last_run_id": nullStr(s.runID), "last_run_at": runAt})
 	}
 	state := "provisioning"
 	switch {
@@ -1043,6 +1062,8 @@ func (m *MockAPI) advance(o *mockOrch) {
 	}
 	o.current = o.queue[0]
 	p.stages[o.current].status, p.stages[o.current].started = "running", ts
+	m.projects.nextRun++
+	p.stages[o.current].runID = strconv.Itoa(m.projects.nextRun)
 }
 
 func (m *MockAPI) provisioningGet(c *call, raw string) reply {
@@ -1147,6 +1168,7 @@ func (m *MockAPI) stagesGet(c *call, raw string) reply {
 			"key": st.key, "title": st.title, "deps": deps, "deferred": st.deferred, "status": s.status,
 			"blocked": blocked, "stale": p.stale[st.key], "simulated": s.simulated, "started_at": nullStr(s.started),
 			"finished_at": nullStr(s.finished), "error_message": nullStr(s.errMsg), "verify_state": nil, "verify_summary": nil,
+			"last_run_id": nullStr(s.runID), "last_run_at": nullStr(s.started),
 		})
 	}
 	return ok(http.StatusOK, map[string]any{"project_id": strconv.Itoa(p.id), "state": view["state"],

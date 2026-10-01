@@ -3,10 +3,10 @@
 All notable changes to this provider. Versions follow semantic versioning; until the first publication the
 provider stays at 0.x and any release may change.
 
-## 0.6.0 (unreleased)
+## 0.6.0 (2026-10-01)
 
-Releases, AI models and AI Center. Pins the platform's `/api/v1` contract of platform release 1.0.164
-(API 1.0.0).
+Releases, AI models and AI Center. Pins the platform's `/api/v1` contract of platform release 1.0.167
+(API 1.0.0): the releases and AI models of 1.0.164 plus the contract polish of 1.0.167.
 
 ### Resources
 
@@ -37,10 +37,41 @@ Releases, AI models and AI Center. Pins the platform's `/api/v1` contract of pla
   `ataila_ai_node`, `ataila_dgx_clusters`, `ataila_ai_model_launch_catalog`. The AI Center reads never
   fail on a monitoring outage; `prometheus_reachable` says whether the live fields could be read.
 
+### Changed by the contract polish (1.0.167)
+
+- `ataila_user`: destroy (deactivate) accepts the platform's 204 without a body; what did not go as planned
+  in a deactivation is now only on the platform's audit row. `username` and `ad_username` stay create-only
+  (the platform now refuses a change with 422 `immutable_field`). On a platform without SSO a new user is
+  `partial` with the warning `keycloak_not_configured`.
+- `ataila_ai_serving_tier` and `ataila_ai_serving_tiers`: `created_at` is new; `updated_at` is never null
+  (it repeats `created_at` until the first change).
+- `ataila_ai_gateway_key`: `models` is a sorted set on the platform too; every write answers
+  `live = not_read`, and the provider reads the key back after create, change and rotation as before. A
+  platform without a gateway is reported before any check of the body.
+- `ataila_project`: a create refused because values are taken lists every conflict (short name, index,
+  domain, repository), each with the project holding it.
+- `ataila_project_provisioning` `stages` and `ataila_project_stages`: `last_run_id` and `last_run_at` of
+  each stage's newest run.
+- `ataila_licence_bundle`: a 409 `stale_epoch` that says `already_installed` adopts the installed document
+  (the digest comparison stays as the cross-check).
+- `ataila_brand_asset` uploads use the contract's named upload schema; the wire is unchanged.
+- Every number of the contract is a double: budgets and spend are float64 end to end.
+- The vendored contract differs from the platform's 1.0.167 export in one place: the description of
+  `DELETE /users/{user_id}` no longer names the partner portal's host (it reads "the partner portal"), as the
+  platform's own wording will from 1.0.170. The generated client's doc comment follows it.
+
+### Leak guard
+
+- Host names under any of the company's domains (`<host>.ataila.<tld>`) are findings, not only those of one
+  domain. Findings already in pushed history are listed in `scripts/leak-guard-history.txt` by commit and
+  sha256: a normal run reports them as `KNOWN`, `--strict` refuses them (run it before mirroring; the history
+  must be rewritten first).
+
 ### Behaviour
 
-- Numbers of AI models and AI Center keep float64 precision (the generated models use float32).
+- Numbers of AI models and AI Center keep float64 precision.
 - A 503 `loaded_state_unknown` is final, like the other final 503 codes.
+- A problem's list of objects (for example `conflicts`) is rendered one object per part.
 
 ### Tests
 

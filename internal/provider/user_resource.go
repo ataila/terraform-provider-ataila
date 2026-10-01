@@ -157,7 +157,7 @@ var userDocs = map[string]string{
 	"keycloak_linked":     "An SSO account exists for the person.",
 	"gitlab_linked":       "A GitLab account exists for the person.",
 	"kc_sync_status":      "The last SSO projection of the person: `unlinked`, `pending`, `ok` or `error`.",
-	"provisioning_status": "The newest provisioning run: `ok`, `partial` (a step skipped, typically no GitLab account wanted), `error`, or null.",
+	"provisioning_status": "The newest provisioning run: `ok`, `partial` (a step skipped: no GitLab account wanted, or a platform without SSO, which also warns `keycloak_not_configured`), `error`, or null.",
 	"created_at":          "When the person was created: RFC 3339 in UTC, compared as an instant.",
 	"updated_at":          "When the person was last changed: RFC 3339 in UTC, compared as an instant.",
 	"warnings": "What did not go as planned in the last create or change made through this resource " +
@@ -457,15 +457,10 @@ func (r *userResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 		resp.Diagnostics.Append(destroyRefused("ataila_user", "user", state.ident()))
 		return
 	}
-	u, err := r.data.API.DeactivateUser(ctx, state.ID.ValueString())
-	if isNotFound(err) {
-		return
-	}
-	if err != nil {
+	err := r.data.API.DeactivateUser(ctx, state.ID.ValueString())
+	if err != nil && !isNotFound(err) {
 		resp.Diagnostics.Append(destroyError("ataila_user", "user", state.ident(), err))
-		return
 	}
-	addWarnings(&resp.Diagnostics, "deactivating the user "+state.ident(), u.Warnings)
 }
 
 func (r *userResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

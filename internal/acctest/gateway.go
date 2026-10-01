@@ -57,7 +57,8 @@ type mockTier struct {
 	pinned               *string
 	enabled              bool
 	auto                 string // the model auto-assign picks when it is loaded
-	updatedAt            *string
+	createdAt            string
+	updatedAt            *string // nil: never changed (updated_at repeats created_at)
 }
 
 type mockKey struct {
@@ -306,6 +307,11 @@ func (m *MockAPI) tierWire(t *mockTier, warnings []map[string]any) map[string]an
 	if served != nil {
 		model = *served
 	}
+	updated = tierCreatedAt
+	if t.createdAt != "" {
+		updated = t.createdAt
+	}
+	created := updated
 	if t.updatedAt != nil {
 		updated = *t.updatedAt
 	}
@@ -313,9 +319,12 @@ func (m *MockAPI) tierWire(t *mockTier, warnings []map[string]any) map[string]an
 		"key": t.key, "label": t.label, "category": t.category, "sort": t.sort, "role": role,
 		"pinned_model": pinned, "enabled": t.enabled, "resolved": resolved, "resolved_model": model,
 		"source": source, "candidate_models": append([]string{}, m.gateway.candidates...),
-		"updated_at": updated, "warnings": warnings,
+		"created_at": created, "updated_at": updated, "warnings": warnings,
 	}
 }
+
+// tierCreatedAt is when the mock's tiers were created.
+const tierCreatedAt = "2026-09-01T08:00:00Z"
 
 func (m *MockAPI) keyWire(k *mockKey, live *gatewayKey, state string, secret *string, warnings []map[string]any) map[string]any {
 	if warnings == nil {
@@ -670,12 +679,12 @@ func modelsField(v *validation, body map[string]any, required bool) ([]string, b
 			v.fail("models", fmt.Sprintf("%v is not a tier name", item))
 			continue
 		}
-		if seen[s] {
-			v.fail("models", "models lists a tier twice")
+		if !seen[s] {
+			out = append(out, s)
 		}
 		seen[s] = true
-		out = append(out, s)
 	}
+	sort.Strings(out) // a set: sorted, each tier once
 	return out, true
 }
 
@@ -724,6 +733,9 @@ func (m *MockAPI) keysCreate(c *call) reply {
 	if r := m.gatewayWrite(c); r != nil {
 		return *r
 	}
+	if r := m.needGateway(c); r != nil {
+		return *r // the gateway is checked before the body
+	}
 	v := &validation{}
 	body := decodeBody(c, v, "organization_id", "project_id", "env", "app", "feature", "models", "rpm_limit",
 		"tpm_limit", "soft_budget_usd", "budget_duration", "expose_secret")
@@ -764,9 +776,6 @@ func (m *MockAPI) keysCreate(c *call) reply {
 	if bad != nil {
 		return *bad
 	}
-	if r := m.needGateway(c); r != nil {
-		return *r
-	}
 	parts := []string{tenant.slug, *env, *app}
 	if feature != nil {
 		parts = append(parts, *feature)
@@ -796,9 +805,10 @@ func (m *MockAPI) keysCreate(c *call) reply {
 	if expose != nil && *expose {
 		secret = &value
 	}
-	rep := ok(http.StatusCreated, m.keyWire(k, nil, "present", secret, warnings))
+	// Every write answers live not_read and spend null; a read has the live values.
+	rep := ok(http.StatusCreated, m.keyWire(k, nil, "not_read", secret, warnings))
 	if secret != nil {
-		rep.replay = m.replaySafe(k, "present", warnings)
+		rep.replay = m.replaySafe(k, "not_read", warnings)
 	}
 	return rep
 }
@@ -953,9 +963,9 @@ func (m *MockAPI) keysRotate(c *call, raw string) reply {
 	if expose != nil && *expose {
 		secret = &value
 	}
-	rep := ok(http.StatusOK, m.keyWire(k, nil, "present", secret, nil))
+	rep := ok(http.StatusOK, m.keyWire(k, nil, "not_read", secret, nil))
 	if secret != nil {
-		rep.replay = m.replaySafe(k, "present", nil)
+		rep.replay = m.replaySafe(k, "not_read", nil)
 	}
 	return rep
 }

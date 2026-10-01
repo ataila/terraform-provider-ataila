@@ -13,14 +13,20 @@
 #
 # Fails on
 #   - private IPv4 addresses (10/8, 172.16/12, 192.168/16);
-#   - host names under the company's internal domain;
+#   - host names under any of the company's domains (`<host>.ataila.<tld>`);
 #   - Vault KV paths (the "secret" mount followed by a slash and a path);
 #   - token shapes: platform API tokens, GitLab and Vault tokens, private keys;
 #   - internal code names.
 # Examples and docs use portal.example.com, which none of these match.
 #
-# Usage: scripts/leak-guard.sh [--tree-only | --history-only] [--rev <rev>]
+# Usage: scripts/leak-guard.sh [--tree-only | --history-only] [--strict] [--rev <rev>]
 # Exit:  0 clean, 1 leak found, 2 the guard itself could not run properly.
+#
+# Findings that are already in pushed history are listed, by commit and by the
+# sha256 of the exact finding (never the finding itself), in
+# scripts/leak-guard-history.txt. A normal run reports them as KNOWN and passes;
+# --strict fails on them: run it before the repository is mirrored, which needs
+# that history rewritten first. A finding in the tree is never tolerated.
 #
 # Before scanning, the guard proves each pattern still matches a sample built
 # at run time, so a broken pattern fails loudly instead of passing silently.
@@ -29,12 +35,14 @@ set -euo pipefail
 
 mode=all
 rev=HEAD
+strict=false
 while [ $# -gt 0 ]; do
   case "$1" in
     --tree-only) mode=tree ;;
     --history-only) mode=history ;;
+    --strict) strict=true ;;
     --rev) rev="${2:?--rev needs a revision}"; shift ;;
-    -h|--help) sed -n '2,26p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,32p' "$0"; exit 0 ;;
     *) echo "leak-guard: unknown argument $1" >&2; exit 2 ;;
   esac
   shift
@@ -46,7 +54,7 @@ PATTERNS=(
   "private address 10/8||(^|[^0-9.])10(\.[0-9]{1,3}){3}([^0-9]|$)"
   "private address 172.16/12||(^|[^0-9.])172\.(1[6-9]|2[0-9]|3[01])(\.[0-9]{1,3}){2}([^0-9]|$)"
   "private address 192.168/16||(^|[^0-9.])192\.168(\.[0-9]{1,3}){2}([^0-9]|$)"
-  "internal host name|-i|([a-z0-9-]+\.)+ataila\.com"
+  "company host name|-i|([a-z0-9-]+\.)+ataila\.[a-z]{2,63}"
   "Vault path||(^|[^A-Za-z0-9_.-])secret/[A-Za-z0-9_.-]+"
   "platform API token||ataila_(pat|sat)_[A-Za-z0-9_]{20,}"
   "GitLab token||glpat-[A-Za-z0-9_-]{20,}"
@@ -76,7 +84,7 @@ samples=(
   "10.""20.30.40"
   "172.""20.3.4"
   "192.""168.1.20"
-  "gitlab.""ataila.com"
+  "app.""ataila.eu"
   "secret""/team/app/db"
   "ataila_""pat_abcd1234_0123456789abcdefghijklmnopqrstuvwxyzABCDEF"
   "glpat""-0123456789abcdefghij"
@@ -92,6 +100,9 @@ negatives=(
   "v1.10.2"
   "ataila_pat_…"
   "-----BEGIN CERTIFICATE-----"
+  "terraform-provider-ataila.exe"
+  "registry.opentofu.org/ataila/ataila"
+  "github.com/ataila/terraform-provider-ataila"
 )
 for i in "${!PATTERNS[@]}"; do
   IFS='|' read -r name flags re <<<"${PATTERNS[$i]}"
@@ -161,7 +172,24 @@ mask() {
   fi
 }
 
+# Known findings in pushed history: "<commit, 12 hex> <sha256 of the finding>".
+KNOWN_FILE=scripts/leak-guard-history.txt
+known_history=""
+if [ -f "$KNOWN_FILE" ]; then
+  known_history=$(grep -vE '^[[:space:]]*(#|$)' "$KNOWN_FILE" | awk '{ print $1 " " $2 }') \
+    || known_history=""
+fi
+# known <location> <finding>: the finding is a listed one of that commit.
+known() {
+  local loc="$1" m="$2" sha hash
+  [[ "$loc" == "commit "* ]] || return 1
+  sha=$(printf '%s' "$loc" | awk '{ print $2 }')
+  hash=$(printf '%s' "$m" | sha256sum | awk '{ print $1 }')
+  grep -qxF -- "$sha $hash" <<<"$known_history"
+}
+
 found=0
+tolerated=0
 for entry in "${PATTERNS[@]}"; do
   IFS='|' read -r name flags _ <<<"$entry"
   re="${entry#*|*|}"
@@ -173,6 +201,17 @@ for entry in "${PATTERNS[@]}"; do
       while IFS= read -r m; do
         m="$(printf '%s' "$m" | sed -E 's/^[^0-9A-Za-z_-]//; s/[^0-9A-Za-z_-]$//')"
         allowed "$m" && continue
+        if known "$loc" "$m"; then
+          if [ "$strict" = true ]; then
+            printf 'LEAK  %-26s %s: %s (listed in %s; rewrite this history)\n' "[$name]" "$loc" \
+              "$(mask "$name" "$m")" "$KNOWN_FILE"
+            found=1
+          else
+            printf 'KNOWN %-26s %s (listed in %s)\n' "[$name]" "$loc" "$KNOWN_FILE"
+            tolerated=1
+          fi
+          continue
+        fi
         printf 'LEAK  %-26s %s: %s\n' "[$name]" "$loc" "$(mask "$name" "$m")"
         found=1
       done < <(printf '%s\n' "$text" | grep -oE $flags -- "$re" || true)
@@ -181,10 +220,15 @@ for entry in "${PATTERNS[@]}"; do
 done
 
 summary="mode $mode"
+[ "$strict" = true ] && summary+=", strict"
 [ -n "${files:-}" ] && summary+=", $files files"
 [ -n "${commits:-}" ] && summary+=", $commits commits of $rev"
 if [ "$found" -ne 0 ]; then
   echo "leak-guard: FAILED ($summary). Remove the findings above; if one is in history, rewrite that history before anything is pushed or mirrored." >&2
   exit 1
+fi
+if [ "$tolerated" -ne 0 ]; then
+  echo "leak-guard: clean but for the KNOWN history findings above ($summary). The history must be rewritten before it is mirrored: --strict refuses them."
+  exit 0
 fi
 echo "leak-guard: clean ($summary)"

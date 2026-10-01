@@ -408,7 +408,7 @@ func (r *projectResource) Create(ctx context.Context, req resource.CreateRequest
 	short := strAttr(plan, "short_name")
 	p, err := r.data.API.CreateProject(ctx, body)
 	if err != nil {
-		resp.Diagnostics.Append(apiError("creating the project "+short, err))
+		resp.Diagnostics.Append(projectCreateError(short, err))
 		return
 	}
 	warnings, ws := projectWarnings(p)
@@ -516,6 +516,34 @@ func (r *projectResource) Update(ctx context.Context, req resource.UpdateRequest
 	values := projectValues(p, plan, prov.StaleStages)
 	values["warnings"] = warnings
 	resp.Diagnostics.Append(resp.State.Set(ctx, objectFrom(ctx, planObj.Type(ctx).(basetypes.ObjectType), values, &resp.Diagnostics))...)
+}
+
+// projectCreateError explains a create refused because values are taken: the
+// platform lists every conflict (the first one is the code).
+func projectCreateError(short string, err error) diag.Diagnostic {
+	var apiErr *client.APIError
+	if !errors.As(err, &apiErr) || apiErr.StatusCode != 409 {
+		return apiError("creating the project "+short, err)
+	}
+	raw, _ := apiErr.Extra("conflicts")
+	list, _ := raw.([]any)
+	if len(list) == 0 {
+		return apiError("creating the project "+short, err)
+	}
+	var lines []string
+	for _, item := range list {
+		c, _ := item.(map[string]any)
+		line := fmt.Sprintf("  - %v %q", c["key"], fmt.Sprint(c["value"]))
+		if id, ok := c["project_id"]; ok && id != nil {
+			line += fmt.Sprintf(" is held by project %v", id)
+		}
+		lines = append(lines, line)
+	}
+	return diag.NewErrorDiagnostic(fmt.Sprintf("The project's reserved values are taken (%s)", apiErr.Code()),
+		fmt.Sprintf("While creating the project %s the platform found these values held already:\n%s\n\n"+
+			"A retired project keeps its project_index, short_name and primary_domain reserved for good. "+
+			"Choose other values, or import the project that holds them.\n\n%s",
+			short, strings.Join(lines, "\n"), apiErr.Detail()))
 }
 
 // projectWriteError explains the refusals a change of a project can meet.

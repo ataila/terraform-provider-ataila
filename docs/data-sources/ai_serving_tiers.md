@@ -34,6 +34,7 @@ Read-Only:
 
 - `candidate_models` (List of String) Every model loaded on the fleet right now: what `pinned_model` may be without `allow_unloaded_pin`.
 - `category` (String) The group the tier belongs to.
+- `created_at` (String) When the tier was created: RFC 3339 in UTC, compared as an instant.
 - `enabled` (Boolean) Whether clients can use the tier; `false` hides it from every client.
 - `key` (String) The tier's name, for example `code`.
 - `label` (String) Display name.
@@ -43,4 +44,4 @@ Read-Only:
 - `role` (String) The tier's role, when it has one.
 - `sort` (Number) Display order.
 - `source` (String) `pin` (the pin is loaded and serves), `auto` (auto-assigned), `pin-offline` (pinned to a model that is not loaded, so the tier serves nothing) or `none`.
-- `updated_at` (String) The last change to the pin or the enabled flag: RFC 3339 in UTC, compared as an instant.
+- `updated_at` (String) The last change to the pin or the enabled flag (the creation time until the first change): RFC 3339 in UTC, compared as an instant.

@@ -115,17 +115,17 @@ func (a *API) UpdateUser(ctx context.Context, id string, patch Patch) (*User, er
 	return rsp.JSON200, nil
 }
 
-// DeactivateUser sends DELETE /users/{id}, which deactivates and answers
-// with the deactivated user.
-func (a *API) DeactivateUser(ctx context.Context, id string) (*User, error) {
+// DeactivateUser sends DELETE /users/{id}, which deactivates the user and
+// answers 204 (what did not go as planned is on the audit row only).
+func (a *API) DeactivateUser(ctx context.Context, id string) error {
 	rsp, err := a.raw.UsersDeleteWithResponse(ctx, id)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	if rsp.JSON200 == nil {
-		return nil, unexpected("DELETE /users/"+id, rsp.HTTPResponse)
+	if rsp.StatusCode() != http.StatusNoContent {
+		return unexpected("DELETE /users/"+id, rsp.HTTPResponse)
 	}
-	return rsp.JSON200, nil
+	return nil
 }
 
 // GetRoleGrant reads GET /users/{id}/roles/{role}.

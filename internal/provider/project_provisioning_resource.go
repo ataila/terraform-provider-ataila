@@ -65,6 +65,7 @@ type provisioningModel struct {
 
 var stageStateTypes = map[string]attr.Type{
 	"key": types.StringType, "status": types.StringType, "stale": types.BoolType, "simulated": types.BoolType,
+	"last_run_id": types.StringType, "last_run_at": types.StringType,
 }
 
 func (m *provisioningModel) fromAPI(p *client.Provisioning) {
@@ -81,6 +82,7 @@ func (m *provisioningModel) fromAPI(p *client.Provisioning) {
 		elems = append(elems, types.ObjectValueMust(stageStateTypes, map[string]attr.Value{
 			"key": types.StringValue(s.Key), "status": types.StringValue(string(s.Status)),
 			"stale": types.BoolValue(s.Stale), "simulated": types.BoolValue(sim),
+			"last_run_id": stringOrNull(s.LastRunId), "last_run_at": timestampString(s.LastRunAt),
 		}))
 	}
 	m.Stages = types.ListValueMust(types.ObjectType{AttrTypes: stageStateTypes}, elems)
@@ -162,8 +164,9 @@ func (r *provisioningResource) Schema(ctx context.Context, _ resource.SchemaRequ
 			},
 			"stages": schema.ListAttribute{
 				MarkdownDescription: "The stages in apply order: `key`, `status` (`pending`, `running`, " +
-					"`success`, `failed`, `partial` or `manual`), `stale` and `simulated`. The " +
-					"`ataila_project_stages` data source has more detail.",
+					"`success`, `failed`, `partial` or `manual`), `stale`, `simulated`, and `last_run_id` and " +
+					"`last_run_at` (RFC 3339) of the stage's newest run in the portal's run history (null when it " +
+					"never ran). The `ataila_project_stages` data source has more detail.",
 				Computed:      true,
 				ElementType:   types.ObjectType{AttrTypes: stageStateTypes},
 				PlanModifiers: keepList,

@@ -307,6 +307,7 @@ var stageGridTypes = map[string]attr.Type{
 	"key": types.StringType, "title": types.StringType, "deps": types.ListType{ElemType: types.StringType},
 	"deferred": types.BoolType, "status": types.StringType, "blocked": types.BoolType, "stale": types.BoolType,
 	"simulated": types.BoolType, "started_at": types.StringType, "finished_at": types.StringType,
+	"last_run_id": types.StringType, "last_run_at": types.StringType,
 	"error_message": types.StringType, "verify_state": types.StringType, "verify_summary": types.StringType,
 }
 
@@ -340,6 +341,7 @@ func (d *projectStagesDataSource) Schema(_ context.Context, _ datasource.SchemaR
 				MarkdownDescription: "The stages: `key`, `title`, `deps` (the stages it needs), `deferred` (never " +
 					"applied automatically), `status`, `blocked` (pending while a dependency is not done), " +
 					"`stale`, `simulated`, `started_at` and `finished_at` (RFC 3339, of the latest run), " +
+					"`last_run_id` and `last_run_at` (that run in the portal's run history; null when it never ran), " +
 					"`error_message`, `verify_state` and `verify_summary`.",
 				Computed:    true,
 				ElementType: types.ObjectType{AttrTypes: stageGridTypes},
@@ -380,6 +382,7 @@ func (d *projectStagesDataSource) Read(ctx context.Context, req datasource.ReadR
 			"status": types.StringValue(string(s.Status)), "blocked": types.BoolValue(s.Blocked),
 			"stale": types.BoolValue(s.Stale), "simulated": types.BoolValue(s.Simulated != nil && *s.Simulated),
 			"started_at": timestampString(s.StartedAt), "finished_at": timestampString(s.FinishedAt),
+			"last_run_id": stringOrNull(s.LastRunId), "last_run_at": timestampString(s.LastRunAt),
 			"error_message": stringOrNull(s.ErrorMessage), "verify_state": stringOrNull(s.VerifyState),
 			"verify_summary": stringOrNull(s.VerifySummary),
 		}))

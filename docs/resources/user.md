@@ -64,7 +64,7 @@ output "dana_username" {
 - `keycloak_linked` (Boolean) An SSO account exists for the person.
 - `kind` (String) `human`, or `service` for a service account (read-only here).
 - `name` (String) First and last name joined.
-- `provisioning_status` (String) The newest provisioning run: `ok`, `partial` (a step skipped, typically no GitLab account wanted), `error`, or null.
+- `provisioning_status` (String) The newest provisioning run: `ok`, `partial` (a step skipped: no GitLab account wanted, or a platform without SSO, which also warns `keycloak_not_configured`), `error`, or null.
 - `roles` (List of String) Every role the person holds, sorted. Manage them with `ataila_user_role_grant`.
 - `updated_at` (String) When the person was last changed: RFC 3339 in UTC, compared as an instant.
 - `warnings` (Attributes List) What did not go as planned in the last create or change made through this resource (for example a provisioning step that failed). Also reported as warnings when it happens. (see [below for nested schema](#nestedatt--warnings))

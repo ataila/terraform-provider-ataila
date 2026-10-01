@@ -54,6 +54,7 @@ type tierCore struct {
 	ResolvedModel   types.String   `tfsdk:"resolved_model"`
 	Source          types.String   `tfsdk:"source"`
 	CandidateModels types.List     `tfsdk:"candidate_models"`
+	CreatedAt       TimestampValue `tfsdk:"created_at"`
 	UpdatedAt       TimestampValue `tfsdk:"updated_at"`
 }
 
@@ -80,7 +81,8 @@ func (m *tierCore) fromAPI(t *client.ServingTier) {
 		cands = append(cands, types.StringValue(c))
 	}
 	m.CandidateModels = types.ListValueMust(types.StringType, cands)
-	m.UpdatedAt = NewTimestampPointer(t.UpdatedAt)
+	m.CreatedAt = NewTimestamp(t.CreatedAt)
+	m.UpdatedAt = NewTimestamp(t.UpdatedAt)
 }
 
 var tierDocs = map[string]string{
@@ -95,7 +97,8 @@ var tierDocs = map[string]string{
 	"resolved_model":   "The served model backing it right now.",
 	"source":           "`pin` (the pin is loaded and serves), `auto` (auto-assigned), `pin-offline` (pinned to a model that is not loaded, so the tier serves nothing) or `none`.",
 	"candidate_models": "Every model loaded on the fleet right now: what `pinned_model` may be without `allow_unloaded_pin`.",
-	"updated_at":       "The last change to the pin or the enabled flag: RFC 3339 in UTC, compared as an instant.",
+	"created_at":       "When the tier was created: RFC 3339 in UTC, compared as an instant.",
+	"updated_at":       "The last change to the pin or the enabled flag (the creation time until the first change): RFC 3339 in UTC, compared as an instant.",
 }
 
 func (r *servingTierResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -146,6 +149,8 @@ func (r *servingTierResource) Schema(_ context.Context, _ resource.SchemaRequest
 			"source":         computed("source"),
 			"candidate_models": schema.ListAttribute{MarkdownDescription: d["candidate_models"],
 				ElementType: types.StringType, Computed: true},
+			"created_at": schema.StringAttribute{MarkdownDescription: d["created_at"],
+				CustomType: TimestampType{}, Computed: true},
 			"updated_at": schema.StringAttribute{MarkdownDescription: d["updated_at"],
 				CustomType: TimestampType{}, Computed: true},
 			"warnings": warningsSchema("What did not go as planned in the last change made through this " +
@@ -288,6 +293,8 @@ func (d *servingTiersDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 					"resolved_model": str("resolved_model"), "source": str("source"),
 					"candidate_models": dschema.ListAttribute{MarkdownDescription: tierDocs["candidate_models"],
 						ElementType: types.StringType, Computed: true},
+					"created_at": dschema.StringAttribute{MarkdownDescription: tierDocs["created_at"],
+						CustomType: TimestampType{}, Computed: true},
 					"updated_at": dschema.StringAttribute{MarkdownDescription: tierDocs["updated_at"],
 						CustomType: TimestampType{}, Computed: true},
 				}},

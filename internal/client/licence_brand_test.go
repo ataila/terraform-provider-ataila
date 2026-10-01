@@ -31,6 +31,9 @@ func TestLicenceCalls(t *testing.T) {
 	if d, _ := e.Extra("installed_document_digest"); d != want {
 		t.Errorf("installed_document_digest %v", d)
 	}
+	if a, _ := e.Extra("already_installed"); a != true {
+		t.Errorf("already_installed %v", a)
+	}
 	if n := m.Calls("PUT", "/licence/bundle"); n != 2 {
 		t.Errorf("%d PUTs: a 409 must not be retried", n)
 	}

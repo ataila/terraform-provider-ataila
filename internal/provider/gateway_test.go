@@ -215,8 +215,8 @@ resource "ataila_ai_gateway_key" "test" {
 
 // A platform without a gateway: a plan succeeds (it calls nothing), the
 // apply fails naming gateway_not_configured after one request, and nothing
-// is created. With an empty tier catalogue as well, the platform refuses the
-// models first (unknown_tier): it checks them before it needs the gateway.
+// is created. With an empty tier catalogue as well, the platform still names
+// the gateway: it checks the gateway before the body.
 func TestAccGatewayKey_PlatformWithoutGateway(t *testing.T) {
 	m := newMock(t)
 	m.SetGateway("not_configured")
@@ -239,7 +239,7 @@ data "ataila_ai_gateway" "this" {}
 			{
 				PreConfig:   m.ClearTiers,
 				Config:      keyHCL(true, `models = ["general"]`),
-				ExpectError: words("names a tier the catalogue does not have .* unknown: general .* code: unknown_tier"),
+				ExpectError: words("The AI gateway is not available (gateway_not_configured)"),
 			},
 			{
 				Config: providerBlock(true) + customerHCL("GATE", "gate") + `

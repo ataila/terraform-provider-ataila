@@ -43,6 +43,7 @@
                 "additionalProperties": {
                   "anyOf": [
                     {
+                      "format": "double",
                       "type": "number"
                     },
                     {
@@ -229,6 +230,7 @@
           "param_count_b": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -291,6 +293,7 @@
           "size_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -419,6 +422,7 @@
                 "additionalProperties": {
                   "anyOf": [
                     {
+                      "format": "double",
                       "type": "number"
                     },
                     {
@@ -585,6 +589,7 @@
           "param_count_b": {
             "anyOf": [
               {
+                "format": "double",
                 "maximum": 9999999.0,
                 "minimum": 0.0,
                 "type": "number"
@@ -651,6 +656,7 @@
           "size_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "maximum": 99999999.0,
                 "minimum": 0.0,
                 "type": "number"
@@ -765,6 +771,7 @@
                 "additionalProperties": {
                   "anyOf": [
                     {
+                      "format": "double",
                       "type": "number"
                     },
                     {
@@ -955,6 +962,7 @@
           "param_count_b": {
             "anyOf": [
               {
+                "format": "double",
                 "maximum": 9999999.0,
                 "minimum": 0.0,
                 "type": "number"
@@ -1028,6 +1036,7 @@
           "size_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "maximum": 99999999.0,
                 "minimum": 0.0,
                 "type": "number"
@@ -1143,6 +1152,7 @@
           "cpu_util_pct": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -1154,6 +1164,7 @@
           "disk_used_pct": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -1188,6 +1199,7 @@
           "gpu_temp_max_c": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -1199,6 +1211,7 @@
           "gpu_util_avg_pct": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -1219,6 +1232,7 @@
           "load1": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -1230,6 +1244,7 @@
           "mem_used_pct": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -1359,6 +1374,7 @@
           "uptime_seconds": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -1381,6 +1397,7 @@
           "vram_total_bytes": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -1392,6 +1409,7 @@
           "vram_used_bytes": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -1462,6 +1480,7 @@
         "type": "object"
       },
       "Brand": {
+        "description": "The brand as stored. `PUT /brand` replaces every field of this object\nexcept the read-only `first_party`, `attribution`, `version` and\n`updated_at`: to change one field, send all of them back as read here.",
         "properties": {
           "attribution": {
             "description": "Read-only. The line printed under the product name; computed from `first_party`, never stored and never settable.",
@@ -1484,7 +1503,7 @@
                 "type": "null"
               }
             ],
-            "description": "A brand asset of kind `favicon`; null keeps the built-in one.",
+            "description": "A brand asset of kind `favicon`; null keeps the built-in one. In a `PUT`, null is a value that CLEARS the favicon, not \"leave as is\".",
             "title": "Favicon Asset Id"
           },
           "first_party": {
@@ -1502,7 +1521,7 @@
                 "type": "null"
               }
             ],
-            "description": "A brand asset of kind `logo`; null shows the built-in logo.",
+            "description": "A brand asset of kind `logo`; null shows the built-in logo. In a `PUT`, null is a value that CLEARS the logo, not \"leave as is\".",
             "title": "Logo Asset Id"
           },
           "logo_offset_x": {
@@ -1674,9 +1693,44 @@
         "title": "BrandAssetPage",
         "type": "object"
       },
+      "BrandAssetUpload": {
+        "additionalProperties": false,
+        "description": "The JSON form of an upload. Multipart (`file` + `kind`), as the portal\nscreen sends, is accepted on the same operation.",
+        "properties": {
+          "content_base64": {
+            "description": "The file, standard base64; at most 512 KB decoded. Its type is read from the bytes; no content type is sent.",
+            "maxLength": 699058,
+            "minLength": 1,
+            "title": "Content Base64",
+            "type": "string"
+          },
+          "filename": {
+            "default": "",
+            "description": "The original file name, kept for display only: the asset is addressed by its content (`sha256`).",
+            "maxLength": 200,
+            "title": "Filename",
+            "type": "string"
+          },
+          "kind": {
+            "description": "What the asset is for: a `logo` or a `favicon`.",
+            "enum": [
+              "logo",
+              "favicon"
+            ],
+            "title": "Kind",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "content_base64"
+        ],
+        "title": "BrandAssetUpload",
+        "type": "object"
+      },
       "BrandPut": {
         "additionalProperties": false,
-        "description": "Full replacement of the v1 fields: every member is required (the asset\nids may be null). Extra members — `attribution` and `first_party` among\nthem — are refused with 422.",
+        "description": "FULL REPLACEMENT of the v1 fields, never a partial update: every member\nis required. A member that is missing is refused with 422\n`validation_failed` naming it in `field` (and in `errors`), so nothing is\never reset by omission; `null` for an asset id is a value and clears that\nasset. Send back every field of `GET /brand`, changed or not. Extra\nmembers — `attribution` and `first_party` among them — are refused with\n422.",
         "properties": {
           "brand_color": {
             "description": "Six-digit hex colour; returned lower-case.",
@@ -1693,7 +1747,7 @@
                 "type": "null"
               }
             ],
-            "description": "A brand asset of kind `favicon`; null keeps the built-in one.",
+            "description": "A brand asset of kind `favicon`; null keeps the built-in one. In a `PUT`, null is a value that CLEARS the favicon, not \"leave as is\".",
             "title": "Favicon Asset Id"
           },
           "logo_asset_id": {
@@ -1705,7 +1759,7 @@
                 "type": "null"
               }
             ],
-            "description": "A brand asset of kind `logo`; null shows the built-in logo.",
+            "description": "A brand asset of kind `logo`; null shows the built-in logo. In a `PUT`, null is a value that CLEARS the logo, not \"leave as is\".",
             "title": "Logo Asset Id"
           },
           "logo_offset_x": {
@@ -1785,6 +1839,7 @@
           "size_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -2490,7 +2545,7 @@
             "type": "string"
           },
           "live": {
-            "description": "`present`: `models` and the limits are LiteLLM's live values; `missing`: LiteLLM no longer has the key (the registry values are shown); `not_read`: a list, which shows registry values only.",
+            "description": "Where `models` and the limits in this answer come from. `present`: the gateway's live values (a GET of one key); `missing`: the gateway no longer has the key (the registry values are shown); `not_read`: the gateway was not read and the registry values are shown. A list answers `not_read`, and so does EVERY write (create, PATCH, rotation): after a write, `live` is `not_read` and `spend_usd` is null until the next GET of the key. Read the key again (GET) for its live values.",
             "enum": [
               "present",
               "missing",
@@ -2500,7 +2555,7 @@
             "type": "string"
           },
           "models": {
-            "description": "Tier names the key may call.",
+            "description": "Tier names the key may call. A SET of tier names from the serving-tier catalogue: order carries no meaning and a name given twice counts once. Written de-duplicated and sorted (to the registry and to the gateway) and always returned sorted, so the same set always reads back the same.",
             "items": {
               "type": "string"
             },
@@ -2569,6 +2624,7 @@
           "soft_budget_usd": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -2581,13 +2637,14 @@
           "spend_usd": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "Spend LiteLLM has recorded for this key (shadow USD). Only on a read of one key.",
+            "description": "Spend the gateway has recorded for this key (shadow USD). Only in the answer to a GET of one key: null in a list, and null in the answer to every write (create, PATCH, rotation) until the next GET.",
             "title": "Spend Usd"
           },
           "token_hash_prefix": {
@@ -2716,7 +2773,7 @@
             "title": "Feature"
           },
           "models": {
-            "description": "Tier names from the serving-tier catalogue. A tier that exists but serves nothing right now is accepted with a `tier_not_serving` warning.",
+            "description": "A SET of tier names from the serving-tier catalogue: order carries no meaning and a name given twice counts once. Written de-duplicated and sorted (to the registry and to the gateway) and always returned sorted, so the same set always reads back the same. A tier that exists but serves nothing right now is accepted with a `tier_not_serving` warning.",
             "items": {
               "type": "string"
             },
@@ -2761,6 +2818,7 @@
             "anyOf": [
               {
                 "exclusiveMinimum": 0.0,
+                "format": "double",
                 "maximum": 1000000000.0,
                 "type": "number"
               },
@@ -2893,6 +2951,7 @@
                 "type": "null"
               }
             ],
+            "description": "A SET of tier names from the serving-tier catalogue: order carries no meaning and a name given twice counts once. Written de-duplicated and sorted (to the registry and to the gateway) and always returned sorted, so the same set always reads back the same.",
             "title": "Models"
           },
           "organization_id": {
@@ -2938,6 +2997,7 @@
             "anyOf": [
               {
                 "exclusiveMinimum": 0.0,
+                "format": "double",
                 "maximum": 1000000000.0,
                 "type": "number"
               },
@@ -3886,6 +3946,7 @@
             "type": "integer"
           },
           "usable_vram_gb": {
+            "format": "double",
             "title": "Usable Vram Gb",
             "type": "number"
           },
@@ -4095,6 +4156,7 @@
           "size_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -4166,6 +4228,7 @@
           "size_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -4317,6 +4380,7 @@
           "free_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -4354,6 +4418,7 @@
           "total_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -7292,6 +7357,12 @@
             "title": "Category",
             "type": "string"
           },
+          "created_at": {
+            "description": "When the tier entered the catalogue.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
           "enabled": {
             "title": "Enabled",
             "type": "boolean"
@@ -7360,16 +7431,10 @@
             "type": "string"
           },
           "updated_at": {
-            "anyOf": [
-              {
-                "format": "date-time",
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Updated At"
+            "description": "The last change; equal to `created_at` until the first change.",
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
           },
           "warnings": {
             "items": {
@@ -7389,7 +7454,9 @@
           "resolved",
           "resolved_model",
           "source",
-          "candidate_models"
+          "candidate_models",
+          "created_at",
+          "updated_at"
         ],
         "title": "ServingTier",
         "type": "object"
@@ -7668,6 +7735,31 @@
             "title": "Key",
             "type": "string"
           },
+          "last_run_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When that run was created (dispatched). Null exactly when `last_run_id` is.",
+            "title": "Last Run At"
+          },
+          "last_run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The id of this stage's newest provisioning run in the portal's run history: the run `status` is taken from. A run id, not an operation id (`/operations/provision:<id>` names the orchestration that walked the stages). Null when the stage has never run, or when its last success was undone by a later teardown (the stage then reads `pending`).",
+            "title": "Last Run Id"
+          },
           "simulated": {
             "default": false,
             "description": "Its latest run was simulated.",
@@ -7746,6 +7838,31 @@
           "key": {
             "title": "Key",
             "type": "string"
+          },
+          "last_run_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When that run was created (dispatched). Null exactly when `last_run_id` is.",
+            "title": "Last Run At"
+          },
+          "last_run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The id of this stage's newest provisioning run in the portal's run history: the run `status` is taken from. A run id, not an operation id (`/operations/provision:<id>` names the orchestration that walked the stages). Null when the stage has never run, or when its last success was undone by a later teardown (the stage then reads `pending`).",
+            "title": "Last Run Id"
           },
           "simulated": {
             "default": false,
@@ -7846,6 +7963,7 @@
           "free_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -7883,6 +8001,7 @@
           "total_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -8013,6 +8132,7 @@
           "progress_gb": {
             "anyOf": [
               {
+                "format": "double",
                 "type": "number"
               },
               {
@@ -8310,7 +8430,7 @@
                 "type": "null"
               }
             ],
-            "description": "The Windows (Active Directory) account name. Frozen after create.",
+            "description": "The Windows (Active Directory) account name. Create-only: a PATCH may send the current value (nothing changes); any other value is 422 `immutable_field`, whether or not the person has an SSO account yet.",
             "title": "Ad Username"
           },
           "auth_mode": {
@@ -8447,7 +8567,7 @@
                 "type": "null"
               }
             ],
-            "description": "The outcome of the newest provisioning run (username, SSO account, GitLab account, GitLab group): `ok`; `partial` when a step was skipped (typically no GitLab account wanted); `error` when a step failed. Null when the person was never provisioned.",
+            "description": "The outcome of the newest provisioning run (username, SSO account, GitLab account, GitLab group): `ok`; `partial` when a step was skipped (typically no GitLab account wanted, or no SSO (Keycloak) configured on this platform at all: warning `keycloak_not_configured` on the create); `error` when a step failed, including a configured Keycloak that failed. Null when the person was never provisioned.",
             "title": "Provisioning Status"
           },
           "roles": {
@@ -8473,7 +8593,7 @@
                 "type": "null"
               }
             ],
-            "description": "The sign-in handle and directory account name. Set at create (derived from the name when omitted). Frozen once `keycloak_linked` is true.",
+            "description": "The sign-in handle and directory account name. Set at create (derived from the name when omitted). Create-only: a PATCH may send the current value (nothing changes); any other value is 422 `immutable_field`, whether or not the person has an SSO account yet.",
             "title": "Username"
           },
           "warnings": {
@@ -8522,7 +8642,7 @@
                 "type": "null"
               }
             ],
-            "description": "The Windows account name, when `firstname.lastname` is too long. Lower-case letters, digits, '.', '_' and '-', 1-20 characters, not ending in '.'. Frozen after create.",
+            "description": "The Windows account name, when `firstname.lastname` is too long. Lower-case letters, digits, '.', '_' and '-', 1-20 characters, not ending in '.'. Create-only.",
             "title": "Ad Username"
           },
           "email": {
@@ -8574,7 +8694,7 @@
                 "type": "null"
               }
             ],
-            "description": "Lower-case letters, digits, '.', '_' and '-', 1-20 characters, not ending in '.'. Omit to derive `firstname.lastname`, folded to ASCII (or `ad_username` when given).",
+            "description": "Lower-case letters, digits, '.', '_' and '-', 1-20 characters, not ending in '.'. Omit to derive `firstname.lastname`, folded to ASCII (or `ad_username` when given). Create-only.",
             "title": "Username"
           }
         },
@@ -8625,7 +8745,7 @@
                 "type": "null"
               }
             ],
-            "description": "Frozen.",
+            "description": "Create-only: a PATCH may send the current value (nothing changes); any other value is 422 `immutable_field`, whether or not the person has an SSO account yet.",
             "title": "Ad Username"
           },
           "email": {
@@ -8710,14 +8830,13 @@
           "username": {
             "anyOf": [
               {
-                "pattern": "^[a-z0-9._-]{1,20}$",
                 "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "Lower-case letters, digits, '.', '_' and '-', 1-20 characters, not ending in '.'. Frozen once `keycloak_linked` is true.",
+            "description": "Create-only: a PATCH may send the current value (nothing changes); any other value is 422 `immutable_field`, whether or not the person has an SSO account yet.",
             "title": "Username"
           }
         },
@@ -10462,7 +10581,7 @@
         ]
       },
       "post": {
-        "description": "Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks.",
+        "description": "Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.",
         "operationId": "ai_gateway_keys_create",
         "requestBody": {
           "content": {
@@ -10543,7 +10662,7 @@
                 }
               }
             },
-            "description": "The gateway is not configured on this platform (`gateway_not_configured`) or cannot be reached (`gateway_unreachable`). Or Vault did not store the value (`vault_write_failed`); the key was then removed from the gateway again (`key_removed_from_gateway`)."
+            "description": "The gateway is not configured on this platform (`gateway_not_configured`) or cannot be reached (`gateway_unreachable`). Checked BEFORE the tenant, project and tiers the body names, so a platform without a gateway answers 503 whatever the body says. Or Vault did not store the value (`vault_write_failed`); the key was then removed from the gateway again (`key_removed_from_gateway`)."
           },
           "default": {
             "content": {
@@ -10744,7 +10863,7 @@
         ]
       },
       "patch": {
-        "description": "Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
+        "description": "Changes the allowlist, the limits and the soft budget on the gateway without changing the key's value (that is a rotation). `organization_id`, `env`, `app` and `feature` are frozen: sending the current value is accepted, a different one is a 422. Changing only `project_id` does not call the gateway. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
         "operationId": "ai_gateway_keys_update",
         "parameters": [
           {
@@ -10887,7 +11006,7 @@
     },
     "/ai/gateway/keys/{key_id}/rotations": {
       "post": {
-        "description": "A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once.",
+        "description": "A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.",
         "operationId": "ai_gateway_keys_rotate",
         "parameters": [
           {
@@ -11392,7 +11511,7 @@
     },
     "/brand": {
       "get": {
-        "description": "The one brand of this platform. `attribution` and `first_party` are read-only and computed. The `ETag` response header carries `version` for `If-Match`.",
+        "description": "The one brand of this platform. `attribution` and `first_party` are read-only and computed. The `ETag` response header carries `version` for `If-Match`. `PUT /brand` is a FULL replacement: to change one field, send back every writable field of this answer, the unchanged ones included. A field left out is refused (422 naming it), and `null` for an asset id clears that asset.",
         "operationId": "brand_get",
         "responses": {
           "200": {
@@ -11447,7 +11566,7 @@
         ]
       },
       "put": {
-        "description": "Replaces every v1 field; all are required, the asset ids may be null. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: \"<version>\"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.",
+        "description": "Replaces every v1 field: a FULL replacement, never a partial update. All are required, so a field left out is a 422 naming it and is never reset; the asset ids may be null, which CLEARS the asset. To change one field, read the brand and send every field back. `attribution` and `first_party` cannot be sent (422). The fields v1 does not manage (the sidebar tagline, the sign-in title and subtitle, the footer links) keep their stored values. With `If-Match: \"<version>\"` the replace happens only while the brand is still at that version (412 `version_mismatch` otherwise); without it the last write wins, as in the portal's Brand Center. A replace that changes nothing returns the brand as it is: `version` is not bumped and no audit row is written. The change applies to every tenant and user of this platform, the sign-in page included. There is no delete.",
         "operationId": "brand_put",
         "parameters": [
           {
@@ -11548,7 +11667,7 @@
                 }
               }
             },
-            "description": "An asset id does not exist (`asset_not_found`) or is the wrong kind (`asset_wrong_kind`), with `field`; or the body is invalid — naming `attribution` or `first_party` included."
+            "description": "An asset id does not exist (`asset_not_found`) or is the wrong kind (`asset_wrong_kind`), with `field`; or the body is invalid (`validation_failed`, `field` naming the first offending member): a required field left out, or `attribution` / `first_party` sent."
           },
           "default": {
             "content": {
@@ -11697,37 +11816,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "additionalProperties": false,
-                "description": "The JSON form of an upload. Multipart (`file` + `kind`), as the portal\nscreen sends, is accepted on the same operation.",
-                "properties": {
-                  "content_base64": {
-                    "description": "The file, standard base64; at most 512 KB decoded.",
-                    "maxLength": 699058,
-                    "minLength": 1,
-                    "title": "Content Base64",
-                    "type": "string"
-                  },
-                  "filename": {
-                    "default": "",
-                    "maxLength": 200,
-                    "title": "Filename",
-                    "type": "string"
-                  },
-                  "kind": {
-                    "enum": [
-                      "logo",
-                      "favicon"
-                    ],
-                    "title": "Kind",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "kind",
-                  "content_base64"
-                ],
-                "title": "BrandAssetUpload",
-                "type": "object"
+                "$ref": "#/components/schemas/BrandAssetUpload"
               }
             },
             "multipart/form-data": {
@@ -12468,7 +12557,7 @@
     },
     "/licence/bundle": {
       "put": {
-        "description": "Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.\n\nEPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch`; compare `installed_document_digest` with the digest of the document you sent to tell \"already installed\" from \"older\".\n\nA document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.",
+        "description": "Verifies the `acplic1.` bundle against the pinned roots (the development root is trusted only on sandbox and dev estates), checks that it is bound to this portal's instance id, and installs it in place of the installed document.\n\nEPOCH RULE (unchanged from the portal's Licence page): a bundle installs only when its `licence_epoch` is HIGHER than the installed document's. The epochs are compared regardless of `licence_id`, so a bundle for a different licence with a lower or equal epoch is refused too. Re-sending the installed bundle is therefore a 409 `stale_epoch` with `already_installed: true`; another document whose epoch is not higher gets `already_installed: false`.\n\nA document bound to another NAME is installed, and the portal then reports `DOMAIN_MISMATCH`. Never licence-gated: this works in every state, LOCKED included. There is no operation that removes a licence. The bundle is never logged and never written to the audit log; the one audit row per install holds the licence id, the epoch and the document digest.",
         "operationId": "licence_bundle_put",
         "requestBody": {
           "content": {
@@ -12504,7 +12593,7 @@
                 }
               }
             },
-            "description": "The portal already holds a document with the same or a higher epoch (`stale_epoch`); nothing was installed. `installed_epoch` and `installed_document_digest` describe what is installed."
+            "description": "The portal already holds a document with the same or a higher epoch (`stale_epoch`); nothing was installed. `installed_epoch` and `installed_document_digest` describe what is installed, and `already_installed` is true when the bundle sent IS the installed document (same digest), false when it is another one with an epoch that is not higher."
           },
           "422": {
             "content": {
@@ -12587,6 +12676,370 @@
         "summary": "The socket census",
         "tags": [
           "licence"
+        ]
+      }
+    },
+    "/mcp": {
+      "delete": {
+        "description": "The server is stateless and issues no session id: there is nothing to\nend, and the answer is always 204.",
+        "operationId": "mcp_delete",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "MCP: end a session",
+        "tags": [
+          "mcp"
+        ]
+      },
+      "get": {
+        "description": "MCP clients open a GET to listen for server-initiated messages. This\nserver sends none, so the answer is 405, which tells a client to go on\nwithout a stream.",
+        "operationId": "mcp_get",
+        "responses": {
+          "405": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Always (`method_not_allowed`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "summary": "MCP: no server-to-client stream",
+        "tags": [
+          "mcp"
+        ]
+      },
+      "post": {
+        "description": "The Model Context Protocol endpoint (Streamable HTTP, stateless, JSON answers only). The body is one JSON-RPC 2.0 message or a batch. Methods: `initialize`, `notifications/initialized`, `ping`, `tools/list`, `tools/call`.\n\nEvery tool is one GET operation of this API, named by its operation id; its arguments are the operation's path and query parameters. `tools/list` shows only the tools the caller's permissions allow. A tool call runs the GET through this API with the same credentials, so the answer is exactly what a direct call would get; an error answer is `isError: true` with the problem details as text. No tool can change anything.\n\nRate limit: this POST counts as one request and every `tools/call` in it as one more, so a tool call costs two. An unauthenticated POST is a 401 problem, like every other operation.",
+        "operationId": "mcp_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "id": 1,
+                "jsonrpc": "2.0",
+                "method": "tools/call",
+                "params": {
+                  "arguments": {
+                    "limit": 10
+                  },
+                  "name": "customers_list"
+                }
+              },
+              "schema": {
+                "anyOf": [
+                  {
+                    "properties": {
+                      "id": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "integer"
+                          }
+                        ],
+                        "description": "Absent on a notification, which gets no reply."
+                      },
+                      "jsonrpc": {
+                        "enum": [
+                          "2.0"
+                        ],
+                        "type": "string"
+                      },
+                      "method": {
+                        "description": "`initialize`, `notifications/initialized`, `ping`, `tools/list` or `tools/call`; any other method is JSON-RPC error -32601.",
+                        "type": "string"
+                      },
+                      "params": {
+                        "description": "For `tools/call`: `{\"name\": <tool>, \"arguments\": {...}}`.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "jsonrpc",
+                      "method"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ],
+                          "description": "Absent on a notification, which gets no reply."
+                        },
+                        "jsonrpc": {
+                          "enum": [
+                            "2.0"
+                          ],
+                          "type": "string"
+                        },
+                        "method": {
+                          "description": "`initialize`, `notifications/initialized`, `ping`, `tools/list` or `tools/call`; any other method is JSON-RPC error -32601.",
+                          "type": "string"
+                        },
+                        "params": {
+                          "description": "For `tools/call`: `{\"name\": <tool>, \"arguments\": {...}}`.",
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "jsonrpc",
+                        "method"
+                      ],
+                      "type": "object"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "properties": {
+                        "error": {
+                          "properties": {
+                            "code": {
+                              "type": "integer"
+                            },
+                            "data": {},
+                            "message": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "code",
+                            "message"
+                          ],
+                          "type": "object"
+                        },
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "jsonrpc": {
+                          "enum": [
+                            "2.0"
+                          ],
+                          "type": "string"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "jsonrpc",
+                        "id"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "items": {
+                        "properties": {
+                          "error": {
+                            "properties": {
+                              "code": {
+                                "type": "integer"
+                              },
+                              "data": {},
+                              "message": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "code",
+                              "message"
+                            ],
+                            "type": "object"
+                          },
+                          "id": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "jsonrpc": {
+                            "enum": [
+                              "2.0"
+                            ],
+                            "type": "string"
+                          },
+                          "result": {
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "jsonrpc",
+                          "id"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "The JSON-RPC reply, or an array of replies for a batch."
+          },
+          "202": {
+            "description": "Only notifications were sent: nothing to reply."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "properties": {
+                        "code": {
+                          "type": "integer"
+                        },
+                        "data": {},
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ],
+                      "type": "object"
+                    },
+                    "id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "jsonrpc": {
+                      "enum": [
+                        "2.0"
+                      ],
+                      "type": "string"
+                    },
+                    "result": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "jsonrpc",
+                    "id"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The body is not JSON (JSON-RPC error -32700) or not a JSON-RPC message (-32600)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "MCP: read-only tools over this API",
+        "tags": [
+          "mcp"
         ]
       }
     },
@@ -12968,7 +13421,7 @@
                 }
               }
             },
-            "description": "A unique key is taken (`project_index_taken`, `short_name_taken`, `primary_domain_taken`, `gitlab_repo_slug_taken`), no index is left (`project_index_exhausted`), or the customer is archived (`customer_archived`)."
+            "description": "A unique key is taken, or no index is left (`project_index_exhausted`), or the customer is archived (`customer_archived`). The unique keys are checked in ONE fixed order — `short_name`, `project_index` (when sent), `primary_domain`, `gitlab_repo_slug` — and the FIRST one taken is the answer: `code` is `<key>_taken` and `field` names it. `conflicts` lists EVERY taken key in that order, each as `{field, code, project_id}` (`project_id`: the project holding it, null when a concurrent create took it). Retired projects keep their keys, so a retired project's values stay taken."
           },
           "422": {
             "content": {
@@ -15477,7 +15930,7 @@
         ]
       },
       "post": {
-        "description": "Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. `Idempotency-Key` is honoured.",
+        "description": "Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no Keycloak configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `keycloak_not_configured` warning (`error` stays for a configured Keycloak that failed). `Idempotency-Key` is honoured.",
         "operationId": "users_create",
         "requestBody": {
           "content": {
@@ -15559,7 +16012,7 @@
     },
     "/users/{user_id}": {
       "delete": {
-        "description": "Answers 200 with the deactivated user, so that `warnings` can say which downstream step did not complete. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a `warnings` entry (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal (app.ataila.eu) is not disabled; disable it there.",
+        "description": "Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{\"is_active\": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.",
         "operationId": "users_delete",
         "parameters": [
           {
@@ -15573,14 +16026,7 @@
           }
         ],
         "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            },
+          "204": {
             "description": "Successful Response"
           },
           "403": {
@@ -15720,7 +16166,7 @@
         ]
       },
       "patch": {
-        "description": "Only the members in the body change. `ad_username` is frozen; `username` is frozen once the person has an SSO account (`keycloak_linked`). Sending the current value of a frozen field is accepted. Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
+        "description": "Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
         "operationId": "users_update",
         "parameters": [
           {
@@ -15802,7 +16248,7 @@
                 }
               }
             },
-            "description": "The e-mail address or username is taken (`email_taken`, `username_taken`), the user is a service account (`service_account_managed_elsewhere`), or a deactivation is refused (`cannot_deactivate_self`, `last_active_admin`)."
+            "description": "The e-mail address is taken (`email_taken`), the user is a service account (`service_account_managed_elsewhere`), or a deactivation is refused (`cannot_deactivate_self`, `last_active_admin`)."
           },
           "422": {
             "content": {
@@ -15817,7 +16263,7 @@
                 }
               }
             },
-            "description": "A frozen field was changed (`immutable_field`), or the body is invalid."
+            "description": "A create-only field was changed (`immutable_field`, with `field`: `username` or `ad_username`), or the body is invalid."
           },
           "default": {
             "content": {
@@ -16354,6 +16800,10 @@
     {
       "description": "This platform's branding.",
       "name": "brand"
+    },
+    {
+      "description": "Model Context Protocol: every GET operation as a read-only tool.",
+      "name": "mcp"
     }
   ]
 }

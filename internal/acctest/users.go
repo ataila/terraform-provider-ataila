@@ -24,9 +24,8 @@ import (
 //   - e-mail addresses are stored entirely lower-cased; a deactivated person
 //     keeps theirs, so re-creating the address is 409 email_taken;
 //   - username and ad_username are derived as firstname.lastname (folded to
-//     ASCII) when omitted; ad_username is frozen, username is frozen once the
-//     person has an SSO account (keycloak_linked);
-//   - DELETE (and PATCH is_active false) DEACTIVATES: 200 with the person;
+//     ASCII) when omitted; both are create-only (422 immutable_field);
+//   - DELETE (and PATCH is_active false) DEACTIVATES: DELETE answers 204;
 //     refused for the caller's own account, the last active admin and service
 //     accounts; destroy-gated by the token's flag;
 //   - role grants: 201 granted / 200 already held; a token never touches
@@ -71,6 +70,7 @@ type mockPermission struct {
 }
 
 type usersState struct {
+	noKeycloak    bool
 	people        map[string]*mockPerson
 	failStep      string
 	deactivateOut []map[string]any
@@ -228,6 +228,13 @@ func (m *MockAPI) FailProvisioningStep(step string) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.users.failStep = step
+}
+
+// SetKeycloak says whether the platform has an SSO provider.
+func (m *MockAPI) SetKeycloak(configured bool) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.users.noKeycloak = !configured
 }
 
 // SetDeactivationWarning adds a warning to every deactivation (a downstream
@@ -694,6 +701,13 @@ func (m *MockAPI) usersCreate(c *call) reply {
 func (m *MockAPI) provision(p *mockPerson) []map[string]any {
 	var warnings []map[string]any
 	status := "partial"
+	if m.users.noKeycloak {
+		// A platform without SSO: the SSO step is skipped, not failed.
+		warnings = append(warnings, map[string]any{"code": "keycloak_not_configured",
+			"message": "This platform has no Keycloak; no SSO account was created."})
+		p.provStatus = &status
+		return warnings
+	}
 	if p.needsGit {
 		status = "ok"
 		if m.users.failStep == "gitlab_user" {
@@ -728,7 +742,7 @@ func (m *MockAPI) usersUpdate(c *call, raw string) reply {
 	locale, _ := strField(v, body, "locale", false, false, oneOf("en", "hu"))
 	active, _ := boolField(v, body, "is_active", false)
 	git, _ := boolField(v, body, "needs_git_access", false)
-	username, _ := strField(v, body, "username", false, false, handle)
+	strField(v, body, "username", false, false, nil)
 	strField(v, body, "ad_username", false, true, nil)
 	if r := v.reply(c); r != nil {
 		return *r
@@ -744,17 +758,10 @@ func (m *MockAPI) usersUpdate(c *call, raw string) reply {
 		return c.problem(http.StatusUnprocessableEntity, "immutable_field", "ad_username cannot be changed after create.",
 			map[string]any{"field": "ad_username"})
 	}
-	if username != nil && *username != strings.ToLower(p.username) {
-		if p.keycloakLinked {
-			return c.problem(http.StatusUnprocessableEntity, "immutable_field",
-				"username cannot be changed once the person has an SSO account: it is their Keycloak and directory account name.",
-				map[string]any{"field": "username"})
-		}
-		if m.usernameTaken(*username, p.id) {
-			return c.problem(http.StatusConflict, "username_taken", "The username is taken.", nil)
-		}
-	} else {
-		username = nil
+	// username is create-only: the current value may be sent, nothing else.
+	if sent, present := body["username"]; present && frozenDiffers(sent, p.username, false) {
+		return c.problem(http.StatusUnprocessableEntity, "immutable_field",
+			"username is set when the user is created and cannot be changed.", map[string]any{"field": "username"})
 	}
 	var newEmail *string
 	if mail != nil {
@@ -803,10 +810,6 @@ func (m *MockAPI) usersUpdate(c *call, raw string) reply {
 		p.locale = *locale
 		changed = true
 	}
-	if username != nil {
-		p.username = *username
-		changed = true
-	}
 	if newEmail != nil {
 		p.email = *newEmail
 		m.tenancy.users[p.id] = p.email
@@ -841,7 +844,7 @@ func (m *MockAPI) usersDelete(c *call, raw string) reply {
 	if r := m.deactivate(c, p); r != nil {
 		return *r
 	}
-	return ok(http.StatusOK, p.wire(m.users.deactivateOut))
+	return reply{status: http.StatusNoContent}
 }
 
 // ── role grants ──────────────────────────────────────────────────────────────

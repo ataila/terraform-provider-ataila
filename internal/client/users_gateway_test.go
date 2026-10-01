@@ -54,7 +54,7 @@ func TestUserCalls(t *testing.T) {
 	}
 
 	// Deactivation: the token's destroy flag, then the platform's refusals.
-	_, err = api.DeactivateUser(ctx, u.Id)
+	err = api.DeactivateUser(ctx, u.Id)
 	if e := apiErr(t, err); e.StatusCode != 403 || e.Code() != CodeDestroyNotAllowed {
 		t.Errorf("deactivate without the flag: %v", err)
 	}
@@ -63,15 +63,17 @@ func TestUserCalls(t *testing.T) {
 		t.Errorf("PATCH is_active false without the flag: %v", err)
 	}
 	m.SetTokenAllowDestroy(true)
-	gone, err := api.DeactivateUser(ctx, u.Id)
-	if err != nil || gone.IsActive {
-		t.Fatalf("deactivate: %+v %v", gone, err)
+	if err := api.DeactivateUser(ctx, u.Id); err != nil {
+		t.Fatalf("deactivate: %v", err)
+	}
+	if gone, err := api.GetUser(ctx, u.Id); err != nil || gone.IsActive {
+		t.Fatalf("after deactivate: %+v %v", gone, err)
 	}
 	_, err = api.CreateUser(ctx, UserCreate{Email: "nora.uj@example.com", FirstName: "Nora"})
 	if e := apiErr(t, err); e.StatusCode != 409 || e.Code() != "email_taken" {
 		t.Errorf("re-create a deactivated address: %v", err)
 	}
-	_, err = api.DeactivateUser(ctx, "00000000-0000-4000-8000-00000000ad01")
+	err = api.DeactivateUser(ctx, "00000000-0000-4000-8000-00000000ad01")
 	if e := apiErr(t, err); e.StatusCode != 409 || e.Code() != "last_active_admin" {
 		t.Errorf("last admin: %v", err)
 	}
@@ -149,7 +151,7 @@ func TestGatewayKeyCalls(t *testing.T) {
 		t.Fatal(err)
 	}
 	if k.KeyAlias != "gate-prod-chatbot" || k.Secret == nil || *k.Secret != m.VaultValue(k.KeyAlias) ||
-		*k.SoftBudgetUsd != 0.1 || k.Live != "present" {
+		*k.SoftBudgetUsd != 0.1 || k.Live != "not_read" || k.SpendUsd != nil {
 		t.Errorf("created %+v", k)
 	}
 	if len(k.Warnings) != 1 || k.Warnings[0].Code != "tier_not_serving" {

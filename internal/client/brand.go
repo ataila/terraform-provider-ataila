@@ -95,15 +95,11 @@ func (a *API) ListBrandAssets(ctx context.Context, kind, sha256 string) ([]Brand
 // base64. Bytes already stored as the same kind return that asset (created
 // false); as the other kind they are a 409 asset_kind_conflict *APIError.
 func (a *API) UploadBrandAsset(ctx context.Context, kind string, content []byte, filename string) (*BrandAsset, bool, error) {
-	body := map[string]any{"kind": kind, "content_base64": base64.StdEncoding.EncodeToString(content)}
+	body := BrandAssetUpload{Kind: BrandAssetUploadKind(kind), ContentBase64: base64.StdEncoding.EncodeToString(content)}
 	if filename != "" {
-		body["filename"] = filename
+		body.Filename = &filename
 	}
-	r, err := jsonBody(body)
-	if err != nil {
-		return nil, false, err
-	}
-	rsp, err := a.raw.BrandAssetsCreateWithBodyWithResponse(ctx, "application/json", r)
+	rsp, err := a.raw.BrandAssetsCreateWithResponse(ctx, body)
 	if err != nil {
 		return nil, false, err
 	}

@@ -308,7 +308,8 @@ provider_installation {
 release the provider is built against. `internal/client/client.gen.go` is generated from it with oapi-codegen;
 the rest of `internal/client` is a thin hand-written wrapper (transport, retries, errors, TLS).
 `TestGeneratedClientIsCurrent` fails whenever the two are out of step. To move to a newer contract: replace
-the JSON, run `go generate ./...`, and commit both.
+the JSON, run `go generate ./...`, and commit both. A vendored contract may differ from the platform's export
+only where the leak guard requires it; the CHANGELOG names every such edit.
 
 ## Repository layout
 
@@ -341,15 +342,20 @@ release job stops with a clear message while the signing key variables (`GPG_PRI
 ### Leak guard
 
 `scripts/leak-guard.sh` runs on every push, blocking. It scans every file, every file name and the whole history
-of the branch (added lines, commit messages, author identities) for private IPv4 addresses, internal host
-names, Vault paths, token shapes (platform API tokens, GitLab and Vault tokens, private keys) and internal code
-names. Examples and docs use `portal.example.com`. Run it before every push:
+of the branch (added lines, commit messages, author identities) for private IPv4 addresses, host names under
+any of the company's domains (`<host>.ataila.<tld>`), Vault paths, token shapes (platform API tokens, GitLab and
+Vault tokens, private keys) and internal code names. Examples and docs use `portal.example.com`. Run it before
+every push:
 
 ```shell
 bash scripts/leak-guard.sh
 ```
 
-A finding in history must be removed by rewriting that history before anything is pushed or mirrored.
+A finding in history must be removed by rewriting that history before anything is mirrored. Findings that are
+already in pushed history are listed in `scripts/leak-guard-history.txt` (by commit and the sha256 of the
+finding, never the finding itself): a normal run reports them as `KNOWN` and passes, `--strict` refuses them.
+Run `bash scripts/leak-guard.sh --strict` before the repository is mirrored; it passes only once that history
+has been rewritten and the list emptied.
 
 ## Licence
 

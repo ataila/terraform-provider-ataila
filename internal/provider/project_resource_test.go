@@ -249,6 +249,12 @@ func TestAccProjectResource_RetiredShortNameStaysTaken(t *testing.T) {
 			{Config: projectHCL(true, tenantID, "shop"), Check: stateAttr(projectAddr, "id", &id)},
 			{Config: providerBlock(true), Check: projectStatus(m, &id, "retired")},
 			{
+				// The same values: every conflict is listed, short_name first.
+				Config: projectHCL(true, tenantID, "shop"),
+				ExpectError: words(`The project's reserved values are taken (short_name_taken) .* short_name "shop" is ` +
+					`held by project 1 .* primary_domain "shop.example.com" is held by project 1 .* gitlab_repo_slug`),
+			},
+			{
 				// Another repository, the same short name.
 				Config:      strings.Replace(projectHCL(true, tenantID, "shop"), `"shop-app"`, `"shop-new"`, 1),
 				ExpectError: words("short_name_taken"),
@@ -349,6 +355,8 @@ func TestAccProjectProvisioning_ConvergeAndStale(t *testing.T) {
 					resource.TestCheckResourceAttr(provisioningAddr, "stages.#", "13"),
 					resource.TestCheckResourceAttr(provisioningAddr, "stages.0.key", "prep:reserve-ipam"),
 					resource.TestCheckResourceAttr(provisioningAddr, "stages.0.status", "success"),
+					resource.TestCheckResourceAttr(provisioningAddr, "stages.0.last_run_id", "1"),
+					resource.TestCheckResourceAttrSet(provisioningAddr, "stages.0.last_run_at"),
 					resource.TestCheckResourceAttr(provisioningAddr, "operation_id", "provision:1"),
 					projectStatus(m, &id, "active"),
 				),
@@ -660,6 +668,8 @@ data "ataila_project_stages" "test" {
 				resource.TestCheckResourceAttr("data.ataila_project_stages.test", "stages.13.deferred", "true"),
 				resource.TestCheckResourceAttr("data.ataila_project_stages.test", "stages.1.deps.0", "prep:reserve-ipam"),
 				resource.TestCheckResourceAttrSet("data.ataila_project_stages.test", "stages.0.finished_at"),
+				resource.TestCheckResourceAttrSet("data.ataila_project_stages.test", "stages.0.last_run_id"),
+				resource.TestCheckNoResourceAttr("data.ataila_project_stages.test", "stages.14.last_run_id"),
 			),
 		}},
 	})

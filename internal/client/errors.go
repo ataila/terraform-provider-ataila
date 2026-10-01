@@ -240,8 +240,14 @@ func renderValue(v any) string {
 		return strings.Join(parts, ", ")
 	case []interface{}:
 		parts := make([]string, 0, len(t))
+		objects := false
 		for _, e := range t {
+			_, isObject := e.(map[string]interface{})
+			objects = objects || isObject
 			parts = append(parts, renderValue(e))
+		}
+		if objects {
+			return strings.Join(parts, "; ") // a list of objects: one per part
 		}
 		return strings.Join(parts, ", ")
 	case float64:

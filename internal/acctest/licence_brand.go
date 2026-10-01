@@ -299,9 +299,9 @@ func (m *MockAPI) licenceBundlePut(c *call) reply {
 		return c.problem(http.StatusConflict, "stale_epoch",
 			fmt.Sprintf("This portal already holds a licence document with epoch %d; a bundle installs only "+
 				"when its epoch is higher. Nothing was installed.", m.licence.epoch),
-			map[string]any{"installed_epoch": m.licence.epoch, "installed_document_digest": m.licence.digest})
+			map[string]any{"installed_epoch": m.licence.epoch, "installed_document_digest": m.licence.digest,
+				"already_installed": digest == m.licence.digest})
 	}
-	_ = digest
 	m.installBundle(*bundle, doc)
 	out := m.licenceWire()
 	out["installed"] = true

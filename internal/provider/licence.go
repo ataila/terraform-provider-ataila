@@ -217,8 +217,10 @@ func (r *licenceBundleResource) install(ctx context.Context, bundle string, diag
 	if err != nil {
 		var apiErr *client.APIError
 		if errors.As(err, &apiErr) && apiErr.StatusCode == 409 && apiErr.Code() == client.CodeStaleEpoch {
-			if d, _ := apiErr.Extra("installed_document_digest"); d == digest {
-				// Installed meanwhile: the same document.
+			// The platform says whether the sent document is the installed one;
+			// the digest is the cross-check (and the answer of older platforms).
+			already, _ := apiErr.Extra("already_installed")
+			if d, _ := apiErr.Extra("installed_document_digest"); already == true || d == digest {
 				return r.readAfter(ctx, diags)
 			}
 			epoch, _ := apiErr.Extra("installed_epoch")

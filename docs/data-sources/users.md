@@ -62,7 +62,7 @@ Read-Only:
 - `locale` (String) `hu` (the default) or `en`.
 - `name` (String) First and last name joined.
 - `needs_git_access` (Boolean) Whether the person gets a GitLab account. Switching it on creates the account; switching it off removes none.
-- `provisioning_status` (String) The newest provisioning run: `ok`, `partial` (a step skipped, typically no GitLab account wanted), `error`, or null.
+- `provisioning_status` (String) The newest provisioning run: `ok`, `partial` (a step skipped: no GitLab account wanted, or a platform without SSO, which also warns `keycloak_not_configured`), `error`, or null.
 - `roles` (List of String) Every role the person holds, sorted. Manage them with `ataila_user_role_grant`.
 - `updated_at` (String) When the person was last changed: RFC 3339 in UTC, compared as an instant.
 - `username` (String) Sign-in handle and directory account name, `^[a-z0-9._-]{1,20}$`, not ending in `.`. Omit it and the platform derives `firstname.lastname`. Set at create only: a change later fails the plan.

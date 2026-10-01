@@ -32,7 +32,7 @@ output "shop_stages_not_done" {
 ### Read-Only
 
 - `percent` (Number) Share of the stages done, 0-100.
-- `stages` (List of Object) The stages: `key`, `title`, `deps` (the stages it needs), `deferred` (never applied automatically), `status`, `blocked` (pending while a dependency is not done), `stale`, `simulated`, `started_at` and `finished_at` (RFC 3339, of the latest run), `error_message`, `verify_state` and `verify_summary`. (see [below for nested schema](#nestedatt--stages))
+- `stages` (List of Object) The stages: `key`, `title`, `deps` (the stages it needs), `deferred` (never applied automatically), `status`, `blocked` (pending while a dependency is not done), `stale`, `simulated`, `started_at` and `finished_at` (RFC 3339, of the latest run), `last_run_id` and `last_run_at` (that run in the portal's run history; null when it never ran), `error_message`, `verify_state` and `verify_summary`. (see [below for nested schema](#nestedatt--stages))
 - `state` (String) `not_started`, `provisioning`, `complete`, `attention` or `needs_action`.
 
 <a id="nestedatt--stages"></a>
@@ -46,6 +46,8 @@ Read-Only:
 - `error_message` (String)
 - `finished_at` (String)
 - `key` (String)
+- `last_run_at` (String)
+- `last_run_id` (String)
 - `simulated` (Boolean)
 - `stale` (Boolean)
 - `started_at` (String)

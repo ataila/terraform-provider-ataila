@@ -103,6 +103,29 @@ func TestAccUserResource_Lifecycle(t *testing.T) {
 	})
 }
 
+// On a platform without SSO the SSO step is skipped: partial, with a
+// keycloak_not_configured warning; deactivation answers 204.
+func TestAccUserResource_NoKeycloak(t *testing.T) {
+	m := newMock(t)
+	m.SetKeycloak(false)
+	factories, rec := recordingProvider()
+	var id string
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: factories,
+		PreCheck:                 allowDestroyEverywhere(m),
+		CheckDestroy:             deactivated(m, &id),
+		Steps: []resource.TestStep{{
+			Config: providerBlock(true) + userHCL("dana.nosso@example.com"),
+			Check: resource.ComposeAggregateTestCheckFunc(
+				stateAttr(userAddr, "id", &id),
+				resource.TestCheckResourceAttr(userAddr, "provisioning_status", "partial"),
+				resource.TestCheckResourceAttr(userAddr, "warnings.0.code", "keycloak_not_configured"),
+				rec.expectWarning("keycloak_not_configured"),
+			),
+		}},
+	})
+}
+
 // The configured spelling of an address is kept although the platform
 // stores it lower-cased; a create reports provisioning warnings as warnings.
 func TestAccUserResource_EmailCaseAndWarnings(t *testing.T) {
