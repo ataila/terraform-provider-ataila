@@ -65,6 +65,14 @@ default:
     # cache; make it deletable before the runner cleans the directory.
     pre_get_sources_script:
       - if [ -d "$CI_PROJECT_DIR/.cache" ]; then chmod -R u+w "$CI_PROJECT_DIR/.cache"; fi
+  # Jobs keep their temporary files in $CI_PROJECT_DIR/.tmp (TMPDIR there,
+  # set by the jobs that run Go or the CLIs), never in the runner's /tmp.
+  # Removed here whether the job passed, failed or was cancelled, after
+  # stopping a gpg-agent the release job may have started; the runner's
+  # checkout (git clean -ffdx) removes whatever an aborted job left.
+  after_script:
+    - if [ -d "$CI_PROJECT_DIR/.tmp/gnupg" ]; then GNUPGHOME="$CI_PROJECT_DIR/.tmp/gnupg" gpgconf --kill all || true; fi
+    - rm -rf "$CI_PROJECT_DIR/.tmp"
 
 .go:
   # The runners keep the cache locally, one archive per runner. Only lint
@@ -77,6 +85,7 @@ default:
       - .cache/
     policy: pull
   before_script:
+    - export TMPDIR="$CI_PROJECT_DIR/.tmp" && mkdir -p "$TMPDIR"
     - source scripts/ci/toolchain.sh
     - ensure_go
 
@@ -183,6 +192,7 @@ acceptance:
         ACC_CLI_VERSION: ["1.6.0", "1.16.4"]
         ACC_DOMAIN: [tenancy+users-gateway, projects-releases+ai-licence-brand]
   script:
+    - export TMPDIR="$CI_PROJECT_DIR/.tmp" && mkdir -p "$TMPDIR"
     - source scripts/ci/toolchain.sh
     - ensure_cli "$ACC_CLI" "$ACC_CLI_VERSION"
     - chmod +x bin/provider.test bin/terraform-provider-ataila
@@ -230,6 +240,7 @@ cross-cli-state:
     - export ATAILA_CROSS_CLI_TERRAFORM="$CLI_PATH"
     - ensure_cli tofu "$XCLI_TOFU"
     - export ATAILA_CROSS_CLI_TOFU="$CLI_PATH"
+    # Under $TMPDIR, $CI_PROJECT_DIR/.tmp (see default:after_script).
     - export ATAILA_PROVIDER_DIR="$(mktemp -d)"
     - go build -o "$ATAILA_PROVIDER_DIR/terraform-provider-ataila" .
     # The previous release: the newest v* tag that is not this pipeline's own.
@@ -310,7 +321,8 @@ release:
   variables:
     GIT_DEPTH: "0"
   script:
-    - export GNUPGHOME="$(mktemp -d)"
+    # Under $CI_PROJECT_DIR/.tmp; default:after_script stops its agent and removes it.
+    - export GNUPGHOME="$TMPDIR/gnupg" && mkdir -p -m 700 "$GNUPGHOME"
     - bash scripts/ci/signing-key.sh
     - base=$(sed -n 's/^var version = "\(.*\)"$/\1/p' main.go)
     - |
@@ -320,7 +332,6 @@ release:
       fi
     - GOBIN="$TOOLCHAIN_DIR/bin" go install "github.com/goreleaser/goreleaser/v2@$GORELEASER_VERSION"
     - '"$TOOLCHAIN_DIR/bin/goreleaser" release --clean --skip=publish,announce'
-    - rm -rf "$GNUPGHOME"
     # The registries fetch the manifest next to the archives; its checksum is already in SHA256SUMS.
     - cp terraform-registry-manifest.json "dist/terraform-provider-ataila_${base}_manifest.json"
     - (cd dist && sha256sum -c --ignore-missing "terraform-provider-ataila_${base}_SHA256SUMS")

@@ -3,9 +3,11 @@
 /terraform-provider-ataila.exe
 /dist/
 
-# CI caches and downloaded tools
+# CI caches, downloaded tools, temporary files and the compiled test binary
 /.cache/
 /.tools/
+/.tmp/
+/bin/
 
 # Local OpenTofu / Terraform state from trying the examples
 .terraform/

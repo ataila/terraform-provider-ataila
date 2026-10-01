@@ -5,7 +5,8 @@
 # Imports the release signing key into $GNUPGHOME and checks it is one the
 # registries accept, before goreleaser builds anything. Run by the release job:
 #
-#   export GNUPGHOME="$(mktemp -d)"; bash scripts/ci/signing-key.sh
+#   export GNUPGHOME="$TMPDIR/gnupg"; mkdir -p -m 700 "$GNUPGHOME"
+#   bash scripts/ci/signing-key.sh
 #
 # The key comes from two protected CI/CD variables (README, "CI and releases"):
 #
