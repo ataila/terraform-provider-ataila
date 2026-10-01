@@ -3,6 +3,18 @@
 All notable changes to this provider. Versions follow semantic versioning; until the first publication the
 provider stays at 0.x and any release may change.
 
+## Unreleased
+
+### CI
+
+- The release job no longer `go install`s goreleaser: that fetched hundreds of megabytes of goreleaser's own
+  modules and filled a shared runner's disk in the v0.8.0 release. It downloads goreleaser's release binary
+  for linux/amd64 at a pinned version, checked against a pinned SHA-256 like the CLIs
+  (`scripts/ci/toolchain.sh`, `ensure_goreleaser`), into the job's `.tmp`, which is removed after the job. The
+  job keeps building with the Go cache lint saves, and saves none.
+- `release:dry-run` on the default branch exercises that path without a tag: the download, `goreleaser
+  check`, and a snapshot build for the runner's platform.
+
 ## 0.8.0 (2026-10-01) — contract 1.0.187
 
 Pins the platform's `/api/v1` contract of platform release 1.0.187 (API 1.0.0), the last re-pin before

@@ -7,6 +7,9 @@
 #   ensure_go                    Go $GO_VERSION on PATH
 #   ensure_cli tofu 1.12.6       sets CLI_PATH to that OpenTofu binary
 #   ensure_cli terraform 1.16.4  sets CLI_PATH to that Terraform binary
+#   ensure_goreleaser            sets GORELEASER_PATH to the goreleaser release
+#                                binary $GORELEASER_VERSION, in .tmp/bin (never
+#                                built with go install: its modules fill disks)
 #   probe                        reports what the runner offers (never fails)
 #
 # Nothing is installed on the runner. Tools are downloaded into
@@ -35,6 +38,9 @@ _tc_sha256() {
     terraform_1.16.4_linux_amd64.zip) echo dc94af0eef1147718ad7c8daea792ed199e3e0492eec180d0adafa2a65a879df ;;
     tofu_1.6.0_linux_amd64.zip)       echo b96c3d1235bc4fd53b199175818a35642e50cbc6b82b8422dcab59240d06d885 ;;
     tofu_1.12.6_linux_amd64.zip)      echo 5dc43da4f750f33873dc25e94587128709e819e544b7be9016b255316153c3a8 ;;
+    # goreleaser's release asset is goreleaser_Linux_x86_64.tar.gz in every
+    # release; the version is in the local name. Sum from its checksums.txt.
+    goreleaser_v2.18.2_Linux_x86_64.tar.gz) echo 0a96edc9d9bc594e4a41cc4d59467c182062910ab24d9d1f6dd7b667d32606d3 ;;
     *) return 1 ;;
   esac
 }
@@ -62,8 +68,9 @@ _tc_platform() {
 _tc_fetch() {
   local url="$1" name="$2" reach="$3" want got
   want=$(_tc_sha256 "$name") || _tc_fail "no pinned SHA-256 for $name: add one to scripts/ci/toolchain.sh"
-  mkdir -p "$TOOLCHAIN_DIR/downloads"
-  local out="$TOOLCHAIN_DIR/downloads/$name"
+  local downloads="${TC_DOWNLOADS:-$TOOLCHAIN_DIR/downloads}"
+  mkdir -p "$downloads"
+  local out="$downloads/$name"
   if [ ! -f "$out" ]; then
     echo "toolchain: downloading $url" >&2
     if ! curl -fsSL --retry 3 --connect-timeout 15 --max-time 600 -o "$out.part" "$url"; then
@@ -158,6 +165,35 @@ ensure_cli() {
   fi
   echo "toolchain: $reported at $CLI_PATH"
   export CLI_PATH
+}
+
+# ensure_goreleaser: sets GORELEASER_PATH. The release binary of
+# $GORELEASER_VERSION, downloaded and checked like the CLIs, into
+# $CI_PROJECT_DIR/.tmp (removed after every job), never `go install`ed: that
+# fetches hundreds of megabytes of goreleaser's own modules.
+ensure_goreleaser() {
+  local v="${GORELEASER_VERSION:?GORELEASER_VERSION is not set}"
+  local root="${CI_PROJECT_DIR:-$PWD}/.tmp"
+  local dir="$root/bin" name="goreleaser_${v}_Linux_x86_64.tar.gz"
+  if [ ! -x "$dir/goreleaser" ]; then
+    _tc_platform
+    _tc_need curl tar sha256sum
+    TC_DOWNLOADS="$root/downloads" _tc_fetch \
+      "https://github.com/goreleaser/goreleaser/releases/download/$v/goreleaser_Linux_x86_64.tar.gz" \
+      "$name" "github.com and its release-asset host"
+    mkdir -p "$dir"
+    tar -xzf "$TC_ARCHIVE" -C "$dir" goreleaser
+    rm -f "$TC_ARCHIVE"
+  fi
+  GORELEASER_PATH="$dir/goreleaser"
+  local out
+  out=$("$GORELEASER_PATH" --version 2>&1) || _tc_fail "$GORELEASER_PATH --version failed: $out"
+  case "$out" in
+    *"${v#v}"*) ;;
+    *) _tc_fail "$GORELEASER_PATH is not goreleaser $v" ;;
+  esac
+  echo "toolchain: goreleaser $v at $GORELEASER_PATH"
+  export GORELEASER_PATH
 }
 
 _tc_cli_banner() {

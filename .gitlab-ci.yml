@@ -340,8 +340,12 @@ release:
         echo "RELEASE STOPPED: tag $CI_COMMIT_TAG does not match version $base in main.go."
         exit 1
       fi
-    - GOBIN="$TOOLCHAIN_DIR/bin" go install "github.com/goreleaser/goreleaser/v2@$GORELEASER_VERSION"
-    - '"$TOOLCHAIN_DIR/bin/goreleaser" release --clean --skip=publish,announce'
+    # goreleaser's release binary, pinned and checked (scripts/ci/toolchain.sh),
+    # never `go install`ed: its own modules once filled a runner's disk. It
+    # builds the provider with the Go cache that lint saved; this job, like
+    # every job but lint, only restores that cache (.go: policy pull).
+    - ensure_goreleaser
+    - '"$GORELEASER_PATH" release --clean --skip=publish,announce'
     # The registries fetch the manifest next to the archives; its checksum is already in SHA256SUMS.
     - cp terraform-registry-manifest.json "dist/terraform-provider-ataila_${base}_manifest.json"
     - (cd dist && sha256sum -c --ignore-missing "terraform-provider-ataila_${base}_SHA256SUMS")
@@ -352,6 +356,27 @@ release:
       - dist/*_SHA256SUMS.sig
       - dist/*_manifest.json
     expire_in: never
+
+# The release path without a tag, on the default branch: the pinned goreleaser
+# download, `goreleaser check` of .goreleaser.yml, and a snapshot build of the
+# provider for this runner's platform with that configuration. No key, no
+# archives of the other thirteen platforms (those would take the job far past
+# a few minutes), nothing published.
+release:dry-run:
+  stage: release
+  extends: .go
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  needs:
+    - job: build
+      artifacts: false
+  variables:
+    GIT_DEPTH: "0"
+  script:
+    - ensure_goreleaser
+    - '"$GORELEASER_PATH" check'
+    - '"$GORELEASER_PATH" build --snapshot --clean --single-target'
+    - ls -lR dist/
 
 # The air-gapped mirror bundle (README, "Installing without internet
 # access"): the build job's binaries under both registry addresses, in the

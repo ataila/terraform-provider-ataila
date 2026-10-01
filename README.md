@@ -425,8 +425,11 @@ The primary repository and the only build are on the company's GitLab. Every pus
 unit tests, the acceptance matrix (OpenTofu 1.6.0 and 1.12.6, Terraform 1.6.0 and 1.16.4, each in two shards of
 domains), the cross-CLI state check and the state upgrade check (the oldest pair and the newest pair) and
 cross-platform builds. The acceptance jobs run one test binary that `test-binary` compiled, so they need neither
-Go nor the Go cache; of the jobs that do, only lint saves that cache. The default branch and every tag also run the strict leak guard ([Leak guard](#leak-guard)); nothing
-leaves GitLab unless it passed on that commit.
+Go nor the Go cache; of the jobs that do, only lint saves that cache. The default branch and every tag also run
+the strict leak guard ([Leak guard](#leak-guard)); nothing leaves GitLab unless it passed on that commit. The
+default branch also runs `release:dry-run`: the pinned goreleaser download, `goreleaser check` and a snapshot
+build, so the release path is exercised without a tag. goreleaser is its release binary, pinned by version and
+SHA-256 in `scripts/ci/toolchain.sh`, never built with `go install`.
 
 A `vX.Y.Z` tag (it must match `version` in `main.go`) additionally runs:
 
