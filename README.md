@@ -9,6 +9,14 @@ versioned API, `/api/v1`, with an API token minted in the platform's portal.
 - Status: **0.x, pre-release.** The stability promise (additive changes only within API v1, semantic versioning
   of the provider) starts when the provider is first published. Until then any 0.x release may change.
 
+## Source and issues
+
+- Source: <https://github.com/ataila/terraform-provider-ataila>, the public, read-only mirror of the primary
+  repository ([Public mirror](#public-mirror)); it goes public with the first publication.
+- Issues: <https://github.com/ataila/terraform-provider-ataila/issues>
+- Registries, once published: <https://search.opentofu.org/provider/ataila/ataila> (OpenTofu) and
+  <https://registry.terraform.io/providers/ataila/ataila> (Terraform).
+
 ## Supported CLIs
 
 Both CLIs are first-class. Every change is tested against the oldest and the newest supported release of each.
@@ -28,7 +36,7 @@ terraform {
   required_providers {
     ataila = {
       source  = "ataila/ataila"
-      version = "~> 0.3"
+      version = "~> 0.7.0"
     }
   }
 }
@@ -65,7 +73,8 @@ terraform init && terraform plan
 ```
 
 `source = "ataila/ataila"` resolves to `registry.opentofu.org/ataila/ataila` under OpenTofu and to
-`registry.terraform.io/ataila/ataila` under Terraform; the same release is published to both.
+`registry.terraform.io/ataila/ataila` under Terraform; the same release is published to both. While the version
+is 0.x a minor release may break, hence `~> 0.7.0` (0.7.x only).
 
 ### Switching between OpenTofu and Terraform
 
@@ -83,6 +92,57 @@ registry.opentofu.org/ataila/ataila, but that provider isn't available* (Terrafo
 load plugin schemas … unavailable provider "registry.opentofu.org/ataila/ataila"*). After it,
 `terraform plan` shows no changes. Both commands ask for confirmation; `-auto-approve` skips it. A remote backend is changed in
 place, so switch once, not back and forth in parallel runs.
+
+### Upgrading from 0.6.x to 0.7.0
+
+0.7.0 renames the attributes that named an internal system (the CHANGELOG lists every one, old and new). A state
+written by 0.6.x needs nothing: `ataila_user`, `ataila_project`, `ataila_ai_gateway_key` and `ataila_ai_model` are
+at schema version 1 and rename their stored attributes on the first read, so `plan` shows no changes. The
+configuration must use the new names (`enable_object_storage` instead of `enable_minio`, for example), and so must
+every reference to a renamed attribute, of a resource or a data source (`sso_linked`, `monitoring_reachable`,
+`secret_path`, `image_registry_namespace` …).
+
+### Installing without internet access
+
+For an air-gapped installation, every release tag also produces `terraform-provider-ataila_<version>_mirror.zip`:
+the same binaries under both registry addresses (`registry.opentofu.org/ataila/ataila` and
+`registry.terraform.io/ataila/ataila`), in the unpacked filesystem mirror layout both CLIs read
+(`<address>/<version>/<os>_<arch>/terraform-provider-ataila_v<version>`), with a `SHA256SUMS` of the binaries and a
+README. It holds linux_amd64, linux_arm64, darwin_arm64 and windows_amd64. Check the archive against its
+`.sha256`, unpack it on the machine, for example into `/opt/terraform/mirror`, and point the CLI at it with
+`provider_installation { filesystem_mirror }`.
+
+OpenTofu, in `~/.tofurc` (`%APPDATA%\tofu.rc` on Windows):
+
+```hcl
+provider_installation {
+  filesystem_mirror {
+    path    = "/opt/terraform/mirror"
+    include = ["registry.opentofu.org/ataila/ataila"]
+  }
+  direct {
+    exclude = ["registry.opentofu.org/ataila/ataila"]
+  }
+}
+```
+
+Terraform, in `~/.terraformrc` (`%APPDATA%\terraform.rc` on Windows):
+
+```hcl
+provider_installation {
+  filesystem_mirror {
+    path    = "/opt/terraform/mirror"
+    include = ["registry.terraform.io/ataila/ataila"]
+  }
+  direct {
+    exclude = ["registry.terraform.io/ataila/ataila"]
+  }
+}
+```
+
+Without any network at all, leave the `direct` block out. The configuration keeps `source = "ataila/ataila"`;
+`tofu init` or `terraform init` then installs the provider from the mirror and records its checksums in
+`.terraform.lock.hcl`.
 
 ### Provider configuration
 
@@ -163,7 +223,7 @@ stays served; the platform has no delete).
 go-live. A PROD request waits for a person in the portal (`wait_for_approval` decides whether create waits for
 the decision). On a platform that fakes dispatch, releases end with a warning naming the mode (every non-live
 platform behaves so), while node caches, which move real weights, fail at once. **AI Center** reads never fail
-on a monitoring outage; `prometheus_reachable` tells.
+on a monitoring outage; `monitoring_reachable` tells.
 
 **Warnings** the platform returns on a request that succeeded are reported as warnings, never as errors.
 
@@ -242,7 +302,7 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_ai_models`](docs/data-sources/ai_models.md) | The model catalogue, filtered by repo, status, category or gateway tier (all pages) |
 | [`ataila_ai_model_storage`](docs/data-sources/ai_model_storage.md) | Central-store shares and node disks, as last scanned |
 | [`ataila_ai_load_targets`](docs/data-sources/ai_load_targets.md) | Nodes and DGX clusters a model can be served on, with their VRAM budget |
-| [`ataila_ai_nodes`](docs/data-sources/ai_nodes.md) | The AI fleet, with `prometheus_reachable` |
+| [`ataila_ai_nodes`](docs/data-sources/ai_nodes.md) | The AI fleet, with `monitoring_reachable` |
 | [`ataila_ai_node`](docs/data-sources/ai_node.md) | One AI node, by hostname |
 | [`ataila_dgx_clusters`](docs/data-sources/dgx_clusters.md) | The DGX clusters as recorded |
 | [`ataila_ai_model_launch_catalog`](docs/data-sources/ai_model_launch_catalog.md) | The models each node can launch |
@@ -262,7 +322,8 @@ go generate ./...             # regenerates internal/client from api/openapi-v1.
 ### Acceptance tests
 
 The acceptance tests run the real CLI against an in-process mock of `/api/v1` (`internal/acctest`), served over
-TLS with its own certificate authority, so they need no platform and no credentials. Run them once per CLI:
+TLS with its own certificate authority, so they need no platform and no credentials. Run them once per CLI
+(CI runs them in four domains per CLI version, `scripts/ci/acc-domains.sh`, so that no job runs long):
 
 ```shell
 # Terraform
@@ -285,6 +346,16 @@ diff. It needs both CLIs:
 ```shell
 ATAILA_CROSS_CLI_TERRAFORM="$(command -v terraform)" ATAILA_CROSS_CLI_TOFU="$(command -v tofu)" \
   go test ./internal/provider/ -run '^TestCrossCLIState$' -v
+```
+
+`TestCrossCLIStateUpgrade` writes a state with the previous release's binary (schema version 0) and plans it
+with this release in both CLIs and both orders: no changes, and the state at schema version 1 after a refresh.
+It also needs the previous release, built from its tag (CI builds the newest earlier `v*` tag):
+
+```shell
+ATAILA_PREVIOUS_PROVIDER_DIR=/path/to/previous/release \
+ATAILA_CROSS_CLI_TERRAFORM="$(command -v terraform)" ATAILA_CROSS_CLI_TOFU="$(command -v tofu)" \
+  go test ./internal/provider/ -run '^TestCrossCLIStateUpgrade$' -v
 ```
 
 ### Trying a local build
@@ -324,20 +395,66 @@ templates/                  documentation templates
 docs/                       generated with tfplugindocs; do not edit by hand
 scripts/leak-guard.sh       blocks anything internal from entering this repository
 scripts/ci/toolchain.sh     fetches and verifies the CI toolchain
+scripts/ci/acc-domains.sh   splits the acceptance tests into CI domains
+scripts/ci/signing-key.sh   imports and checks the release signing key
+scripts/ci/mirror-github.sh pushes the default branch or a tag to the public mirror
+scripts/mirror/             builds the air-gapped mirror bundle of a release
+scripts/github-release/     publishes a release's signed files as its GitHub release
 ```
 
 ## CI and releases
 
-The primary repository and the only build are on the company's GitLab; the public repository is a one-way,
-read-only mirror and never builds. Every push runs: a toolchain probe, lint (gofmt, go vet, tidy modules,
-generated files current), the leak guard, unit tests, the acceptance matrix (OpenTofu 1.6.0 and 1.12.6,
-Terraform 1.6.0 and 1.16.4), the cross-CLI state check (the oldest pair and the newest pair) and
-cross-platform builds.
+The primary repository and the only build are on the company's GitLab. Every push runs: a toolchain probe, lint
+(gofmt, go vet, tidy modules, generated files current, every acceptance test in one CI domain), the leak guard,
+unit tests, the acceptance matrix (OpenTofu 1.6.0 and 1.12.6, Terraform 1.6.0 and 1.16.4, each in four domains),
+the cross-CLI state check and the state upgrade check (the oldest pair and the newest pair) and cross-platform
+builds. The default branch and every tag also run the strict leak guard ([Leak guard](#leak-guard)); nothing
+leaves GitLab unless it passed on that commit.
 
-A `vX.Y.Z` tag additionally runs goreleaser: zip archives for every platform, one `SHA256SUMS` file, the
-registry manifest and a detached GPG signature of the sums. The tag must match `version` in `main.go`. The
-release job stops with a clear message while the signing key variables (`GPG_PRIVATE_KEY`,
-`GPG_FINGERPRINT`) are not configured.
+A `vX.Y.Z` tag (it must match `version` in `main.go`) additionally runs:
+
+| Job | Does | Needs |
+|---|---|---|
+| `release` | goreleaser: zip archives for every platform, one `SHA256SUMS`, the registry manifest and a detached GPG signature of the sums | every check, the strict leak guard included; the [signing key](#signing-key) |
+| `mirror` | the air-gapped mirror bundle ([Installing without internet access](#installing-without-internet-access)) from the build job's binaries | the strict leak guard; no key |
+| `mirror:github` | pushes the tag to the [public mirror](#public-mirror) (on the default branch: that commit) | both leak guards; `GITHUB_MIRROR_TOKEN` |
+| `publish:github` | publishes the `release` job's files, unchanged (archives, `SHA256SUMS`, its `.sig`, the manifest), as the GitHub release of the tag, where both registries read them | `release` and the strict leak guard; `GITHUB_RELEASE_TOKEN` |
+
+### Signing key
+
+The OpenTofu and Terraform registries verify release signatures made with **RSA or DSA keys only**; an ECC key,
+ed25519 included, is refused at publication. Use an **RSA-4096** key, exported **without a passphrase** (nothing
+could type one in CI; the protected variable is its protection). An operator sets two CI/CD variables on this
+project, both **protected**:
+
+| Variable | Type | Value |
+|---|---|---|
+| `GPG_PRIVATE_KEY` | File, masked | The armored private key, base64-encoded on one line (`gpg --armor --export-secret-keys <fingerprint> \| base64 -w0`), because GitLab masks one-line values only. The armored key itself is accepted too, but cannot be masked. |
+| `GPG_FINGERPRINT` | Variable | The key's full fingerprint |
+
+and protects the `v*` tags (Settings → Repository → Protected tags): protected variables reach protected refs
+only. The public key is then registered with each registry. `scripts/ci/signing-key.sh` checks all of this before
+goreleaser builds anything; while either variable is missing, or the key is not RSA or DSA, has a passphrase or
+is not the one the fingerprint names, the `release` job stops with `RELEASE STOPPED`, says which, and points
+here. The private key itself belongs in the company's secrets store, from which an operator sets the variable.
+
+### Public mirror
+
+The public repository, `github.com/ataila/terraform-provider-ataila`, is a one-way, read-only mirror, fed by the
+`mirror:github` CI job only and never by a GitLab push mirror (Settings → Repository → Mirroring stays empty): a
+push mirror pushes before any pipeline runs, so nothing could gate it, while the job pushes only after the leak
+guard and the strict leak guard passed on exactly the commit it pushes. It pushes the default branch and each
+`v*` tag, skips a commit the public branch already holds, and never forces: a public history that has diverged
+stops the job for a person to decide. Nothing builds there; the release files are built and signed once, here,
+and `publish:github` uploads those same files.
+
+The two GitHub jobs exist only while their tokens are set. Until then a tag pipeline ends at `release` and
+`mirror`, and nothing fails for want of them.
+
+| Variable | Protected, masked | Value |
+|---|---|---|
+| `GITHUB_MIRROR_TOKEN` | yes | A fine-grained token with *Contents: read and write* on that one repository |
+| `GITHUB_RELEASE_TOKEN` | yes | The same scope (it creates the release and uploads its files); may be the same token |
 
 ### Leak guard
 
@@ -351,11 +468,25 @@ every push:
 bash scripts/leak-guard.sh
 ```
 
-A finding in history must be removed by rewriting that history before anything is mirrored. Findings that are
-already in pushed history are listed in `scripts/leak-guard-history.txt` (by commit and the sha256 of the
-finding, never the finding itself): a normal run reports them as `KNOWN` and passes, `--strict` refuses them.
-Run `bash scripts/leak-guard.sh --strict` before the repository is mirrored; it passes only once that history
-has been rewritten and the list emptied.
+**Public host names.** A few names under the company's domains are public, and the guard lets exactly these
+through: `app.ataila.eu`, the partner portal every customer signs in to, which the platform's API descriptions
+name; `www.ataila.eu`; and the bare domains `ataila.eu` and `ataila.com`, the company's websites. No name under
+them passes, and no other name: nothing under `portal`, `api`, `gitlab`, `harbor`, `vault` or any other internal
+service, and the guard's self-test refuses such an entry on the list. The reason: these names are published to
+every customer and visitor, so naming them leaks nothing, while treating them as findings would have meant
+rewriting the history of every released tag for no gain. R1 of the publication readiness review: accepted by the
+founder 2026-10-01; no history rewrite, the existing tags stand.
+
+**Strict mode.** `--strict` refuses findings in history too, even those listed in `scripts/leak-guard-history.txt`
+(by commit and the sha256 of the finding, never the finding itself), which a normal run reports as `KNOWN` and
+passes. The `leak-guard:strict` job runs it on the default branch and on every tag, and `release`, `mirror`,
+`mirror:github` and `publish:github` all need it. The list is therefore empty: a finding in history is removed by
+rewriting that history before it is mirrored, not by listing it. Every existing tag (v0.4.0, v0.5.0, v0.6.0)
+passes `--strict` with this guard.
+
+```shell
+bash scripts/leak-guard.sh --strict
+```
 
 ## Licence
 

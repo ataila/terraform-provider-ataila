@@ -31,6 +31,7 @@ var (
 	_ resource.ResourceWithConfigure      = (*projectResource)(nil)
 	_ resource.ResourceWithModifyPlan     = (*projectResource)(nil)
 	_ resource.ResourceWithImportState    = (*projectResource)(nil)
+	_ resource.ResourceWithUpgradeState   = (*projectResource)(nil)
 	_ resource.ResourceWithValidateConfig = (*projectResource)(nil)
 )
 
@@ -171,10 +172,10 @@ func (r *projectResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 				"ai":       schema.StringAttribute{Computed: true, MarkdownDescription: "The AI endpoint (`ai.`)."},
 			},
 		},
-		"harbor_namespace":      schema.StringAttribute{MarkdownDescription: d["harbor_namespace"], Computed: true},
-		"gitlab_repositories":   schema.ListAttribute{MarkdownDescription: d["gitlab_repositories"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectRepoTypes}},
-		"kubernetes_namespaces": schema.ListAttribute{MarkdownDescription: d["kubernetes_namespaces"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectNSTypes}},
-		"vault_paths":           schema.ListAttribute{MarkdownDescription: d["vault_paths"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectVaultTypes}},
+		"image_registry_namespace": schema.StringAttribute{MarkdownDescription: d["image_registry_namespace"], Computed: true},
+		"gitlab_repositories":      schema.ListAttribute{MarkdownDescription: d["gitlab_repositories"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectRepoTypes}},
+		"kubernetes_namespaces":    schema.ListAttribute{MarkdownDescription: d["kubernetes_namespaces"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectNSTypes}},
+		"secret_paths":             schema.ListAttribute{MarkdownDescription: d["secret_paths"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectSecretTypes}},
 		"warnings": schema.ListAttribute{
 			MarkdownDescription: d["warnings"], Computed: true, ElementType: types.ObjectType{AttrTypes: warningAttrTypes},
 		},
@@ -183,6 +184,7 @@ func (r *projectResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 		attrs[s.name] = projectSettingResourceAttribute(s)
 	}
 	resp.Schema = schema.Schema{
+		Version: 1,
 		MarkdownDescription: "A project: an application (or a network zone) of a tenant, with its settings.\n\n" +
 			"Creating a project **records** it; it provisions nothing and stays `planned`. Provisioning is " +
 			"a separate resource, `ataila_project_provisioning`. Changing a setting changes the record and " +
@@ -625,4 +627,9 @@ func (r *projectResource) ImportState(ctx context.Context, req resource.ImportSt
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), id)...)
+}
+
+// UpgradeState renames the attributes 0.7.0 renamed (schema version 0 to 1).
+func (r *projectResource) UpgradeState(context.Context) map[int64]resource.StateUpgrader {
+	return renameUpgraders(projectRenamesV1)
 }

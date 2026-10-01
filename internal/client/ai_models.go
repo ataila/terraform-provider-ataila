@@ -217,7 +217,7 @@ func (a *API) ListLoadTargets(ctx context.Context) ([]Record, error) {
 
 // ── AI Center (read-only) ────────────────────────────────────────────────────
 
-// ListAINodes reads every page of GET /ai/nodes and whether Prometheus could
+// ListAINodes reads every page of GET /ai/nodes and whether monitoring could
 // be read (false when any page says it could not).
 func (a *API) ListAINodes(ctx context.Context) ([]Record, bool, error) {
 	limit := a.pageSize()

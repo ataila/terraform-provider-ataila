@@ -60,6 +60,15 @@ type ProviderData struct {
 	Meta *client.Meta
 }
 
+// DispatchMode is what pipeline dispatch does on the platform, as GET /meta
+// said at configure time: "live", "dryrun" or "simulate" ("" when unknown).
+func (d *ProviderData) DispatchMode() string {
+	if d == nil || d.Meta == nil {
+		return ""
+	}
+	return string(d.Meta.DispatchModeEffective)
+}
+
 type providerModel struct {
 	Endpoint       types.String `tfsdk:"endpoint"`
 	Token          types.String `tfsdk:"token"`

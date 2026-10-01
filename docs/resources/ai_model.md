@@ -3,7 +3,7 @@ page_title: "ataila_ai_model Resource - ATAILA"
 subcategory: ""
 description: |-
   An AI model of the catalogue: a row, created planned. Weights arrive only through the platform's store actions; pulling them is not part of the API.
-  repo is frozen: a change fails the plan. status, location, offline_ready and synology_volume are read-only: the store actions set them, and a configuration that sets them fails the plan. The metadata is editable; a field left out of the configuration keeps its current value (to clear one, set it to an empty string or clear it in the portal).
+  repo is frozen: a change fails the plan. status, location, offline_ready and nas_volume are read-only: the store actions set them, and a configuration that sets them fails the plan. The metadata is editable; a field left out of the configuration keeps its current value (to clear one, set it to an empty string or clear it in the portal).
   Destroy removes the catalogue row and nothing else; no disk is touched. It is not destroy-gated (allow_destroy does not apply), because it never destroys weights: the platform refuses it while the row is the record of weights (a central copy), while a node holds a cache, and while a store run is active, and the provider reports which. Import by id or repo:<repo>.
 ---
 
@@ -11,7 +11,7 @@ description: |-
 
 An AI model of the catalogue: a **row**, created `planned`. Weights arrive only through the platform's store actions; pulling them is not part of the API.
 
-`repo` is **frozen**: a change fails the plan. `status`, `location`, `offline_ready` and `synology_volume` are **read-only**: the store actions set them, and a configuration that sets them fails the plan. The metadata is editable; a field left out of the configuration keeps its current value (to clear one, set it to an empty string or clear it in the portal).
+`repo` is **frozen**: a change fails the plan. `status`, `location`, `offline_ready` and `nas_volume` are **read-only**: the store actions set them, and a configuration that sets them fails the plan. The metadata is editable; a field left out of the configuration keeps its current value (to clear one, set it to an empty string or clear it in the portal).
 
 **Destroy removes the catalogue row and nothing else**; no disk is touched. It is **not destroy-gated** (`allow_destroy` does not apply), because it never destroys weights: the platform refuses it while the row is the record of weights (a central copy), while a node holds a cache, and while a store run is active, and the provider reports which. Import by id or `repo:<repo>`.
 
@@ -68,12 +68,12 @@ resource "ataila_ai_model" "coder" {
 - `created_at` (String) When the row was created: RFC 3339 in UTC.
 - `dgx_recipe` (String) The recipe a DGX cluster serves it with, if any.
 - `id` (String) The model's id, assigned by the platform.
-- `location` (String) **Read-only**: `synology` (central store), `local` (node caches only), `both`, or null.
+- `location` (String) **Read-only**: `synology` (the central store on the NAS), `local` (node caches only), `both`, or null.
+- `nas_path` (String) Where the central copy is; null without one.
+- `nas_volume` (String) **Read-only**: the central-store share holding the weights; null without a central copy.
 - `node_caches` (List of Object) The node caches: `node`, `state`, `size_gb`. (see [below for nested schema](#nestedatt--node_caches))
 - `offline_ready` (Boolean) **Read-only**: a node holds a cached copy.
 - `status` (String) **Read-only**: `planned`, `pulling`, `owned` or `serving`, set by the store actions.
-- `synology_path` (String) Where the central copy is; null without one.
-- `synology_volume` (String) **Read-only**: the central-store share holding the weights; null without a central copy.
 - `updated_at` (String) When it last changed. RFC 3339 in UTC.
 
 <a id="nestedatt--node_caches"></a>

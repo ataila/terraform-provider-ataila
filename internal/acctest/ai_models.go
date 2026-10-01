@@ -17,7 +17,7 @@ import (
 //
 //   - a model is a catalogue row, created `planned`; weights arrive only
 //     through the store actions. `repo` is frozen; `status`, `location`,
-//     `offline_ready` and `synology_volume` are read-only (422
+//     `offline_ready` and `nas_volume` are read-only (422
 //     read_only_field when a PATCH changes them, and create refuses them);
 //   - delete removes the row only, and is refused (409, with `blockers`)
 //     while a store run is active, a node holds a cache, or a central copy
@@ -30,7 +30,7 @@ import (
 //   - the mock moves a store run one step per poll of its operation; under
 //     dispatch mode dryrun a run never completes (the platform then fails it);
 //   - AI Center reads never fail: without monitoring they answer the roster
-//     with prometheus_reachable false.
+//     with monitoring_reachable false.
 
 var rxHFRepo = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*$`)
 
@@ -44,7 +44,7 @@ var modelFields = map[string]string{
 	"model_card_url": "s", "notes": "s",
 }
 
-var modelReadOnly = []string{"status", "location", "offline_ready", "synology_volume"}
+var modelReadOnly = []string{"status", "location", "offline_ready", "nas_volume"}
 
 type mockModel struct {
 	id                 int
@@ -70,7 +70,7 @@ type aiState struct {
 	nextRun    int
 	nodes      []string
 	loaded     map[string][]string // node -> repos loaded
-	prometheus bool
+	monitoring bool
 	dispatch   string
 	failNext   bool
 	clusters   []map[string]any
@@ -92,14 +92,15 @@ func (m *MockAPI) AddAINode(hostname string) {
 	sort.Strings(m.ai.nodes)
 }
 
-// SetPrometheus sets whether monitoring can be read.
-func (m *MockAPI) SetPrometheus(reachable bool) {
+// SetMonitoring sets whether monitoring can be read.
+func (m *MockAPI) SetMonitoring(reachable bool) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	m.ai.prometheus = reachable
+	m.ai.monitoring = reachable
 }
 
-// SetStoreDispatch sets how store runs are dispatched: "live" or "dryrun".
+// SetStoreDispatch sets how store runs alone are dispatched ("live" or
+// "dryrun"), leaving /meta as it is: the provider's check after a 202.
 func (m *MockAPI) SetStoreDispatch(mode string) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -229,7 +230,7 @@ func (m *MockAPI) modelWire(md *mockModel) map[string]any {
 	}
 	for k, v := range map[string]any{
 		"id": strconv.Itoa(md.id), "repo": md.repo, "status": md.status, "location": md.location,
-		"offline_ready": len(nodes) > 0, "synology_volume": md.volume, "synology_path": path, "dgx_recipe": nil,
+		"offline_ready": len(nodes) > 0, "nas_volume": md.volume, "nas_path": path, "dgx_recipe": nil,
 		"node_caches": caches, "created_at": md.createdAt, "updated_at": md.updated,
 	} {
 		out[k] = v
@@ -255,7 +256,7 @@ func (m *MockAPI) routeAIModels(c *call) reply {
 			return *r
 		}
 		return ok(http.StatusOK, map[string]any{"shares": []string{"models-2", "models-3"},
-			"synology": []any{}, "nodes": []any{}, "captured_at": nil})
+			"nas": []any{}, "nodes": []any{}, "captured_at": nil})
 	case len(parts) == 2 && parts[1] == "load-targets" && method == http.MethodGet:
 		if r := m.aiRead(c); r != nil {
 			return *r
@@ -600,9 +601,9 @@ func (m *MockAPI) cacheDelete(c *call, raw, node string) reply {
 		return c.problem(http.StatusUnprocessableEntity, "unknown_node", "'"+node+"' is not an AI node.",
 			map[string]any{"field": "node"})
 	}
-	if !m.ai.prometheus {
+	if !m.ai.monitoring {
 		rep := c.problem(http.StatusServiceUnavailable, "loaded_state_unknown",
-			"Prometheus cannot be read, so whether the model is loaded on the node is unknown; nothing was dispatched.", nil)
+			"Monitoring cannot be read, so whether the model is loaded on the node is unknown; nothing was dispatched.", nil)
 		rep.headers = map[string]string{"Retry-After": "30"}
 		return rep
 	}
@@ -679,13 +680,13 @@ func (m *MockAPI) storeRunOperation(c *call, native string) reply {
 func (m *MockAPI) nodeWire(h string) map[string]any {
 	out := map[string]any{"hostname": h, "site": "site-a", "mgmt_ip": "192.0.2.10", "gpu_class": "rtx-3090",
 		"specs_summary": "2x RTX 3090", "services": []string{"vllm"}, "is_virtual": false, "parent_host": nil,
-		"vmid": nil, "prometheus_reachable": m.ai.prometheus}
+		"vmid": nil, "monitoring_reachable": m.ai.monitoring}
 	for _, k := range []string{"status", "online", "role", "cluster", "uptime_seconds", "cpu_util_pct", "load1",
 		"mem_used_pct", "disk_used_pct", "gpu_count", "gpu_util_avg_pct", "vram_used_bytes", "vram_total_bytes",
 		"gpu_temp_max_c", "throttle_active", "collector_stale", "models"} {
 		out[k] = nil
 	}
-	if m.ai.prometheus {
+	if m.ai.monitoring {
 		models := []map[string]any{}
 		for _, repo := range m.ai.loaded[h] {
 			models = append(models, map[string]any{"model": repo, "served_name": repo, "engine": "vllm", "port": 8000,
@@ -726,7 +727,7 @@ func (m *MockAPI) routeAICenter(c *call) reply {
 			}
 		}
 		out := page(items, p.limit, func(it map[string]any) map[string]any { return map[string]any{"hostname": it["hostname"]} })
-		out["prometheus_reachable"] = m.ai.prometheus
+		out["monitoring_reachable"] = m.ai.monitoring
 		return ok(http.StatusOK, out)
 	case len(parts) == 3 && parts[1] == "nodes":
 		if !m.knownNode(parts[2]) {

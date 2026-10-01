@@ -13,7 +13,8 @@
 #
 # Fails on
 #   - private IPv4 addresses (10/8, 172.16/12, 192.168/16);
-#   - host names under any of the company's domains (`<host>.ataila.<tld>`);
+#   - host names under any of the company's domains (`<host>.ataila.<tld>`),
+#     but for the few public ones in PUBLIC_HOSTS below;
 #   - Vault KV paths (the "secret" mount followed by a slash and a path);
 #   - token shapes: platform API tokens, GitLab and Vault tokens, private keys;
 #   - internal code names.
@@ -22,11 +23,13 @@
 # Usage: scripts/leak-guard.sh [--tree-only | --history-only] [--strict] [--rev <rev>]
 # Exit:  0 clean, 1 leak found, 2 the guard itself could not run properly.
 #
-# Findings that are already in pushed history are listed, by commit and by the
-# sha256 of the exact finding (never the finding itself), in
+# Findings that are already in pushed history may be listed, by commit and by
+# the sha256 of the exact finding (never the finding itself), in
 # scripts/leak-guard-history.txt. A normal run reports them as KNOWN and passes;
-# --strict fails on them: run it before the repository is mirrored, which needs
-# that history rewritten first. A finding in the tree is never tolerated.
+# --strict fails on them. CI runs --strict on the default branch and on every
+# tag, before anything is mirrored or released, so the list must stay empty:
+# a finding in history means that history is rewritten before it is mirrored.
+# A finding in the tree is never tolerated.
 #
 # Before scanning, the guard proves each pattern still matches a sample built
 # at run time, so a broken pattern fails loudly instead of passing silently.
@@ -42,7 +45,7 @@ while [ $# -gt 0 ]; do
     --history-only) mode=history ;;
     --strict) strict=true ;;
     --rev) rev="${2:?--rev needs a revision}"; shift ;;
-    -h|--help) sed -n '2,32p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,35p' "$0"; exit 0 ;;
     *) echo "leak-guard: unknown argument $1" >&2; exit 2 ;;
   esac
   shift
@@ -70,6 +73,34 @@ SECRET_CATEGORIES="platform API token|GitLab token|Vault token|private key"
 ALLOW=(
 )
 
+# Public host names under the company's domains. These are published to every
+# customer and visitor, so naming them leaks nothing: the company's websites,
+# and the partner portal every customer signs in to, which the platform's API
+# descriptions (the vendored contract) name. Exact host names, compared
+# case-insensitively, that apply to the company host name pattern only; a name
+# under one of them (`<x>.app.ataila.eu`) is still a finding. Add an entry only
+# for a name the company publishes, never one under portal, api, gitlab,
+# harbor, vault or any other internal name: the self-test below refuses those.
+# (The bare domains never match the pattern, which needs a host label; they are
+# listed so that the list says everything that is public.)
+PUBLIC_HOSTS=(
+  app.ataila.eu
+  www.ataila.eu
+  ataila.eu
+  ataila.com
+)
+# Labels a public host may never have.
+INTERNAL_LABELS="portal|api|gitlab|harbor|vault|registry|git|dev|uat|prod|internal|admin|sso|auth|vpn|mail"
+
+# public_host <finding>: the finding is exactly one of PUBLIC_HOSTS.
+public_host() {
+  local m="${1,,}" h
+  for h in "${PUBLIC_HOSTS[@]}"; do
+    [ "$m" = "${h,,}" ] && return 0
+  done
+  return 1
+}
+
 die() { echo "leak-guard: $*" >&2; exit 2; }
 
 command -v git >/dev/null || die "git is not installed"
@@ -84,7 +115,7 @@ samples=(
   "10.""20.30.40"
   "172.""20.3.4"
   "192.""168.1.20"
-  "app.""ataila.eu"
+  "example-host.""ataila.eu"
   "secret""/team/app/db"
   "ataila_""pat_abcd1234_0123456789abcdefghijklmnopqrstuvwxyzABCDEF"
   "glpat""-0123456789abcdefghij"
@@ -116,6 +147,19 @@ for i in "${!PATTERNS[@]}"; do
       die "self-test: pattern '$name' matches the harmless '$neg'"
     fi
   done
+done
+
+# ── self-test: the public host list holds public names only ─────────────────
+for h in "${PUBLIC_HOSTS[@]}"; do
+  grep -qiE -- '^([a-z0-9-]+\.)?ataila\.[a-z]{2,63}$' <<<"$h" \
+    || die "self-test: public host '$h' is not a company domain or one host directly under it"
+  if grep -qiE -- "(^|\.)($INTERNAL_LABELS)\." <<<"$h"; then
+    die "self-test: public host '$h' names an internal service; it may not be on the list"
+  fi
+done
+public_host "APP.""Ataila.EU" || die "self-test: a public host in other letter case is not recognised"
+for h in "x.app.""ataila.eu" "app.""ataila.eu.example" "example-host.""ataila.eu"; do
+  public_host "$h" && die "self-test: '$h' passes as a public host"
 done
 
 # ── build the streams: "<location><TAB><text>" per line ──────────────────────
@@ -201,6 +245,7 @@ for entry in "${PATTERNS[@]}"; do
       while IFS= read -r m; do
         m="$(printf '%s' "$m" | sed -E 's/^[^0-9A-Za-z_-]//; s/[^0-9A-Za-z_-]$//')"
         allowed "$m" && continue
+        [ "$name" = "company host name" ] && public_host "$m" && continue
         if known "$loc" "$m"; then
           if [ "$strict" = true ]; then
             printf 'LEAK  %-26s %s: %s (listed in %s; rewrite this history)\n' "[$name]" "$loc" \

@@ -26,9 +26,22 @@ output "central_shares" {
 ### Read-Only
 
 - `captured_at` (String) The newest scan; null when nothing was ever scanned. RFC 3339 in UTC.
+- `nas` (List of Object) Free space per central-store share, as last scanned: `name`, `mount`, `kind`, `total_gb`, `free_gb`, `captured_at`. (see [below for nested schema](#nestedatt--nas))
 - `nodes` (List of Object) Each node's local disk, as last scanned, with the models cached on it (`cached`: `name`, `repo`, `size_gb`, `cached_at`): `name`, `mount`, `kind`, `total_gb`, `free_gb`, `captured_at`. (see [below for nested schema](#nestedatt--nodes))
 - `shares` (List of String) The central-store shares the store actions can use.
-- `synology` (List of Object) Free space per central-store share, as last scanned: `name`, `mount`, `kind`, `total_gb`, `free_gb`, `captured_at`. (see [below for nested schema](#nestedatt--synology))
+
+<a id="nestedatt--nas"></a>
+### Nested Schema for `nas`
+
+Read-Only:
+
+- `captured_at` (String)
+- `free_gb` (Number)
+- `kind` (String)
+- `mount` (String)
+- `name` (String)
+- `total_gb` (Number)
+
 
 <a id="nestedatt--nodes"></a>
 ### Nested Schema for `nodes`
@@ -52,17 +65,3 @@ Read-Only:
 - `name` (String)
 - `repo` (String)
 - `size_gb` (Number)
-
-
-
-<a id="nestedatt--synology"></a>
-### Nested Schema for `synology`
-
-Read-Only:
-
-- `captured_at` (String)
-- `free_gb` (Number)
-- `kind` (String)
-- `mount` (String)
-- `name` (String)
-- `total_gb` (Number)

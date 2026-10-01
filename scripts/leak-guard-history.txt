@@ -2,13 +2,7 @@
 #
 # One line per finding: <commit, 12 hex> <sha256 of the exact finding> <reason>.
 # The finding itself is never written here. A normal guard run reports these
-# as KNOWN and passes; `scripts/leak-guard.sh --strict` refuses them. The
-# history must be rewritten (and this file emptied) before the repository is
-# mirrored publicly.
-#
-# A host name of the company's partner portal, in the user deactivation
-# description of the vendored contract (added with 0.3.0, carried into the
-# 1.0.164 client). Scrubbed from the tree in 0.6.0, when the guard learned
-# every <host>.ataila.<tld>.
-5d4770f698a4 a2ec46073af2282bd5f1fd0bf18019f5cc12169b406af2642967ee78d5edf31a vendored contract, users_delete description
-770dd96ad985 a2ec46073af2282bd5f1fd0bf18019f5cc12169b406af2642967ee78d5edf31a regenerated client, users_delete description
+# as KNOWN and passes; `scripts/leak-guard.sh --strict`, which CI runs on the
+# default branch and on every tag before anything is mirrored or released,
+# refuses them. This list must therefore be empty: a finding in history is
+# removed by rewriting that history before it is mirrored, not by listing it.

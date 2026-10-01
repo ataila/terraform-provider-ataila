@@ -2,7 +2,8 @@ terraform {
   required_providers {
     ataila = {
       source  = "ataila/ataila"
-      version = "~> 0.3"
+      # 0.x: a minor release may break, so stay on 0.7.x.
+      version = "~> 0.7.0"
     }
   }
 }

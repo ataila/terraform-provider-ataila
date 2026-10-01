@@ -126,9 +126,9 @@ func TestAIModelCalls(t *testing.T) {
 	if err != nil || len(nodes) != 1 || reachable {
 		t.Fatalf("nodes %v %v %v", nodes, reachable, err)
 	}
-	m.SetPrometheus(true)
+	m.SetMonitoring(true)
 	if _, reachable, _ = api.ListAINodes(ctx); !reachable {
-		t.Error("prometheus_reachable not read")
+		t.Error("monitoring_reachable not read")
 	}
 	models, err := api.ListAIModels(ctx, "", "owned", "", "")
 	if err != nil || len(models) != 1 {

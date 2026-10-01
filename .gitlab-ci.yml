@@ -4,9 +4,18 @@
 # mirror never builds: release files are built and signed here once.
 #
 # Every push:  toolchain probe · lint · leak guard · unit tests ·
-#              acceptance (oldest + newest OpenTofu, oldest + newest Terraform) ·
-#              cross-CLI state (oldest pair, newest pair) · build
-# A v* tag:    all of the above, then goreleaser archives + SHA256SUMS + detached signature
+#              acceptance (oldest + newest OpenTofu, oldest + newest Terraform,
+#              four domains each) · cross-CLI state and state upgrade
+#              (oldest pair, newest pair) · build
+# main:        also the strict leak guard, then the push to the public mirror
+# A v* tag:    all of the above, then goreleaser archives + SHA256SUMS +
+#              detached signature, the air-gapped mirror bundle, the tag pushed
+#              to the public mirror and the signed files published as its
+#              GitHub release
+#
+# Nothing leaves GitLab unless the strict leak guard passed on that commit:
+# release, mirror, mirror:github and publish:github all need it. The two
+# GitHub jobs exist only while their tokens are set (README, "CI and releases").
 #
 # Jobs run on shell runners. Go, OpenTofu and Terraform are downloaded into the
 # build directory and checked against pinned SHA-256 sums (scripts/ci/toolchain.sh);
@@ -27,6 +36,7 @@ stages:
   - cross-cli
   - build
   - release
+  - publish
 
 variables:
   # One tag per position, as in the platform's shared CI templates.
@@ -82,6 +92,8 @@ lint:
     - go vet ./...
     - echo "== go.mod and go.sum are tidy"
     - go mod tidy -diff
+    - echo "== every acceptance test is in exactly one CI domain"
+    - bash scripts/ci/acc-domains.sh --check
     - echo "== generated client and docs are current"
     - ensure_cli terraform "$DOCS_TERRAFORM_VERSION"
     - export PATH="$(dirname "$CLI_PATH"):$PATH"
@@ -102,6 +114,22 @@ leak-guard:
   script:
     - bash scripts/leak-guard.sh
 
+# The same guard, refusing every finding in history: none may be listed in
+# scripts/leak-guard-history.txt. Runs on the default branch and on every tag,
+# before anything is mirrored or released; release, mirror, mirror:github and
+# publish:github need it.
+leak-guard:strict:
+  stage: check
+  cache: []
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  variables:
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
+  script:
+    - bash scripts/leak-guard.sh --strict
+
 unit:
   stage: test
   extends: .go
@@ -115,11 +143,16 @@ acceptance:
   parallel:
     matrix:
       # Oldest and newest supported release of each CLI. The oldest is the
-      # minimum the README declares; raise both together.
+      # minimum the README declares; raise both together. Each CLI version
+      # runs the tests in domains (scripts/ci/acc-domains.sh), one job each,
+      # so that no job runs long; the lint job checks that every acceptance
+      # test is in exactly one domain.
       - ACC_CLI: tofu
         ACC_CLI_VERSION: ["1.6.0", "1.12.6"]
+        ACC_DOMAIN: [tenancy, users-gateway, projects-releases, ai-licence-brand]
       - ACC_CLI: terraform
         ACC_CLI_VERSION: ["1.6.0", "1.16.4"]
+        ACC_DOMAIN: [tenancy, users-gateway, projects-releases, ai-licence-brand]
   script:
     - ensure_cli "$ACC_CLI" "$ACC_CLI_VERSION"
     # Built before the tests start, so the link step never competes with them.
@@ -127,13 +160,14 @@ acceptance:
     - go build -o "$ATAILA_PROVIDER_DIR/terraform-provider-ataila" .
     - export TF_ACC=1 TF_ACC_TERRAFORM_PATH="$CLI_PATH"
     - if [ "$ACC_CLI" = tofu ]; then export TF_ACC_PROVIDER_HOST=registry.opentofu.org; fi
-    - go test ./internal/provider/ -run '^TestAcc' -count=1 -v -timeout 30m > acceptance.log 2>&1 || { cat acceptance.log; exit 1; }
+    - run=$(bash scripts/ci/acc-domains.sh "$ACC_DOMAIN")
+    - go test ./internal/provider/ -run "$run" -count=1 -v -timeout 15m > acceptance.log 2>&1 || { cat acceptance.log; exit 1; }
     - cat acceptance.log
     # A run in which the acceptance tests silently skipped is a failure.
     - |
       passed=$(grep -c '^--- PASS: TestAcc' acceptance.log || true)
       skipped=$(grep -c '^--- SKIP: TestAcc' acceptance.log || true)
-      echo "acceptance under $ACC_CLI $ACC_CLI_VERSION: $passed passed, $skipped skipped"
+      echo "acceptance ($ACC_DOMAIN) under $ACC_CLI $ACC_CLI_VERSION: $passed passed, $skipped skipped"
       if [ "$passed" -eq 0 ] || [ "$skipped" -ne 0 ]; then
         echo "Acceptance tests did not all run."
         exit 1
@@ -152,6 +186,9 @@ acceptance:
 cross-cli-state:
   stage: cross-cli
   extends: .go
+  variables:
+    # The state upgrade check builds the previous release from its tag.
+    GIT_DEPTH: "0"
   parallel:
     matrix:
       - XCLI_TOFU: "1.6.0"
@@ -165,15 +202,26 @@ cross-cli-state:
     - export ATAILA_CROSS_CLI_TOFU="$CLI_PATH"
     - export ATAILA_PROVIDER_DIR="$(mktemp -d)"
     - go build -o "$ATAILA_PROVIDER_DIR/terraform-provider-ataila" .
-    - go test ./internal/provider/ -run '^TestCrossCLIState$' -count=1 -v -timeout 10m > cross-cli.log 2>&1 || { cat cross-cli.log; exit 1; }
+    # The previous release: the newest v* tag that is not this pipeline's own.
+    - git fetch --quiet --tags --force origin
+    - previous=$(git tag --list 'v*' --sort=-v:refname | grep -vxF "${CI_COMMIT_TAG:-none}" | head -n 1)
+    - test -n "$previous" || { echo "No earlier release tag to upgrade from."; exit 1; }
+    - echo "upgrading a state of $previous"
+    - export ATAILA_PREVIOUS_PROVIDER_DIR="$(mktemp -d)"
+    - prevsrc="$(mktemp -d)"
+    - git archive "$previous" | tar -x -C "$prevsrc"
+    - (cd "$prevsrc" && go build -o "$ATAILA_PREVIOUS_PROVIDER_DIR/terraform-provider-ataila" .)
+    - go test ./internal/provider/ -run '^TestCrossCLIState(Upgrade)?$' -count=1 -v -timeout 15m > cross-cli.log 2>&1 || { cat cross-cli.log; exit 1; }
     - cat cross-cli.log
-    # A run in which the check, or either order, silently skipped is a failure.
+    # A run in which a check, or either order, silently skipped is a failure.
     - |
-      for order in terraform-first opentofu-first; do
-        if ! grep -q "^    --- PASS: TestCrossCLIState/$order" cross-cli.log; then
-          echo "The cross-CLI state check did not run the $order order."
-          exit 1
-        fi
+      for check in TestCrossCLIState TestCrossCLIStateUpgrade; do
+        for order in terraform-first opentofu-first; do
+          if ! grep -q "^    --- PASS: $check/$order" cross-cli.log; then
+            echo "$check did not run the $order order."
+            exit 1
+          fi
+        done
       done
   artifacts:
     when: always
@@ -199,36 +247,45 @@ build:
       - dist/
     expire_in: 1 week
 
+# The signed release (README, "CI and releases"). The key is an RSA key (the
+# registries verify RSA and DSA signatures only; RSA-4096 recommended) in the
+# protected, masked File variable GPG_PRIVATE_KEY with its fingerprint in
+# GPG_FINGERPRINT; v* tags are protected so that both reach the tag pipeline.
+# scripts/ci/signing-key.sh stops the job, naming what is missing, before
+# anything is built.
 release:
   stage: release
   extends: .go
   rules:
     - if: $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
+  # Every check of the pipeline, the strict leak guard first; spelt out so that
+  # the gate stays when someone gives this job needs of its own.
+  needs:
+    - job: "leak-guard:strict"
+      artifacts: false
+    - job: leak-guard
+      artifacts: false
+    - job: lint
+      artifacts: false
+    - job: unit
+      artifacts: false
+    - job: acceptance
+      artifacts: false
+    - job: cross-cli-state
+      artifacts: false
+    - job: build
+      artifacts: false
   variables:
     GIT_DEPTH: "0"
   script:
-    - |
-      if [ -z "${GPG_PRIVATE_KEY:-}" ] || [ -z "${GPG_FINGERPRINT:-}" ]; then
-        echo "RELEASE STOPPED: no signing key."
-        echo "The protected CI variables GPG_PRIVATE_KEY (the armored private key, as a File or"
-        echo "Variable) and GPG_FINGERPRINT are not set for this tag. The registries accept only"
-        echo "signed releases, so nothing was built. An operator adds both variables (protected,"
-        echo "masked where possible), protects the v* tags, and re-runs this job."
-        exit 1
-      fi
-    - |
-      if ! command -v gpg >/dev/null; then
-        echo "RELEASE STOPPED: gpg is not installed on this runner."
-        exit 1
-      fi
+    - export GNUPGHOME="$(mktemp -d)"
+    - bash scripts/ci/signing-key.sh
     - base=$(sed -n 's/^var version = "\(.*\)"$/\1/p' main.go)
     - |
       if [ "v$base" != "$CI_COMMIT_TAG" ]; then
         echo "RELEASE STOPPED: tag $CI_COMMIT_TAG does not match version $base in main.go."
         exit 1
       fi
-    - export GNUPGHOME="$(mktemp -d)"
-    - if [ -f "$GPG_PRIVATE_KEY" ]; then gpg --batch --import "$GPG_PRIVATE_KEY"; else printf '%s\n' "$GPG_PRIVATE_KEY" | gpg --batch --import; fi
     - GOBIN="$TOOLCHAIN_DIR/bin" go install "github.com/goreleaser/goreleaser/v2@$GORELEASER_VERSION"
     - '"$TOOLCHAIN_DIR/bin/goreleaser" release --clean --skip=publish,announce'
     - rm -rf "$GNUPGHOME"
@@ -242,3 +299,69 @@ release:
       - dist/*_SHA256SUMS.sig
       - dist/*_manifest.json
     expire_in: never
+
+# The air-gapped mirror bundle (README, "Installing without internet
+# access"): the build job's binaries under both registry addresses, in the
+# filesystem_mirror layout, in one archive. It needs no signing key, so it is
+# made on every release tag whether or not the signed release could be.
+mirror:
+  stage: release
+  extends: .go
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
+  needs:
+    - job: "leak-guard:strict"
+      artifacts: false
+    - job: build
+  script:
+    - version="${CI_COMMIT_TAG#v}"
+    - go run ./scripts/mirror -version "$version" -dist dist -out "dist/terraform-provider-ataila_${version}_mirror.zip"
+    - (cd dist && sha256sum "terraform-provider-ataila_${version}_mirror.zip" | tee "terraform-provider-ataila_${version}_mirror.zip.sha256")
+  artifacts:
+    paths:
+      - dist/*_mirror.zip
+      - dist/*_mirror.zip.sha256
+    expire_in: never
+
+# The one-way mirror to the public repository (README, "CI and releases"): the
+# default branch and v* tags, pushed by this job only after both leak guards
+# passed on exactly that commit. Deliberately not a GitLab push mirror, which
+# pushes before any pipeline runs. Never forces. Exists only while the
+# protected, masked GITHUB_MIRROR_TOKEN is set.
+mirror:github:
+  stage: publish
+  cache: []
+  interruptible: false
+  rules:
+    - if: $GITHUB_MIRROR_TOKEN && $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
+    - if: $GITHUB_MIRROR_TOKEN && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  needs:
+    - job: leak-guard
+      artifacts: false
+    - job: "leak-guard:strict"
+      artifacts: false
+  variables:
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
+  script:
+    - bash scripts/ci/mirror-github.sh
+
+# The signed files of the release job, published as the GitHub release of the
+# tag the mirror pushed, where both registries read them. Builds nothing.
+# Exists only while the protected, masked GITHUB_RELEASE_TOKEN is set; until
+# then a tag's pipeline ends at release.
+publish:github:
+  stage: publish
+  extends: .go
+  interruptible: false
+  rules:
+    - if: $GITHUB_RELEASE_TOKEN && $CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/
+  needs:
+    - job: release
+    - job: "leak-guard:strict"
+      artifacts: false
+    - job: "mirror:github"
+      artifacts: false
+      optional: true
+  script:
+    - go run ./scripts/github-release -repo ataila/terraform-provider-ataila -tag "$CI_COMMIT_TAG" -commit "$CI_COMMIT_SHA" -dir dist

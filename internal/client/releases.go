@@ -40,17 +40,17 @@ func listPages[T any](op string, get func(cursor *string) (*http.Response, []byt
 		var pg struct {
 			Items               []T     `json:"items"`
 			NextCursor          *string `json:"next_cursor"`
-			PrometheusReachable *bool   `json:"prometheus_reachable"`
+			MonitoringReachable *bool   `json:"monitoring_reachable"`
 		}
 		if err := json.Unmarshal(body, &pg); err != nil {
 			return nil, nil, fmt.Errorf("%s: %w", op, err)
 		}
 		all = append(all, pg.Items...)
-		if pg.PrometheusReachable != nil {
+		if pg.MonitoringReachable != nil {
 			if reachable == nil {
-				reachable = pg.PrometheusReachable
-			} else if !*pg.PrometheusReachable {
-				reachable = pg.PrometheusReachable
+				reachable = pg.MonitoringReachable
+			} else if !*pg.MonitoringReachable {
+				reachable = pg.MonitoringReachable
 			}
 		}
 		if pg.NextCursor == nil || *pg.NextCursor == "" {

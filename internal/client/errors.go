@@ -86,7 +86,7 @@ func (e *APIError) RequestID() string {
 func (e *APIError) IsNotFound() bool { return e.StatusCode == http.StatusNotFound }
 
 // IsFinalUnavailable reports a 503 that retrying cannot cure: the AI gateway
-// is not configured on this platform or cannot be reached, or Vault refused to
+// is not configured on this platform or cannot be reached, or the secrets store refused to
 // store a key's value. The provider does not retry it.
 func (e *APIError) IsFinalUnavailable() bool {
 	return e.StatusCode == http.StatusServiceUnavailable && finalUnavailable[e.Code()]

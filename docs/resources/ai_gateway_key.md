@@ -3,7 +3,7 @@ page_title: "ataila_ai_gateway_key Resource - ATAILA"
 subcategory: ""
 description: |-
   A virtual key of the platform's AI gateway, for one tenant, env and app. Needs a platform with an AI gateway: where none is configured, every call answers gateway_not_configured and the provider reports it without retrying.
-  The key's value is always stored in Vault at vault_path. It is returned once, in the create or rotation that produced it, and only with expose_secret = true; the provider then keeps it in secret (sensitive) and never reads it again, so it never shows as a difference. A change to rotation_trigger rotates the key: a new value under the same alias, the old one stops working at once. An adopted key (origin = "adopted") cannot be rotated here.
+  The key's value is always kept in the platform's secrets store, at secret_path. It is returned once, in the create or rotation that produced it, and only with expose_secret = true; the provider then keeps it in secret (sensitive) and never reads it again, so it never shows as a difference. A change to rotation_trigger rotates the key: a new value under the same alias, the old one stops working at once. An adopted key (origin = "adopted") cannot be rotated here.
   Frozen keys (organization_id, env, app, feature) make up the alias; a change fails the plan. Destroy deletes the key in the gateway, irreversibly (every client using it fails at once); it needs the admin permission, not allow_destroy. Budgets are soft: the gateway alerts and never blocks.
 ---
 
@@ -11,7 +11,7 @@ description: |-
 
 A virtual key of the platform's AI gateway, for one tenant, env and app. **Needs a platform with an AI gateway**: where none is configured, every call answers `gateway_not_configured` and the provider reports it without retrying.
 
-The key's value is always stored in Vault at `vault_path`. It is returned once, in the create or rotation that produced it, and only with `expose_secret = true`; the provider then keeps it in `secret` (sensitive) and never reads it again, so it never shows as a difference. A change to `rotation_trigger` rotates the key: a new value under the same alias, the old one stops working at once. An adopted key (`origin = "adopted"`) cannot be rotated here.
+The key's value is always kept in the platform's secrets store, at `secret_path`. It is returned once, in the create or rotation that produced it, and only with `expose_secret = true`; the provider then keeps it in `secret` (sensitive) and never reads it again, so it never shows as a difference. A change to `rotation_trigger` rotates the key: a new value under the same alias, the old one stops working at once. An adopted key (`origin = "adopted"`) cannot be rotated here.
 
 **Frozen keys** (`organization_id`, `env`, `app`, `feature`) make up the alias; a change fails the plan. **Destroy deletes the key in the gateway, irreversibly** (every client using it fails at once); it needs the admin permission, not `allow_destroy`. Budgets are soft: the gateway alerts and never blocks.
 
@@ -29,7 +29,7 @@ resource "ataila_ai_gateway_key" "chatbot" {
   budget_duration = "30d"
 
   # Return the value once, into the sensitive `secret` attribute. It is in
-  # Vault at `vault_path` either way.
+  # the platform's secrets store at `secret_path` either way.
   expose_secret = true
 
   # Change this to rotate the key.
@@ -75,11 +75,11 @@ output "chatbot_key" {
 - `origin` (String) `api` (created here) or `adopted` (existed in the gateway first).
 - `rotated_at` (String) The last rotation, or null.
 - `secret` (String, Sensitive) The key's value (`sk-…`), only from a create or rotation made with `expose_secret = true`; null otherwise. Sensitive. The API never returns it again: a read keeps what the state has.
+- `secret_field` (String) The field at `secret_path` that holds the value.
+- `secret_path` (String) Where the secrets store keeps the key's value. Null for an adopted key whose location was never recorded.
 - `spend_usd` (Number) Spend the gateway has recorded for the key (US dollars), as of the last read.
 - `token_hash_prefix` (String) The first 12 characters of the gateway's SHA-256 of the key, to find it in the gateway's own records. Never the value.
 - `updated_at` (String) RFC 3339 in UTC, compared as an instant.
-- `vault_field` (String) The field at `vault_path` that holds the value.
-- `vault_path` (String) Where Vault holds the key's value (a KV v2 path). Null for an adopted key whose location was never recorded.
 - `warnings` (Attributes List) What did not go as planned in the last create, change or rotation made through this resource (for example a tier that serves nothing). (see [below for nested schema](#nestedatt--warnings))
 
 <a id="nestedatt--warnings"></a>

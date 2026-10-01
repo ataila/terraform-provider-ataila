@@ -60,7 +60,7 @@ func TestAccUserResource_Lifecycle(t *testing.T) {
 					resource.TestCheckResourceAttr(userAddr, "kind", "human"),
 					resource.TestCheckResourceAttr(userAddr, "roles.#", "1"),
 					resource.TestCheckResourceAttr(userAddr, "roles.0", "user"),
-					resource.TestCheckResourceAttr(userAddr, "keycloak_linked", "true"),
+					resource.TestCheckResourceAttr(userAddr, "sso_linked", "true"),
 					resource.TestCheckResourceAttr(userAddr, "provisioning_status", "partial"),
 					resource.TestCheckResourceAttr(userAddr, "warnings.#", "0"),
 					resource.TestCheckResourceAttrSet(userAddr, "created_at"),
@@ -104,10 +104,10 @@ func TestAccUserResource_Lifecycle(t *testing.T) {
 }
 
 // On a platform without SSO the SSO step is skipped: partial, with a
-// keycloak_not_configured warning; deactivation answers 204.
-func TestAccUserResource_NoKeycloak(t *testing.T) {
+// sso_not_configured warning; deactivation answers 204.
+func TestAccUserResource_NoSSO(t *testing.T) {
 	m := newMock(t)
-	m.SetKeycloak(false)
+	m.SetSSO(false)
 	factories, rec := recordingProvider()
 	var id string
 	resource.Test(t, resource.TestCase{
@@ -119,8 +119,8 @@ func TestAccUserResource_NoKeycloak(t *testing.T) {
 			Check: resource.ComposeAggregateTestCheckFunc(
 				stateAttr(userAddr, "id", &id),
 				resource.TestCheckResourceAttr(userAddr, "provisioning_status", "partial"),
-				resource.TestCheckResourceAttr(userAddr, "warnings.0.code", "keycloak_not_configured"),
-				rec.expectWarning("keycloak_not_configured"),
+				resource.TestCheckResourceAttr(userAddr, "warnings.0.code", "sso_not_configured"),
+				rec.expectWarning("sso_not_configured"),
 			),
 		}},
 	})

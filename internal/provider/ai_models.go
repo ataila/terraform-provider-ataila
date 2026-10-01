@@ -33,11 +33,12 @@ import (
 )
 
 var (
-	_ resource.ResourceWithConfigure   = (*aiModelResource)(nil)
-	_ resource.ResourceWithImportState = (*aiModelResource)(nil)
-	_ resource.ResourceWithModifyPlan  = (*aiModelResource)(nil)
-	_ resource.ResourceWithConfigure   = (*nodeCacheResource)(nil)
-	_ resource.ResourceWithImportState = (*nodeCacheResource)(nil)
+	_ resource.ResourceWithConfigure    = (*aiModelResource)(nil)
+	_ resource.ResourceWithImportState  = (*aiModelResource)(nil)
+	_ resource.ResourceWithUpgradeState = (*aiModelResource)(nil)
+	_ resource.ResourceWithModifyPlan   = (*aiModelResource)(nil)
+	_ resource.ResourceWithConfigure    = (*nodeCacheResource)(nil)
+	_ resource.ResourceWithImportState  = (*nodeCacheResource)(nil)
 )
 
 // RepoImportPrefix imports an AI model by its repo id.
@@ -98,10 +99,10 @@ var nodeCacheRefSpec = []fieldSpec{{name: "node", kind: fString}, {name: "state"
 var aiModelComputed = []fieldSpec{
 	{name: "id", kind: fString, doc: "The model's id, assigned by the platform."},
 	{name: "status", kind: fString, doc: "**Read-only**: `planned`, `pulling`, `owned` or `serving`, set by the store actions."},
-	{name: "location", kind: fString, doc: "**Read-only**: `synology` (central store), `local` (node caches only), `both`, or null."},
+	{name: "location", kind: fString, doc: "**Read-only**: `synology` (the central store on the NAS), `local` (node caches only), `both`, or null."},
 	{name: "offline_ready", kind: fBool, doc: "**Read-only**: a node holds a cached copy."},
-	{name: "synology_volume", kind: fString, doc: "**Read-only**: the central-store share holding the weights; null without a central copy."},
-	{name: "synology_path", kind: fString, doc: "Where the central copy is; null without one."},
+	{name: "nas_volume", kind: fString, doc: "**Read-only**: the central-store share holding the weights; null without a central copy."},
+	{name: "nas_path", kind: fString, doc: "Where the central copy is; null without one."},
 	{name: "dgx_recipe", kind: fString, doc: "The recipe a DGX cluster serves it with, if any."},
 	{name: "node_caches", kind: fObjects, doc: "The node caches: `node`, `state`, `size_gb`.", sub: nodeCacheRefSpec},
 	{name: "created_at", kind: fTime, doc: "When the row was created."},
@@ -182,10 +183,11 @@ func (r *aiModelResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 	attrs["created_at"] = schema.StringAttribute{MarkdownDescription: "When the row was created: RFC 3339 in UTC.",
 		Computed: true, CustomType: TimestampType{}, PlanModifiers: keepS}
 	resp.Schema = schema.Schema{
+		Version: 1,
 		MarkdownDescription: "An AI model of the catalogue: a **row**, created `planned`. Weights arrive only " +
 			"through the platform's store actions; pulling them is not part of the API.\n\n" +
 			"`repo` is **frozen**: a change fails the plan. `status`, `location`, `offline_ready` and " +
-			"`synology_volume` are **read-only**: the store actions set them, and a configuration that sets them " +
+			"`nas_volume` are **read-only**: the store actions set them, and a configuration that sets them " +
 			"fails the plan. The metadata is editable; a field left out of the configuration keeps its current " +
 			"value (to clear one, set it to an empty string or clear it in the portal).\n\n" +
 			"**Destroy removes the catalogue row and nothing else**; no disk is touched. It is **not " +
@@ -601,6 +603,20 @@ func nodeCacheError(doing string, err error) diag.Diagnostic {
 	return apiError(doing, err)
 }
 
+// dispatchesLive checks, before any write, that the platform carries store
+// runs out: under a faked dispatch nothing would ever be copied or removed.
+func (r *nodeCacheResource) dispatchesLive(doing string, diags *diag.Diagnostics) bool {
+	mode := r.data.DispatchMode()
+	if !fakesDispatch(mode) {
+		return true
+	}
+	diags.AddError(fmt.Sprintf("The platform fakes dispatch (%s): the store run would never run", mode),
+		fmt.Sprintf("While %s: the platform's dispatch mode is %s (GET /meta), so a store run would hold a fake "+
+			"pipeline and never complete. Weights are real infrastructure, so there is nothing to adopt: this "+
+			"works only on a platform that dispatches live. Nothing was sent.", doing, mode))
+	return false
+}
+
 // runStore waits for a store run and reports how it ended.
 func (r *nodeCacheResource) runStore(ctx context.Context, op *client.Operation, wait time.Duration, doing string, diags *diag.Diagnostics) bool {
 	if mode := operationDispatch(op); fakesDispatch(mode) {
@@ -646,6 +662,9 @@ func (r *nodeCacheResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 	doing := "caching the model " + plan.ident()
+	if !r.dispatchesLive(doing, &resp.Diagnostics) {
+		return
+	}
 	existing, op, err := r.data.API.CacheModel(ctx, plan.ModelID.ValueString(), plan.Node.ValueString())
 	if err != nil {
 		resp.Diagnostics.Append(nodeCacheError(doing, err))
@@ -725,6 +744,9 @@ func (r *nodeCacheResource) Delete(ctx context.Context, req resource.DeleteReque
 		return
 	}
 	doing := "removing the node cache " + state.ident()
+	if !r.dispatchesLive(doing, &resp.Diagnostics) {
+		return
+	}
 	op, err := r.data.API.UncacheModel(ctx, state.ModelID.ValueString(), state.Node.ValueString())
 	if isNotFound(err) {
 		return
@@ -746,4 +768,9 @@ func (r *nodeCacheResource) ImportState(ctx context.Context, req resource.Import
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), modelID+"/"+node)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("model_id"), modelID)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("node"), node)...)
+}
+
+// UpgradeState renames the attributes 0.7.0 renamed (schema version 0 to 1).
+func (r *aiModelResource) UpgradeState(context.Context) map[int64]resource.StateUpgrader {
+	return renameUpgraders(aiModelRenamesV1)
 }

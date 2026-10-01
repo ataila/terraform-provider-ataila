@@ -44,9 +44,11 @@ output "coder_status" {
 - `gated` (Boolean) The Hugging Face repo needs an accept-click to pull. Platform default `false`.
 - `gateway_tier` (String) The AI gateway tier it serves.
 - `license` (String) The licence.
-- `location` (String) **Read-only**: `synology` (central store), `local` (node caches only), `both`, or null.
+- `location` (String) **Read-only**: `synology` (the central store on the NAS), `local` (node caches only), `both`, or null.
 - `min_target` (String) The smallest target it fits.
 - `model_card_url` (String) The model card.
+- `nas_path` (String) Where the central copy is; null without one.
+- `nas_volume` (String) **Read-only**: the central-store share holding the weights; null without a central copy.
 - `node_caches` (List of Object) The node caches: `node`, `state`, `size_gb`. (see [below for nested schema](#nestedatt--node_caches))
 - `notes` (String) Notes.
 - `offline_ready` (Boolean) **Read-only**: a node holds a cached copy.
@@ -60,8 +62,6 @@ output "coder_status" {
 - `status` (String) **Read-only**: `planned`, `pulling`, `owned` or `serving`, set by the store actions.
 - `strong_axis` (String) What it is strong at.
 - `summary` (String) A summary.
-- `synology_path` (String) Where the central copy is; null without one.
-- `synology_volume` (String) **Read-only**: the central-store share holding the weights; null without a central copy.
 - `updated_at` (String) When it last changed. RFC 3339 in UTC.
 - `vendor` (String) The lab that built the model (the organisation may be a quantizer).
 - `vendor_country` (String) The vendor's country.

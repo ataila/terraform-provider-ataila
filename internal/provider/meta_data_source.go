@@ -22,12 +22,14 @@ type metaDataSource struct {
 }
 
 type metaModel struct {
-	APIVersion      types.String `tfsdk:"api_version"`
-	PlatformVersion types.String `tfsdk:"platform_version"`
-	Tier            types.String `tfsdk:"tier"`
-	TenancyMode     types.String `tfsdk:"tenancy_mode"`
-	Modules         types.List   `tfsdk:"modules"`
-	Licence         types.Object `tfsdk:"licence"`
+	APIVersion      types.String  `tfsdk:"api_version"`
+	PlatformVersion types.String  `tfsdk:"platform_version"`
+	Tier            types.String  `tfsdk:"tier"`
+	TenancyMode     types.String  `tfsdk:"tenancy_mode"`
+	Modules         types.List    `tfsdk:"modules"`
+	Licence         types.Object  `tfsdk:"licence"`
+	DispatchMode    types.String  `tfsdk:"dispatch_mode_effective"`
+	SimulateSeconds types.Float64 `tfsdk:"simulate_stage_seconds"`
 }
 
 type licenceModel struct {
@@ -49,7 +51,8 @@ func (d *metaDataSource) Metadata(_ context.Context, req datasource.MetadataRequ
 func (d *metaDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "What the platform behind the endpoint is: its API version, its build, " +
-			"its licence tier and state, and the modules the licence includes.",
+			"its licence tier and state, the modules the licence includes, and what pipeline dispatch does " +
+			"there.",
 		Attributes: map[string]schema.Attribute{
 			"api_version": schema.StringAttribute{
 				MarkdownDescription: "Semantic version of the API, for example `1.0.0`.",
@@ -70,6 +73,16 @@ func (d *metaDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, r
 			"modules": schema.ListAttribute{
 				MarkdownDescription: "Modules the licence includes.",
 				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"dispatch_mode_effective": schema.StringAttribute{
+				MarkdownDescription: "What pipeline dispatch does on this platform: `live` (work runs), `dryrun` " +
+					"(nothing is executed; provisioning and releases never complete) or `simulate` (provisioning " +
+					"stages are marked done without running; every other dispatch behaves as `dryrun`).",
+				Computed: true,
+			},
+			"simulate_stage_seconds": schema.Float64Attribute{
+				MarkdownDescription: "Under `simulate`, how long a simulated provisioning stage takes; null otherwise.",
 				Computed:            true,
 			},
 			"licence": schema.SingleNestedAttribute{
@@ -132,6 +145,8 @@ func (d *metaDataSource) Read(ctx context.Context, _ datasource.ReadRequest, res
 		TenancyMode:     stringOrEmpty(meta.TenancyMode),
 		Modules:         stringList(ctx, modules, &resp.Diagnostics),
 		Licence:         licence,
+		DispatchMode:    types.StringValue(string(meta.DispatchModeEffective)),
+		SimulateSeconds: types.Float64PointerValue(meta.SimulateStageSeconds),
 	}
 	if resp.Diagnostics.HasError() {
 		return

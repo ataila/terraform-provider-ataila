@@ -3,12 +3,12 @@
 page_title: "ataila_ai_node Data Source - ATAILA"
 subcategory: ""
 description: |-
-  One AI node (AI Center, read-only), by hostname. Live fields are null when monitoring cannot be read (prometheus_reachable false); the read does not fail because of it.
+  One AI node (AI Center, read-only), by hostname. Live fields are null when monitoring cannot be read (monitoring_reachable false); the read does not fail because of it.
 ---
 
 # ataila_ai_node (Data Source)
 
-One AI node (AI Center, read-only), by hostname. Live fields are null when monitoring cannot be read (`prometheus_reachable` false); the read does not fail because of it.
+One AI node (AI Center, read-only), by hostname. Live fields are null when monitoring cannot be read (`monitoring_reachable` false); the read does not fail because of it.
 
 ## Example Usage
 
@@ -18,7 +18,7 @@ data "ataila_ai_node" "ai_a" {
 }
 
 output "ai_a_status" {
-  value = data.ataila_ai_node.ai_a.prometheus_reachable ? data.ataila_ai_node.ai_a.status : "unknown"
+  value = data.ataila_ai_node.ai_a.monitoring_reachable ? data.ataila_ai_node.ai_a.status : "unknown"
 }
 ```
 
@@ -31,32 +31,32 @@ output "ai_a_status" {
 
 ### Read-Only
 
-- `cluster` (Object) The DGX cluster it belongs to: `name`, `role`. Live (monitoring); null when `prometheus_reachable` is false. (see [below for nested schema](#nestedatt--cluster))
-- `collector_stale` (Boolean) The node's collector is stale. Live (monitoring); null when `prometheus_reachable` is false.
-- `cpu_util_pct` (Number) CPU use. Live (monitoring); null when `prometheus_reachable` is false.
-- `disk_used_pct` (Number) Disk use. Live (monitoring); null when `prometheus_reachable` is false.
+- `cluster` (Object) The DGX cluster it belongs to: `name`, `role`. Live (monitoring); null when `monitoring_reachable` is false. (see [below for nested schema](#nestedatt--cluster))
+- `collector_stale` (Boolean) The node's collector is stale. Live (monitoring); null when `monitoring_reachable` is false.
+- `cpu_util_pct` (Number) CPU use. Live (monitoring); null when `monitoring_reachable` is false.
+- `disk_used_pct` (Number) Disk use. Live (monitoring); null when `monitoring_reachable` is false.
 - `gpu_class` (String) For example `rtx-3090` or `gb10`.
-- `gpu_count` (Number) GPUs. Live (monitoring); null when `prometheus_reachable` is false.
-- `gpu_temp_max_c` (Number) Hottest GPU. Live (monitoring); null when `prometheus_reachable` is false.
-- `gpu_util_avg_pct` (Number) Average GPU use. Live (monitoring); null when `prometheus_reachable` is false.
+- `gpu_count` (Number) GPUs. Live (monitoring); null when `monitoring_reachable` is false.
+- `gpu_temp_max_c` (Number) Hottest GPU. Live (monitoring); null when `monitoring_reachable` is false.
+- `gpu_util_avg_pct` (Number) Average GPU use. Live (monitoring); null when `monitoring_reachable` is false.
 - `is_virtual` (Boolean) A GPU virtual machine on a hybrid host.
-- `load1` (Number) Load average. Live (monitoring); null when `prometheus_reachable` is false.
-- `mem_used_pct` (Number) Memory use. Live (monitoring); null when `prometheus_reachable` is false.
+- `load1` (Number) Load average. Live (monitoring); null when `monitoring_reachable` is false.
+- `mem_used_pct` (Number) Memory use. Live (monitoring); null when `monitoring_reachable` is false.
 - `mgmt_ip` (String) Its management address.
-- `models` (List of Object) The loaded models: `model`, `served_name`, `engine`, `port`, `tensor_parallel`, `max_model_len`, `cluster`, `tiers`. Live (monitoring); null when `prometheus_reachable` is false. (see [below for nested schema](#nestedatt--models))
-- `online` (Boolean) Online. Live (monitoring); null when `prometheus_reachable` is false.
+- `models` (List of Object) The loaded models: `model`, `served_name`, `engine`, `port`, `tensor_parallel`, `max_model_len`, `cluster`, `tiers`. Live (monitoring); null when `monitoring_reachable` is false. (see [below for nested schema](#nestedatt--models))
+- `monitoring_reachable` (Boolean) False: monitoring could not be read, and every live field is null. The read does not fail.
+- `online` (Boolean) Online. Live (monitoring); null when `monitoring_reachable` is false.
 - `parent_host` (String) The host of a virtual node.
-- `prometheus_reachable` (Boolean) False: monitoring could not be read, and every live field is null. The read does not fail.
-- `role` (String) Its role. Live (monitoring); null when `prometheus_reachable` is false.
+- `role` (String) Its role. Live (monitoring); null when `monitoring_reachable` is false.
 - `services` (List of String) The services it runs.
 - `site` (String) Its site.
 - `specs_summary` (String) A summary of its hardware.
-- `status` (String) `serving`, `loaded_idle`, `idle`, `offline`, `standby` or `powered_off`. Live (monitoring); null when `prometheus_reachable` is false.
-- `throttle_active` (Boolean) A GPU is throttling. Live (monitoring); null when `prometheus_reachable` is false.
-- `uptime_seconds` (Number) Uptime. Live (monitoring); null when `prometheus_reachable` is false.
+- `status` (String) `serving`, `loaded_idle`, `idle`, `offline`, `standby` or `powered_off`. Live (monitoring); null when `monitoring_reachable` is false.
+- `throttle_active` (Boolean) A GPU is throttling. Live (monitoring); null when `monitoring_reachable` is false.
+- `uptime_seconds` (Number) Uptime. Live (monitoring); null when `monitoring_reachable` is false.
 - `vmid` (Number) The virtual machine id of a virtual node.
-- `vram_total_bytes` (Number) VRAM in total. Live (monitoring); null when `prometheus_reachable` is false.
-- `vram_used_bytes` (Number) VRAM used. Live (monitoring); null when `prometheus_reachable` is false.
+- `vram_total_bytes` (Number) VRAM in total. Live (monitoring); null when `monitoring_reachable` is false.
+- `vram_used_bytes` (Number) VRAM used. Live (monitoring); null when `monitoring_reachable` is false.
 
 <a id="nestedatt--cluster"></a>
 ### Nested Schema for `cluster`

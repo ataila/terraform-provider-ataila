@@ -65,15 +65,15 @@ output "shop_frontend_url" {
 - `deployment_backend` (String) `k8s` (the platform's default) or `vm`. **Frozen.**
 - `description` (String) Free-text description, up to 2000 characters. Leaving it out clears it.
 - `enable_ai` (Boolean) An AI endpoint for the project. Platform default `false`. Leave it out to keep the current value.
+- `enable_cache` (Boolean) A cache. Platform default `false`. Leave it out to keep the current value.
 - `enable_dr_db_replica` (Boolean) A disaster-recovery database replica. Platform default `true`. Leave it out to keep the current value.
-- `enable_dr_minio_mirror` (Boolean) Mirror object storage to the disaster-recovery site. Platform default `true`. Leave it out to keep the current value.
+- `enable_dr_object_storage_mirror` (Boolean) Mirror object storage to the disaster-recovery site. Platform default `true`. Leave it out to keep the current value.
 - `enable_fullstack_app` (Boolean) A full-stack application. Platform default `true`; always `false` for a `network_only` project. Leave it out to keep the current value.
 - `enable_iis` (Boolean) IIS/.NET hosting. Needs `deployment_backend = "vm"`. Platform default `false`. Leave it out to keep the current value.
-- `enable_minio` (Boolean) Object storage. Platform default `true`. Leave it out to keep the current value.
 - `enable_mssql` (Boolean) SQL Server. Needs `deployment_backend = "vm"`. Platform default `false`. Leave it out to keep the current value.
-- `enable_redis` (Boolean) A Redis cache. Platform default `false`. Leave it out to keep the current value.
+- `enable_nas_object_storage_replication` (Boolean) Replicate object storage to the backup NAS. Platform default `false`. Leave it out to keep the current value.
+- `enable_object_storage` (Boolean) Object storage. Platform default `true`. Leave it out to keep the current value.
 - `enable_static_site` (Boolean) A static web site. Platform default `true`; always `false` for a `network_only` project. Leave it out to keep the current value.
-- `enable_synology_minio_replication` (Boolean) Replicate object storage to the backup NAS. Platform default `false`. Leave it out to keep the current value.
 - `enable_uat_app_public` (Boolean) Publish the UAT application. Platform default `false`. Leave it out to keep the current value.
 - `enable_uat_www_public` (Boolean) Publish the UAT web site. Platform default `false`. Leave it out to keep the current value.
 - `enable_web_www` (Boolean) A `www` web site repository. Platform default `true`. Leave it out to keep the current value.
@@ -85,8 +85,8 @@ output "shop_frontend_url" {
 - `import_existing_repo` (Boolean) The GitLab repository already holds code: provisioning does not seed it from the template. Platform default `false`. Leave it out to keep the current value.
 - `mssql_edition` (String) SQL Server edition. Platform default `express`. Leave it out to keep the current value.
 - `network_only` (Boolean) Register the network zone only: no application and no web site. Forces `enable_static_site` and `enable_fullstack_app` off. Platform default `false`. **Frozen.**
-- `prod_minio_disks_per_vm` (Number) Object storage disks per node in production: 1 or 2. Platform default 2. Leave it out to keep the current value.
-- `prod_minio_node_count` (Number) Object storage nodes in production: 2 or 4. Platform default 2. Leave it out to keep the current value.
+- `prod_object_storage_disks_per_vm` (Number) Object storage disks per node in production: 1 or 2. Platform default 2. Leave it out to keep the current value.
+- `prod_object_storage_node_count` (Number) Object storage nodes in production: 2 or 4. Platform default 2. Leave it out to keep the current value.
 - `project_index` (Number) The project's index, 1-99, unique on the platform; it numbers the project's networks. Omit it and the platform allocates one above the highest in use (never below 4). **Frozen.**
 - `windows_vm_count_dev` (Number) Windows machines in development, 0-10. More than 0 needs `deployment_backend = "vm"`. Platform default 0. Leave it out to keep the current value.
 - `windows_vm_count_prod` (Number) Windows machines in production, 0-10. More than 0 needs `deployment_backend = "vm"`. Platform default 0. Leave it out to keep the current value.
@@ -98,15 +98,15 @@ output "shop_frontend_url" {
 - `created_at` (String) When the project was created: RFC 3339 in UTC, compared as an instant.
 - `customer_id` (String) Id of the customer of the owning tenant (null for a tenant without a customer, which only the platform's own projects have).
 - `gitlab_repositories` (List of Object) The project's GitLab repositories: `path` (`<group>/<repository>`), `kind` (`app` or `www`) and `primary`. (see [below for nested schema](#nestedatt--gitlab_repositories))
-- `harbor_namespace` (String) The project's container registry namespace.
 - `id` (String) Project id, assigned by the platform.
+- `image_registry_namespace` (String) The project's container registry namespace.
 - `is_self` (Boolean) One of the platform's own projects: readable, never writable through the API.
 - `kubernetes_namespaces` (List of Object) The project's Kubernetes namespaces, by `env`. (see [below for nested schema](#nestedatt--kubernetes_namespaces))
 - `registered_by` (String) Id of the user or service account that created the project, when known.
+- `secret_paths` (List of Object) Where the project's development and UAT secrets live in the secrets store, by `env` (`dev` or `uat`). Production paths are never listed, nor the paths of a `vm` backend project. (see [below for nested schema](#nestedatt--secret_paths))
 - `stale_stages` (List of String) Provisioning stages done against an older version of the project's settings, in apply order. The next provisioning run (`ataila_project_provisioning`) re-applies exactly these.
 - `status` (String) `planned` until provisioning starts, then `provisioning`, `active` once every stage is done, `paused`, or `retired`. Read-only.
 - `urls` (Attributes) The project's public addresses, each null when the project has none: `static` (the web site), `frontend` (the application), `backend` (its API) and `ai` (its AI endpoint). (see [below for nested schema](#nestedatt--urls))
-- `vault_paths` (List of Object) Where the project's development and UAT secrets live in Vault, by `env` (`dev` or `uat`). Production paths are never listed, nor the paths of a `vm` backend project. (see [below for nested schema](#nestedatt--vault_paths))
 - `warnings` (List of Object) What did not go as planned in the last change made through the provider (for example stale stages that could not be recorded). Empty when everything went as planned. (see [below for nested schema](#nestedatt--warnings))
 
 <a id="nestedatt--gitlab_repositories"></a>
@@ -128,6 +128,15 @@ Read-Only:
 - `namespace` (String)
 
 
+<a id="nestedatt--secret_paths"></a>
+### Nested Schema for `secret_paths`
+
+Read-Only:
+
+- `env` (String)
+- `path` (String)
+
+
 <a id="nestedatt--urls"></a>
 ### Nested Schema for `urls`
 
@@ -137,15 +146,6 @@ Read-Only:
 - `backend` (String) The application API (`api.`).
 - `frontend` (String) The application front end (`app.`).
 - `static` (String) The web site (`www.`).
-
-
-<a id="nestedatt--vault_paths"></a>
-### Nested Schema for `vault_paths`
-
-Read-Only:
-
-- `env` (String)
-- `path` (String)
 
 
 <a id="nestedatt--warnings"></a>

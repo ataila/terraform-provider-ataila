@@ -23,7 +23,7 @@ import (
 //   - a key belongs to one tenant, env and app; its alias is
 //     <tenant-slug>-<env>-<app>[-<feature>], unique among live keys; those
 //     four are frozen;
-//   - the key's value is stored in Vault always and returned only in the
+//   - the key's value is always stored in the secrets store and returned only in the
 //     create or rotation response that produced it, only with
 //     expose_secret; an idempotent replay carries no value and a
 //     secret_not_replayed warning;
@@ -62,21 +62,21 @@ type mockTier struct {
 }
 
 type mockKey struct {
-	id, org               string
-	project               *string
-	env, app              string
-	feature               *string
-	alias                 string
-	models                []string
-	rpm, tpm              *int64
-	budget                *float64
-	duration              *string
-	vaultPath, vaultField *string
-	origin                string
-	hash, createdBy       string
-	createdAt, updatedAt  string
-	rotatedAt             *string
-	deleted               bool
+	id, org                 string
+	project                 *string
+	env, app                string
+	feature                 *string
+	alias                   string
+	models                  []string
+	rpm, tpm                *int64
+	budget                  *float64
+	duration                *string
+	secretPath, secretField *string
+	origin                  string
+	hash, createdBy         string
+	createdAt, updatedAt    string
+	rotatedAt               *string
+	deleted                 bool
 }
 
 // gatewayKey is the key as the gateway itself holds it.
@@ -95,7 +95,7 @@ type gatewayState struct {
 	candidates []string
 	keys       map[string]*mockKey
 	live       map[string]*gatewayKey // by alias
-	vault      map[string]string      // by alias
+	secrets    map[string]string      // by alias: the stored key values
 	projects   map[int]string         // project id -> tenant id
 	nextProj   int
 }
@@ -111,7 +111,7 @@ func newGatewayState() *gatewayState {
 		candidates: []string{"model-code", "model-general"},
 		keys:       map[string]*mockKey{},
 		live:       map[string]*gatewayKey{},
-		vault:      map[string]string{},
+		secrets:    map[string]string{},
 		projects:   map[int]string{},
 		nextProj:   100,
 	}
@@ -191,11 +191,11 @@ func (m *MockAPI) GatewayKey(id string) (map[string]any, bool) {
 	return m.keyWire(k, live, state, nil, nil), true
 }
 
-// VaultValue is the value Vault holds for a key alias ("" when none).
-func (m *MockAPI) VaultValue(alias string) string {
+// SecretValue is the stored value of a key alias ("" when none).
+func (m *MockAPI) SecretValue(alias string) string {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	return m.gateway.vault[alias]
+	return m.gateway.secrets[alias]
 }
 
 // OnGateway reports whether the gateway holds a key with this alias.
@@ -367,7 +367,7 @@ func (m *MockAPI) keyWire(k *mockKey, live *gatewayKey, state string, secret *st
 		"feature": opt(k.feature), "key_alias": k.alias, "models": append([]string{}, models...),
 		"rpm_limit": optI(rpm), "tpm_limit": optI(tpm), "soft_budget_usd": budgetV,
 		"budget_duration": opt(duration), "spend_usd": spend, "live": state,
-		"vault_path": opt(k.vaultPath), "vault_field": opt(k.vaultField), "origin": k.origin,
+		"secret_path": opt(k.secretPath), "secret_field": opt(k.secretField), "origin": k.origin,
 		"token_hash_prefix": prefix, "created_by": createdBy, "created_at": k.createdAt,
 		"updated_at": k.updatedAt, "rotated_at": opt(k.rotatedAt), "secret": secretV, "warnings": warnings,
 	}
@@ -725,7 +725,7 @@ func ptr64(p *int) *int64 {
 // value and with a secret_not_replayed warning.
 func (m *MockAPI) replaySafe(k *mockKey, state string, warnings []map[string]any) map[string]any {
 	replay := m.keyWire(k, nil, state, nil, append(append([]map[string]any{}, warnings...), map[string]any{
-		"code": "secret_not_replayed", "message": "This is a replay of an earlier request: the key's value was returned only the first time. Read it from Vault at vault_path."}))
+		"code": "secret_not_replayed", "message": "This is a replay of an earlier request: the key's value was returned only the first time. Read it from Vault at secret_path."}))
 	return replay
 }
 
@@ -796,11 +796,11 @@ func (m *MockAPI) keysCreate(c *call) reply {
 	field := "value"
 	k := &mockKey{id: uuid.NewString(), org: orgID, project: project, env: *env, app: *app, feature: feature,
 		alias: alias, models: models, rpm: ptr64(rpm), tpm: ptr64(tpm), budget: budget, duration: duration,
-		vaultPath: &path, vaultField: &field, origin: "api", hash: hashOf(value), createdBy: m.principalID(),
+		secretPath: &path, secretField: &field, origin: "api", hash: hashOf(value), createdBy: m.principalID(),
 		createdAt: ts, updatedAt: ts}
 	m.gateway.keys[k.id] = k
 	m.gateway.live[alias] = &gatewayKey{models: models, rpm: k.rpm, tpm: k.tpm, budget: budget, duration: duration, hash: k.hash}
-	m.gateway.vault[alias] = value
+	m.gateway.secrets[alias] = value
 	var secret *string
 	if expose != nil && *expose {
 		secret = &value
@@ -945,7 +945,7 @@ func (m *MockAPI) keysRotate(c *call, raw string) reply {
 	}
 	if k.origin != "api" {
 		return c.problem(http.StatusConflict, "key_adopted",
-			"An adopted key's value lives in its consumer's own Vault leaf; rotate it where that consumer is deployed.", nil)
+			"An adopted key's value lives in its consumer's own secret; rotate it where that consumer is deployed.", nil)
 	}
 	if r := m.needGateway(c); r != nil {
 		return *r
@@ -958,7 +958,7 @@ func (m *MockAPI) keysRotate(c *call, raw string) reply {
 	k.hash, live.hash = hashOf(value), hashOf(value)
 	ts := now()
 	k.rotatedAt, k.updatedAt = &ts, ts
-	m.gateway.vault[k.alias] = value
+	m.gateway.secrets[k.alias] = value
 	var secret *string
 	if expose != nil && *expose {
 		secret = &value
@@ -983,7 +983,7 @@ func (m *MockAPI) keysDelete(c *call, raw string) reply {
 	}
 	delete(m.gateway.live, k.alias)
 	if k.origin == "api" {
-		delete(m.gateway.vault, k.alias)
+		delete(m.gateway.secrets, k.alias)
 	}
 	k.deleted = true
 	return reply{status: http.StatusNoContent}

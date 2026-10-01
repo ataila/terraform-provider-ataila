@@ -23,7 +23,7 @@ import (
 
 // ── specs ────────────────────────────────────────────────────────────────────
 
-const liveDoc = " Live (monitoring); null when `prometheus_reachable` is false."
+const liveDoc = " Live (monitoring); null when `monitoring_reachable` is false."
 
 var (
 	nodeModelSpec = []fieldSpec{
@@ -41,7 +41,7 @@ var (
 		{name: "is_virtual", kind: fBool, doc: "A GPU virtual machine on a hybrid host."},
 		{name: "parent_host", kind: fString, doc: "The host of a virtual node."},
 		{name: "vmid", kind: fInt, doc: "The virtual machine id of a virtual node."},
-		{name: "prometheus_reachable", kind: fBool, doc: "False: monitoring could not be read, and every live field is null. The read does not fail."},
+		{name: "monitoring_reachable", kind: fBool, doc: "False: monitoring could not be read, and every live field is null. The read does not fail."},
 		{name: "status", kind: fString, doc: "`serving`, `loaded_idle`, `idle`, `offline`, `standby` or `powered_off`." + liveDoc},
 		{name: "online", kind: fBool, doc: "Online." + liveDoc},
 		{name: "role", kind: fString, doc: "Its role." + liveDoc},
@@ -88,7 +88,7 @@ var (
 	nodeStoreSpec = append(append([]fieldSpec{}, mountSpec...), fieldSpec{name: "cached", kind: fObjects, sub: cachedSpec})
 	storageSpec   = []fieldSpec{
 		{name: "shares", kind: fStrings, doc: "The central-store shares the store actions can use."},
-		{name: "synology", kind: fObjects, doc: "Free space per central-store share, as last scanned: " + fieldNames(mountSpec) + ".", sub: mountSpec},
+		{name: "nas", kind: fObjects, doc: "Free space per central-store share, as last scanned: " + fieldNames(mountSpec) + ".", sub: mountSpec},
 		{name: "nodes", kind: fObjects, doc: "Each node's local disk, as last scanned, with the models cached on it (`cached`: " +
 			fieldNames(cachedSpec) + "): " + fieldNames(mountSpec) + ".", sub: nodeStoreSpec},
 		{name: "captured_at", kind: fTime, doc: "The newest scan; null when nothing was ever scanned."},
@@ -142,10 +142,10 @@ func (d *aiNodesDataSource) Metadata(_ context.Context, req datasource.MetadataR
 func (d *aiNodesDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = dschema.Schema{
 		MarkdownDescription: "The AI fleet (AI Center, read-only). Roster fields are always there; live fields " +
-			"are null when monitoring cannot be read, and then `prometheus_reachable` is false. The read never " +
+			"are null when monitoring cannot be read, and then `monitoring_reachable` is false. The read never " +
 			"fails because of monitoring. Needs `ai-center-read-global`.",
 		Attributes: map[string]dschema.Attribute{
-			"prometheus_reachable": dschema.BoolAttribute{
+			"monitoring_reachable": dschema.BoolAttribute{
 				MarkdownDescription: "False: monitoring could not be read and every live field is null.", Computed: true},
 			"nodes": dschema.ListAttribute{
 				MarkdownDescription: "The nodes, by hostname: " + fieldNames(aiNodeSpec) + ". See `ataila_ai_node` for each field.",
@@ -167,7 +167,7 @@ func (d *aiNodesDataSource) Read(ctx context.Context, _ datasource.ReadRequest, 
 		return
 	}
 	setSpecState(ctx, &resp.State, map[string]attr.Value{
-		"prometheus_reachable": types.BoolValue(reachable), "nodes": listValue(aiNodeSpec, nodes),
+		"monitoring_reachable": types.BoolValue(reachable), "nodes": listValue(aiNodeSpec, nodes),
 	}, &resp.Diagnostics)
 }
 
@@ -185,7 +185,7 @@ func (d *aiNodeDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 	attrs["hostname"] = dschema.StringAttribute{MarkdownDescription: "The node's hostname.", Required: true}
 	resp.Schema = dschema.Schema{
 		MarkdownDescription: "One AI node (AI Center, read-only), by hostname. Live fields are null when monitoring " +
-			"cannot be read (`prometheus_reachable` false); the read does not fail because of it.",
+			"cannot be read (`monitoring_reachable` false); the read does not fail because of it.",
 		Attributes: attrs,
 	}
 }

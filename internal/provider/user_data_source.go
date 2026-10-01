@@ -98,9 +98,9 @@ func userDataAttributes(lookups map[string]schema.StringAttribute) map[string]sc
 		"locale": str("locale"), "needs_git_access": boolean("needs_git_access"), "is_active": boolean("is_active"),
 		"username": str("username"), "ad_username": str("ad_username"), "name": str("name"), "kind": str("kind"),
 		"is_internal": boolean("is_internal"), "auth_mode": str("auth_mode"),
-		"roles":           schema.ListAttribute{MarkdownDescription: d["roles"], ElementType: types.StringType, Computed: true},
-		"keycloak_linked": boolean("keycloak_linked"), "gitlab_linked": boolean("gitlab_linked"),
-		"kc_sync_status": str("kc_sync_status"), "provisioning_status": str("provisioning_status"),
+		"roles":      schema.ListAttribute{MarkdownDescription: d["roles"], ElementType: types.StringType, Computed: true},
+		"sso_linked": boolean("sso_linked"), "gitlab_linked": boolean("gitlab_linked"),
+		"sso_sync_status": str("sso_sync_status"), "provisioning_status": str("provisioning_status"),
 		"created_at": ts("created_at"), "updated_at": ts("updated_at"),
 	}
 }

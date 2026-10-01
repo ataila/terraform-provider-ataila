@@ -9,7 +9,7 @@ resource "ataila_ai_gateway_key" "chatbot" {
   budget_duration = "30d"
 
   # Return the value once, into the sensitive `secret` attribute. It is in
-  # Vault at `vault_path` either way.
+  # the platform's secrets store at `secret_path` either way.
   expose_secret = true
 
   # Change this to rotate the key.

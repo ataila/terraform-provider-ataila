@@ -41,13 +41,13 @@ output "dana_roles" {
 - `gitlab_linked` (Boolean) A GitLab account exists for the person.
 - `is_active` (Boolean) `true` (the default). `false` deactivates the person, exactly like destroying the resource, and needs the same two switches; setting it back to `true` re-activates them.
 - `is_internal` (Boolean) Whether the person is platform staff. Read-only.
-- `kc_sync_status` (String) The last SSO projection of the person: `unlinked`, `pending`, `ok` or `error`.
-- `keycloak_linked` (Boolean) An SSO account exists for the person.
 - `kind` (String) `human`, or `service` for a service account (read-only here).
 - `last_name` (String) Last name, 1-100 characters. Removing it from the configuration clears it.
 - `locale` (String) `hu` (the default) or `en`.
 - `name` (String) First and last name joined.
 - `needs_git_access` (Boolean) Whether the person gets a GitLab account. Switching it on creates the account; switching it off removes none.
-- `provisioning_status` (String) The newest provisioning run: `ok`, `partial` (a step skipped: no GitLab account wanted, or a platform without SSO, which also warns `keycloak_not_configured`), `error`, or null.
+- `provisioning_status` (String) The newest provisioning run: `ok`, `partial` (a step skipped: no GitLab account wanted, or a platform without SSO, which also warns `sso_not_configured`), `error`, or null.
 - `roles` (List of String) Every role the person holds, sorted. Manage them with `ataila_user_role_grant`.
+- `sso_linked` (Boolean) An SSO account exists for the person.
+- `sso_sync_status` (String) The last SSO projection of the person: `unlinked`, `pending`, `ok` or `error`.
 - `updated_at` (String) When the person was last changed: RFC 3339 in UTC, compared as an instant.

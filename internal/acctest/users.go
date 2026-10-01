@@ -58,8 +58,8 @@ type mockPerson struct {
 	adUsername                     string
 	needsGit                       bool
 	roles                          map[string]string // role -> granted_at
-	keycloakLinked, gitlabLinked   bool
-	kcSync                         string
+	ssoLinked, gitlabLinked        bool
+	ssoSync                        string
 	provStatus                     *string
 	createdAt, updatedAt           string
 }
@@ -70,7 +70,7 @@ type mockPermission struct {
 }
 
 type usersState struct {
-	noKeycloak    bool
+	noSSO         bool
 	people        map[string]*mockPerson
 	failStep      string
 	deactivateOut []map[string]any
@@ -116,8 +116,8 @@ func newUsersState(principal map[string]any, scopes []string) *usersState {
 	admin := &mockPerson{id: seededAdminID, email: "platform.admin@example.com", username: "platform.admin",
 		firstName: "Platform", lastName: strPtr("Admin"), locale: "en", kind: "human", isActive: true,
 		isInternal: true, authMode: "both", adUsername: "platform.admin",
-		roles:          map[string]string{"admin": ts, "user": ts},
-		keycloakLinked: true, kcSync: "ok", provStatus: strPtr("ok"), createdAt: ts, updatedAt: ts}
+		roles:     map[string]string{"admin": ts, "user": ts},
+		ssoLinked: true, ssoSync: "ok", provStatus: strPtr("ok"), createdAt: ts, updatedAt: ts}
 	s.people[admin.id] = admin
 	if id, _ := principal["id"].(string); id != "" {
 		roles := map[string]string{"user": ts}
@@ -129,7 +129,7 @@ func newUsersState(principal map[string]any, scopes []string) *usersState {
 		name, _ := principal["name"].(string)
 		s.people[id] = &mockPerson{id: id, email: email, username: name, firstName: name, locale: "en",
 			kind: kind, isActive: true, authMode: "local", adUsername: name, roles: roles,
-			kcSync: "unlinked", createdAt: ts, updatedAt: ts}
+			ssoSync: "unlinked", createdAt: ts, updatedAt: ts}
 	}
 	return s
 }
@@ -159,7 +159,7 @@ func (m *MockAPI) addPerson(email, first, last, kind string) *mockPerson {
 	ts := now()
 	p := &mockPerson{id: uuid.NewString(), email: strings.ToLower(email), firstName: first, locale: "hu",
 		kind: kind, isActive: true, authMode: "sso", roles: map[string]string{"user": ts},
-		kcSync: "unlinked", createdAt: ts, updatedAt: ts}
+		ssoSync: "unlinked", createdAt: ts, updatedAt: ts}
 	if last != "" {
 		p.lastName = &last
 	}
@@ -230,11 +230,11 @@ func (m *MockAPI) FailProvisioningStep(step string) {
 	m.users.failStep = step
 }
 
-// SetKeycloak says whether the platform has an SSO provider.
-func (m *MockAPI) SetKeycloak(configured bool) {
+// SetSSO says whether the platform has an SSO provider.
+func (m *MockAPI) SetSSO(configured bool) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	m.users.noKeycloak = !configured
+	m.users.noSSO = !configured
 }
 
 // SetDeactivationWarning adds a warning to every deactivation (a downstream
@@ -279,8 +279,8 @@ func (p *mockPerson) wire(warnings []map[string]any) map[string]any {
 		"last_name": last, "name": p.name(), "locale": p.locale, "kind": p.kind,
 		"is_active": p.isActive, "is_internal": p.isInternal, "auth_mode": mode,
 		"ad_username": p.adUsername, "needs_git_access": p.needsGit, "roles": roles,
-		"keycloak_linked": p.keycloakLinked, "gitlab_linked": p.gitlabLinked,
-		"kc_sync_status": p.kcSync, "provisioning_status": prov,
+		"sso_linked": p.ssoLinked, "gitlab_linked": p.gitlabLinked,
+		"sso_sync_status": p.ssoSync, "provisioning_status": prov,
 		"created_at": p.createdAt, "updated_at": p.updatedAt, "warnings": warnings,
 	}
 }
@@ -680,7 +680,7 @@ func (m *MockAPI) usersCreate(c *call) reply {
 	ts := now()
 	p := &mockPerson{id: uuid.NewString(), email: addr, username: handleName, firstName: firstName,
 		locale: "hu", kind: "human", isActive: true, authMode: "sso", adUsername: sam,
-		roles: map[string]string{"user": ts}, keycloakLinked: true, kcSync: "ok", createdAt: ts, updatedAt: ts}
+		roles: map[string]string{"user": ts}, ssoLinked: true, ssoSync: "ok", createdAt: ts, updatedAt: ts}
 	if lastName != "" {
 		p.lastName = &lastName
 	}
@@ -701,10 +701,10 @@ func (m *MockAPI) usersCreate(c *call) reply {
 func (m *MockAPI) provision(p *mockPerson) []map[string]any {
 	var warnings []map[string]any
 	status := "partial"
-	if m.users.noKeycloak {
+	if m.users.noSSO {
 		// A platform without SSO: the SSO step is skipped, not failed.
-		warnings = append(warnings, map[string]any{"code": "keycloak_not_configured",
-			"message": "This platform has no Keycloak; no SSO account was created."})
+		warnings = append(warnings, map[string]any{"code": "sso_not_configured",
+			"message": "This platform has no SSO provider; no SSO account was created."})
 		p.provStatus = &status
 		return warnings
 	}

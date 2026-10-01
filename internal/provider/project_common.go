@@ -64,17 +64,17 @@ var projectSettings = []projectSetting{
 		doc: "Template of the web site. Platform default `template-www`."},
 	{name: "enable_uat_app_public", kind: kindBool, doc: "Publish the UAT application. Platform default `false`."},
 	{name: "enable_uat_www_public", kind: kindBool, doc: "Publish the UAT web site. Platform default `false`."},
-	{name: "enable_minio", kind: kindBool, doc: "Object storage. Platform default `true`."},
-	{name: "enable_redis", kind: kindBool, doc: "A Redis cache. Platform default `false`."},
+	{name: "enable_object_storage", kind: kindBool, doc: "Object storage. Platform default `true`."},
+	{name: "enable_cache", kind: kindBool, doc: "A cache. Platform default `false`."},
 	{name: "enable_dr_db_replica", kind: kindBool, doc: "A disaster-recovery database replica. Platform " +
 		"default `true`."},
-	{name: "prod_minio_node_count", kind: kindInt, ints: []int64{2, 4}, doc: "Object storage nodes in " +
+	{name: "prod_object_storage_node_count", kind: kindInt, ints: []int64{2, 4}, doc: "Object storage nodes in " +
 		"production: 2 or 4. Platform default 2."},
-	{name: "prod_minio_disks_per_vm", kind: kindInt, ints: []int64{1, 2}, doc: "Object storage disks per " +
+	{name: "prod_object_storage_disks_per_vm", kind: kindInt, ints: []int64{1, 2}, doc: "Object storage disks per " +
 		"node in production: 1 or 2. Platform default 2."},
-	{name: "enable_dr_minio_mirror", kind: kindBool, doc: "Mirror object storage to the disaster-recovery " +
+	{name: "enable_dr_object_storage_mirror", kind: kindBool, doc: "Mirror object storage to the disaster-recovery " +
 		"site. Platform default `true`."},
-	{name: "enable_synology_minio_replication", kind: kindBool, doc: "Replicate object storage to the " +
+	{name: "enable_nas_object_storage_replication", kind: kindBool, doc: "Replicate object storage to the " +
 		"backup NAS. Platform default `false`."},
 	{name: "enable_mssql", kind: kindBool, doc: "SQL Server. Needs `deployment_backend = \"vm\"`. Platform " +
 		"default `false`."},
@@ -130,22 +130,22 @@ var projectDocs = map[string]string{
 	"created_at":    "When the project was created: RFC 3339 in UTC, compared as an instant.",
 	"stale_stages": "Provisioning stages done against an older version of the project's settings, in " +
 		"apply order. The next provisioning run (`ataila_project_provisioning`) re-applies exactly these.",
-	"urls":             "The project's public addresses, each null when the project has none: `static` (the web site), `frontend` (the application), `backend` (its API) and `ai` (its AI endpoint).",
-	"harbor_namespace": "The project's container registry namespace.",
+	"urls":                     "The project's public addresses, each null when the project has none: `static` (the web site), `frontend` (the application), `backend` (its API) and `ai` (its AI endpoint).",
+	"image_registry_namespace": "The project's container registry namespace.",
 	"gitlab_repositories": "The project's GitLab repositories: `path` (`<group>/<repository>`), `kind` " +
 		"(`app` or `www`) and `primary`.",
 	"kubernetes_namespaces": "The project's Kubernetes namespaces, by `env`.",
-	"vault_paths": "Where the project's development and UAT secrets live in Vault, by `env` (`dev` or " +
+	"secret_paths": "Where the project's development and UAT secrets live in the secrets store, by `env` (`dev` or " +
 		"`uat`). Production paths are never listed, nor the paths of a `vm` backend project.",
 	"warnings": "What did not go as planned in the last change made through the provider (for example " +
 		"stale stages that could not be recorded). Empty when everything went as planned.",
 }
 
 var (
-	projectURLTypes   = map[string]attr.Type{"static": types.StringType, "frontend": types.StringType, "backend": types.StringType, "ai": types.StringType}
-	projectRepoTypes  = map[string]attr.Type{"path": types.StringType, "kind": types.StringType, "primary": types.BoolType}
-	projectNSTypes    = map[string]attr.Type{"env": types.StringType, "namespace": types.StringType}
-	projectVaultTypes = map[string]attr.Type{"env": types.StringType, "path": types.StringType}
+	projectURLTypes    = map[string]attr.Type{"static": types.StringType, "frontend": types.StringType, "backend": types.StringType, "ai": types.StringType}
+	projectRepoTypes   = map[string]attr.Type{"path": types.StringType, "kind": types.StringType, "primary": types.BoolType}
+	projectNSTypes     = map[string]attr.Type{"env": types.StringType, "namespace": types.StringType}
+	projectSecretTypes = map[string]attr.Type{"env": types.StringType, "path": types.StringType}
 )
 
 // projectValues turns an API project into attribute values. prior holds the
@@ -215,11 +215,11 @@ func projectValues(p client.ProjectData, prior map[string]attr.Value, stale []st
 		}
 		v["urls"] = types.ObjectValueMust(projectURLTypes, u)
 	}
-	hn, _ := outputs["harbor_namespace"].(string)
-	v["harbor_namespace"] = nullIfEmpty(hn)
+	hn, _ := outputs["image_registry_namespace"].(string)
+	v["image_registry_namespace"] = nullIfEmpty(hn)
 	v["gitlab_repositories"] = objectList(outputs["gitlab_repositories"], projectRepoTypes)
 	v["kubernetes_namespaces"] = objectList(outputs["kubernetes_namespaces"], projectNSTypes)
-	v["vault_paths"] = objectList(outputs["vault_paths"], projectVaultTypes)
+	v["secret_paths"] = objectList(outputs["secret_paths"], projectSecretTypes)
 	return v
 }
 

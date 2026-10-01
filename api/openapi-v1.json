@@ -109,7 +109,7 @@
                 "type": "null"
               }
             ],
-            "description": "The spark-vllm recipe a DGX cluster serves it with, if any.",
+            "description": "The serving recipe a DGX cluster runs it with, if any.",
             "title": "Dgx Recipe"
           },
           "display_name": {
@@ -191,6 +191,30 @@
               }
             ],
             "title": "Model Card Url"
+          },
+          "nas_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Where the central copy is; null without one.",
+            "title": "Nas Path"
+          },
+          "nas_volume": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Read-only: set by the store actions (pull, node cache, purge), never by a client. The central-store share holding the weights; null while there is no central copy.",
+            "title": "Nas Volume"
           },
           "node_caches": {
             "description": "The node caches (see /node-caches).",
@@ -329,30 +353,6 @@
             ],
             "title": "Summary"
           },
-          "synology_path": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Where the central copy is; null without one.",
-            "title": "Synology Path"
-          },
-          "synology_volume": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Read-only: set by the store actions (pull, node cache, purge), never by a client. The central-store share holding the weights; null while there is no central copy.",
-            "title": "Synology Volume"
-          },
           "updated_at": {
             "format": "date-time",
             "title": "Updated At",
@@ -390,8 +390,8 @@
           "status",
           "location",
           "offline_ready",
-          "synology_volume",
-          "synology_path",
+          "nas_volume",
+          "nas_path",
           "dgx_recipe",
           "node_caches",
           "created_at",
@@ -751,7 +751,7 @@
       },
       "AiModelPatch": {
         "additionalProperties": false,
-        "description": "A JSON Merge Patch (RFC 7396) of the metadata. ``null`` clears a field\nwhere the schema allows it (never ``display_name`` or ``gated``). ``repo``\nis frozen and ``status``, ``location``, ``offline_ready``,\n``synology_volume`` are read-only: each may be sent with its current value\nand nothing else.",
+        "description": "JSON Merge Patch (RFC 7396): a member that is omitted keeps its\ncurrent value; a member sent as ``null`` clears the field when the field is\nnullable (the schema marks it so), and ``null`` for any other field is a\n422. A ``\"\"`` is a value (an empty string), not a clear. Of the metadata: ``display_name`` and ``gated`` are not nullable.\n``repo``\nis frozen and ``status``, ``location``, ``offline_ready``,\n``nas_volume`` are read-only: each may be sent with its current value\nand nothing else.",
         "properties": {
           "architecture": {
             "anyOf": [
@@ -923,6 +923,18 @@
             ],
             "title": "Model Card Url"
           },
+          "nas_volume": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Read-only.",
+            "title": "Nas Volume"
+          },
           "notes": {
             "anyOf": [
               {
@@ -1083,18 +1095,6 @@
             ],
             "title": "Summary"
           },
-          "synology_volume": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Read-only.",
-            "title": "Synology Volume"
-          },
           "vendor": {
             "anyOf": [
               {
@@ -1124,7 +1124,7 @@
         "type": "object"
       },
       "AiNode": {
-        "description": "One AI node. The ROSTER fields (from the portal's hardware inventory) are\nalways present; the LIVE fields come from Prometheus and are null when it\ncannot be read — this read never fails because of Prometheus.",
+        "description": "One AI node. The ROSTER fields (from the portal's hardware inventory) are\nalways present; the LIVE fields come from monitoring and are null when it\ncannot be read — this read never fails because of monitoring.",
         "properties": {
           "cluster": {
             "anyOf": [
@@ -1135,7 +1135,7 @@
                 "type": "null"
               }
             ],
-            "description": "Live (Prometheus); null when `prometheus_reachable` is false."
+            "description": "Live (monitoring); null when `monitoring_reachable` is false."
           },
           "collector_stale": {
             "anyOf": [
@@ -1146,7 +1146,7 @@
                 "type": "null"
               }
             ],
-            "description": "Live (Prometheus); null when `prometheus_reachable` is false.",
+            "description": "Live (monitoring); null when `monitoring_reachable` is false.",
             "title": "Collector Stale"
           },
           "cpu_util_pct": {
@@ -1276,8 +1276,13 @@
                 "type": "null"
               }
             ],
-            "description": "Live (Prometheus); null when `prometheus_reachable` is false. Loaded models.",
+            "description": "Live (monitoring); null when `monitoring_reachable` is false. Loaded models.",
             "title": "Models"
+          },
+          "monitoring_reachable": {
+            "description": "Monitoring reachable: false when monitoring could not be read, and every live field of this node is then null.",
+            "title": "Monitoring Reachable",
+            "type": "boolean"
           },
           "online": {
             "anyOf": [
@@ -1288,7 +1293,7 @@
                 "type": "null"
               }
             ],
-            "description": "Live (Prometheus); null when `prometheus_reachable` is false.",
+            "description": "Live (monitoring); null when `monitoring_reachable` is false.",
             "title": "Online"
           },
           "parent_host": {
@@ -1302,10 +1307,6 @@
             ],
             "title": "Parent Host"
           },
-          "prometheus_reachable": {
-            "title": "Prometheus Reachable",
-            "type": "boolean"
-          },
           "role": {
             "anyOf": [
               {
@@ -1315,7 +1316,7 @@
                 "type": "null"
               }
             ],
-            "description": "Live (Prometheus); null when `prometheus_reachable` is false.",
+            "description": "Live (monitoring); null when `monitoring_reachable` is false.",
             "title": "Role"
           },
           "services": {
@@ -1356,7 +1357,7 @@
                 "type": "null"
               }
             ],
-            "description": "Live (Prometheus); null when `prometheus_reachable` is false. `serving`, `loaded_idle`, `idle`, `offline`, `standby` or `powered_off`.",
+            "description": "Live (monitoring); null when `monitoring_reachable` is false. `serving`, `loaded_idle`, `idle`, `offline`, `standby` or `powered_off`.",
             "title": "Status"
           },
           "throttle_active": {
@@ -1368,7 +1369,7 @@
                 "type": "null"
               }
             ],
-            "description": "Live (Prometheus); null when `prometheus_reachable` is false.",
+            "description": "Live (monitoring); null when `monitoring_reachable` is false.",
             "title": "Throttle Active"
           },
           "uptime_seconds": {
@@ -1422,7 +1423,7 @@
         "required": [
           "hostname",
           "is_virtual",
-          "prometheus_reachable"
+          "monitoring_reachable"
         ],
         "title": "AiNode",
         "type": "object"
@@ -1436,6 +1437,11 @@
             "title": "Items",
             "type": "array"
           },
+          "monitoring_reachable": {
+            "description": "Monitoring reachable: false means every live field below is null.",
+            "title": "Monitoring Reachable",
+            "type": "boolean"
+          },
           "next_cursor": {
             "anyOf": [
               {
@@ -1446,16 +1452,11 @@
               }
             ],
             "title": "Next Cursor"
-          },
-          "prometheus_reachable": {
-            "description": "False: every live field below is null.",
-            "title": "Prometheus Reachable",
-            "type": "boolean"
           }
         },
         "required": [
           "items",
-          "prometheus_reachable"
+          "monitoring_reachable"
         ],
         "title": "AiNodePage",
         "type": "object"
@@ -1477,6 +1478,146 @@
           "message"
         ],
         "title": "ApiWarning",
+        "type": "object"
+      },
+      "AuditEvent": {
+        "description": "One change: who made it, what it touched, how they signed in and from where.",
+        "properties": {
+          "action": {
+            "description": "What was done, e.g. `user.create`, `api_v1.post`.",
+            "title": "Action",
+            "type": "string"
+          },
+          "actor": {
+            "description": "Who made the change: the person's e-mail address as it was at the time, or `system`, `pipeline:<run id>`, `ops:<script>` for automated writers.",
+            "title": "Actor",
+            "type": "string"
+          },
+          "after_state": {
+            "description": "The entity after the change as the writer recorded it: usually an object, null on a delete. Every member whose NAME looks secret (it contains `secret`, `password`, `token`, `hash`, `pepper`, `credential`, `api_key` and the like, at any depth) is always null here, whatever it held.",
+            "title": "After State"
+          },
+          "auth_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`session`, `pat` (personal API token) or `service_account`. Null when the writer did not record it: every row older than the public API, and today most portal pages and automated writers (only `/api/v1`, API-token management and platform settings record it).",
+            "title": "Auth Kind"
+          },
+          "before_state": {
+            "description": "The entity before the change as the writer recorded it: usually an object, null on a create. Every member whose NAME looks secret (it contains `secret`, `password`, `token`, `hash`, `pepper`, `credential`, `api_key` and the like, at any depth) is always null here, whatever it held.",
+            "title": "Before State"
+          },
+          "entity_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Which one, as the writer spelled its id. For `entity_type` `licence` this is the licence serial, masked to its last group (`ATAILA-XXXXX-XXXXX-XXXXX-XXXXX-5F8N5`) unless the caller holds `licence-admin-global`, exactly as on `GET /licence`.",
+            "title": "Entity Id"
+          },
+          "entity_type": {
+            "description": "The kind of thing changed, e.g. `users`, `project`.",
+            "title": "Entity Type",
+            "type": "string"
+          },
+          "id": {
+            "description": "The event's id: a string holding a positive integer. Ids grow with time but are not a clock; order by `occurred_at`.",
+            "title": "Id",
+            "type": "string"
+          },
+          "occurred_at": {
+            "description": "When the change was recorded.",
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The request's `X-Request-ID`, when recorded.",
+            "title": "Request Id"
+          },
+          "source_ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The client address as the portal saw it, when recorded.",
+            "title": "Source Ip"
+          },
+          "token_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The API token used, when `auth_kind` is `pat` or `service_account`.",
+            "title": "Token Id"
+          }
+        },
+        "required": [
+          "id",
+          "occurred_at",
+          "actor",
+          "action",
+          "entity_type",
+          "entity_id",
+          "auth_kind",
+          "token_id",
+          "request_id",
+          "source_ip"
+        ],
+        "title": "AuditEvent",
+        "type": "object"
+      },
+      "AuditEventPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AuditEvent"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "AuditEventPage",
         "type": "object"
       },
       "Brand": {
@@ -2144,7 +2285,10 @@
             "type": "string"
           },
           "short_name": {
-            "description": "^[A-Z][A-Z0-9]{1,15}$",
+            "description": "Upper-case letters and digits, starting with a letter, 2-16 characters (e.g. `ACME`). Frozen after create.",
+            "maxLength": 16,
+            "minLength": 2,
+            "pattern": "^[A-Z][A-Z0-9]{1,15}$",
             "title": "Short Name",
             "type": "string"
           },
@@ -2198,7 +2342,7 @@
       },
       "CustomerPatch": {
         "additionalProperties": false,
-        "description": "A JSON Merge Patch (RFC 7396): an omitted member is left unchanged; an\nexplicit ``null`` clears ``notes`` and is refused for every other field.\n``archived`` is not a settable status: archiving is\n``DELETE /customers/{id}``.",
+        "description": "JSON Merge Patch (RFC 7396): a member that is omitted keeps its\ncurrent value; a member sent as ``null`` clears the field when the field is\nnullable (the schema marks it so), and ``null`` for any other field is a\n422. A ``\"\"`` is a value (an empty string), not a clear. Only ``notes`` is nullable.\n``archived`` is not a settable status: archiving is\n``DELETE /customers/{id}``.",
         "properties": {
           "billing_tier": {
             "anyOf": [
@@ -2618,8 +2762,32 @@
                 "type": "null"
               }
             ],
-            "description": "The key's value (`sk-…`). Present ONLY in the response to the create or rotation that produced it, and only when that request set `expose_secret: true`; null everywhere else, including an idempotent replay of that same request. The value is always stored in Vault at `vault_path`; the API never returns it again.",
+            "description": "The key's value (`sk-…`). Present ONLY in the response to the create or rotation that produced it, and only when that request set `expose_secret: true`; null everywhere else, including an idempotent replay of that same request. The value is always stored in the platform's secrets store at `secret_path`; the API never returns it again.",
             "title": "Secret"
+          },
+          "secret_field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The field of that secrets-store entry that holds the value. Null when `secret_path` is.",
+            "title": "Secret Field"
+          },
+          "secret_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Where the value is stored: a path in the platform's secrets store. Null for an adopted key whose location was never recorded.",
+            "title": "Secret Path"
           },
           "soft_budget_usd": {
             "anyOf": [
@@ -2656,7 +2824,7 @@
                 "type": "null"
               }
             ],
-            "description": "The first 12 characters of LiteLLM's SHA-256 of the key, to find it in LiteLLM's own records. Never the value.",
+            "description": "The first 12 characters of the AI gateway's SHA-256 of the key, to find it in the AI gateway's own records. Never the value.",
             "title": "Token Hash Prefix"
           },
           "tpm_limit": {
@@ -2674,29 +2842,6 @@
             "format": "date-time",
             "title": "Updated At",
             "type": "string"
-          },
-          "vault_field": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Vault Field"
-          },
-          "vault_path": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Where the value is stored (a KV v2 path under `secret/`). Null for an adopted key whose location was never recorded.",
-            "title": "Vault Path"
           },
           "warnings": {
             "items": {
@@ -2754,7 +2899,7 @@
           },
           "expose_secret": {
             "default": false,
-            "description": "Return the key's value in THIS response (`secret`). It is stored in Vault either way and never returned again.",
+            "description": "Return the key's value in THIS response (`secret`). It is stored in the secrets store either way and never returned again.",
             "title": "Expose Secret",
             "type": "boolean"
           },
@@ -2881,7 +3026,7 @@
       },
       "GatewayKeyPatch": {
         "additionalProperties": false,
-        "description": "A JSON Merge Patch (RFC 7396). ``null`` clears a limit, the soft budget,\nits duration or the project; ``models`` cannot be null. The key's value is\nnever changed here (that is a rotation).",
+        "description": "JSON Merge Patch (RFC 7396): a member that is omitted keeps its\ncurrent value; a member sent as ``null`` clears the field when the field is\nnullable (the schema marks it so), and ``null`` for any other field is a\n422. A ``\"\"`` is a value (an empty string), not a clear. Here ``null`` clears a limit, the soft\nbudget, its duration or the project; ``models`` cannot be null. The key's value is\nnever changed here (that is a rotation).",
         "properties": {
           "app": {
             "anyOf": [
@@ -3031,7 +3176,7 @@
         "properties": {
           "expose_secret": {
             "default": false,
-            "description": "Return the NEW value in this response (`secret`). It is stored in Vault either way.",
+            "description": "Return the NEW value in this response (`secret`). It is stored in the secrets store either way.",
             "title": "Expose Secret",
             "type": "boolean"
           }
@@ -4093,6 +4238,16 @@
             "title": "Api Version",
             "type": "string"
           },
+          "dispatch_mode_effective": {
+            "description": "What pipeline dispatch does on this platform, as `/api/version` reports it. `live`: work runs. `dryrun`: the dispatch is faked, nothing is executed, and provisioning or a release never completes. `simulate`: provisioning stages are marked done without running (`simulate_stage_seconds` each) and every other dispatch behaves as `dryrun`. Read it before booking work, to fail fast on a platform that will not carry it out.",
+            "enum": [
+              "live",
+              "dryrun",
+              "simulate"
+            ],
+            "title": "Dispatch Mode Effective",
+            "type": "string"
+          },
           "licence": {
             "$ref": "#/components/schemas/LicenceSummary"
           },
@@ -4108,6 +4263,19 @@
             "title": "Platform Version",
             "type": "string"
           },
+          "simulate_stage_seconds": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Under `simulate`: how long a simulated provisioning stage takes. Null in every other mode.",
+            "title": "Simulate Stage Seconds"
+          },
           "tenancy_mode": {
             "default": "",
             "title": "Tenancy Mode",
@@ -4122,7 +4290,9 @@
         "required": [
           "api_version",
           "platform_version",
-          "licence"
+          "licence",
+          "dispatch_mode_effective",
+          "simulate_stage_seconds"
         ],
         "title": "Meta",
         "type": "object"
@@ -4953,14 +5123,21 @@
             "title": "Enable Ai",
             "type": "boolean"
           },
+          "enable_cache": {
+            "default": false,
+            "description": "An in-memory key-value cache.",
+            "title": "Enable Cache",
+            "type": "boolean"
+          },
           "enable_dr_db_replica": {
             "default": true,
             "title": "Enable Dr Db Replica",
             "type": "boolean"
           },
-          "enable_dr_minio_mirror": {
+          "enable_dr_object_storage_mirror": {
             "default": true,
-            "title": "Enable Dr Minio Mirror",
+            "description": "A disaster-recovery mirror of the PROD object storage.",
+            "title": "Enable Dr Object Storage Mirror",
             "type": "boolean"
           },
           "enable_fullstack_app": {
@@ -4974,30 +5151,27 @@
             "title": "Enable Iis",
             "type": "boolean"
           },
-          "enable_minio": {
-            "default": true,
-            "title": "Enable Minio",
-            "type": "boolean"
-          },
           "enable_mssql": {
             "default": false,
             "description": "SQL Server (ADR-036). VM backend only.",
             "title": "Enable Mssql",
             "type": "boolean"
           },
-          "enable_redis": {
+          "enable_nas_object_storage_replication": {
             "default": false,
-            "title": "Enable Redis",
+            "description": "Replication of the object storage to the central store: recorded, not acted on yet.",
+            "title": "Enable Nas Object Storage Replication",
+            "type": "boolean"
+          },
+          "enable_object_storage": {
+            "default": true,
+            "description": "Object storage for the project; false provisions none (a database-only project).",
+            "title": "Enable Object Storage",
             "type": "boolean"
           },
           "enable_static_site": {
             "default": true,
             "title": "Enable Static Site",
-            "type": "boolean"
-          },
-          "enable_synology_minio_replication": {
-            "default": false,
-            "title": "Enable Synology Minio Replication",
             "type": "boolean"
           },
           "enable_uat_app_public": {
@@ -5114,22 +5288,24 @@
             "title": "Primary Domain",
             "type": "string"
           },
-          "prod_minio_disks_per_vm": {
+          "prod_object_storage_disks_per_vm": {
             "default": 2,
+            "description": "Data disks per PROD object storage node.",
             "enum": [
               1,
               2
             ],
-            "title": "Prod Minio Disks Per Vm",
+            "title": "Prod Object Storage Disks Per Vm",
             "type": "integer"
           },
-          "prod_minio_node_count": {
+          "prod_object_storage_node_count": {
             "default": 2,
+            "description": "PROD object storage nodes. With `enable_object_storage`, nodes times `prod_object_storage_disks_per_vm` must be at least 4.",
             "enum": [
               2,
               4
             ],
-            "title": "Prod Minio Node Count",
+            "title": "Prod Object Storage Node Count",
             "type": "integer"
           },
           "project_index": {
@@ -5280,14 +5456,21 @@
             "title": "Enable Ai",
             "type": "boolean"
           },
+          "enable_cache": {
+            "default": false,
+            "description": "An in-memory key-value cache.",
+            "title": "Enable Cache",
+            "type": "boolean"
+          },
           "enable_dr_db_replica": {
             "default": true,
             "title": "Enable Dr Db Replica",
             "type": "boolean"
           },
-          "enable_dr_minio_mirror": {
+          "enable_dr_object_storage_mirror": {
             "default": true,
-            "title": "Enable Dr Minio Mirror",
+            "description": "A disaster-recovery mirror of the PROD object storage.",
+            "title": "Enable Dr Object Storage Mirror",
             "type": "boolean"
           },
           "enable_fullstack_app": {
@@ -5301,30 +5484,27 @@
             "title": "Enable Iis",
             "type": "boolean"
           },
-          "enable_minio": {
-            "default": true,
-            "title": "Enable Minio",
-            "type": "boolean"
-          },
           "enable_mssql": {
             "default": false,
             "description": "SQL Server (ADR-036). VM backend only.",
             "title": "Enable Mssql",
             "type": "boolean"
           },
-          "enable_redis": {
+          "enable_nas_object_storage_replication": {
             "default": false,
-            "title": "Enable Redis",
+            "description": "Replication of the object storage to the central store: recorded, not acted on yet.",
+            "title": "Enable Nas Object Storage Replication",
+            "type": "boolean"
+          },
+          "enable_object_storage": {
+            "default": true,
+            "description": "Object storage for the project; false provisions none (a database-only project).",
+            "title": "Enable Object Storage",
             "type": "boolean"
           },
           "enable_static_site": {
             "default": true,
             "title": "Enable Static Site",
-            "type": "boolean"
-          },
-          "enable_synology_minio_replication": {
-            "default": false,
-            "title": "Enable Synology Minio Replication",
             "type": "boolean"
           },
           "enable_uat_app_public": {
@@ -5429,22 +5609,24 @@
             "title": "Primary Domain",
             "type": "string"
           },
-          "prod_minio_disks_per_vm": {
+          "prod_object_storage_disks_per_vm": {
             "default": 2,
+            "description": "Data disks per PROD object storage node.",
             "enum": [
               1,
               2
             ],
-            "title": "Prod Minio Disks Per Vm",
+            "title": "Prod Object Storage Disks Per Vm",
             "type": "integer"
           },
-          "prod_minio_node_count": {
+          "prod_object_storage_node_count": {
             "default": 2,
+            "description": "PROD object storage nodes. With `enable_object_storage`, nodes times `prod_object_storage_disks_per_vm` must be at least 4.",
             "enum": [
               2,
               4
             ],
-            "title": "Prod Minio Node Count",
+            "title": "Prod Object Storage Node Count",
             "type": "integer"
           },
           "project_index": {
@@ -5639,7 +5821,7 @@
         "type": "object"
       },
       "ProjectOutputs": {
-        "description": "What the project's compiled manifest names, curated: never an internal\naddress, a machine's host name or a production Vault path.",
+        "description": "What the project's compiled manifest names, curated: never an internal\naddress, a machine's host name or a production secrets store path.",
         "properties": {
           "gitlab_repositories": {
             "default": [],
@@ -5649,7 +5831,7 @@
             "title": "Gitlab Repositories",
             "type": "array"
           },
-          "harbor_namespace": {
+          "image_registry_namespace": {
             "anyOf": [
               {
                 "type": "string"
@@ -5658,7 +5840,8 @@
                 "type": "null"
               }
             ],
-            "title": "Harbor Namespace"
+            "description": "The project's namespace in the platform's image registry.",
+            "title": "Image Registry Namespace"
           },
           "kubernetes_namespaces": {
             "default": [],
@@ -5668,17 +5851,17 @@
             "title": "Kubernetes Namespaces",
             "type": "array"
           },
-          "urls": {
-            "$ref": "#/components/schemas/ProjectUrls"
-          },
-          "vault_paths": {
+          "secret_paths": {
             "default": [],
             "description": "dev and uat only. A VM-backend project's paths embed its machines' host names and are not listed.",
             "items": {
-              "$ref": "#/components/schemas/VaultPath"
+              "$ref": "#/components/schemas/SecretPath"
             },
-            "title": "Vault Paths",
+            "title": "Secret Paths",
             "type": "array"
+          },
+          "urls": {
+            "$ref": "#/components/schemas/ProjectUrls"
           }
         },
         "required": [
@@ -5716,7 +5899,7 @@
       },
       "ProjectPatch": {
         "additionalProperties": false,
-        "description": "A JSON Merge Patch (RFC 7396). Frozen members are accepted only with the\ncurrent value. ``status`` is not writable in v1.",
+        "description": "JSON Merge Patch (RFC 7396): a member that is omitted keeps its\ncurrent value; a member sent as ``null`` clears the field when the field is\nnullable (the schema marks it so), and ``null`` for any other field is a\n422. A ``\"\"`` is a value (an empty string), not a clear. Frozen members are accepted only with the\ncurrent value. ``status`` is not writable in v1.",
         "properties": {
           "allow_public_https_egress": {
             "anyOf": [
@@ -5799,6 +5982,17 @@
             ],
             "title": "Enable Ai"
           },
+          "enable_cache": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enable Cache"
+          },
           "enable_dr_db_replica": {
             "anyOf": [
               {
@@ -5810,7 +6004,7 @@
             ],
             "title": "Enable Dr Db Replica"
           },
-          "enable_dr_minio_mirror": {
+          "enable_dr_object_storage_mirror": {
             "anyOf": [
               {
                 "type": "boolean"
@@ -5819,7 +6013,7 @@
                 "type": "null"
               }
             ],
-            "title": "Enable Dr Minio Mirror"
+            "title": "Enable Dr Object Storage Mirror"
           },
           "enable_fullstack_app": {
             "anyOf": [
@@ -5843,17 +6037,6 @@
             ],
             "title": "Enable Iis"
           },
-          "enable_minio": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Enable Minio"
-          },
           "enable_mssql": {
             "anyOf": [
               {
@@ -5865,7 +6048,7 @@
             ],
             "title": "Enable Mssql"
           },
-          "enable_redis": {
+          "enable_nas_object_storage_replication": {
             "anyOf": [
               {
                 "type": "boolean"
@@ -5874,7 +6057,18 @@
                 "type": "null"
               }
             ],
-            "title": "Enable Redis"
+            "title": "Enable Nas Object Storage Replication"
+          },
+          "enable_object_storage": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enable Object Storage"
           },
           "enable_static_site": {
             "anyOf": [
@@ -5886,17 +6080,6 @@
               }
             ],
             "title": "Enable Static Site"
-          },
-          "enable_synology_minio_replication": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Enable Synology Minio Replication"
           },
           "enable_uat_app_public": {
             "anyOf": [
@@ -6074,7 +6257,7 @@
             "description": "Frozen.",
             "title": "Primary Domain"
           },
-          "prod_minio_disks_per_vm": {
+          "prod_object_storage_disks_per_vm": {
             "anyOf": [
               {
                 "enum": [
@@ -6087,9 +6270,9 @@
                 "type": "null"
               }
             ],
-            "title": "Prod Minio Disks Per Vm"
+            "title": "Prod Object Storage Disks Per Vm"
           },
-          "prod_minio_node_count": {
+          "prod_object_storage_node_count": {
             "anyOf": [
               {
                 "enum": [
@@ -6102,7 +6285,7 @@
                 "type": "null"
               }
             ],
-            "title": "Prod Minio Node Count"
+            "title": "Prod Object Storage Node Count"
           },
           "project_index": {
             "anyOf": [
@@ -6359,14 +6542,21 @@
             "title": "Enable Ai",
             "type": "boolean"
           },
+          "enable_cache": {
+            "default": false,
+            "description": "An in-memory key-value cache.",
+            "title": "Enable Cache",
+            "type": "boolean"
+          },
           "enable_dr_db_replica": {
             "default": true,
             "title": "Enable Dr Db Replica",
             "type": "boolean"
           },
-          "enable_dr_minio_mirror": {
+          "enable_dr_object_storage_mirror": {
             "default": true,
-            "title": "Enable Dr Minio Mirror",
+            "description": "A disaster-recovery mirror of the PROD object storage.",
+            "title": "Enable Dr Object Storage Mirror",
             "type": "boolean"
           },
           "enable_fullstack_app": {
@@ -6380,30 +6570,27 @@
             "title": "Enable Iis",
             "type": "boolean"
           },
-          "enable_minio": {
-            "default": true,
-            "title": "Enable Minio",
-            "type": "boolean"
-          },
           "enable_mssql": {
             "default": false,
             "description": "SQL Server (ADR-036). VM backend only.",
             "title": "Enable Mssql",
             "type": "boolean"
           },
-          "enable_redis": {
+          "enable_nas_object_storage_replication": {
             "default": false,
-            "title": "Enable Redis",
+            "description": "Replication of the object storage to the central store: recorded, not acted on yet.",
+            "title": "Enable Nas Object Storage Replication",
+            "type": "boolean"
+          },
+          "enable_object_storage": {
+            "default": true,
+            "description": "Object storage for the project; false provisions none (a database-only project).",
+            "title": "Enable Object Storage",
             "type": "boolean"
           },
           "enable_static_site": {
             "default": true,
             "title": "Enable Static Site",
-            "type": "boolean"
-          },
-          "enable_synology_minio_replication": {
-            "default": false,
-            "title": "Enable Synology Minio Replication",
             "type": "boolean"
           },
           "enable_uat_app_public": {
@@ -6520,22 +6707,24 @@
             "title": "Primary Domain",
             "type": "string"
           },
-          "prod_minio_disks_per_vm": {
+          "prod_object_storage_disks_per_vm": {
             "default": 2,
+            "description": "Data disks per PROD object storage node.",
             "enum": [
               1,
               2
             ],
-            "title": "Prod Minio Disks Per Vm",
+            "title": "Prod Object Storage Disks Per Vm",
             "type": "integer"
           },
-          "prod_minio_node_count": {
+          "prod_object_storage_node_count": {
             "default": 2,
+            "description": "PROD object storage nodes. With `enable_object_storage`, nodes times `prod_object_storage_disks_per_vm` must be at least 4.",
             "enum": [
               2,
               4
             ],
-            "title": "Prod Minio Node Count",
+            "title": "Prod Object Storage Node Count",
             "type": "integer"
           },
           "project_index": {
@@ -6826,7 +7015,7 @@
         "type": "object"
       },
       "ReleaseOperation": {
-        "description": "One Release Manager operation: a promotion (`promote_build`) or a data\ncopy (`copy_data`, booked in the portal only).",
+        "description": "One release-management operation: a promotion (`promote_build`) or a data\ncopy (`copy_data`, booked in the portal only).",
         "properties": {
           "approval_reason": {
             "anyOf": [
@@ -6934,7 +7123,7 @@
             "title": "Pipeline Url"
           },
           "portal_status": {
-            "description": "The Release Manager's own status.",
+            "description": "Release management's own status.",
             "enum": [
               "pending",
               "approved",
@@ -7341,6 +7530,28 @@
           "items"
         ],
         "title": "RoleGrantPage",
+        "type": "object"
+      },
+      "SecretPath": {
+        "properties": {
+          "env": {
+            "enum": [
+              "dev",
+              "uat"
+            ],
+            "title": "Env",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          }
+        },
+        "required": [
+          "env",
+          "path"
+        ],
+        "title": "SecretPath",
         "type": "object"
       },
       "ServingTier": {
@@ -7912,6 +8123,14 @@
             "description": "The newest scan; null when nothing was ever scanned.",
             "title": "Captured At"
           },
+          "nas": {
+            "description": "Last scanned free space per share.",
+            "items": {
+              "$ref": "#/components/schemas/StorageMount"
+            },
+            "title": "Nas",
+            "type": "array"
+          },
           "nodes": {
             "description": "Last scanned local disk per node, with its cached models.",
             "items": {
@@ -7927,19 +8146,11 @@
             },
             "title": "Shares",
             "type": "array"
-          },
-          "synology": {
-            "description": "Last scanned free space per share.",
-            "items": {
-              "$ref": "#/components/schemas/StorageMount"
-            },
-            "title": "Synology",
-            "type": "array"
           }
         },
         "required": [
           "shares",
-          "synology",
+          "nas",
           "nodes",
           "captured_at"
         ],
@@ -8048,7 +8259,7 @@
                 "type": "null"
               }
             ],
-            "description": "`live`: the runner pipeline was triggered. `dryrun`: this estate fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate` — a store run is never simulated); the run holds a fake pipeline id and nothing ran. Null for runs started by the portal, which does not record it.",
+            "description": "`live`: the runner pipeline was triggered. `dryrun`: this estate fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate` — a store run is never simulated); the run holds a fake pipeline id and nothing ran. Null for runs started by the portal, which does not record it.",
             "title": "Dispatch Mode"
           },
           "finished_at": {
@@ -8350,7 +8561,7 @@
       },
       "TenantPatch": {
         "additionalProperties": false,
-        "description": "A JSON Merge Patch (RFC 7396): an omitted member is left unchanged;\n``description: null`` and ``default_router_id: null`` clear those fields,\n``name: null`` is refused.",
+        "description": "JSON Merge Patch (RFC 7396): a member that is omitted keeps its\ncurrent value; a member sent as ``null`` clears the field when the field is\nnullable (the schema marks it so), and ``null`` for any other field is a\n422. A ``\"\"`` is a value (an empty string), not a clear. ``description`` and ``default_router_id``\nare nullable; ``name`` is not.",
         "properties": {
           "customer_id": {
             "anyOf": [
@@ -8430,7 +8641,7 @@
                 "type": "null"
               }
             ],
-            "description": "The Windows (Active Directory) account name. Create-only: a PATCH may send the current value (nothing changes); any other value is 422 `immutable_field`, whether or not the person has an SSO account yet.",
+            "description": "The Windows (directory) account name. Create-only: a PATCH may send the current value (nothing changes); any other value is 422 `immutable_field`, whether or not the person has an SSO account yet.",
             "title": "Ad Username"
           },
           "auth_mode": {
@@ -8498,22 +8709,6 @@
             "title": "Is Internal",
             "type": "boolean"
           },
-          "kc_sync_status": {
-            "description": "The last Keycloak projection of this person: `unlinked` (no SSO account), `pending`, `ok` or `error`. Writes through v1 converge Keycloak before answering; the portal also re-converges every 900 s.",
-            "enum": [
-              "unlinked",
-              "pending",
-              "ok",
-              "error"
-            ],
-            "title": "Kc Sync Status",
-            "type": "string"
-          },
-          "keycloak_linked": {
-            "description": "An SSO (Keycloak) account exists for them.",
-            "title": "Keycloak Linked",
-            "type": "boolean"
-          },
           "kind": {
             "description": "Read-only. `service` accounts are managed on the portal's service accounts page; every write on one here is a 409.",
             "enum": [
@@ -8567,7 +8762,7 @@
                 "type": "null"
               }
             ],
-            "description": "The outcome of the newest provisioning run (username, SSO account, GitLab account, GitLab group): `ok`; `partial` when a step was skipped (typically no GitLab account wanted, or no SSO (Keycloak) configured on this platform at all: warning `keycloak_not_configured` on the create); `error` when a step failed, including a configured Keycloak that failed. Null when the person was never provisioned.",
+            "description": "The outcome of the newest provisioning run (username, SSO account, GitLab account, GitLab group): `ok`; `partial` when a step was skipped (typically no GitLab account wanted, or no SSO configured on this platform at all: warning `sso_not_configured` on the create); `error` when a step failed, including a configured SSO that failed. Null when the person was never provisioned.",
             "title": "Provisioning Status"
           },
           "roles": {
@@ -8577,6 +8772,22 @@
             },
             "title": "Roles",
             "type": "array"
+          },
+          "sso_linked": {
+            "description": "An SSO account exists for them.",
+            "title": "Sso Linked",
+            "type": "boolean"
+          },
+          "sso_sync_status": {
+            "description": "The last SSO projection of this person: `unlinked` (no SSO account), `pending`, `ok` or `error`. Writes through v1 converge the SSO account before answering; the portal also re-converges every 900 s.",
+            "enum": [
+              "unlinked",
+              "pending",
+              "ok",
+              "error"
+            ],
+            "title": "Sso Sync Status",
+            "type": "string"
           },
           "updated_at": {
             "description": "The last change; equal to `created_at` until the first change.",
@@ -8618,9 +8829,9 @@
           "ad_username",
           "needs_git_access",
           "roles",
-          "keycloak_linked",
+          "sso_linked",
           "gitlab_linked",
-          "kc_sync_status",
+          "sso_sync_status",
           "provisioning_status",
           "created_at",
           "updated_at"
@@ -8734,7 +8945,7 @@
       },
       "UserPatch": {
         "additionalProperties": false,
-        "description": "A JSON Merge Patch (RFC 7396): an omitted member is left unchanged;\n``last_name: null`` clears it and ``null`` is refused for every other field.",
+        "description": "JSON Merge Patch (RFC 7396): a member that is omitted keeps its\ncurrent value; a member sent as ``null`` clears the field when the field is\nnullable (the schema marks it so), and ``null`` for any other field is a\n422. A ``\"\"`` is a value (an empty string), not a clear. Only ``last_name`` is nullable.",
         "properties": {
           "ad_username": {
             "anyOf": [
@@ -8841,28 +9052,6 @@
           }
         },
         "title": "UserPatch",
-        "type": "object"
-      },
-      "VaultPath": {
-        "properties": {
-          "env": {
-            "enum": [
-              "dev",
-              "uat"
-            ],
-            "title": "Env",
-            "type": "string"
-          },
-          "path": {
-            "title": "Path",
-            "type": "string"
-          }
-        },
-        "required": [
-          "env",
-          "path"
-        ],
-        "title": "VaultPath",
         "type": "object"
       },
       "Whoami": {
@@ -9140,7 +9329,7 @@
         ]
       },
       "post": {
-        "description": "Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.",
+        "description": "Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `nas_volume` are not accepted.",
         "operationId": "ai_models_create",
         "requestBody": {
           "content": {
@@ -9222,7 +9411,7 @@
     },
     "/ai-models/load-targets": {
       "get": {
-        "description": "The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when Prometheus answers, static fallbacks otherwise.",
+        "description": "The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when monitoring answers, static fallbacks otherwise.",
         "operationId": "ai_models_load_targets_list",
         "parameters": [
           {
@@ -9555,7 +9744,7 @@
         ]
       },
       "patch": {
-        "description": "Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
+        "description": "Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
         "operationId": "ai_models_update",
         "parameters": [
           {
@@ -9758,7 +9947,7 @@
     },
     "/ai-models/{model_id}/node-caches/{node}": {
       "delete": {
-        "description": "Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while Prometheus cannot be read.\n\nThe run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.",
+        "description": "Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while monitoring cannot be read.\n\nThe run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.",
         "operationId": "ai_models_node_caches_delete",
         "parameters": [
           {
@@ -9994,7 +10183,7 @@
         ]
       },
       "put": {
-        "description": "Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.\n\nThe run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.",
+        "description": "Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.\n\nThe run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.",
         "operationId": "ai_models_node_caches_put",
         "parameters": [
           {
@@ -10581,7 +10770,7 @@
         ]
       },
       "post": {
-        "description": "Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.",
+        "description": "Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.",
         "operationId": "ai_gateway_keys_create",
         "requestBody": {
           "content": {
@@ -10662,7 +10851,7 @@
                 }
               }
             },
-            "description": "The gateway is not configured on this platform (`gateway_not_configured`) or cannot be reached (`gateway_unreachable`). Checked BEFORE the tenant, project and tiers the body names, so a platform without a gateway answers 503 whatever the body says. Or Vault did not store the value (`vault_write_failed`); the key was then removed from the gateway again (`key_removed_from_gateway`)."
+            "description": "The gateway is not configured on this platform (`gateway_not_configured`) or cannot be reached (`gateway_unreachable`). Checked BEFORE the tenant, project and tiers the body names, so a platform without a gateway answers 503 whatever the body says. Or the secrets store did not keep the value (`secret_store_write_failed`); the key was then removed from the gateway again (`key_removed_from_gateway`)."
           },
           "default": {
             "content": {
@@ -10693,7 +10882,7 @@
     },
     "/ai/gateway/keys/{key_id}": {
       "delete": {
-        "description": "Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the Vault leaf and pointer the portal wrote for it (an adopted key's Vault leaf belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.",
+        "description": "Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the secrets store entry and pointer the portal wrote for it (an adopted key's secrets store entry belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.",
         "operationId": "ai_gateway_keys_delete",
         "parameters": [
           {
@@ -11006,7 +11195,7 @@
     },
     "/ai/gateway/keys/{key_id}/rotations": {
       "post": {
-        "description": "A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.",
+        "description": "A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.",
         "operationId": "ai_gateway_keys_rotate",
         "parameters": [
           {
@@ -11067,7 +11256,7 @@
                 }
               }
             },
-            "description": "The key was adopted (`key_adopted`: its value lives in a consumer's own Vault leaf, so a new value would break that consumer), or the gateway no longer has it (`key_missing_on_gateway`)."
+            "description": "The key was adopted (`key_adopted`: its value lives in a consumer's own secrets store entry, so a new value would break that consumer), or the gateway no longer has it (`key_missing_on_gateway`)."
           },
           "502": {
             "content": {
@@ -11097,7 +11286,7 @@
                 }
               }
             },
-            "description": "The gateway is not configured on this platform (`gateway_not_configured`) or cannot be reached (`gateway_unreachable`). Or Vault did not store the new value (`vault_write_failed`); the key then keeps its old value."
+            "description": "The gateway is not configured on this platform (`gateway_not_configured`) or cannot be reached (`gateway_unreachable`). Or the secrets store did not keep the new value (`secret_store_write_failed`); the key then keeps its old value."
           },
           "default": {
             "content": {
@@ -11365,7 +11554,7 @@
     },
     "/ai/nodes": {
       "get": {
-        "description": "The AI fleet. Roster fields are always present; live fields are null when Prometheus cannot be read (`prometheus_reachable: false`). Never 503.",
+        "description": "The AI fleet. Roster fields are always present; live fields are null when monitoring cannot be read (`monitoring_reachable: false`). Never 503.",
         "operationId": "ai_nodes_list",
         "parameters": [
           {
@@ -11506,6 +11695,333 @@
         "summary": "One AI node",
         "tags": [
           "ai-nodes"
+        ]
+      }
+    },
+    "/audit-events": {
+      "get": {
+        "description": "Every recorded change on this platform, newest first (`occurred_at`, then `id`, descending). Pages are cursor-based and stable while new events are written: pass `next_cursor` as `cursor` to get the next page; it is null on the last one. A cursor that is not one of this list's is a 400 `invalid_cursor`.\n\nFilters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.\n\n`before_state` and `after_state` are returned as the writer recorded them, except that every member whose name looks secret is null. For `entity_type` `licence` the `entity_id` is the licence serial, masked to its last group unless the caller holds `licence-admin-global`, as on `GET /licence`; the `entity_id` filter matches the stored id, never the masked one. Reading the log is not itself audited.",
+        "operationId": "audit_events_list",
+        "parameters": [
+          {
+            "description": "Exact actor: an e-mail address (compared lower-cased), `system`, `pipeline:<run id>`…, or a user id (UUID) for that person's events.",
+            "in": "query",
+            "name": "actor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 320,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact actor: an e-mail address (compared lower-cased), `system`, `pipeline:<run id>`…, or a user id (UUID) for that person's events.",
+              "title": "Actor"
+            }
+          },
+          {
+            "description": "How the actor authenticated.",
+            "in": "query",
+            "name": "auth_kind",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "session",
+                    "pat",
+                    "service_account"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "How the actor authenticated.",
+              "title": "Auth Kind"
+            }
+          },
+          {
+            "description": "Events made with this API token.",
+            "in": "query",
+            "name": "token_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Events made with this API token.",
+              "title": "Token Id"
+            }
+          },
+          {
+            "description": "Events of one request (`X-Request-ID`).",
+            "in": "query",
+            "name": "request_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Events of one request (`X-Request-ID`).",
+              "title": "Request Id"
+            }
+          },
+          {
+            "description": "Exact entity type, e.g. `users`.",
+            "in": "query",
+            "name": "entity_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact entity type, e.g. `users`.",
+              "title": "Entity Type"
+            }
+          },
+          {
+            "description": "Exact entity id, as the writer spelled it.",
+            "in": "query",
+            "name": "entity_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 500,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact entity id, as the writer spelled it.",
+              "title": "Entity Id"
+            }
+          },
+          {
+            "description": "Exact action, or a prefix when it ends in `*` (`user.*`).",
+            "in": "query",
+            "name": "action",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exact action, or a prefix when it ends in `*` (`user.*`).",
+              "title": "Action"
+            }
+          },
+          {
+            "description": "Events at or after this time (inclusive). RFC 3339; without an offset, UTC.",
+            "in": "query",
+            "name": "occurred_from",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Events at or after this time (inclusive). RFC 3339; without an offset, UTC.",
+              "title": "Occurred From"
+            }
+          },
+          {
+            "description": "Events BEFORE this time (exclusive). RFC 3339; without an offset, UTC.",
+            "in": "query",
+            "name": "occurred_to",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Events BEFORE this time (exclusive). RFC 3339; without an offset, UTC.",
+              "title": "Occurred To"
+            }
+          },
+          {
+            "description": "Page size (at most 500).",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size (at most 500).",
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditEventPage"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List audit events",
+        "tags": [
+          "audit"
+        ]
+      }
+    },
+    "/audit-events/{event_id}": {
+      "get": {
+        "description": "One event by id, with the same secret-looking members withheld and the same licence serial masking as in the list.",
+        "operationId": "audit_events_get",
+        "parameters": [
+          {
+            "description": "The event's id.",
+            "in": "path",
+            "name": "event_id",
+            "required": true,
+            "schema": {
+              "description": "The event's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Event Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditEvent"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such event (`audit_event_not_found`)."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One audit event",
+        "tags": [
+          "audit"
         ]
       }
     },
@@ -13467,7 +13983,7 @@
     },
     "/projects/{project_id}": {
       "delete": {
-        "description": "Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, Vault path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.",
+        "description": "Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, secrets store path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.",
         "operationId": "projects_delete",
         "parameters": [
           {
@@ -14259,6 +14775,21 @@
             },
             "description": "No such project, or outside your scope (`project_not_found`)."
           },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The project is retired (`project_retired`): its PROD lock no longer changes."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -14630,7 +15161,7 @@
     },
     "/projects/{project_id}/release-promotions": {
       "post": {
-        "description": "Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.\n\n* `dev` and `uat` start at once.\n* `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).\n* `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.\n\nKubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.",
+        "description": "Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.\n\n* `dev` and `uat` start at once.\n* `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).\n* `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.\n\nKubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.",
         "operationId": "release_promotions_create",
         "parameters": [
           {
@@ -14695,7 +15226,7 @@
                 }
               }
             },
-            "description": "The Idempotency-Key already booked a different operation (`idempotency_key_reused`)."
+            "description": "The project is retired (`project_retired`: a retired project takes no release), or the Idempotency-Key already booked a different operation (`idempotency_key_reused`)."
           },
           "422": {
             "content": {
@@ -15142,7 +15673,7 @@
     },
     "/tenants/{tenant_id}": {
       "delete": {
-        "description": "Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.",
+        "description": "Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its SSO `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.",
         "operationId": "tenants_delete",
         "parameters": [
           {
@@ -15493,7 +16024,7 @@
     },
     "/tenants/{tenant_id}/memberships/{user_id}": {
       "delete": {
-        "description": "Removes the user's membership of the tenant and re-syncs their Keycloak groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.",
+        "description": "Removes the user's membership of the tenant and re-syncs their SSO groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.",
         "operationId": "tenant_memberships_delete",
         "parameters": [
           {
@@ -15930,7 +16461,7 @@
         ]
       },
       "post": {
-        "description": "Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no Keycloak configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `keycloak_not_configured` warning (`error` stays for a configured Keycloak that failed). `Idempotency-Key` is honoured.",
+        "description": "Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.",
         "operationId": "users_create",
         "requestBody": {
           "content": {
@@ -16012,7 +16543,7 @@
     },
     "/users/{user_id}": {
       "delete": {
-        "description": "Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{\"is_active\": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.",
+        "description": "Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{\"is_active\": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`sso_disable_failed`, `sso_logout_failed`, `sso_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.",
         "operationId": "users_delete",
         "parameters": [
           {
@@ -16166,7 +16697,7 @@
         ]
       },
       "patch": {
-        "description": "Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
+        "description": "Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
         "operationId": "users_update",
         "parameters": [
           {
@@ -16393,7 +16924,7 @@
     },
     "/users/{user_id}/roles/{role}": {
       "delete": {
-        "description": "Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.",
+        "description": "Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into SSO before the answer; a failure there is a `sso_sync_failed` warning.",
         "operationId": "user_roles_delete",
         "parameters": [
           {
@@ -16565,7 +17096,7 @@
         ]
       },
       "put": {
-        "description": "201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.",
+        "description": "201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into SSO before the answer; a failure there is a `sso_sync_failed` warning.",
         "operationId": "user_roles_put",
         "parameters": [
           {
@@ -16800,6 +17331,10 @@
     {
       "description": "This platform's branding.",
       "name": "brand"
+    },
+    {
+      "description": "The platform audit log: every recorded change, read-only.",
+      "name": "audit"
     },
     {
       "description": "Model Context Protocol: every GET operation as a read-only tool.",

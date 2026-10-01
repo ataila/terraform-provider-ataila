@@ -3,6 +3,80 @@
 All notable changes to this provider. Versions follow semantic versioning; until the first publication the
 provider stays at 0.x and any release may change.
 
+## 0.7.0 (2026-10-01)
+
+**Breaking, before publication.** Pins the platform's `/api/v1` contract of platform release 1.0.176
+(API 1.0.0), which renamed every identifier that named an internal system. The provider follows it. Paths,
+operation ids and the operations' `kind`s are unchanged.
+
+### Renamed attributes (old → new)
+
+| Where | Old | New |
+|---|---|---|
+| `ataila_user`, `ataila_user` and `ataila_users` data sources | `keycloak_linked` | `sso_linked` |
+| | `kc_sync_status` | `sso_sync_status` |
+| `ataila_project`, `ataila_project` data source | `enable_minio` | `enable_object_storage` |
+| | `enable_redis` | `enable_cache` |
+| | `prod_minio_node_count` | `prod_object_storage_node_count` |
+| | `prod_minio_disks_per_vm` | `prod_object_storage_disks_per_vm` |
+| | `enable_dr_minio_mirror` | `enable_dr_object_storage_mirror` |
+| | `enable_synology_minio_replication` | `enable_nas_object_storage_replication` |
+| | `harbor_namespace` | `image_registry_namespace` |
+| | `vault_paths` | `secret_paths` |
+| `ataila_ai_gateway_key` | `vault_path` | `secret_path` |
+| | `vault_field` | `secret_field` |
+| `ataila_ai_model`, `ataila_ai_model` and `ataila_ai_models` data sources | `synology_volume` | `nas_volume` |
+| | `synology_path` | `nas_path` |
+| `ataila_ai_model_storage` data source | `synology` | `nas` |
+| `ataila_ai_nodes` and `ataila_ai_node` data sources | `prometheus_reachable` | `monitoring_reachable` |
+
+Codes the platform sends changed with them: the 503 `vault_write_failed` is `secret_store_write_failed`
+(still final), and the warnings `keycloak_*` and `provisioning_keycloak_failed` are `sso_*` and
+`provisioning_sso_failed` (`keycloak_not_configured` is `sso_not_configured`). The model location value
+`synology` and the provisioning stage keys are data, and keep their values.
+
+### State upgrade
+
+- `ataila_user`, `ataila_project`, `ataila_ai_gateway_key` and `ataila_ai_model` are at schema version 1. A
+  state of 0.6.x (version 0) is upgraded by renaming its attributes; nothing is read or changed on the
+  platform, and `plan` shows no changes. Data sources keep no state to upgrade. Configurations must use the
+  new names.
+
+### Changed
+
+- `ataila_ai_model_node_cache` reads `dispatch_mode_effective` from `GET /meta` and fails before any request
+  that writes when the platform fakes dispatch (`dryrun` or `simulate`), on create and on destroy. The check
+  after a 202 stays.
+- `ataila_release_promotion` warns before it books when `GET /meta` says the platform fakes dispatch, and
+  books anyway (every non-live platform behaves so).
+- `ataila_meta` has `dispatch_mode_effective` and `simulate_stage_seconds`.
+- The provider's texts no longer name internal systems ("the secrets store", "monitoring").
+- The vendored contract is the platform's export unchanged (1.0.176 no longer names a host).
+
+### Distribution and CI
+
+- Every release tag produces `terraform-provider-ataila_<version>_mirror.zip`: the binaries under both
+  registry addresses in the filesystem mirror layout, with a README for `.tofurc` and `.terraformrc` (README,
+  "Installing without internet access").
+- Leak guard: the public host names `app.ataila.eu` (the partner portal), `www.ataila.eu`, `ataila.eu` and
+  `ataila.com` are allowed, and nothing else under the company's domains; the self-test refuses an internal name
+  on that list. R1 of the publication readiness review: accepted by the founder 2026-10-01; no history rewrite,
+  the existing tags stand. With it, `--strict` passes on v0.4.0, v0.5.0 and v0.6.0, the list of tolerated
+  history findings is empty, and a new `leak-guard:strict` job runs on the default branch and on every tag and
+  gates everything that leaves GitLab.
+- The release job checks the signing key before it builds (`scripts/ci/signing-key.sh`): RSA or DSA only, as the
+  registries require, no passphrase, the fingerprint's key; `GPG_PRIVATE_KEY` may hold the armored key
+  base64-encoded on one line, so that GitLab can mask it. README, "Signing key".
+- New jobs `mirror:github` (pushes the default branch and `v*` tags to the public repository after both leak
+  guards; no GitLab push mirror) and `publish:github` (publishes the release job's signed files as the tag's
+  GitHub release). Each exists only while its token, `GITHUB_MIRROR_TOKEN` or `GITHUB_RELEASE_TOKEN`, is set.
+- README: "Source and issues", "Signing key", "Public mirror", and the version constraint `~> 0.7.0` (also in
+  the provider example).
+- The acceptance tests run in four domains per CLI version (16 jobs); lint checks that every acceptance test
+  is in exactly one domain.
+- The cross-CLI stage also runs the state upgrade check: a state written by the previous release's binary,
+  built from its tag, plans clean under this release in both CLIs and both orders.
+
 ## 0.6.0 (2026-10-01)
 
 Releases, AI models and AI Center. Pins the platform's `/api/v1` contract of platform release 1.0.167

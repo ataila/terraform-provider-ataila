@@ -27,9 +27,10 @@ import (
 )
 
 var (
-	_ resource.ResourceWithConfigure   = (*userResource)(nil)
-	_ resource.ResourceWithModifyPlan  = (*userResource)(nil)
-	_ resource.ResourceWithImportState = (*userResource)(nil)
+	_ resource.ResourceWithConfigure    = (*userResource)(nil)
+	_ resource.ResourceWithModifyPlan   = (*userResource)(nil)
+	_ resource.ResourceWithImportState  = (*userResource)(nil)
+	_ resource.ResourceWithUpgradeState = (*userResource)(nil)
 )
 
 // Import prefixes of ataila_user.
@@ -65,9 +66,9 @@ type userCore struct {
 	IsInternal         types.Bool     `tfsdk:"is_internal"`
 	AuthMode           types.String   `tfsdk:"auth_mode"`
 	Roles              types.List     `tfsdk:"roles"`
-	KeycloakLinked     types.Bool     `tfsdk:"keycloak_linked"`
+	SSOLinked          types.Bool     `tfsdk:"sso_linked"`
 	GitlabLinked       types.Bool     `tfsdk:"gitlab_linked"`
-	KcSyncStatus       types.String   `tfsdk:"kc_sync_status"`
+	SSOSyncStatus      types.String   `tfsdk:"sso_sync_status"`
 	ProvisioningStatus types.String   `tfsdk:"provisioning_status"`
 	CreatedAt          TimestampValue `tfsdk:"created_at"`
 	UpdatedAt          TimestampValue `tfsdk:"updated_at"`
@@ -108,9 +109,9 @@ func (m *userCore) fromAPI(u *client.User, priorEmail types.String) {
 		roles = append(roles, types.StringValue(r))
 	}
 	m.Roles = types.ListValueMust(types.StringType, roles)
-	m.KeycloakLinked = types.BoolValue(u.KeycloakLinked)
+	m.SSOLinked = types.BoolValue(u.SsoLinked)
 	m.GitlabLinked = types.BoolValue(u.GitlabLinked)
-	m.KcSyncStatus = types.StringValue(string(u.KcSyncStatus))
+	m.SSOSyncStatus = types.StringValue(string(u.SsoSyncStatus))
 	m.ProvisioningStatus = types.StringNull()
 	if u.ProvisioningStatus != nil {
 		m.ProvisioningStatus = types.StringValue(string(*u.ProvisioningStatus))
@@ -154,10 +155,10 @@ var userDocs = map[string]string{
 	"is_internal":         "Whether the person is platform staff. Read-only.",
 	"auth_mode":           "Which sign-in routes the person may use: `sso`, `local` or `both`. Read-only.",
 	"roles":               "Every role the person holds, sorted. Manage them with `ataila_user_role_grant`.",
-	"keycloak_linked":     "An SSO account exists for the person.",
+	"sso_linked":          "An SSO account exists for the person.",
 	"gitlab_linked":       "A GitLab account exists for the person.",
-	"kc_sync_status":      "The last SSO projection of the person: `unlinked`, `pending`, `ok` or `error`.",
-	"provisioning_status": "The newest provisioning run: `ok`, `partial` (a step skipped: no GitLab account wanted, or a platform without SSO, which also warns `keycloak_not_configured`), `error`, or null.",
+	"sso_sync_status":     "The last SSO projection of the person: `unlinked`, `pending`, `ok` or `error`.",
+	"provisioning_status": "The newest provisioning run: `ok`, `partial` (a step skipped: no GitLab account wanted, or a platform without SSO, which also warns `sso_not_configured`), `error`, or null.",
 	"created_at":          "When the person was created: RFC 3339 in UTC, compared as an instant.",
 	"updated_at":          "When the person was last changed: RFC 3339 in UTC, compared as an instant.",
 	"warnings": "What did not go as planned in the last create or change made through this resource " +
@@ -186,6 +187,7 @@ func (r *userResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 		return schema.BoolAttribute{MarkdownDescription: d[name], Computed: true}
 	}
 	resp.Schema = schema.Schema{
+		Version: 1,
 		MarkdownDescription: "A person on the platform.\n\n" +
 			"Creating one sends no password and gets none back: the person signs in after an operator's " +
 			"password reset in the portal or a self-service reset. The platform provisions them (SSO account; a " +
@@ -243,9 +245,9 @@ func (r *userResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 			"roles": schema.ListAttribute{
 				MarkdownDescription: d["roles"], ElementType: types.StringType, Computed: true,
 			},
-			"keycloak_linked":     computedBool("keycloak_linked"),
+			"sso_linked":          computedBool("sso_linked"),
 			"gitlab_linked":       computedBool("gitlab_linked"),
-			"kc_sync_status":      computedStr("kc_sync_status"),
+			"sso_sync_status":     computedStr("sso_sync_status"),
 			"provisioning_status": computedStr("provisioning_status"),
 			"created_at": schema.StringAttribute{
 				MarkdownDescription: d["created_at"], CustomType: TimestampType{}, Computed: true, PlanModifiers: keep,
@@ -480,4 +482,9 @@ func (r *userResource) ImportState(ctx context.Context, req resource.ImportState
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), u.Id)...)
+}
+
+// UpgradeState renames the attributes 0.7.0 renamed (schema version 0 to 1).
+func (r *userResource) UpgradeState(context.Context) map[int64]resource.StateUpgrader {
+	return renameUpgraders(userRenamesV1)
 }

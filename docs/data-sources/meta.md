@@ -3,12 +3,12 @@
 page_title: "ataila_meta Data Source - ATAILA"
 subcategory: ""
 description: |-
-  What the platform behind the endpoint is: its API version, its build, its licence tier and state, and the modules the licence includes.
+  What the platform behind the endpoint is: its API version, its build, its licence tier and state, the modules the licence includes, and what pipeline dispatch does there.
 ---
 
 # ataila_meta (Data Source)
 
-What the platform behind the endpoint is: its API version, its build, its licence tier and state, and the modules the licence includes.
+What the platform behind the endpoint is: its API version, its build, its licence tier and state, the modules the licence includes, and what pipeline dispatch does there.
 
 ## Example Usage
 
@@ -30,9 +30,11 @@ output "platform" {
 ### Read-Only
 
 - `api_version` (String) Semantic version of the API, for example `1.0.0`.
+- `dispatch_mode_effective` (String) What pipeline dispatch does on this platform: `live` (work runs), `dryrun` (nothing is executed; provisioning and releases never complete) or `simulate` (provisioning stages are marked done without running; every other dispatch behaves as `dryrun`).
 - `licence` (Attributes) State of the platform's licence. (see [below for nested schema](#nestedatt--licence))
 - `modules` (List of String) Modules the licence includes.
 - `platform_version` (String) Version of the platform build serving the API.
+- `simulate_stage_seconds` (Number) Under `simulate`, how long a simulated provisioning stage takes; null otherwise.
 - `tenancy_mode` (String) `single` or `multi`; empty when unlicensed.
 - `tier` (String) Product tier of the installed licence; empty when unlicensed.
 

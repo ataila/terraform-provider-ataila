@@ -136,7 +136,7 @@ func destroyRefused(resourceType, object, ident string) diag.Diagnostic {
 			"e-mail address, so the same address cannot be created again (import it and set is_active = true " +
 			"instead). Setting is_active = false is a deactivation too, behind the same switches.",
 		"project": "For a project, destroy means retire: its status becomes retired and nothing on the " +
-			"substrate is touched (no machine, DNS record, Vault path or repository is removed). A retired " +
+			"substrate is touched (no machine, DNS record, secret or repository is removed). A retired " +
 			"project keeps its project_index, short_name and primary_domain reserved for good, so they " +
 			"cannot be used again.",
 	}[object]
@@ -249,9 +249,9 @@ func gatewayUnavailable(doing string, err error) diag.Diagnostic {
 	why := map[string]string{
 		client.CodeGatewayNotConfigured: "This platform has no AI gateway configured. The AI gateway resources " +
 			"and data sources need a platform with a gateway.",
-		client.CodeGatewayUnreachable: "The platform's AI gateway (or the Vault it keeps key values in) cannot be " +
+		client.CodeGatewayUnreachable: "The platform's AI gateway (or the secrets store it keeps key values in) cannot be " +
 			"reached right now. Try again when it is back; the provider does not retry this.",
-		client.CodeVaultWriteFailed: "Vault did not store the key's value. " +
+		client.CodeSecretStoreWriteFailed: "The secrets store did not store the key's value. " +
 			"key_removed_from_gateway says whether the minted key was removed again.",
 	}[apiErr.Code()]
 	return diag.NewErrorDiagnostic(fmt.Sprintf("The AI gateway is not available (%s)", apiErr.Code()),

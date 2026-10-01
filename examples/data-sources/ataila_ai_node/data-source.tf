@@ -3,5 +3,5 @@ data "ataila_ai_node" "ai_a" {
 }
 
 output "ai_a_status" {
-  value = data.ataila_ai_node.ai_a.prometheus_reachable ? data.ataila_ai_node.ai_a.status : "unknown"
+  value = data.ataila_ai_node.ai_a.monitoring_reachable ? data.ataila_ai_node.ai_a.status : "unknown"
 }

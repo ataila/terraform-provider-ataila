@@ -76,7 +76,7 @@ var staleByField = map[string][]string{
 	"frontend_variant": {"gitlab:populate-repo"}, "www_template": {"gitlab:populate-repo"},
 	"enable_ai":         {"k8s:render-helm-values", "traefik:register-routes"},
 	"frontend_exposure": {"traefik:register-routes"}, "api_exposure": {"traefik:register-routes"},
-	"enable_minio": {"k8s:render-helm-values"}, "enable_redis": {"k8s:render-helm-values"},
+	"enable_object_storage": {"k8s:render-helm-values"}, "enable_cache": {"k8s:render-helm-values"},
 }
 
 type settingSpec struct {
@@ -104,13 +104,13 @@ var projectSettings = []settingSpec{
 	{"www_template", "string", "template-www", []string{"template-www", "template-blog"}, false},
 	{"enable_uat_app_public", "bool", false, nil, false},
 	{"enable_uat_www_public", "bool", false, nil, false},
-	{"enable_minio", "bool", true, nil, false},
-	{"enable_redis", "bool", false, nil, false},
+	{"enable_object_storage", "bool", true, nil, false},
+	{"enable_cache", "bool", false, nil, false},
 	{"enable_dr_db_replica", "bool", true, nil, false},
-	{"prod_minio_node_count", "int", 2, []string{"2", "4"}, false},
-	{"prod_minio_disks_per_vm", "int", 2, []string{"1", "2"}, false},
-	{"enable_dr_minio_mirror", "bool", true, nil, false},
-	{"enable_synology_minio_replication", "bool", false, nil, false},
+	{"prod_object_storage_node_count", "int", 2, []string{"2", "4"}, false},
+	{"prod_object_storage_disks_per_vm", "int", 2, []string{"1", "2"}, false},
+	{"enable_dr_object_storage_mirror", "bool", true, nil, false},
+	{"enable_nas_object_storage_replication", "bool", false, nil, false},
 	{"enable_mssql", "bool", false, nil, false},
 	{"mssql_edition", "string", "express", []string{"express", "standard", "enterprise"}, false},
 	{"enable_iis", "bool", false, nil, false},
@@ -178,10 +178,24 @@ func newProjectsState() *projectsState {
 // ── test helpers ─────────────────────────────────────────────────────────────
 
 // SetDispatchMode sets how stages run: "live", "simulate" or "dryrun".
+//
+// It is the platform's one DISPATCH_MODE: /meta reports it, provisioning
+// follows it (simulate marks stages done), and releases and store runs fake
+// their dispatch under anything but live.
 func (m *MockAPI) SetDispatchMode(mode string) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.projects.dispatchMode = mode
+	other := "live"
+	if mode != "live" {
+		other = "dryrun"
+	}
+	m.releases.dispatch, m.ai.dispatch = other, other
+	m.meta["dispatch_mode_effective"] = mode
+	m.meta["simulate_stage_seconds"] = nil
+	if mode == "simulate" {
+		m.meta["simulate_stage_seconds"] = 3.0
+	}
 }
 
 // ProvisionInstantly makes a provisioning start run every stage before it
@@ -396,7 +410,7 @@ func (m *MockAPI) projectOutputs(p *mockProject) map[string]any {
 	group := m.customerGroup(p)
 	repos := []map[string]any{}
 	namespaces := []map[string]any{}
-	vault := []map[string]any{}
+	secrets := []map[string]any{}
 	if !p.networkOnly {
 		repos = append(repos, map[string]any{"path": group + "/" + p.slug, "kind": "app", "primary": true})
 		if on("enable_web_www") {
@@ -408,7 +422,7 @@ func (m *MockAPI) projectOutputs(p *mockProject) map[string]any {
 			}
 			for _, env := range []string{"dev", "uat"} {
 				// An invented path shape.
-				vault = append(vault, map[string]any{"env": env, "path": "projects/" + group + "/" + p.short + "/" + env})
+				secrets = append(secrets, map[string]any{"env": env, "path": "projects/" + group + "/" + p.short + "/" + env})
 			}
 		}
 	}
@@ -417,8 +431,8 @@ func (m *MockAPI) projectOutputs(p *mockProject) map[string]any {
 			"static": url("www", !p.networkOnly && on("enable_static_site")), "frontend": url("app", !p.networkOnly && on("enable_fullstack_app")),
 			"backend": url("api", !p.networkOnly && on("enable_fullstack_app")), "ai": url("ai", !p.networkOnly && on("enable_ai")),
 		},
-		"harbor_namespace": group + "-" + p.short, "gitlab_repositories": repos,
-		"kubernetes_namespaces": namespaces, "vault_paths": vault,
+		"image_registry_namespace": group + "-" + p.short, "gitlab_repositories": repos,
+		"kubernetes_namespaces": namespaces, "secret_paths": secrets,
 	}
 }
 

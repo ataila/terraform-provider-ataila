@@ -65,7 +65,8 @@ func newReleasesState() *releasesState {
 
 // ── test helpers ─────────────────────────────────────────────────────────────
 
-// SetReleaseDispatch sets how releases are dispatched: "live" or "dryrun".
+// SetReleaseDispatch sets how releases alone are dispatched ("live" or
+// "dryrun"), leaving /meta as it is: the provider's check after a 202.
 func (m *MockAPI) SetReleaseDispatch(mode string) {
 	m.mu.Lock()
 	defer m.mu.Unlock()

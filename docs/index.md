@@ -24,7 +24,8 @@ terraform {
   required_providers {
     ataila = {
       source  = "ataila/ataila"
-      version = "~> 0.3"
+      # 0.x: a minor release may break, so stay on 0.7.x.
+      version = "~> 0.7.0"
     }
   }
 }
@@ -47,6 +48,12 @@ export ATAILA_TOKEN="<token from the portal>"
 tofu init && tofu plan          # OpenTofu
 terraform init && terraform plan  # Terraform
 ```
+
+For machines without internet access, every release also has an air-gapped mirror bundle: the binaries
+under both registry addresses in the layout `provider_installation { filesystem_mirror }` reads, for
+OpenTofu and Terraform alike. The repository README, [Installing without internet
+access](https://github.com/ataila/terraform-provider-ataila#installing-without-internet-access), shows the
+`.tofurc` and `.terraformrc` settings.
 
 ## Behaviour
 

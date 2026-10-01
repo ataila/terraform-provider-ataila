@@ -6,6 +6,7 @@ package provider_test
 import (
 	"fmt"
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -118,6 +119,35 @@ func TestAccReleasePromotion_DryrunWarns(t *testing.T) {
 			ConfigPlanChecks: resource.ConfigPlanChecks{
 				PostApplyPostRefresh: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()},
 			},
+		}},
+	})
+}
+
+// /meta says simulate before anything is booked: a warning, then the booking.
+func TestAccReleasePromotion_SimulateWarnsEarly(t *testing.T) {
+	m, project := releaseProject(t)
+	m.SetDispatchMode("simulate")
+	factories, rec := recordingProvider()
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: factories,
+		Steps: []resource.TestStep{{
+			Config: promotionHCL(project, "app-api", "dev", `version = "0.0.0-test"`),
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr(promotionAddr, "status", "running"),
+				rec.expectWarning("The platform fakes dispatch (simulate): the promotion will not run", "(GET /meta)"),
+				check(func() error {
+					n := 0
+					for _, w := range rec.warnings() {
+						if strings.Contains(w, "fakes dispatch") {
+							n++
+						}
+					}
+					if n != 1 {
+						return fmt.Errorf("%d dispatch warnings, want 1", n)
+					}
+					return nil
+				}),
+			),
 		}},
 	})
 }
@@ -460,7 +490,7 @@ func TestAccAIModelNodeCache(t *testing.T) {
 				ExpectError: words("loaded_state_unknown"),
 			},
 			{
-				PreConfig: func() { m.SetPrometheus(true) },
+				PreConfig: func() { m.SetMonitoring(true) },
 				Config:    modelHCL(repo),
 				Check: check(func() error {
 					if s := m.NodeCacheState(id, "ai-a"); s != "" {
@@ -473,7 +503,23 @@ func TestAccAIModelNodeCache(t *testing.T) {
 				}),
 			},
 			{
-				// Under a faked dispatch the provider fails at once.
+				// /meta says the platform fakes dispatch: the provider fails before any write.
+				PreConfig:   func() { m.SetDispatchMode("simulate") },
+				Config:      cacheHCL(repo, "ai-a"),
+				ExpectError: words("The platform fakes dispatch (simulate): the store run would never run .* Nothing was sent"),
+			},
+			{
+				PreConfig: func() { m.SetDispatchMode("live") },
+				Config:    modelHCL(repo),
+				Check: check(func() error {
+					if n := m.Calls("PUT", "/ai-models/"+id+"/node-caches/ai-a"); n != 2 {
+						return fmt.Errorf("%d cache PUTs, want 2 (none under a faked dispatch)", n)
+					}
+					return nil
+				}),
+			},
+			{
+				// /meta says live but the store run comes back faked: caught after the 202.
 				PreConfig:   func() { m.SetStoreDispatch("dryrun") },
 				Config:      cacheHCL(repo, "ai-a"),
 				ExpectError: words("The platform fakes dispatch (dryrun): the store run will never run"),
@@ -528,7 +574,7 @@ data "ataila_ai_load_targets" "all" {}
 		Steps: []resource.TestStep{{
 			Config: cfg,
 			Check: resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("data.ataila_ai_nodes.all", "prometheus_reachable", "false"),
+				resource.TestCheckResourceAttr("data.ataila_ai_nodes.all", "monitoring_reachable", "false"),
 				resource.TestCheckResourceAttr("data.ataila_ai_nodes.all", "nodes.#", "0"),
 				resource.TestCheckResourceAttr("data.ataila_dgx_clusters.all", "clusters.#", "0"),
 				resource.TestCheckResourceAttr("data.ataila_ai_model_launch_catalog.all", "entries.#", "0"),
@@ -580,10 +626,10 @@ data "ataila_ai_models" "chat" {
 			{
 				Config: cfg,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.ataila_ai_nodes.all", "prometheus_reachable", "false"),
+					resource.TestCheckResourceAttr("data.ataila_ai_nodes.all", "monitoring_reachable", "false"),
 					resource.TestCheckResourceAttr("data.ataila_ai_nodes.all", "nodes.#", "2"),
 					resource.TestCheckNoResourceAttr("data.ataila_ai_nodes.all", "nodes.0.status"),
-					resource.TestCheckResourceAttr("data.ataila_ai_node.a", "prometheus_reachable", "false"),
+					resource.TestCheckResourceAttr("data.ataila_ai_node.a", "monitoring_reachable", "false"),
 					resource.TestCheckResourceAttr("data.ataila_ai_node.a", "gpu_class", "rtx-3090"),
 					resource.TestCheckResourceAttr("data.ataila_dgx_clusters.pair", "clusters.#", "1"),
 					resource.TestCheckResourceAttr("data.ataila_dgx_clusters.pair", "clusters.0.members.0.role", "head"),
@@ -596,12 +642,12 @@ data "ataila_ai_models" "chat" {
 			},
 			{
 				PreConfig: func() {
-					m.SetPrometheus(true)
+					m.SetMonitoring(true)
 					m.LoadOnNode("ai-a", "example/model-a")
 				},
 				Config: cfg,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.ataila_ai_nodes.all", "prometheus_reachable", "true"),
+					resource.TestCheckResourceAttr("data.ataila_ai_nodes.all", "monitoring_reachable", "true"),
 					resource.TestCheckResourceAttr("data.ataila_ai_node.a", "status", "idle"),
 					resource.TestCheckResourceAttr("data.ataila_ai_node.a", "gpu_util_avg_pct", "12.5"),
 					resource.TestCheckResourceAttr("data.ataila_ai_node.a", "models.0.tiers.0", "general"),

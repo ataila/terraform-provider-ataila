@@ -17,21 +17,21 @@ import (
 // platform. They are final: some platforms have no gateway at all, and
 // retrying cannot give them one.
 const (
-	CodeGatewayNotConfigured = "gateway_not_configured"
-	CodeGatewayUnreachable   = "gateway_unreachable"
-	CodeVaultWriteFailed     = "vault_write_failed"
-	CodeKeyAdopted           = "key_adopted"
-	CodeKeyMissingOnGateway  = "key_missing_on_gateway"
-	CodeModelNotLoaded       = "model_not_loaded"
+	CodeGatewayNotConfigured   = "gateway_not_configured"
+	CodeGatewayUnreachable     = "gateway_unreachable"
+	CodeSecretStoreWriteFailed = "secret_store_write_failed"
+	CodeKeyAdopted             = "key_adopted"
+	CodeKeyMissingOnGateway    = "key_missing_on_gateway"
+	CodeModelNotLoaded         = "model_not_loaded"
 )
 
 // finalUnavailable lists the 503 codes that are not retried.
 var finalUnavailable = map[string]bool{
-	CodeGatewayNotConfigured: true,
-	CodeGatewayUnreachable:   true,
-	CodeVaultWriteFailed:     true,
-	CodeStorageUnavailable:   true,
-	CodeLoadedStateUnknown:   true,
+	CodeGatewayNotConfigured:   true,
+	CodeGatewayUnreachable:     true,
+	CodeSecretStoreWriteFailed: true,
+	CodeStorageUnavailable:     true,
+	CodeLoadedStateUnknown:     true,
 }
 
 // GatewayKeyData is a virtual key as the API answers it, decoded by hand so
@@ -52,8 +52,8 @@ type GatewayKeyData struct {
 	BudgetDuration  *string      `json:"budget_duration"`
 	SpendUsd        *float64     `json:"spend_usd"`
 	Live            string       `json:"live"`
-	VaultPath       *string      `json:"vault_path"`
-	VaultField      *string      `json:"vault_field"`
+	SecretPath      *string      `json:"secret_path"`
+	SecretField     *string      `json:"secret_field"`
 	Origin          string       `json:"origin"`
 	TokenHashPrefix *string      `json:"token_hash_prefix"`
 	CreatedBy       *string      `json:"created_by"`

@@ -3,12 +3,12 @@
 page_title: "ataila_ai_nodes Data Source - ATAILA"
 subcategory: ""
 description: |-
-  The AI fleet (AI Center, read-only). Roster fields are always there; live fields are null when monitoring cannot be read, and then prometheus_reachable is false. The read never fails because of monitoring. Needs ai-center-read-global.
+  The AI fleet (AI Center, read-only). Roster fields are always there; live fields are null when monitoring cannot be read, and then monitoring_reachable is false. The read never fails because of monitoring. Needs ai-center-read-global.
 ---
 
 # ataila_ai_nodes (Data Source)
 
-The AI fleet (AI Center, read-only). Roster fields are always there; live fields are null when monitoring cannot be read, and then `prometheus_reachable` is false. The read never fails because of monitoring. Needs `ai-center-read-global`.
+The AI fleet (AI Center, read-only). Roster fields are always there; live fields are null when monitoring cannot be read, and then `monitoring_reachable` is false. The read never fails because of monitoring. Needs `ai-center-read-global`.
 
 ## Example Usage
 
@@ -17,7 +17,7 @@ data "ataila_ai_nodes" "fleet" {}
 
 output "fleet" {
   value = {
-    monitored = data.ataila_ai_nodes.fleet.prometheus_reachable
+    monitored = data.ataila_ai_nodes.fleet.monitoring_reachable
     nodes     = [for n in data.ataila_ai_nodes.fleet.nodes : n.hostname]
   }
 }
@@ -28,8 +28,8 @@ output "fleet" {
 
 ### Read-Only
 
-- `nodes` (List of Object) The nodes, by hostname: `hostname`, `site`, `mgmt_ip`, `gpu_class`, `specs_summary`, `services`, `is_virtual`, `parent_host`, `vmid`, `prometheus_reachable`, `status`, `online`, `role`, `cluster`, `uptime_seconds`, `cpu_util_pct`, `load1`, `mem_used_pct`, `disk_used_pct`, `gpu_count`, `gpu_util_avg_pct`, `vram_used_bytes`, `vram_total_bytes`, `gpu_temp_max_c`, `throttle_active`, `collector_stale`, `models`. See `ataila_ai_node` for each field. (see [below for nested schema](#nestedatt--nodes))
-- `prometheus_reachable` (Boolean) False: monitoring could not be read and every live field is null.
+- `monitoring_reachable` (Boolean) False: monitoring could not be read and every live field is null.
+- `nodes` (List of Object) The nodes, by hostname: `hostname`, `site`, `mgmt_ip`, `gpu_class`, `specs_summary`, `services`, `is_virtual`, `parent_host`, `vmid`, `monitoring_reachable`, `status`, `online`, `role`, `cluster`, `uptime_seconds`, `cpu_util_pct`, `load1`, `mem_used_pct`, `disk_used_pct`, `gpu_count`, `gpu_util_avg_pct`, `vram_used_bytes`, `vram_total_bytes`, `gpu_temp_max_c`, `throttle_active`, `collector_stale`, `models`. See `ataila_ai_node` for each field. (see [below for nested schema](#nestedatt--nodes))
 
 <a id="nestedatt--nodes"></a>
 ### Nested Schema for `nodes`
@@ -50,9 +50,9 @@ Read-Only:
 - `mem_used_pct` (Number)
 - `mgmt_ip` (String)
 - `models` (List of Object) (see [below for nested schema](#nestedobjatt--nodes--models))
+- `monitoring_reachable` (Boolean)
 - `online` (Boolean)
 - `parent_host` (String)
-- `prometheus_reachable` (Boolean)
 - `role` (String)
 - `services` (List of String)
 - `site` (String)

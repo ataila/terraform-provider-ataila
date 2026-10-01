@@ -153,11 +153,13 @@ func NewMockAPI(t testing.TB) *MockAPI {
 // DefaultMeta is the GET /meta answer of a licensed multi-tenant platform.
 func DefaultMeta() map[string]any {
 	return map[string]any{
-		"api_version":      "1.0.0",
-		"platform_version": "1.0.0",
-		"tier":             "standard",
-		"tenancy_mode":     "multi",
-		"modules":          []string{"ai-gateway", "sp-mode"},
+		"api_version":             "1.0.0",
+		"platform_version":        "1.0.0",
+		"tier":                    "standard",
+		"tenancy_mode":            "multi",
+		"modules":                 []string{"ai-gateway", "sp-mode"},
+		"dispatch_mode_effective": "live",
+		"simulate_stage_seconds":  nil,
 		"licence": map[string]any{
 			"state":          "ACTIVE",
 			"state_reason":   "",

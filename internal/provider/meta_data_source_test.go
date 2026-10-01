@@ -27,6 +27,8 @@ func TestAccMetaDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.ataila_meta.this", "modules.0", "ai-gateway"),
 				resource.TestCheckResourceAttr("data.ataila_meta.this", "modules.1", "sp-mode"),
 				resource.TestCheckResourceAttr("data.ataila_meta.this", "licence.state", "ACTIVE"),
+				resource.TestCheckResourceAttr("data.ataila_meta.this", "dispatch_mode_effective", "live"),
+				resource.TestCheckNoResourceAttr("data.ataila_meta.this", "simulate_stage_seconds"),
 				resource.TestCheckResourceAttr("data.ataila_meta.this", "licence.state_reason", ""),
 				resource.TestCheckResourceAttr("data.ataila_meta.this", "licence.days_remaining", "120"),
 			),

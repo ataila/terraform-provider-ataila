@@ -33,8 +33,8 @@ func keyGone(m *acctest.MockAPI, id *string, alias string) resource.TestCheckFun
 		if k, found := m.GatewayKey(*id); found {
 			return fmt.Errorf("key %s still registered: %v", *id, k)
 		}
-		if m.OnGateway(alias) || m.VaultValue(alias) != "" {
-			return fmt.Errorf("key %s still on the gateway or in Vault", alias)
+		if m.OnGateway(alias) || m.SecretValue(alias) != "" {
+			return fmt.Errorf("key %s still on the gateway or in the secrets store", alias)
 		}
 		return nil
 	}
@@ -60,11 +60,11 @@ func TestAccGatewayKey_Lifecycle(t *testing.T) {
 					resource.TestCheckResourceAttr(keyAddr, "key_alias", "gate-prod-chatbot"),
 					resource.TestCheckResourceAttr(keyAddr, "origin", "api"),
 					resource.TestCheckResourceAttr(keyAddr, "soft_budget_usd", "0.1"),
-					resource.TestCheckResourceAttrSet(keyAddr, "vault_path"),
+					resource.TestCheckResourceAttrSet(keyAddr, "secret_path"),
 					resource.TestCheckResourceAttrSet(keyAddr, "token_hash_prefix"),
 					check(func() error {
-						if secret != m.VaultValue("gate-prod-chatbot") {
-							return fmt.Errorf("the state's secret is not the value in Vault")
+						if secret != m.SecretValue("gate-prod-chatbot") {
+							return fmt.Errorf("the state's secret is not the stored value")
 						}
 						return nil
 					}),
@@ -100,14 +100,14 @@ func TestAccGatewayKey_Lifecycle(t *testing.T) {
 					resource.TestCheckResourceAttrSet(keyAddr, "rotated_at"),
 					check(func() error {
 						k, _ := m.GatewayKey(id)
-						if m.VaultValue("gate-prod-chatbot") == secret || k["rotated_at"] == nil {
+						if m.SecretValue("gate-prod-chatbot") == secret || k["rotated_at"] == nil {
 							return fmt.Errorf("the key was not rotated")
 						}
 						return nil
 					}),
 					func(s *terraform.State) error {
 						now := s.RootModule().Resources[keyAddr].Primary.Attributes["secret"]
-						if now == secret || now != m.VaultValue("gate-prod-chatbot") {
+						if now == secret || now != m.SecretValue("gate-prod-chatbot") {
 							return fmt.Errorf("the state does not hold the new value")
 						}
 						return nil

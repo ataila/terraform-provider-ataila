@@ -265,6 +265,17 @@ func (r *promotionResource) Create(ctx context.Context, req resource.CreateReque
 		TargetEnv: client.ReleasePromotionCreateTargetEnv(plan.TargetEnv.ValueString()),
 		Version:   optString(plan.Version),
 	}
+	// Read before booking: on a platform that fakes dispatch the promotion is
+	// booked but never carried out. That is how every non-live platform
+	// behaves, so it is a warning, not an error.
+	earlyMode := r.data.DispatchMode()
+	if fakesDispatch(earlyMode) {
+		resp.Diagnostics.AddWarning(fmt.Sprintf("The platform fakes dispatch (%s): the promotion will not run", earlyMode),
+			fmt.Sprintf("This platform's dispatch mode is %s (GET /meta): the promotion %s is booked, but nothing is "+
+				"executed, so it will not complete (the platform marks a build promotion failed after a while "+
+				"without a report). That is how every non-live platform behaves, so the resource is created with the "+
+				"status the provider sees.", earlyMode, plan.ident()))
+	}
 	op, err := r.data.API.RequestPromotion(ctx, plan.ProjectID.ValueString(), body)
 	if err != nil {
 		resp.Diagnostics.Append(promotionError(plan.ident(), err))
@@ -312,6 +323,8 @@ func (r *promotionResource) Create(ctx context.Context, req resource.CreateReque
 			fmt.Sprintf("Release operation %s %s is a PROD request: it waits (awaiting_approval) until a person "+
 				"approves or rejects it in the portal's Release Manager. The API cannot approve it. Set "+
 				"wait_for_approval = true to wait for the decision.", native, plan.ident()))
+	case last.Status != client.OperationStatusSucceeded && fakesDispatch(earlyMode):
+		// Already said before booking.
 	case last.Status != client.OperationStatusSucceeded:
 		mode := operationDispatch(last)
 		resp.Diagnostics.AddWarning(fmt.Sprintf("The platform fakes dispatch (%s): the promotion will not run", mode),

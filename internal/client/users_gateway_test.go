@@ -21,7 +21,7 @@ func TestUserCalls(t *testing.T) {
 		t.Fatal(err)
 	}
 	if *u.Email != "nora.uj@example.com" || *u.Username != "nora.uj" || *u.AdUsername != "nora.uj" ||
-		u.Roles[0] != "user" || !u.KeycloakLinked || string(*u.ProvisioningStatus) != "error" {
+		u.Roles[0] != "user" || !u.SsoLinked || string(*u.ProvisioningStatus) != "error" {
 		t.Errorf("created %+v", u)
 	}
 	if u.Warnings == nil || (*u.Warnings)[0].Code != "provisioning_gitlab_user_failed" {
@@ -150,7 +150,7 @@ func TestGatewayKeyCalls(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if k.KeyAlias != "gate-prod-chatbot" || k.Secret == nil || *k.Secret != m.VaultValue(k.KeyAlias) ||
+	if k.KeyAlias != "gate-prod-chatbot" || k.Secret == nil || *k.Secret != m.SecretValue(k.KeyAlias) ||
 		*k.SoftBudgetUsd != 0.1 || k.Live != "not_read" || k.SpendUsd != nil {
 		t.Errorf("created %+v", k)
 	}
@@ -178,7 +178,7 @@ func TestGatewayKeyCalls(t *testing.T) {
 	if err != nil || k2.Secret != nil {
 		t.Fatalf("create without expose: %+v %v", k2, err)
 	}
-	before := m.VaultValue(k2.KeyAlias)
+	before := m.SecretValue(k2.KeyAlias)
 	rot, err := api.RotateGatewayKey(ctx, k2.Id, true)
 	if err != nil || rot.Secret == nil || *rot.Secret == before || rot.RotatedAt == nil {
 		t.Errorf("rotate: %+v %v", rot, err)
@@ -216,8 +216,8 @@ func TestGatewayKeyReplayNeverCarriesTheSecret(t *testing.T) {
 	if k.Secret != nil || len(k.Warnings) == 0 || k.Warnings[len(k.Warnings)-1].Code != "secret_not_replayed" {
 		t.Errorf("replayed create: secret %v warnings %+v", k.Secret, k.Warnings)
 	}
-	if m.VaultValue(k.KeyAlias) == "" {
-		t.Error("the value must be in Vault")
+	if m.SecretValue(k.KeyAlias) == "" {
+		t.Error("the value must be in the secrets store")
 	}
 }
 

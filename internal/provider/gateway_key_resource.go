@@ -28,9 +28,10 @@ import (
 )
 
 var (
-	_ resource.ResourceWithConfigure   = (*gatewayKeyResource)(nil)
-	_ resource.ResourceWithModifyPlan  = (*gatewayKeyResource)(nil)
-	_ resource.ResourceWithImportState = (*gatewayKeyResource)(nil)
+	_ resource.ResourceWithConfigure    = (*gatewayKeyResource)(nil)
+	_ resource.ResourceWithModifyPlan   = (*gatewayKeyResource)(nil)
+	_ resource.ResourceWithImportState  = (*gatewayKeyResource)(nil)
+	_ resource.ResourceWithUpgradeState = (*gatewayKeyResource)(nil)
 )
 
 // AliasImportPrefix imports a gateway key by its alias.
@@ -62,8 +63,8 @@ type gatewayKeyModel struct {
 	ExposeSecret    types.Bool     `tfsdk:"expose_secret"`
 	RotationTrigger types.Map      `tfsdk:"rotation_trigger"`
 	KeyAlias        types.String   `tfsdk:"key_alias"`
-	VaultPath       types.String   `tfsdk:"vault_path"`
-	VaultField      types.String   `tfsdk:"vault_field"`
+	SecretPath      types.String   `tfsdk:"secret_path"`
+	SecretField     types.String   `tfsdk:"secret_field"`
 	Origin          types.String   `tfsdk:"origin"`
 	TokenHashPrefix types.String   `tfsdk:"token_hash_prefix"`
 	SpendUSD        types.Float64  `tfsdk:"spend_usd"`
@@ -110,8 +111,8 @@ func (m *gatewayKeyModel) fromAPI(k *client.GatewayKeyData) {
 	m.SoftBudgetUSD = float64Ptr(k.SoftBudgetUsd)
 	m.BudgetDuration = stringOrNull(k.BudgetDuration)
 	m.KeyAlias = types.StringValue(k.KeyAlias)
-	m.VaultPath = stringOrNull(k.VaultPath)
-	m.VaultField = stringOrNull(k.VaultField)
+	m.SecretPath = stringOrNull(k.SecretPath)
+	m.SecretField = stringOrNull(k.SecretField)
 	m.Origin = types.StringValue(k.Origin)
 	m.TokenHashPrefix = stringOrNull(k.TokenHashPrefix)
 	m.SpendUSD = float64Ptr(k.SpendUsd)
@@ -147,10 +148,11 @@ func (r *gatewayKeyResource) Schema(_ context.Context, _ resource.SchemaRequest,
 		return schema.StringAttribute{MarkdownDescription: desc, Computed: true, PlanModifiers: mods}
 	}
 	resp.Schema = schema.Schema{
+		Version: 1,
 		MarkdownDescription: "A virtual key of the platform's AI gateway, for one tenant, env and app. " +
 			"**Needs a platform with an AI gateway**: where none is configured, every call answers " +
 			"`gateway_not_configured` and the provider reports it without retrying.\n\n" +
-			"The key's value is always stored in Vault at `vault_path`. It is returned once, in the create or " +
+			"The key's value is always kept in the platform's secrets store, at `secret_path`. It is returned once, in the create or " +
 			"rotation that produced it, and only with `expose_secret = true`; the provider then keeps it in " +
 			"`secret` (sensitive) and never reads it again, so it never shows as a difference. A change to " +
 			"`rotation_trigger` rotates the key: a new value under the same alias, the old one stops working " +
@@ -221,10 +223,10 @@ func (r *gatewayKeyResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				ElementType:         types.StringType, Optional: true,
 			},
 			"key_alias": computed("`<tenant-slug>-<env>-<app>[-<feature>]`; an adopted key keeps its own.", keep...),
-			"vault_path": computed("Where Vault holds the key's value (a KV v2 path). Null for an adopted key "+
+			"secret_path": computed("Where the secrets store keeps the key's value. Null for an adopted key "+
 				"whose location was never recorded.", keep...),
-			"vault_field": computed("The field at `vault_path` that holds the value.", keep...),
-			"origin":      computed("`api` (created here) or `adopted` (existed in the gateway first).", keep...),
+			"secret_field": computed("The field at `secret_path` that holds the value.", keep...),
+			"origin":       computed("`api` (created here) or `adopted` (existed in the gateway first).", keep...),
 			"token_hash_prefix": computed("The first 12 characters of the gateway's SHA-256 of the key, to find it " +
 				"in the gateway's own records. Never the value."),
 			"spend_usd": schema.Float64Attribute{
@@ -279,7 +281,7 @@ func (r *gatewayKeyResource) ModifyPlan(ctx context.Context, req resource.Modify
 	if state.Origin.ValueString() == "adopted" {
 		resp.Diagnostics.AddAttributeError(path.Root("rotation_trigger"), "An adopted key cannot be rotated here",
 			"The key existed in the gateway before the platform registered it; its value lives in its consumer's "+
-				"own Vault leaf, so a new value would break that consumer. Rotate it where the consumer is deployed, "+
+				"own secret, so a new value would break that consumer. Rotate it where the consumer is deployed, "+
 				"and leave rotation_trigger unchanged.")
 		return
 	}
@@ -304,7 +306,7 @@ func gatewayKeyDiag(doing string, err error) (summary, detail string) {
 	var apiErr *client.APIError
 	if errors.As(err, &apiErr) {
 		hint := map[string]string{
-			client.CodeKeyAdopted: "The key was adopted: its value lives in its consumer's own Vault leaf, so a new " +
+			client.CodeKeyAdopted: "The key was adopted: its value lives in its consumer's own secret, so a new " +
 				"value would break that consumer. Rotate it where the consumer is deployed.",
 			client.CodeKeyMissingOnGateway: "The gateway no longer has this key. Re-create it with " +
 				"`tofu apply -replace=<address>` / `terraform apply -replace=<address>`.",
@@ -560,4 +562,9 @@ func (r *gatewayKeyResource) ImportState(ctx context.Context, req resource.Impor
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), id)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("secret"), types.StringNull())...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("warnings"), warningsValue(nil))...)
+}
+
+// UpgradeState renames the attributes 0.7.0 renamed (schema version 0 to 1).
+func (r *gatewayKeyResource) UpgradeState(context.Context) map[int64]resource.StateUpgrader {
+	return renameUpgraders(gatewayKeyRenamesV1)
 }

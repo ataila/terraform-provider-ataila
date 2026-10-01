@@ -555,6 +555,27 @@ func (e MembershipPutRole) Valid() bool {
 	}
 }
 
+// Defines values for MetaDispatchModeEffective.
+const (
+	MetaDispatchModeEffectiveDryrun   MetaDispatchModeEffective = "dryrun"
+	MetaDispatchModeEffectiveLive     MetaDispatchModeEffective = "live"
+	MetaDispatchModeEffectiveSimulate MetaDispatchModeEffective = "simulate"
+)
+
+// Valid indicates whether the value is a known member of the MetaDispatchModeEffective enum.
+func (e MetaDispatchModeEffective) Valid() bool {
+	switch e {
+	case MetaDispatchModeEffectiveDryrun:
+		return true
+	case MetaDispatchModeEffectiveLive:
+		return true
+	case MetaDispatchModeEffectiveSimulate:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for OperationDispatchMode.
 const (
 	OperationDispatchModeDryrun   OperationDispatchMode = "dryrun"
@@ -810,36 +831,36 @@ func (e ProjectMssqlEdition) Valid() bool {
 	}
 }
 
-// Defines values for ProjectProdMinioDisksPerVm.
+// Defines values for ProjectProdObjectStorageDisksPerVm.
 const (
-	ProjectProdMinioDisksPerVmN1 ProjectProdMinioDisksPerVm = 1
-	ProjectProdMinioDisksPerVmN2 ProjectProdMinioDisksPerVm = 2
+	ProjectProdObjectStorageDisksPerVmN1 ProjectProdObjectStorageDisksPerVm = 1
+	ProjectProdObjectStorageDisksPerVmN2 ProjectProdObjectStorageDisksPerVm = 2
 )
 
-// Valid indicates whether the value is a known member of the ProjectProdMinioDisksPerVm enum.
-func (e ProjectProdMinioDisksPerVm) Valid() bool {
+// Valid indicates whether the value is a known member of the ProjectProdObjectStorageDisksPerVm enum.
+func (e ProjectProdObjectStorageDisksPerVm) Valid() bool {
 	switch e {
-	case ProjectProdMinioDisksPerVmN1:
+	case ProjectProdObjectStorageDisksPerVmN1:
 		return true
-	case ProjectProdMinioDisksPerVmN2:
+	case ProjectProdObjectStorageDisksPerVmN2:
 		return true
 	default:
 		return false
 	}
 }
 
-// Defines values for ProjectProdMinioNodeCount.
+// Defines values for ProjectProdObjectStorageNodeCount.
 const (
-	ProjectProdMinioNodeCountN2 ProjectProdMinioNodeCount = 2
-	ProjectProdMinioNodeCountN4 ProjectProdMinioNodeCount = 4
+	ProjectProdObjectStorageNodeCountN2 ProjectProdObjectStorageNodeCount = 2
+	ProjectProdObjectStorageNodeCountN4 ProjectProdObjectStorageNodeCount = 4
 )
 
-// Valid indicates whether the value is a known member of the ProjectProdMinioNodeCount enum.
-func (e ProjectProdMinioNodeCount) Valid() bool {
+// Valid indicates whether the value is a known member of the ProjectProdObjectStorageNodeCount enum.
+func (e ProjectProdObjectStorageNodeCount) Valid() bool {
 	switch e {
-	case ProjectProdMinioNodeCountN2:
+	case ProjectProdObjectStorageNodeCountN2:
 		return true
-	case ProjectProdMinioNodeCountN4:
+	case ProjectProdObjectStorageNodeCountN4:
 		return true
 	default:
 		return false
@@ -1008,36 +1029,36 @@ func (e ProjectCreateMssqlEdition) Valid() bool {
 	}
 }
 
-// Defines values for ProjectCreateProdMinioDisksPerVm.
+// Defines values for ProjectCreateProdObjectStorageDisksPerVm.
 const (
-	ProjectCreateProdMinioDisksPerVmN1 ProjectCreateProdMinioDisksPerVm = 1
-	ProjectCreateProdMinioDisksPerVmN2 ProjectCreateProdMinioDisksPerVm = 2
+	ProjectCreateProdObjectStorageDisksPerVmN1 ProjectCreateProdObjectStorageDisksPerVm = 1
+	ProjectCreateProdObjectStorageDisksPerVmN2 ProjectCreateProdObjectStorageDisksPerVm = 2
 )
 
-// Valid indicates whether the value is a known member of the ProjectCreateProdMinioDisksPerVm enum.
-func (e ProjectCreateProdMinioDisksPerVm) Valid() bool {
+// Valid indicates whether the value is a known member of the ProjectCreateProdObjectStorageDisksPerVm enum.
+func (e ProjectCreateProdObjectStorageDisksPerVm) Valid() bool {
 	switch e {
-	case ProjectCreateProdMinioDisksPerVmN1:
+	case ProjectCreateProdObjectStorageDisksPerVmN1:
 		return true
-	case ProjectCreateProdMinioDisksPerVmN2:
+	case ProjectCreateProdObjectStorageDisksPerVmN2:
 		return true
 	default:
 		return false
 	}
 }
 
-// Defines values for ProjectCreateProdMinioNodeCount.
+// Defines values for ProjectCreateProdObjectStorageNodeCount.
 const (
-	ProjectCreateProdMinioNodeCountN2 ProjectCreateProdMinioNodeCount = 2
-	ProjectCreateProdMinioNodeCountN4 ProjectCreateProdMinioNodeCount = 4
+	ProjectCreateProdObjectStorageNodeCountN2 ProjectCreateProdObjectStorageNodeCount = 2
+	ProjectCreateProdObjectStorageNodeCountN4 ProjectCreateProdObjectStorageNodeCount = 4
 )
 
-// Valid indicates whether the value is a known member of the ProjectCreateProdMinioNodeCount enum.
-func (e ProjectCreateProdMinioNodeCount) Valid() bool {
+// Valid indicates whether the value is a known member of the ProjectCreateProdObjectStorageNodeCount enum.
+func (e ProjectCreateProdObjectStorageNodeCount) Valid() bool {
 	switch e {
-	case ProjectCreateProdMinioNodeCountN2:
+	case ProjectCreateProdObjectStorageNodeCountN2:
 		return true
-	case ProjectCreateProdMinioNodeCountN4:
+	case ProjectCreateProdObjectStorageNodeCountN4:
 		return true
 	default:
 		return false
@@ -1281,36 +1302,36 @@ func (e ProjectPatchMssqlEdition) Valid() bool {
 	}
 }
 
-// Defines values for ProjectPatchProdMinioDisksPerVm.
+// Defines values for ProjectPatchProdObjectStorageDisksPerVm.
 const (
-	ProjectPatchProdMinioDisksPerVmN1 ProjectPatchProdMinioDisksPerVm = 1
-	ProjectPatchProdMinioDisksPerVmN2 ProjectPatchProdMinioDisksPerVm = 2
+	ProjectPatchProdObjectStorageDisksPerVmN1 ProjectPatchProdObjectStorageDisksPerVm = 1
+	ProjectPatchProdObjectStorageDisksPerVmN2 ProjectPatchProdObjectStorageDisksPerVm = 2
 )
 
-// Valid indicates whether the value is a known member of the ProjectPatchProdMinioDisksPerVm enum.
-func (e ProjectPatchProdMinioDisksPerVm) Valid() bool {
+// Valid indicates whether the value is a known member of the ProjectPatchProdObjectStorageDisksPerVm enum.
+func (e ProjectPatchProdObjectStorageDisksPerVm) Valid() bool {
 	switch e {
-	case ProjectPatchProdMinioDisksPerVmN1:
+	case ProjectPatchProdObjectStorageDisksPerVmN1:
 		return true
-	case ProjectPatchProdMinioDisksPerVmN2:
+	case ProjectPatchProdObjectStorageDisksPerVmN2:
 		return true
 	default:
 		return false
 	}
 }
 
-// Defines values for ProjectPatchProdMinioNodeCount.
+// Defines values for ProjectPatchProdObjectStorageNodeCount.
 const (
-	ProjectPatchProdMinioNodeCountN2 ProjectPatchProdMinioNodeCount = 2
-	ProjectPatchProdMinioNodeCountN4 ProjectPatchProdMinioNodeCount = 4
+	ProjectPatchProdObjectStorageNodeCountN2 ProjectPatchProdObjectStorageNodeCount = 2
+	ProjectPatchProdObjectStorageNodeCountN4 ProjectPatchProdObjectStorageNodeCount = 4
 )
 
-// Valid indicates whether the value is a known member of the ProjectPatchProdMinioNodeCount enum.
-func (e ProjectPatchProdMinioNodeCount) Valid() bool {
+// Valid indicates whether the value is a known member of the ProjectPatchProdObjectStorageNodeCount enum.
+func (e ProjectPatchProdObjectStorageNodeCount) Valid() bool {
 	switch e {
-	case ProjectPatchProdMinioNodeCountN2:
+	case ProjectPatchProdObjectStorageNodeCountN2:
 		return true
-	case ProjectPatchProdMinioNodeCountN4:
+	case ProjectPatchProdObjectStorageNodeCountN4:
 		return true
 	default:
 		return false
@@ -1497,36 +1518,36 @@ func (e ProjectUpdatedMssqlEdition) Valid() bool {
 	}
 }
 
-// Defines values for ProjectUpdatedProdMinioDisksPerVm.
+// Defines values for ProjectUpdatedProdObjectStorageDisksPerVm.
 const (
-	ProjectUpdatedProdMinioDisksPerVmN1 ProjectUpdatedProdMinioDisksPerVm = 1
-	ProjectUpdatedProdMinioDisksPerVmN2 ProjectUpdatedProdMinioDisksPerVm = 2
+	ProjectUpdatedProdObjectStorageDisksPerVmN1 ProjectUpdatedProdObjectStorageDisksPerVm = 1
+	ProjectUpdatedProdObjectStorageDisksPerVmN2 ProjectUpdatedProdObjectStorageDisksPerVm = 2
 )
 
-// Valid indicates whether the value is a known member of the ProjectUpdatedProdMinioDisksPerVm enum.
-func (e ProjectUpdatedProdMinioDisksPerVm) Valid() bool {
+// Valid indicates whether the value is a known member of the ProjectUpdatedProdObjectStorageDisksPerVm enum.
+func (e ProjectUpdatedProdObjectStorageDisksPerVm) Valid() bool {
 	switch e {
-	case ProjectUpdatedProdMinioDisksPerVmN1:
+	case ProjectUpdatedProdObjectStorageDisksPerVmN1:
 		return true
-	case ProjectUpdatedProdMinioDisksPerVmN2:
+	case ProjectUpdatedProdObjectStorageDisksPerVmN2:
 		return true
 	default:
 		return false
 	}
 }
 
-// Defines values for ProjectUpdatedProdMinioNodeCount.
+// Defines values for ProjectUpdatedProdObjectStorageNodeCount.
 const (
-	ProjectUpdatedProdMinioNodeCountN2 ProjectUpdatedProdMinioNodeCount = 2
-	ProjectUpdatedProdMinioNodeCountN4 ProjectUpdatedProdMinioNodeCount = 4
+	ProjectUpdatedProdObjectStorageNodeCountN2 ProjectUpdatedProdObjectStorageNodeCount = 2
+	ProjectUpdatedProdObjectStorageNodeCountN4 ProjectUpdatedProdObjectStorageNodeCount = 4
 )
 
-// Valid indicates whether the value is a known member of the ProjectUpdatedProdMinioNodeCount enum.
-func (e ProjectUpdatedProdMinioNodeCount) Valid() bool {
+// Valid indicates whether the value is a known member of the ProjectUpdatedProdObjectStorageNodeCount enum.
+func (e ProjectUpdatedProdObjectStorageNodeCount) Valid() bool {
 	switch e {
-	case ProjectUpdatedProdMinioNodeCountN2:
+	case ProjectUpdatedProdObjectStorageNodeCountN2:
 		return true
-	case ProjectUpdatedProdMinioNodeCountN4:
+	case ProjectUpdatedProdObjectStorageNodeCountN4:
 		return true
 	default:
 		return false
@@ -1694,19 +1715,19 @@ func (e ReleaseOperationPortalStatus) Valid() bool {
 
 // Defines values for ReleaseOperationRequestedVia.
 const (
-	Pat            ReleaseOperationRequestedVia = "pat"
-	ServiceAccount ReleaseOperationRequestedVia = "service_account"
-	Session        ReleaseOperationRequestedVia = "session"
+	ReleaseOperationRequestedViaPat            ReleaseOperationRequestedVia = "pat"
+	ReleaseOperationRequestedViaServiceAccount ReleaseOperationRequestedVia = "service_account"
+	ReleaseOperationRequestedViaSession        ReleaseOperationRequestedVia = "session"
 )
 
 // Valid indicates whether the value is a known member of the ReleaseOperationRequestedVia enum.
 func (e ReleaseOperationRequestedVia) Valid() bool {
 	switch e {
-	case Pat:
+	case ReleaseOperationRequestedViaPat:
 		return true
-	case ServiceAccount:
+	case ReleaseOperationRequestedViaServiceAccount:
 		return true
-	case Session:
+	case ReleaseOperationRequestedViaSession:
 		return true
 	default:
 		return false
@@ -1914,6 +1935,24 @@ func (e ReportedVersionSourceEnv) Valid() bool {
 	}
 }
 
+// Defines values for SecretPathEnv.
+const (
+	SecretPathEnvDev SecretPathEnv = "dev"
+	SecretPathEnvUat SecretPathEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the SecretPathEnv enum.
+func (e SecretPathEnv) Valid() bool {
+	switch e {
+	case SecretPathEnvDev:
+		return true
+	case SecretPathEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ServingTierSource.
 const (
 	Auto       ServingTierSource = "auto"
@@ -2064,30 +2103,6 @@ func (e UserAuthMode) Valid() bool {
 	}
 }
 
-// Defines values for UserKcSyncStatus.
-const (
-	UserKcSyncStatusError    UserKcSyncStatus = "error"
-	UserKcSyncStatusOk       UserKcSyncStatus = "ok"
-	UserKcSyncStatusPending  UserKcSyncStatus = "pending"
-	UserKcSyncStatusUnlinked UserKcSyncStatus = "unlinked"
-)
-
-// Valid indicates whether the value is a known member of the UserKcSyncStatus enum.
-func (e UserKcSyncStatus) Valid() bool {
-	switch e {
-	case UserKcSyncStatusError:
-		return true
-	case UserKcSyncStatusOk:
-		return true
-	case UserKcSyncStatusPending:
-		return true
-	case UserKcSyncStatusUnlinked:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for UserKind.
 const (
 	UserKindHuman   UserKind = "human"
@@ -2148,6 +2163,30 @@ func (e UserProvisioningStatus) Valid() bool {
 	}
 }
 
+// Defines values for UserSsoSyncStatus.
+const (
+	UserSsoSyncStatusError    UserSsoSyncStatus = "error"
+	UserSsoSyncStatusOk       UserSsoSyncStatus = "ok"
+	UserSsoSyncStatusPending  UserSsoSyncStatus = "pending"
+	UserSsoSyncStatusUnlinked UserSsoSyncStatus = "unlinked"
+)
+
+// Valid indicates whether the value is a known member of the UserSsoSyncStatus enum.
+func (e UserSsoSyncStatus) Valid() bool {
+	switch e {
+	case UserSsoSyncStatusError:
+		return true
+	case UserSsoSyncStatusOk:
+		return true
+	case UserSsoSyncStatusPending:
+		return true
+	case UserSsoSyncStatusUnlinked:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for UserCreateLocale.
 const (
 	UserCreateLocaleEn UserCreateLocale = "en"
@@ -2178,24 +2217,6 @@ func (e UserPatchLocale) Valid() bool {
 	case UserPatchLocaleEn:
 		return true
 	case UserPatchLocaleHu:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for VaultPathEnv.
-const (
-	VaultPathEnvDev VaultPathEnv = "dev"
-	VaultPathEnvUat VaultPathEnv = "uat"
-)
-
-// Valid indicates whether the value is a known member of the VaultPathEnv enum.
-func (e VaultPathEnv) Valid() bool {
-	switch e {
-	case VaultPathEnvDev:
-		return true
-	case VaultPathEnvUat:
 		return true
 	default:
 		return false
@@ -2235,6 +2256,27 @@ func (e AiGatewayKeysListParamsOrigin) Valid() bool {
 	case AiGatewayKeysListParamsOriginAdopted:
 		return true
 	case AiGatewayKeysListParamsOriginApi:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AuditEventsListParamsAuthKind.
+const (
+	AuditEventsListParamsAuthKindPat            AuditEventsListParamsAuthKind = "pat"
+	AuditEventsListParamsAuthKindServiceAccount AuditEventsListParamsAuthKind = "service_account"
+	AuditEventsListParamsAuthKindSession        AuditEventsListParamsAuthKind = "session"
+)
+
+// Valid indicates whether the value is a known member of the AuditEventsListParamsAuthKind enum.
+func (e AuditEventsListParamsAuthKind) Valid() bool {
+	switch e {
+	case AuditEventsListParamsAuthKindPat:
+		return true
+	case AuditEventsListParamsAuthKindServiceAccount:
+		return true
+	case AuditEventsListParamsAuthKindSession:
 		return true
 	default:
 		return false
@@ -2523,7 +2565,7 @@ type AiModel struct {
 	CreatedAt     time.Time                                           `json:"created_at"`
 	Description   *string                                             `json:"description,omitempty"`
 
-	// DgxRecipe The spark-vllm recipe a DGX cluster serves it with, if any.
+	// DgxRecipe The serving recipe a DGX cluster runs it with, if any.
 	DgxRecipe     *string `json:"dgx_recipe"`
 	DisplayName   string  `json:"display_name"`
 	FrontierEquiv *string `json:"frontier_equiv,omitempty"`
@@ -2538,6 +2580,12 @@ type AiModel struct {
 	Location     *string `json:"location"`
 	MinTarget    *string `json:"min_target,omitempty"`
 	ModelCardUrl *string `json:"model_card_url,omitempty"`
+
+	// NasPath Where the central copy is; null without one.
+	NasPath *string `json:"nas_path"`
+
+	// NasVolume Read-only: set by the store actions (pull, node cache, purge), never by a client. The central-store share holding the weights; null while there is no central copy.
+	NasVolume *string `json:"nas_volume"`
 
 	// NodeCaches The node caches (see /node-caches).
 	NodeCaches []NodeCacheRef `json:"node_caches"`
@@ -2561,16 +2609,10 @@ type AiModel struct {
 	SizeGb      *float64 `json:"size_gb,omitempty"`
 
 	// Status Read-only: set by the store actions (pull, node cache, purge), never by a client. `planned`, `pulling`, `owned` or `serving`.
-	Status     string  `json:"status"`
-	StrongAxis *string `json:"strong_axis,omitempty"`
-	Summary    *string `json:"summary,omitempty"`
-
-	// SynologyPath Where the central copy is; null without one.
-	SynologyPath *string `json:"synology_path"`
-
-	// SynologyVolume Read-only: set by the store actions (pull, node cache, purge), never by a client. The central-store share holding the weights; null while there is no central copy.
-	SynologyVolume *string   `json:"synology_volume"`
-	UpdatedAt      time.Time `json:"updated_at"`
+	Status     string    `json:"status"`
+	StrongAxis *string   `json:"strong_axis,omitempty"`
+	Summary    *string   `json:"summary,omitempty"`
+	UpdatedAt  time.Time `json:"updated_at"`
 
 	// Vendor The lab that built the model (the HF org may be a quantizer).
 	Vendor        *string `json:"vendor,omitempty"`
@@ -2644,10 +2686,13 @@ type AiModelPage struct {
 	NextCursor *string   `json:"next_cursor,omitempty"`
 }
 
-// AiModelPatch A JSON Merge Patch (RFC 7396) of the metadata. “null“ clears a field
-// where the schema allows it (never “display_name“ or “gated“). “repo“
+// AiModelPatch JSON Merge Patch (RFC 7396): a member that is omitted keeps its
+// current value; a member sent as “null“ clears the field when the field is
+// nullable (the schema marks it so), and “null“ for any other field is a
+// 422. A “""“ is a value (an empty string), not a clear. Of the metadata: “display_name“ and “gated“ are not nullable.
+// “repo“
 // is frozen and “status“, “location“, “offline_ready“,
-// “synology_volume“ are read-only: each may be sent with its current value
+// “nas_volume“ are read-only: each may be sent with its current value
 // and nothing else.
 type AiModelPatch struct {
 	Architecture  *string                                                  `json:"architecture,omitempty"`
@@ -2665,7 +2710,10 @@ type AiModelPatch struct {
 	Location     *string `json:"location,omitempty"`
 	MinTarget    *string `json:"min_target,omitempty"`
 	ModelCardUrl *string `json:"model_card_url,omitempty"`
-	Notes        *string `json:"notes,omitempty"`
+
+	// NasVolume Read-only.
+	NasVolume *string `json:"nas_volume,omitempty"`
+	Notes     *string `json:"notes,omitempty"`
 
 	// OfflineReady Read-only.
 	OfflineReady *bool    `json:"offline_ready,omitempty"`
@@ -2681,14 +2729,11 @@ type AiModelPatch struct {
 	SizeGb      *float64 `json:"size_gb,omitempty"`
 
 	// Status Read-only.
-	Status     *string `json:"status,omitempty"`
-	StrongAxis *string `json:"strong_axis,omitempty"`
-	Summary    *string `json:"summary,omitempty"`
-
-	// SynologyVolume Read-only.
-	SynologyVolume *string `json:"synology_volume,omitempty"`
-	Vendor         *string `json:"vendor,omitempty"`
-	VendorCountry  *string `json:"vendor_country,omitempty"`
+	Status        *string `json:"status,omitempty"`
+	StrongAxis    *string `json:"strong_axis,omitempty"`
+	Summary       *string `json:"summary,omitempty"`
+	Vendor        *string `json:"vendor,omitempty"`
+	VendorCountry *string `json:"vendor_country,omitempty"`
 }
 
 // AiModelPatchBenchmarks0 defines model for AiModelPatch.Benchmarks.0.
@@ -2706,13 +2751,13 @@ type AiModelPatch_Benchmarks_AdditionalProperties struct {
 }
 
 // AiNode One AI node. The ROSTER fields (from the portal's hardware inventory) are
-// always present; the LIVE fields come from Prometheus and are null when it
-// cannot be read — this read never fails because of Prometheus.
+// always present; the LIVE fields come from monitoring and are null when it
+// cannot be read — this read never fails because of monitoring.
 type AiNode struct {
-	// Cluster Live (Prometheus); null when `prometheus_reachable` is false.
+	// Cluster Live (monitoring); null when `monitoring_reachable` is false.
 	Cluster *NodeCluster `json:"cluster,omitempty"`
 
-	// CollectorStale Live (Prometheus); null when `prometheus_reachable` is false.
+	// CollectorStale Live (monitoring); null when `monitoring_reachable` is false.
 	CollectorStale *bool    `json:"collector_stale,omitempty"`
 	CpuUtilPct     *float64 `json:"cpu_util_pct,omitempty"`
 	DiskUsedPct    *float64 `json:"disk_used_pct,omitempty"`
@@ -2730,24 +2775,26 @@ type AiNode struct {
 	MemUsedPct *float64 `json:"mem_used_pct,omitempty"`
 	MgmtIp     *string  `json:"mgmt_ip,omitempty"`
 
-	// Models Live (Prometheus); null when `prometheus_reachable` is false. Loaded models.
+	// Models Live (monitoring); null when `monitoring_reachable` is false. Loaded models.
 	Models *[]NodeModel `json:"models,omitempty"`
 
-	// Online Live (Prometheus); null when `prometheus_reachable` is false.
-	Online              *bool   `json:"online,omitempty"`
-	ParentHost          *string `json:"parent_host,omitempty"`
-	PrometheusReachable bool    `json:"prometheus_reachable"`
+	// MonitoringReachable Monitoring reachable: false when monitoring could not be read, and every live field of this node is then null.
+	MonitoringReachable bool `json:"monitoring_reachable"`
 
-	// Role Live (Prometheus); null when `prometheus_reachable` is false.
+	// Online Live (monitoring); null when `monitoring_reachable` is false.
+	Online     *bool   `json:"online,omitempty"`
+	ParentHost *string `json:"parent_host,omitempty"`
+
+	// Role Live (monitoring); null when `monitoring_reachable` is false.
 	Role         *string   `json:"role,omitempty"`
 	Services     *[]string `json:"services,omitempty"`
 	Site         *string   `json:"site,omitempty"`
 	SpecsSummary *string   `json:"specs_summary,omitempty"`
 
-	// Status Live (Prometheus); null when `prometheus_reachable` is false. `serving`, `loaded_idle`, `idle`, `offline`, `standby` or `powered_off`.
+	// Status Live (monitoring); null when `monitoring_reachable` is false. `serving`, `loaded_idle`, `idle`, `offline`, `standby` or `powered_off`.
 	Status *string `json:"status,omitempty"`
 
-	// ThrottleActive Live (Prometheus); null when `prometheus_reachable` is false.
+	// ThrottleActive Live (monitoring); null when `monitoring_reachable` is false.
 	ThrottleActive *bool    `json:"throttle_active,omitempty"`
 	UptimeSeconds  *float64 `json:"uptime_seconds,omitempty"`
 	Vmid           *int     `json:"vmid,omitempty"`
@@ -2757,11 +2804,11 @@ type AiNode struct {
 
 // AiNodePage defines model for AiNodePage.
 type AiNodePage struct {
-	Items      []AiNode `json:"items"`
-	NextCursor *string  `json:"next_cursor,omitempty"`
+	Items []AiNode `json:"items"`
 
-	// PrometheusReachable False: every live field below is null.
-	PrometheusReachable bool `json:"prometheus_reachable"`
+	// MonitoringReachable Monitoring reachable: false means every live field below is null.
+	MonitoringReachable bool    `json:"monitoring_reachable"`
+	NextCursor          *string `json:"next_cursor,omitempty"`
 }
 
 // ApiWarning Something that did not go as planned, on a request that still succeeded
@@ -2770,6 +2817,51 @@ type AiNodePage struct {
 type ApiWarning struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
+}
+
+// AuditEvent One change: who made it, what it touched, how they signed in and from where.
+type AuditEvent struct {
+	// Action What was done, e.g. `user.create`, `api_v1.post`.
+	Action string `json:"action"`
+
+	// Actor Who made the change: the person's e-mail address as it was at the time, or `system`, `pipeline:<run id>`, `ops:<script>` for automated writers.
+	Actor string `json:"actor"`
+
+	// AfterState The entity after the change as the writer recorded it: usually an object, null on a delete. Every member whose NAME looks secret (it contains `secret`, `password`, `token`, `hash`, `pepper`, `credential`, `api_key` and the like, at any depth) is always null here, whatever it held.
+	AfterState interface{} `json:"after_state,omitempty"`
+
+	// AuthKind `session`, `pat` (personal API token) or `service_account`. Null when the writer did not record it: every row older than the public API, and today most portal pages and automated writers (only `/api/v1`, API-token management and platform settings record it).
+	AuthKind *string `json:"auth_kind"`
+
+	// BeforeState The entity before the change as the writer recorded it: usually an object, null on a create. Every member whose NAME looks secret (it contains `secret`, `password`, `token`, `hash`, `pepper`, `credential`, `api_key` and the like, at any depth) is always null here, whatever it held.
+	BeforeState interface{} `json:"before_state,omitempty"`
+
+	// EntityId Which one, as the writer spelled its id. For `entity_type` `licence` this is the licence serial, masked to its last group (`ATAILA-XXXXX-XXXXX-XXXXX-XXXXX-5F8N5`) unless the caller holds `licence-admin-global`, exactly as on `GET /licence`.
+	EntityId *string `json:"entity_id"`
+
+	// EntityType The kind of thing changed, e.g. `users`, `project`.
+	EntityType string `json:"entity_type"`
+
+	// Id The event's id: a string holding a positive integer. Ids grow with time but are not a clock; order by `occurred_at`.
+	Id string `json:"id"`
+
+	// OccurredAt When the change was recorded.
+	OccurredAt time.Time `json:"occurred_at"`
+
+	// RequestId The request's `X-Request-ID`, when recorded.
+	RequestId *string `json:"request_id"`
+
+	// SourceIp The client address as the portal saw it, when recorded.
+	SourceIp *string `json:"source_ip"`
+
+	// TokenId The API token used, when `auth_kind` is `pat` or `service_account`.
+	TokenId *string `json:"token_id"`
+}
+
+// AuditEventPage defines model for AuditEventPage.
+type AuditEventPage struct {
+	Items      []AuditEvent `json:"items"`
+	NextCursor *string      `json:"next_cursor,omitempty"`
 }
 
 // Brand The brand as stored. `PUT /brand` replaces every field of this object
@@ -2971,7 +3063,7 @@ type CustomerCreate struct {
 	PrimaryContactEmail openapi_types.Email `json:"primary_contact_email"`
 	PrimaryContactName  string              `json:"primary_contact_name"`
 
-	// ShortName ^[A-Z][A-Z0-9]{1,15}$
+	// ShortName Upper-case letters and digits, starting with a letter, 2-16 characters (e.g. `ACME`). Frozen after create.
 	ShortName string `json:"short_name"`
 
 	// Status `active` (default) or `suspended`.
@@ -2996,8 +3088,10 @@ type CustomerPage struct {
 	NextCursor *string    `json:"next_cursor,omitempty"`
 }
 
-// CustomerPatch A JSON Merge Patch (RFC 7396): an omitted member is left unchanged; an
-// explicit “null“ clears “notes“ and is refused for every other field.
+// CustomerPatch JSON Merge Patch (RFC 7396): a member that is omitted keeps its
+// current value; a member sent as “null“ clears the field when the field is
+// nullable (the schema marks it so), and “null“ for any other field is a
+// 422. A “""“ is a value (an empty string), not a clear. Only “notes“ is nullable.
 // “archived“ is not a settable status: archiving is
 // “DELETE /customers/{id}“.
 type CustomerPatch struct {
@@ -3095,8 +3189,14 @@ type GatewayKey struct {
 	RotatedAt      *time.Time       `json:"rotated_at,omitempty"`
 	RpmLimit       *int             `json:"rpm_limit,omitempty"`
 
-	// Secret The key's value (`sk-…`). Present ONLY in the response to the create or rotation that produced it, and only when that request set `expose_secret: true`; null everywhere else, including an idempotent replay of that same request. The value is always stored in Vault at `vault_path`; the API never returns it again.
+	// Secret The key's value (`sk-…`). Present ONLY in the response to the create or rotation that produced it, and only when that request set `expose_secret: true`; null everywhere else, including an idempotent replay of that same request. The value is always stored in the platform's secrets store at `secret_path`; the API never returns it again.
 	Secret *string `json:"secret,omitempty"`
+
+	// SecretField The field of that secrets-store entry that holds the value. Null when `secret_path` is.
+	SecretField *string `json:"secret_field,omitempty"`
+
+	// SecretPath Where the value is stored: a path in the platform's secrets store. Null for an adopted key whose location was never recorded.
+	SecretPath *string `json:"secret_path,omitempty"`
 
 	// SoftBudgetUsd SOFT budget in US dollars: the gateway alerts when it is reached and NEVER blocks. There is no hard limit in v1.
 	SoftBudgetUsd *float64 `json:"soft_budget_usd,omitempty"`
@@ -3104,15 +3204,11 @@ type GatewayKey struct {
 	// SpendUsd Spend the gateway has recorded for this key (shadow USD). Only in the answer to a GET of one key: null in a list, and null in the answer to every write (create, PATCH, rotation) until the next GET.
 	SpendUsd *float64 `json:"spend_usd,omitempty"`
 
-	// TokenHashPrefix The first 12 characters of LiteLLM's SHA-256 of the key, to find it in LiteLLM's own records. Never the value.
-	TokenHashPrefix *string   `json:"token_hash_prefix,omitempty"`
-	TpmLimit        *int      `json:"tpm_limit,omitempty"`
-	UpdatedAt       time.Time `json:"updated_at"`
-	VaultField      *string   `json:"vault_field,omitempty"`
-
-	// VaultPath Where the value is stored (a KV v2 path under `secret/`). Null for an adopted key whose location was never recorded.
-	VaultPath *string       `json:"vault_path,omitempty"`
-	Warnings  *[]ApiWarning `json:"warnings,omitempty"`
+	// TokenHashPrefix The first 12 characters of the AI gateway's SHA-256 of the key, to find it in the AI gateway's own records. Never the value.
+	TokenHashPrefix *string       `json:"token_hash_prefix,omitempty"`
+	TpmLimit        *int          `json:"tpm_limit,omitempty"`
+	UpdatedAt       time.Time     `json:"updated_at"`
+	Warnings        *[]ApiWarning `json:"warnings,omitempty"`
 }
 
 // GatewayKeyEnv Frozen.
@@ -3130,7 +3226,7 @@ type GatewayKeyCreate struct {
 	BudgetDuration *string             `json:"budget_duration,omitempty"`
 	Env            GatewayKeyCreateEnv `json:"env"`
 
-	// ExposeSecret Return the key's value in THIS response (`secret`). It is stored in Vault either way and never returned again.
+	// ExposeSecret Return the key's value in THIS response (`secret`). It is stored in the secrets store either way and never returned again.
 	ExposeSecret *bool   `json:"expose_secret,omitempty"`
 	Feature      *string `json:"feature,omitempty"`
 
@@ -3158,8 +3254,11 @@ type GatewayKeyPage struct {
 	NextCursor *string      `json:"next_cursor,omitempty"`
 }
 
-// GatewayKeyPatch A JSON Merge Patch (RFC 7396). “null“ clears a limit, the soft budget,
-// its duration or the project; “models“ cannot be null. The key's value is
+// GatewayKeyPatch JSON Merge Patch (RFC 7396): a member that is omitted keeps its
+// current value; a member sent as “null“ clears the field when the field is
+// nullable (the schema marks it so), and “null“ for any other field is a
+// 422. A “""“ is a value (an empty string), not a clear. Here “null“ clears a limit, the soft
+// budget, its duration or the project; “models“ cannot be null. The key's value is
 // never changed here (that is a rotation).
 type GatewayKeyPatch struct {
 	// App Frozen.
@@ -3198,7 +3297,7 @@ type GatewayKeyPatchEnv string
 
 // GatewayKeyRotation defines model for GatewayKeyRotation.
 type GatewayKeyRotation struct {
-	// ExposeSecret Return the NEW value in this response (`secret`). It is stored in Vault either way.
+	// ExposeSecret Return the NEW value in this response (`secret`). It is stored in the secrets store either way.
 	ExposeSecret *bool `json:"expose_secret,omitempty"`
 }
 
@@ -3462,13 +3561,22 @@ type MembershipPutRole string
 
 // Meta defines model for Meta.
 type Meta struct {
-	ApiVersion      string         `json:"api_version"`
-	Licence         LicenceSummary `json:"licence"`
-	Modules         *[]string      `json:"modules,omitempty"`
-	PlatformVersion string         `json:"platform_version"`
-	TenancyMode     *string        `json:"tenancy_mode,omitempty"`
-	Tier            *string        `json:"tier,omitempty"`
+	ApiVersion string `json:"api_version"`
+
+	// DispatchModeEffective What pipeline dispatch does on this platform, as `/api/version` reports it. `live`: work runs. `dryrun`: the dispatch is faked, nothing is executed, and provisioning or a release never completes. `simulate`: provisioning stages are marked done without running (`simulate_stage_seconds` each) and every other dispatch behaves as `dryrun`. Read it before booking work, to fail fast on a platform that will not carry it out.
+	DispatchModeEffective MetaDispatchModeEffective `json:"dispatch_mode_effective"`
+	Licence               LicenceSummary            `json:"licence"`
+	Modules               *[]string                 `json:"modules,omitempty"`
+	PlatformVersion       string                    `json:"platform_version"`
+
+	// SimulateStageSeconds Under `simulate`: how long a simulated provisioning stage takes. Null in every other mode.
+	SimulateStageSeconds *float64 `json:"simulate_stage_seconds"`
+	TenancyMode          *string  `json:"tenancy_mode,omitempty"`
+	Tier                 *string  `json:"tier,omitempty"`
 }
+
+// MetaDispatchModeEffective What pipeline dispatch does on this platform, as `/api/version` reports it. `live`: work runs. `dryrun`: the dispatch is faked, nothing is executed, and provisioning or a release never completes. `simulate`: provisioning stages are marked done without running (`simulate_stage_seconds` each) and every other dispatch behaves as `dryrun`. Read it before booking work, to fail fast on a platform that will not carry it out.
+type MetaDispatchModeEffective string
 
 // NodeCache defines model for NodeCache.
 type NodeCache struct {
@@ -3646,49 +3754,61 @@ type Project struct {
 	ApiExposure            *ProjectApiExposure `json:"api_exposure,omitempty"`
 
 	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own (ADR-009).
-	AppGateway          *ProjectAppGateway       `json:"app_gateway,omitempty"`
-	CreatedAt           time.Time                `json:"created_at"`
-	CustomerId          *string                  `json:"customer_id"`
-	DeploymentBackend   ProjectDeploymentBackend `json:"deployment_backend"`
-	Description         *string                  `json:"description,omitempty"`
-	EnableAi            *bool                    `json:"enable_ai,omitempty"`
-	EnableDrDbReplica   *bool                    `json:"enable_dr_db_replica,omitempty"`
-	EnableDrMinioMirror *bool                    `json:"enable_dr_minio_mirror,omitempty"`
-	EnableFullstackApp  *bool                    `json:"enable_fullstack_app,omitempty"`
+	AppGateway        *ProjectAppGateway       `json:"app_gateway,omitempty"`
+	CreatedAt         time.Time                `json:"created_at"`
+	CustomerId        *string                  `json:"customer_id"`
+	DeploymentBackend ProjectDeploymentBackend `json:"deployment_backend"`
+	Description       *string                  `json:"description,omitempty"`
+	EnableAi          *bool                    `json:"enable_ai,omitempty"`
+
+	// EnableCache An in-memory key-value cache.
+	EnableCache       *bool `json:"enable_cache,omitempty"`
+	EnableDrDbReplica *bool `json:"enable_dr_db_replica,omitempty"`
+
+	// EnableDrObjectStorageMirror A disaster-recovery mirror of the PROD object storage.
+	EnableDrObjectStorageMirror *bool `json:"enable_dr_object_storage_mirror,omitempty"`
+	EnableFullstackApp          *bool `json:"enable_fullstack_app,omitempty"`
 
 	// EnableIis IIS/.NET hosting (ADR-036). VM backend only.
-	EnableIis   *bool `json:"enable_iis,omitempty"`
-	EnableMinio *bool `json:"enable_minio,omitempty"`
+	EnableIis *bool `json:"enable_iis,omitempty"`
 
 	// EnableMssql SQL Server (ADR-036). VM backend only.
-	EnableMssql                    *bool                    `json:"enable_mssql,omitempty"`
-	EnableRedis                    *bool                    `json:"enable_redis,omitempty"`
-	EnableStaticSite               *bool                    `json:"enable_static_site,omitempty"`
-	EnableSynologyMinioReplication *bool                    `json:"enable_synology_minio_replication,omitempty"`
-	EnableUatAppPublic             *bool                    `json:"enable_uat_app_public,omitempty"`
-	EnableUatWwwPublic             *bool                    `json:"enable_uat_www_public,omitempty"`
-	EnableWebWww                   *bool                    `json:"enable_web_www,omitempty"`
-	FrontendExposure               *ProjectFrontendExposure `json:"frontend_exposure,omitempty"`
-	FrontendVariant                *ProjectFrontendVariant  `json:"frontend_variant,omitempty"`
-	GithubRepoUrl                  *string                  `json:"github_repo_url,omitempty"`
-	GithubUser                     *string                  `json:"github_user,omitempty"`
-	GitlabRepoSlug                 string                   `json:"gitlab_repo_slug"`
-	HasMobile                      *bool                    `json:"has_mobile,omitempty"`
-	Id                             string                   `json:"id"`
+	EnableMssql *bool `json:"enable_mssql,omitempty"`
+
+	// EnableNasObjectStorageReplication Replication of the object storage to the central store: recorded, not acted on yet.
+	EnableNasObjectStorageReplication *bool `json:"enable_nas_object_storage_replication,omitempty"`
+
+	// EnableObjectStorage Object storage for the project; false provisions none (a database-only project).
+	EnableObjectStorage *bool                    `json:"enable_object_storage,omitempty"`
+	EnableStaticSite    *bool                    `json:"enable_static_site,omitempty"`
+	EnableUatAppPublic  *bool                    `json:"enable_uat_app_public,omitempty"`
+	EnableUatWwwPublic  *bool                    `json:"enable_uat_www_public,omitempty"`
+	EnableWebWww        *bool                    `json:"enable_web_www,omitempty"`
+	FrontendExposure    *ProjectFrontendExposure `json:"frontend_exposure,omitempty"`
+	FrontendVariant     *ProjectFrontendVariant  `json:"frontend_variant,omitempty"`
+	GithubRepoUrl       *string                  `json:"github_repo_url,omitempty"`
+	GithubUser          *string                  `json:"github_user,omitempty"`
+	GitlabRepoSlug      string                   `json:"gitlab_repo_slug"`
+	HasMobile           *bool                    `json:"has_mobile,omitempty"`
+	Id                  string                   `json:"id"`
 
 	// ImportExistingRepo The GitLab repository already holds code: provisioning does not seed it from the template.
-	ImportExistingRepo  *bool                       `json:"import_existing_repo,omitempty"`
-	IsSelf              bool                        `json:"is_self"`
-	LongName            string                      `json:"long_name"`
-	MssqlEdition        *ProjectMssqlEdition        `json:"mssql_edition,omitempty"`
-	NetworkOnly         bool                        `json:"network_only"`
-	Outputs             *ProjectOutputs             `json:"outputs,omitempty"`
-	PrimaryDomain       string                      `json:"primary_domain"`
-	ProdMinioDisksPerVm *ProjectProdMinioDisksPerVm `json:"prod_minio_disks_per_vm,omitempty"`
-	ProdMinioNodeCount  *ProjectProdMinioNodeCount  `json:"prod_minio_node_count,omitempty"`
-	ProjectIndex        int                         `json:"project_index"`
-	RegisteredBy        *string                     `json:"registered_by"`
-	ShortName           string                      `json:"short_name"`
+	ImportExistingRepo *bool                `json:"import_existing_repo,omitempty"`
+	IsSelf             bool                 `json:"is_self"`
+	LongName           string               `json:"long_name"`
+	MssqlEdition       *ProjectMssqlEdition `json:"mssql_edition,omitempty"`
+	NetworkOnly        bool                 `json:"network_only"`
+	Outputs            *ProjectOutputs      `json:"outputs,omitempty"`
+	PrimaryDomain      string               `json:"primary_domain"`
+
+	// ProdObjectStorageDisksPerVm Data disks per PROD object storage node.
+	ProdObjectStorageDisksPerVm *ProjectProdObjectStorageDisksPerVm `json:"prod_object_storage_disks_per_vm,omitempty"`
+
+	// ProdObjectStorageNodeCount PROD object storage nodes. With `enable_object_storage`, nodes times `prod_object_storage_disks_per_vm` must be at least 4.
+	ProdObjectStorageNodeCount *ProjectProdObjectStorageNodeCount `json:"prod_object_storage_node_count,omitempty"`
+	ProjectIndex               int                                `json:"project_index"`
+	RegisteredBy               *string                            `json:"registered_by"`
+	ShortName                  string                             `json:"short_name"`
 
 	// Status Read-only. `planned` until provisioning starts, `active` once every stage is done.
 	Status             ProjectStatus       `json:"status"`
@@ -3718,11 +3838,11 @@ type ProjectFrontendVariant string
 // ProjectMssqlEdition defines model for Project.MssqlEdition.
 type ProjectMssqlEdition string
 
-// ProjectProdMinioDisksPerVm defines model for Project.ProdMinioDisksPerVm.
-type ProjectProdMinioDisksPerVm int
+// ProjectProdObjectStorageDisksPerVm Data disks per PROD object storage node.
+type ProjectProdObjectStorageDisksPerVm int
 
-// ProjectProdMinioNodeCount defines model for Project.ProdMinioNodeCount.
-type ProjectProdMinioNodeCount int
+// ProjectProdObjectStorageNodeCount PROD object storage nodes. With `enable_object_storage`, nodes times `prod_object_storage_disks_per_vm` must be at least 4.
+type ProjectProdObjectStorageNodeCount int
 
 // ProjectStatus Read-only. `planned` until provisioning starts, `active` once every stage is done.
 type ProjectStatus string
@@ -3740,29 +3860,37 @@ type ProjectCreate struct {
 	AppGateway *ProjectCreateAppGateway `json:"app_gateway,omitempty"`
 
 	// DeploymentBackend Frozen.
-	DeploymentBackend   *ProjectCreateDeploymentBackend `json:"deployment_backend,omitempty"`
-	Description         *string                         `json:"description,omitempty"`
-	EnableAi            *bool                           `json:"enable_ai,omitempty"`
-	EnableDrDbReplica   *bool                           `json:"enable_dr_db_replica,omitempty"`
-	EnableDrMinioMirror *bool                           `json:"enable_dr_minio_mirror,omitempty"`
-	EnableFullstackApp  *bool                           `json:"enable_fullstack_app,omitempty"`
+	DeploymentBackend *ProjectCreateDeploymentBackend `json:"deployment_backend,omitempty"`
+	Description       *string                         `json:"description,omitempty"`
+	EnableAi          *bool                           `json:"enable_ai,omitempty"`
+
+	// EnableCache An in-memory key-value cache.
+	EnableCache       *bool `json:"enable_cache,omitempty"`
+	EnableDrDbReplica *bool `json:"enable_dr_db_replica,omitempty"`
+
+	// EnableDrObjectStorageMirror A disaster-recovery mirror of the PROD object storage.
+	EnableDrObjectStorageMirror *bool `json:"enable_dr_object_storage_mirror,omitempty"`
+	EnableFullstackApp          *bool `json:"enable_fullstack_app,omitempty"`
 
 	// EnableIis IIS/.NET hosting (ADR-036). VM backend only.
-	EnableIis   *bool `json:"enable_iis,omitempty"`
-	EnableMinio *bool `json:"enable_minio,omitempty"`
+	EnableIis *bool `json:"enable_iis,omitempty"`
 
 	// EnableMssql SQL Server (ADR-036). VM backend only.
-	EnableMssql                    *bool                          `json:"enable_mssql,omitempty"`
-	EnableRedis                    *bool                          `json:"enable_redis,omitempty"`
-	EnableStaticSite               *bool                          `json:"enable_static_site,omitempty"`
-	EnableSynologyMinioReplication *bool                          `json:"enable_synology_minio_replication,omitempty"`
-	EnableUatAppPublic             *bool                          `json:"enable_uat_app_public,omitempty"`
-	EnableUatWwwPublic             *bool                          `json:"enable_uat_www_public,omitempty"`
-	EnableWebWww                   *bool                          `json:"enable_web_www,omitempty"`
-	FrontendExposure               *ProjectCreateFrontendExposure `json:"frontend_exposure,omitempty"`
-	FrontendVariant                *ProjectCreateFrontendVariant  `json:"frontend_variant,omitempty"`
-	GithubRepoUrl                  *string                        `json:"github_repo_url,omitempty"`
-	GithubUser                     *string                        `json:"github_user,omitempty"`
+	EnableMssql *bool `json:"enable_mssql,omitempty"`
+
+	// EnableNasObjectStorageReplication Replication of the object storage to the central store: recorded, not acted on yet.
+	EnableNasObjectStorageReplication *bool `json:"enable_nas_object_storage_replication,omitempty"`
+
+	// EnableObjectStorage Object storage for the project; false provisions none (a database-only project).
+	EnableObjectStorage *bool                          `json:"enable_object_storage,omitempty"`
+	EnableStaticSite    *bool                          `json:"enable_static_site,omitempty"`
+	EnableUatAppPublic  *bool                          `json:"enable_uat_app_public,omitempty"`
+	EnableUatWwwPublic  *bool                          `json:"enable_uat_www_public,omitempty"`
+	EnableWebWww        *bool                          `json:"enable_web_www,omitempty"`
+	FrontendExposure    *ProjectCreateFrontendExposure `json:"frontend_exposure,omitempty"`
+	FrontendVariant     *ProjectCreateFrontendVariant  `json:"frontend_variant,omitempty"`
+	GithubRepoUrl       *string                        `json:"github_repo_url,omitempty"`
+	GithubUser          *string                        `json:"github_user,omitempty"`
 
 	// GitlabRepoSlug The repository name in the customer's GitLab group; unique within the customer. Frozen.
 	GitlabRepoSlug string `json:"gitlab_repo_slug"`
@@ -3777,9 +3905,13 @@ type ProjectCreate struct {
 	NetworkOnly *bool `json:"network_only,omitempty"`
 
 	// PrimaryDomain Frozen.
-	PrimaryDomain       string                            `json:"primary_domain"`
-	ProdMinioDisksPerVm *ProjectCreateProdMinioDisksPerVm `json:"prod_minio_disks_per_vm,omitempty"`
-	ProdMinioNodeCount  *ProjectCreateProdMinioNodeCount  `json:"prod_minio_node_count,omitempty"`
+	PrimaryDomain string `json:"primary_domain"`
+
+	// ProdObjectStorageDisksPerVm Data disks per PROD object storage node.
+	ProdObjectStorageDisksPerVm *ProjectCreateProdObjectStorageDisksPerVm `json:"prod_object_storage_disks_per_vm,omitempty"`
+
+	// ProdObjectStorageNodeCount PROD object storage nodes. With `enable_object_storage`, nodes times `prod_object_storage_disks_per_vm` must be at least 4.
+	ProdObjectStorageNodeCount *ProjectCreateProdObjectStorageNodeCount `json:"prod_object_storage_node_count,omitempty"`
 
 	// ProjectIndex The third octet of the project's networks, estate-wide unique. Omit it and the server allocates one above the highest in use (never below 4). Frozen.
 	ProjectIndex *int `json:"project_index,omitempty"`
@@ -3813,11 +3945,11 @@ type ProjectCreateFrontendVariant string
 // ProjectCreateMssqlEdition defines model for ProjectCreate.MssqlEdition.
 type ProjectCreateMssqlEdition string
 
-// ProjectCreateProdMinioDisksPerVm defines model for ProjectCreate.ProdMinioDisksPerVm.
-type ProjectCreateProdMinioDisksPerVm int
+// ProjectCreateProdObjectStorageDisksPerVm Data disks per PROD object storage node.
+type ProjectCreateProdObjectStorageDisksPerVm int
 
-// ProjectCreateProdMinioNodeCount defines model for ProjectCreate.ProdMinioNodeCount.
-type ProjectCreateProdMinioNodeCount int
+// ProjectCreateProdObjectStorageNodeCount PROD object storage nodes. With `enable_object_storage`, nodes times `prod_object_storage_disks_per_vm` must be at least 4.
+type ProjectCreateProdObjectStorageNodeCount int
 
 // ProjectCreateWwwTemplate defines model for ProjectCreate.WwwTemplate.
 type ProjectCreateWwwTemplate string
@@ -3859,15 +3991,17 @@ type ProjectMemberPutGitlabRole string
 type ProjectMemberPutRole string
 
 // ProjectOutputs What the project's compiled manifest names, curated: never an internal
-// address, a machine's host name or a production Vault path.
+// address, a machine's host name or a production secrets store path.
 type ProjectOutputs struct {
-	GitlabRepositories   *[]GitLabRepository    `json:"gitlab_repositories,omitempty"`
-	HarborNamespace      *string                `json:"harbor_namespace,omitempty"`
-	KubernetesNamespaces *[]KubernetesNamespace `json:"kubernetes_namespaces,omitempty"`
-	Urls                 ProjectUrls            `json:"urls"`
+	GitlabRepositories *[]GitLabRepository `json:"gitlab_repositories,omitempty"`
 
-	// VaultPaths dev and uat only. A VM-backend project's paths embed its machines' host names and are not listed.
-	VaultPaths *[]VaultPath `json:"vault_paths,omitempty"`
+	// ImageRegistryNamespace The project's namespace in the platform's image registry.
+	ImageRegistryNamespace *string                `json:"image_registry_namespace,omitempty"`
+	KubernetesNamespaces   *[]KubernetesNamespace `json:"kubernetes_namespaces,omitempty"`
+
+	// SecretPaths dev and uat only. A VM-backend project's paths embed its machines' host names and are not listed.
+	SecretPaths *[]SecretPath `json:"secret_paths,omitempty"`
+	Urls        ProjectUrls   `json:"urls"`
 }
 
 // ProjectPage defines model for ProjectPage.
@@ -3876,7 +4010,10 @@ type ProjectPage struct {
 	NextCursor *string          `json:"next_cursor,omitempty"`
 }
 
-// ProjectPatch A JSON Merge Patch (RFC 7396). Frozen members are accepted only with the
+// ProjectPatch JSON Merge Patch (RFC 7396): a member that is omitted keeps its
+// current value; a member sent as “null“ clears the field when the field is
+// nullable (the schema marks it so), and “null“ for any other field is a
+// 422. A “""“ is a value (an empty string), not a clear. Frozen members are accepted only with the
 // current value. “status“ is not writable in v1.
 type ProjectPatch struct {
 	AllowPublicHttpsEgress *bool                    `json:"allow_public_https_egress,omitempty"`
@@ -3887,22 +4024,22 @@ type ProjectPatch struct {
 	DeploymentBackend *ProjectPatchDeploymentBackend `json:"deployment_backend,omitempty"`
 
 	// Description null clears it.
-	Description                    *string                       `json:"description,omitempty"`
-	EnableAi                       *bool                         `json:"enable_ai,omitempty"`
-	EnableDrDbReplica              *bool                         `json:"enable_dr_db_replica,omitempty"`
-	EnableDrMinioMirror            *bool                         `json:"enable_dr_minio_mirror,omitempty"`
-	EnableFullstackApp             *bool                         `json:"enable_fullstack_app,omitempty"`
-	EnableIis                      *bool                         `json:"enable_iis,omitempty"`
-	EnableMinio                    *bool                         `json:"enable_minio,omitempty"`
-	EnableMssql                    *bool                         `json:"enable_mssql,omitempty"`
-	EnableRedis                    *bool                         `json:"enable_redis,omitempty"`
-	EnableStaticSite               *bool                         `json:"enable_static_site,omitempty"`
-	EnableSynologyMinioReplication *bool                         `json:"enable_synology_minio_replication,omitempty"`
-	EnableUatAppPublic             *bool                         `json:"enable_uat_app_public,omitempty"`
-	EnableUatWwwPublic             *bool                         `json:"enable_uat_www_public,omitempty"`
-	EnableWebWww                   *bool                         `json:"enable_web_www,omitempty"`
-	FrontendExposure               *ProjectPatchFrontendExposure `json:"frontend_exposure,omitempty"`
-	FrontendVariant                *ProjectPatchFrontendVariant  `json:"frontend_variant,omitempty"`
+	Description                       *string                       `json:"description,omitempty"`
+	EnableAi                          *bool                         `json:"enable_ai,omitempty"`
+	EnableCache                       *bool                         `json:"enable_cache,omitempty"`
+	EnableDrDbReplica                 *bool                         `json:"enable_dr_db_replica,omitempty"`
+	EnableDrObjectStorageMirror       *bool                         `json:"enable_dr_object_storage_mirror,omitempty"`
+	EnableFullstackApp                *bool                         `json:"enable_fullstack_app,omitempty"`
+	EnableIis                         *bool                         `json:"enable_iis,omitempty"`
+	EnableMssql                       *bool                         `json:"enable_mssql,omitempty"`
+	EnableNasObjectStorageReplication *bool                         `json:"enable_nas_object_storage_replication,omitempty"`
+	EnableObjectStorage               *bool                         `json:"enable_object_storage,omitempty"`
+	EnableStaticSite                  *bool                         `json:"enable_static_site,omitempty"`
+	EnableUatAppPublic                *bool                         `json:"enable_uat_app_public,omitempty"`
+	EnableUatWwwPublic                *bool                         `json:"enable_uat_www_public,omitempty"`
+	EnableWebWww                      *bool                         `json:"enable_web_www,omitempty"`
+	FrontendExposure                  *ProjectPatchFrontendExposure `json:"frontend_exposure,omitempty"`
+	FrontendVariant                   *ProjectPatchFrontendVariant  `json:"frontend_variant,omitempty"`
 
 	// GithubRepoUrl null clears it.
 	GithubRepoUrl *string `json:"github_repo_url,omitempty"`
@@ -3921,9 +4058,9 @@ type ProjectPatch struct {
 	NetworkOnly *bool `json:"network_only,omitempty"`
 
 	// PrimaryDomain Frozen.
-	PrimaryDomain       *string                          `json:"primary_domain,omitempty"`
-	ProdMinioDisksPerVm *ProjectPatchProdMinioDisksPerVm `json:"prod_minio_disks_per_vm,omitempty"`
-	ProdMinioNodeCount  *ProjectPatchProdMinioNodeCount  `json:"prod_minio_node_count,omitempty"`
+	PrimaryDomain               *string                                  `json:"primary_domain,omitempty"`
+	ProdObjectStorageDisksPerVm *ProjectPatchProdObjectStorageDisksPerVm `json:"prod_object_storage_disks_per_vm,omitempty"`
+	ProdObjectStorageNodeCount  *ProjectPatchProdObjectStorageNodeCount  `json:"prod_object_storage_node_count,omitempty"`
 
 	// ProjectIndex Frozen.
 	ProjectIndex *int `json:"project_index,omitempty"`
@@ -3957,11 +4094,11 @@ type ProjectPatchFrontendVariant string
 // ProjectPatchMssqlEdition defines model for ProjectPatch.MssqlEdition.
 type ProjectPatchMssqlEdition string
 
-// ProjectPatchProdMinioDisksPerVm defines model for ProjectPatch.ProdMinioDisksPerVm.
-type ProjectPatchProdMinioDisksPerVm int
+// ProjectPatchProdObjectStorageDisksPerVm defines model for ProjectPatch.ProdObjectStorageDisksPerVm.
+type ProjectPatchProdObjectStorageDisksPerVm int
 
-// ProjectPatchProdMinioNodeCount defines model for ProjectPatch.ProdMinioNodeCount.
-type ProjectPatchProdMinioNodeCount int
+// ProjectPatchProdObjectStorageNodeCount defines model for ProjectPatch.ProdObjectStorageNodeCount.
+type ProjectPatchProdObjectStorageNodeCount int
 
 // ProjectPatchWwwTemplate defines model for ProjectPatch.WwwTemplate.
 type ProjectPatchWwwTemplate string
@@ -3998,49 +4135,61 @@ type ProjectUpdated struct {
 	ApiExposure            *ProjectUpdatedApiExposure `json:"api_exposure,omitempty"`
 
 	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own (ADR-009).
-	AppGateway          *ProjectUpdatedAppGateway       `json:"app_gateway,omitempty"`
-	CreatedAt           time.Time                       `json:"created_at"`
-	CustomerId          *string                         `json:"customer_id"`
-	DeploymentBackend   ProjectUpdatedDeploymentBackend `json:"deployment_backend"`
-	Description         *string                         `json:"description,omitempty"`
-	EnableAi            *bool                           `json:"enable_ai,omitempty"`
-	EnableDrDbReplica   *bool                           `json:"enable_dr_db_replica,omitempty"`
-	EnableDrMinioMirror *bool                           `json:"enable_dr_minio_mirror,omitempty"`
-	EnableFullstackApp  *bool                           `json:"enable_fullstack_app,omitempty"`
+	AppGateway        *ProjectUpdatedAppGateway       `json:"app_gateway,omitempty"`
+	CreatedAt         time.Time                       `json:"created_at"`
+	CustomerId        *string                         `json:"customer_id"`
+	DeploymentBackend ProjectUpdatedDeploymentBackend `json:"deployment_backend"`
+	Description       *string                         `json:"description,omitempty"`
+	EnableAi          *bool                           `json:"enable_ai,omitempty"`
+
+	// EnableCache An in-memory key-value cache.
+	EnableCache       *bool `json:"enable_cache,omitempty"`
+	EnableDrDbReplica *bool `json:"enable_dr_db_replica,omitempty"`
+
+	// EnableDrObjectStorageMirror A disaster-recovery mirror of the PROD object storage.
+	EnableDrObjectStorageMirror *bool `json:"enable_dr_object_storage_mirror,omitempty"`
+	EnableFullstackApp          *bool `json:"enable_fullstack_app,omitempty"`
 
 	// EnableIis IIS/.NET hosting (ADR-036). VM backend only.
-	EnableIis   *bool `json:"enable_iis,omitempty"`
-	EnableMinio *bool `json:"enable_minio,omitempty"`
+	EnableIis *bool `json:"enable_iis,omitempty"`
 
 	// EnableMssql SQL Server (ADR-036). VM backend only.
-	EnableMssql                    *bool                           `json:"enable_mssql,omitempty"`
-	EnableRedis                    *bool                           `json:"enable_redis,omitempty"`
-	EnableStaticSite               *bool                           `json:"enable_static_site,omitempty"`
-	EnableSynologyMinioReplication *bool                           `json:"enable_synology_minio_replication,omitempty"`
-	EnableUatAppPublic             *bool                           `json:"enable_uat_app_public,omitempty"`
-	EnableUatWwwPublic             *bool                           `json:"enable_uat_www_public,omitempty"`
-	EnableWebWww                   *bool                           `json:"enable_web_www,omitempty"`
-	FrontendExposure               *ProjectUpdatedFrontendExposure `json:"frontend_exposure,omitempty"`
-	FrontendVariant                *ProjectUpdatedFrontendVariant  `json:"frontend_variant,omitempty"`
-	GithubRepoUrl                  *string                         `json:"github_repo_url,omitempty"`
-	GithubUser                     *string                         `json:"github_user,omitempty"`
-	GitlabRepoSlug                 string                          `json:"gitlab_repo_slug"`
-	HasMobile                      *bool                           `json:"has_mobile,omitempty"`
-	Id                             string                          `json:"id"`
+	EnableMssql *bool `json:"enable_mssql,omitempty"`
+
+	// EnableNasObjectStorageReplication Replication of the object storage to the central store: recorded, not acted on yet.
+	EnableNasObjectStorageReplication *bool `json:"enable_nas_object_storage_replication,omitempty"`
+
+	// EnableObjectStorage Object storage for the project; false provisions none (a database-only project).
+	EnableObjectStorage *bool                           `json:"enable_object_storage,omitempty"`
+	EnableStaticSite    *bool                           `json:"enable_static_site,omitempty"`
+	EnableUatAppPublic  *bool                           `json:"enable_uat_app_public,omitempty"`
+	EnableUatWwwPublic  *bool                           `json:"enable_uat_www_public,omitempty"`
+	EnableWebWww        *bool                           `json:"enable_web_www,omitempty"`
+	FrontendExposure    *ProjectUpdatedFrontendExposure `json:"frontend_exposure,omitempty"`
+	FrontendVariant     *ProjectUpdatedFrontendVariant  `json:"frontend_variant,omitempty"`
+	GithubRepoUrl       *string                         `json:"github_repo_url,omitempty"`
+	GithubUser          *string                         `json:"github_user,omitempty"`
+	GitlabRepoSlug      string                          `json:"gitlab_repo_slug"`
+	HasMobile           *bool                           `json:"has_mobile,omitempty"`
+	Id                  string                          `json:"id"`
 
 	// ImportExistingRepo The GitLab repository already holds code: provisioning does not seed it from the template.
-	ImportExistingRepo  *bool                              `json:"import_existing_repo,omitempty"`
-	IsSelf              bool                               `json:"is_self"`
-	LongName            string                             `json:"long_name"`
-	MssqlEdition        *ProjectUpdatedMssqlEdition        `json:"mssql_edition,omitempty"`
-	NetworkOnly         bool                               `json:"network_only"`
-	Outputs             *ProjectOutputs                    `json:"outputs,omitempty"`
-	PrimaryDomain       string                             `json:"primary_domain"`
-	ProdMinioDisksPerVm *ProjectUpdatedProdMinioDisksPerVm `json:"prod_minio_disks_per_vm,omitempty"`
-	ProdMinioNodeCount  *ProjectUpdatedProdMinioNodeCount  `json:"prod_minio_node_count,omitempty"`
-	ProjectIndex        int                                `json:"project_index"`
-	RegisteredBy        *string                            `json:"registered_by"`
-	ShortName           string                             `json:"short_name"`
+	ImportExistingRepo *bool                       `json:"import_existing_repo,omitempty"`
+	IsSelf             bool                        `json:"is_self"`
+	LongName           string                      `json:"long_name"`
+	MssqlEdition       *ProjectUpdatedMssqlEdition `json:"mssql_edition,omitempty"`
+	NetworkOnly        bool                        `json:"network_only"`
+	Outputs            *ProjectOutputs             `json:"outputs,omitempty"`
+	PrimaryDomain      string                      `json:"primary_domain"`
+
+	// ProdObjectStorageDisksPerVm Data disks per PROD object storage node.
+	ProdObjectStorageDisksPerVm *ProjectUpdatedProdObjectStorageDisksPerVm `json:"prod_object_storage_disks_per_vm,omitempty"`
+
+	// ProdObjectStorageNodeCount PROD object storage nodes. With `enable_object_storage`, nodes times `prod_object_storage_disks_per_vm` must be at least 4.
+	ProdObjectStorageNodeCount *ProjectUpdatedProdObjectStorageNodeCount `json:"prod_object_storage_node_count,omitempty"`
+	ProjectIndex               int                                       `json:"project_index"`
+	RegisteredBy               *string                                   `json:"registered_by"`
+	ShortName                  string                                    `json:"short_name"`
 
 	// StaleStages The provisioning stages this change left stale, in apply order: stages already done whose substrate the change affects. `POST /projects/{id}/provisioning` re-applies them.
 	StaleStages *[]string `json:"stale_stages,omitempty"`
@@ -4073,11 +4222,11 @@ type ProjectUpdatedFrontendVariant string
 // ProjectUpdatedMssqlEdition defines model for ProjectUpdated.MssqlEdition.
 type ProjectUpdatedMssqlEdition string
 
-// ProjectUpdatedProdMinioDisksPerVm defines model for ProjectUpdated.ProdMinioDisksPerVm.
-type ProjectUpdatedProdMinioDisksPerVm int
+// ProjectUpdatedProdObjectStorageDisksPerVm Data disks per PROD object storage node.
+type ProjectUpdatedProdObjectStorageDisksPerVm int
 
-// ProjectUpdatedProdMinioNodeCount defines model for ProjectUpdated.ProdMinioNodeCount.
-type ProjectUpdatedProdMinioNodeCount int
+// ProjectUpdatedProdObjectStorageNodeCount PROD object storage nodes. With `enable_object_storage`, nodes times `prod_object_storage_disks_per_vm` must be at least 4.
+type ProjectUpdatedProdObjectStorageNodeCount int
 
 // ProjectUpdatedStatus Read-only. `planned` until provisioning starts, `active` once every stage is done.
 type ProjectUpdatedStatus string
@@ -4135,7 +4284,7 @@ type ProvisioningDispatchMode string
 // ProvisioningState defines model for Provisioning.State.
 type ProvisioningState string
 
-// ReleaseOperation One Release Manager operation: a promotion (`promote_build`) or a data
+// ReleaseOperation One release-management operation: a promotion (`promote_build`) or a data
 // copy (`copy_data`, booked in the portal only).
 type ReleaseOperation struct {
 	// ApprovalReason The requester's reason and the approver's note, as recorded.
@@ -4160,7 +4309,7 @@ type ReleaseOperation struct {
 	// PipelineUrl The pipeline that carries it out, once known.
 	PipelineUrl *string `json:"pipeline_url,omitempty"`
 
-	// PortalStatus The Release Manager's own status.
+	// PortalStatus Release management's own status.
 	PortalStatus ReleaseOperationPortalStatus `json:"portal_status"`
 	ProjectId    string                       `json:"project_id"`
 	RequestedAt  time.Time                    `json:"requested_at"`
@@ -4188,7 +4337,7 @@ type ReleaseOperationComponent string
 // ReleaseOperationOperation defines model for ReleaseOperation.Operation.
 type ReleaseOperationOperation string
 
-// ReleaseOperationPortalStatus The Release Manager's own status.
+// ReleaseOperationPortalStatus Release management's own status.
 type ReleaseOperationPortalStatus string
 
 // ReleaseOperationRequestedVia defines model for ReleaseOperation.RequestedVia.
@@ -4293,6 +4442,15 @@ type RoleGrantPage struct {
 	Items      []RoleGrant `json:"items"`
 	NextCursor *string     `json:"next_cursor,omitempty"`
 }
+
+// SecretPath defines model for SecretPath.
+type SecretPath struct {
+	Env  SecretPathEnv `json:"env"`
+	Path string        `json:"path"`
+}
+
+// SecretPathEnv defines model for SecretPath.Env.
+type SecretPathEnv string
 
 // ServingTier defines model for ServingTier.
 type ServingTier struct {
@@ -4450,14 +4608,14 @@ type Storage struct {
 	// CapturedAt The newest scan; null when nothing was ever scanned.
 	CapturedAt *time.Time `json:"captured_at"`
 
+	// Nas Last scanned free space per share.
+	Nas []StorageMount `json:"nas"`
+
 	// Nodes Last scanned local disk per node, with its cached models.
 	Nodes []NodeStorage `json:"nodes"`
 
 	// Shares The central-store shares the store actions can use.
 	Shares []string `json:"shares"`
-
-	// Synology Last scanned free space per share.
-	Synology []StorageMount `json:"synology"`
 }
 
 // StorageMount defines model for StorageMount.
@@ -4476,7 +4634,7 @@ type StoreRun struct {
 	Action string  `json:"action"`
 	Detail *string `json:"detail,omitempty"`
 
-	// DispatchMode `live`: the runner pipeline was triggered. `dryrun`: this estate fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate` — a store run is never simulated); the run holds a fake pipeline id and nothing ran. Null for runs started by the portal, which does not record it.
+	// DispatchMode `live`: the runner pipeline was triggered. `dryrun`: this estate fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate` — a store run is never simulated); the run holds a fake pipeline id and nothing ran. Null for runs started by the portal, which does not record it.
 	DispatchMode *StoreRunDispatchMode `json:"dispatch_mode"`
 	FinishedAt   *time.Time            `json:"finished_at,omitempty"`
 	Id           string                `json:"id"`
@@ -4542,9 +4700,11 @@ type TenantPage struct {
 	NextCursor *string  `json:"next_cursor,omitempty"`
 }
 
-// TenantPatch A JSON Merge Patch (RFC 7396): an omitted member is left unchanged;
-// “description: null“ and “default_router_id: null“ clear those fields,
-// “name: null“ is refused.
+// TenantPatch JSON Merge Patch (RFC 7396): a member that is omitted keeps its
+// current value; a member sent as “null“ clears the field when the field is
+// nullable (the schema marks it so), and “null“ for any other field is a
+// 422. A “""“ is a value (an empty string), not a clear. “description“ and “default_router_id“
+// are nullable; “name“ is not.
 type TenantPatch struct {
 	// CustomerId Frozen.
 	CustomerId *string `json:"customer_id,omitempty"`
@@ -4562,7 +4722,7 @@ type TenantPatch struct {
 
 // User defines model for User.
 type User struct {
-	// AdUsername The Windows (Active Directory) account name. Create-only: a PATCH may send the current value (nothing changes); any other value is 422 `immutable_field`, whether or not the person has an SSO account yet.
+	// AdUsername The Windows (directory) account name. Create-only: a PATCH may send the current value (nothing changes); any other value is 422 `immutable_field`, whether or not the person has an SSO account yet.
 	AdUsername *string `json:"ad_username"`
 
 	// AuthMode Which sign-in routes the person may use. Read-only in v1.
@@ -4585,12 +4745,6 @@ type User struct {
 	// IsInternal ATAILA staff. Read-only in v1.
 	IsInternal bool `json:"is_internal"`
 
-	// KcSyncStatus The last Keycloak projection of this person: `unlinked` (no SSO account), `pending`, `ok` or `error`. Writes through v1 converge Keycloak before answering; the portal also re-converges every 900 s.
-	KcSyncStatus UserKcSyncStatus `json:"kc_sync_status"`
-
-	// KeycloakLinked An SSO (Keycloak) account exists for them.
-	KeycloakLinked bool `json:"keycloak_linked"`
-
 	// Kind Read-only. `service` accounts are managed on the portal's service accounts page; every write on one here is a 409.
 	Kind     UserKind   `json:"kind"`
 	LastName *string    `json:"last_name,omitempty"`
@@ -4602,11 +4756,17 @@ type User struct {
 	// NeedsGitAccess Whether the person is meant to have a GitLab account.
 	NeedsGitAccess bool `json:"needs_git_access"`
 
-	// ProvisioningStatus The outcome of the newest provisioning run (username, SSO account, GitLab account, GitLab group): `ok`; `partial` when a step was skipped (typically no GitLab account wanted, or no SSO (Keycloak) configured on this platform at all: warning `keycloak_not_configured` on the create); `error` when a step failed, including a configured Keycloak that failed. Null when the person was never provisioned.
+	// ProvisioningStatus The outcome of the newest provisioning run (username, SSO account, GitLab account, GitLab group): `ok`; `partial` when a step was skipped (typically no GitLab account wanted, or no SSO configured on this platform at all: warning `sso_not_configured` on the create); `error` when a step failed, including a configured SSO that failed. Null when the person was never provisioned.
 	ProvisioningStatus *UserProvisioningStatus `json:"provisioning_status"`
 
 	// Roles Every role the person holds, sorted.
 	Roles []string `json:"roles"`
+
+	// SsoLinked An SSO account exists for them.
+	SsoLinked bool `json:"sso_linked"`
+
+	// SsoSyncStatus The last SSO projection of this person: `unlinked` (no SSO account), `pending`, `ok` or `error`. Writes through v1 converge the SSO account before answering; the portal also re-converges every 900 s.
+	SsoSyncStatus UserSsoSyncStatus `json:"sso_sync_status"`
 
 	// UpdatedAt The last change; equal to `created_at` until the first change.
 	UpdatedAt time.Time `json:"updated_at"`
@@ -4619,9 +4779,6 @@ type User struct {
 // UserAuthMode defines model for User.AuthMode.
 type UserAuthMode string
 
-// UserKcSyncStatus The last Keycloak projection of this person: `unlinked` (no SSO account), `pending`, `ok` or `error`. Writes through v1 converge Keycloak before answering; the portal also re-converges every 900 s.
-type UserKcSyncStatus string
-
 // UserKind Read-only. `service` accounts are managed on the portal's service accounts page; every write on one here is a 409.
 type UserKind string
 
@@ -4630,6 +4787,9 @@ type UserLocale string
 
 // UserProvisioningStatus defines model for User.ProvisioningStatus.
 type UserProvisioningStatus string
+
+// UserSsoSyncStatus The last SSO projection of this person: `unlinked` (no SSO account), `pending`, `ok` or `error`. Writes through v1 converge the SSO account before answering; the portal also re-converges every 900 s.
+type UserSsoSyncStatus string
 
 // UserCreate No password: a person created through the API cannot sign in until an
 // operator resets their password or they reset it themselves (PLAN D29).
@@ -4659,8 +4819,10 @@ type UserPage struct {
 	NextCursor *string `json:"next_cursor,omitempty"`
 }
 
-// UserPatch A JSON Merge Patch (RFC 7396): an omitted member is left unchanged;
-// “last_name: null“ clears it and “null“ is refused for every other field.
+// UserPatch JSON Merge Patch (RFC 7396): a member that is omitted keeps its
+// current value; a member sent as “null“ clears the field when the field is
+// nullable (the schema marks it so), and “null“ for any other field is a
+// 422. A “""“ is a value (an empty string), not a clear. Only “last_name“ is nullable.
 type UserPatch struct {
 	// AdUsername Create-only: a PATCH may send the current value (nothing changes); any other value is 422 `immutable_field`, whether or not the person has an SSO account yet.
 	AdUsername *string `json:"ad_username,omitempty"`
@@ -4685,15 +4847,6 @@ type UserPatch struct {
 
 // UserPatchLocale defines model for UserPatch.Locale.
 type UserPatchLocale string
-
-// VaultPath defines model for VaultPath.
-type VaultPath struct {
-	Env  VaultPathEnv `json:"env"`
-	Path string       `json:"path"`
-}
-
-// VaultPathEnv defines model for VaultPath.Env.
-type VaultPathEnv string
 
 // Whoami defines model for Whoami.
 type Whoami struct {
@@ -4824,6 +4977,45 @@ type AiNodesListParams struct {
 	// Cursor `next_cursor` from the previous page.
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
+
+// AuditEventsListParams defines parameters for AuditEventsList.
+type AuditEventsListParams struct {
+	// Actor Exact actor: an e-mail address (compared lower-cased), `system`, `pipeline:<run id>`…, or a user id (UUID) for that person's events.
+	Actor *string `form:"actor,omitempty" json:"actor,omitempty"`
+
+	// AuthKind How the actor authenticated.
+	AuthKind *AuditEventsListParamsAuthKind `form:"auth_kind,omitempty" json:"auth_kind,omitempty"`
+
+	// TokenId Events made with this API token.
+	TokenId *openapi_types.UUID `form:"token_id,omitempty" json:"token_id,omitempty"`
+
+	// RequestId Events of one request (`X-Request-ID`).
+	RequestId *string `form:"request_id,omitempty" json:"request_id,omitempty"`
+
+	// EntityType Exact entity type, e.g. `users`.
+	EntityType *string `form:"entity_type,omitempty" json:"entity_type,omitempty"`
+
+	// EntityId Exact entity id, as the writer spelled it.
+	EntityId *string `form:"entity_id,omitempty" json:"entity_id,omitempty"`
+
+	// Action Exact action, or a prefix when it ends in `*` (`user.*`).
+	Action *string `form:"action,omitempty" json:"action,omitempty"`
+
+	// OccurredFrom Events at or after this time (inclusive). RFC 3339; without an offset, UTC.
+	OccurredFrom *time.Time `form:"occurred_from,omitempty" json:"occurred_from,omitempty"`
+
+	// OccurredTo Events BEFORE this time (exclusive). RFC 3339; without an offset, UTC.
+	OccurredTo *time.Time `form:"occurred_to,omitempty" json:"occurred_to,omitempty"`
+
+	// Limit Page size (at most 500).
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// AuditEventsListParamsAuthKind defines parameters for AuditEventsList.
+type AuditEventsListParamsAuthKind string
 
 // BrandPutParams defines parameters for BrandPut.
 type BrandPutParams struct {
@@ -6163,7 +6355,7 @@ type ClientInterface interface {
 
 	// AiModelsCreateWithBody Add an AI model to the catalogue
 	//
-	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `nas_volume` are not accepted.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -6172,7 +6364,7 @@ type ClientInterface interface {
 
 	// AiModelsCreate Add an AI model to the catalogue
 	//
-	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `nas_volume` are not accepted.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -6181,7 +6373,7 @@ type ClientInterface interface {
 
 	// AiModelsLoadTargetsList List load targets
 	//
-	// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when Prometheus answers, static fallbacks otherwise.
+	// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when monitoring answers, static fallbacks otherwise.
 	//
 	// Corresponds with GET /ai-models/load-targets (the `AiModelsLoadTargetsList` operationId).
 	AiModelsLoadTargetsList(ctx context.Context, params *AiModelsLoadTargetsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6212,7 +6404,7 @@ type ClientInterface interface {
 
 	// AiModelsUpdateWithBody Change an AI model's metadata
 	//
-	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -6223,7 +6415,7 @@ type ClientInterface interface {
 
 	// AiModelsUpdate Change an AI model's metadata
 	//
-	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -6234,7 +6426,7 @@ type ClientInterface interface {
 
 	// AiModelsUpdateWithApplicationMergePatchPlusJSONBody Change an AI model's metadata
 	//
-	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -6250,9 +6442,9 @@ type ClientInterface interface {
 
 	// AiModelsNodeCachesDelete Remove a model's cache from a node
 	//
-	// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while Prometheus cannot be read.
+	// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while monitoring cannot be read.
 	//
-	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
 	//
 	// Corresponds with DELETE /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesDelete` operationId).
 	AiModelsNodeCachesDelete(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6266,7 +6458,7 @@ type ClientInterface interface {
 	//
 	// Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.
 	//
-	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
 	//
 	// Corresponds with PUT /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesPut` operationId).
 	AiModelsNodeCachesPut(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6303,7 +6495,7 @@ type ClientInterface interface {
 
 	// AiGatewayKeysCreateWithBody Create a virtual key
 	//
-	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -6312,7 +6504,7 @@ type ClientInterface interface {
 
 	// AiGatewayKeysCreate Create a virtual key
 	//
-	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -6321,7 +6513,7 @@ type ClientInterface interface {
 
 	// AiGatewayKeysDelete Delete a virtual key
 	//
-	// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the Vault leaf and pointer the portal wrote for it (an adopted key's Vault leaf belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
+	// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the secrets store entry and pointer the portal wrote for it (an adopted key's secrets store entry belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
 	//
 	// Corresponds with DELETE /ai/gateway/keys/{key_id} (the `AiGatewayKeysDelete` operationId).
 	AiGatewayKeysDelete(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6368,7 +6560,7 @@ type ClientInterface interface {
 
 	// AiGatewayKeysRotateWithBody Rotate a virtual key
 	//
-	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -6377,7 +6569,7 @@ type ClientInterface interface {
 
 	// AiGatewayKeysRotate Rotate a virtual key
 	//
-	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -6414,7 +6606,7 @@ type ClientInterface interface {
 
 	// AiNodesList List AI nodes
 	//
-	// The AI fleet. Roster fields are always present; live fields are null when Prometheus cannot be read (`prometheus_reachable: false`). Never 503.
+	// The AI fleet. Roster fields are always present; live fields are null when monitoring cannot be read (`monitoring_reachable: false`). Never 503.
 	//
 	// Corresponds with GET /ai/nodes (the `AiNodesList` operationId).
 	AiNodesList(ctx context.Context, params *AiNodesListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6425,6 +6617,24 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /ai/nodes/{hostname} (the `AiNodesGet` operationId).
 	AiNodesGet(ctx context.Context, hostname string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AuditEventsList List audit events
+	//
+	// Every recorded change on this platform, newest first (`occurred_at`, then `id`, descending). Pages are cursor-based and stable while new events are written: pass `next_cursor` as `cursor` to get the next page; it is null on the last one. A cursor that is not one of this list's is a 400 `invalid_cursor`.
+	//
+	// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+	//
+	// `before_state` and `after_state` are returned as the writer recorded them, except that every member whose name looks secret is null. For `entity_type` `licence` the `entity_id` is the licence serial, masked to its last group unless the caller holds `licence-admin-global`, as on `GET /licence`; the `entity_id` filter matches the stored id, never the masked one. Reading the log is not itself audited.
+	//
+	// Corresponds with GET /audit-events (the `AuditEventsList` operationId).
+	AuditEventsList(ctx context.Context, params *AuditEventsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AuditEventsGet One audit event
+	//
+	// One event by id, with the same secret-looking members withheld and the same licence serial masking as in the list.
+	//
+	// Corresponds with GET /audit-events/{event_id} (the `AuditEventsGet` operationId).
+	AuditEventsGet(ctx context.Context, eventId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// BrandGet This platform's brand
 	//
@@ -6683,7 +6893,7 @@ type ClientInterface interface {
 
 	// ProjectsDelete Retire a project
 	//
-	// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, Vault path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
+	// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, secrets store path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
 	//
 	// Corresponds with DELETE /projects/{project_id} (the `ProjectsDelete` operationId).
 	ProjectsDelete(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6817,7 +7027,7 @@ type ClientInterface interface {
 	//
 	// * `dev` and `uat` start at once.
 	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
-	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 	//
 	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
 	//
@@ -6832,7 +7042,7 @@ type ClientInterface interface {
 	//
 	// * `dev` and `uat` start at once.
 	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
-	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 	//
 	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
 	//
@@ -6881,7 +7091,7 @@ type ClientInterface interface {
 
 	// TenantsDelete Delete an empty tenant
 	//
-	// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+	// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its SSO `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 	//
 	// Corresponds with DELETE /tenants/{tenant_id} (the `TenantsDelete` operationId).
 	TenantsDelete(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6931,7 +7141,7 @@ type ClientInterface interface {
 
 	// TenantMembershipsDelete Remove a member
 	//
-	// Removes the user's membership of the tenant and re-syncs their Keycloak groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+	// Removes the user's membership of the tenant and re-syncs their SSO groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 	//
 	// Corresponds with DELETE /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsDelete` operationId).
 	TenantMembershipsDelete(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6966,7 +7176,7 @@ type ClientInterface interface {
 
 	// UsersCreateWithBody Create a person
 	//
-	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no Keycloak configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `keycloak_not_configured` warning (`error` stays for a configured Keycloak that failed). `Idempotency-Key` is honoured.
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -6975,7 +7185,7 @@ type ClientInterface interface {
 
 	// UsersCreate Create a person
 	//
-	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no Keycloak configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `keycloak_not_configured` warning (`error` stays for a configured Keycloak that failed). `Idempotency-Key` is honoured.
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -6984,7 +7194,7 @@ type ClientInterface interface {
 
 	// UsersDelete Deactivate a user
 	//
-	// Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{"is_active": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.
+	// Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{"is_active": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`sso_disable_failed`, `sso_logout_failed`, `sso_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.
 	//
 	// Corresponds with DELETE /users/{user_id} (the `UsersDelete` operationId).
 	UsersDelete(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6996,7 +7206,7 @@ type ClientInterface interface {
 
 	// UsersUpdateWithBody Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -7007,7 +7217,7 @@ type ClientInterface interface {
 
 	// UsersUpdate Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -7018,7 +7228,7 @@ type ClientInterface interface {
 
 	// UsersUpdateWithApplicationMergePatchPlusJSONBody Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -7034,7 +7244,7 @@ type ClientInterface interface {
 
 	// UserRolesDelete Revoke a role
 	//
-	// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+	// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into SSO before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// Corresponds with DELETE /users/{user_id}/roles/{role} (the `UserRolesDelete` operationId).
 	UserRolesDelete(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -7046,7 +7256,7 @@ type ClientInterface interface {
 
 	// UserRolesPut Grant a role
 	//
-	// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+	// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into SSO before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// Corresponds with PUT /users/{user_id}/roles/{role} (the `UserRolesPut` operationId).
 	UserRolesPut(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -7074,7 +7284,7 @@ func (c *Client) AiModelsList(ctx context.Context, params *AiModelsListParams, r
 
 // AiModelsCreateWithBody Add an AI model to the catalogue
 //
-// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `nas_volume` are not accepted.
 //
 // Takes any type of body and a specified content type.
 //
@@ -7093,7 +7303,7 @@ func (c *Client) AiModelsCreateWithBody(ctx context.Context, contentType string,
 
 // AiModelsCreate Add an AI model to the catalogue
 //
-// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `nas_volume` are not accepted.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -7112,7 +7322,7 @@ func (c *Client) AiModelsCreate(ctx context.Context, body AiModelsCreateJSONRequ
 
 // AiModelsLoadTargetsList List load targets
 //
-// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when Prometheus answers, static fallbacks otherwise.
+// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when monitoring answers, static fallbacks otherwise.
 //
 // Corresponds with GET /ai-models/load-targets (the `AiModelsLoadTargetsList` operationId).
 func (c *Client) AiModelsLoadTargetsList(ctx context.Context, params *AiModelsLoadTargetsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -7193,7 +7403,7 @@ func (c *Client) AiModelsGet(ctx context.Context, modelId string, reqEditors ...
 
 // AiModelsUpdateWithBody Change an AI model's metadata
 //
-// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -7214,7 +7424,7 @@ func (c *Client) AiModelsUpdateWithBody(ctx context.Context, modelId string, con
 
 // AiModelsUpdate Change an AI model's metadata
 //
-// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -7235,7 +7445,7 @@ func (c *Client) AiModelsUpdate(ctx context.Context, modelId string, body AiMode
 
 // AiModelsUpdateWithApplicationMergePatchPlusJSONBody Change an AI model's metadata
 //
-// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -7271,9 +7481,9 @@ func (c *Client) AiModelsNodeCachesList(ctx context.Context, modelId string, par
 
 // AiModelsNodeCachesDelete Remove a model's cache from a node
 //
-// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while Prometheus cannot be read.
+// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while monitoring cannot be read.
 //
-// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
 //
 // Corresponds with DELETE /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesDelete` operationId).
 func (c *Client) AiModelsNodeCachesDelete(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -7307,7 +7517,7 @@ func (c *Client) AiModelsNodeCachesGet(ctx context.Context, modelId string, node
 //
 // Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.
 //
-// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
 //
 // Corresponds with PUT /ai-models/{model_id}/node-caches/{node} (the `AiModelsNodeCachesPut` operationId).
 func (c *Client) AiModelsNodeCachesPut(ctx context.Context, modelId string, node string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -7394,7 +7604,7 @@ func (c *Client) AiGatewayKeysList(ctx context.Context, params *AiGatewayKeysLis
 
 // AiGatewayKeysCreateWithBody Create a virtual key
 //
-// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 //
 // Takes any type of body and a specified content type.
 //
@@ -7413,7 +7623,7 @@ func (c *Client) AiGatewayKeysCreateWithBody(ctx context.Context, contentType st
 
 // AiGatewayKeysCreate Create a virtual key
 //
-// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -7432,7 +7642,7 @@ func (c *Client) AiGatewayKeysCreate(ctx context.Context, body AiGatewayKeysCrea
 
 // AiGatewayKeysDelete Delete a virtual key
 //
-// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the Vault leaf and pointer the portal wrote for it (an adopted key's Vault leaf belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
+// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the secrets store entry and pointer the portal wrote for it (an adopted key's secrets store entry belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
 //
 // Corresponds with DELETE /ai/gateway/keys/{key_id} (the `AiGatewayKeysDelete` operationId).
 func (c *Client) AiGatewayKeysDelete(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -7529,7 +7739,7 @@ func (c *Client) AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBody(ctx co
 
 // AiGatewayKeysRotateWithBody Rotate a virtual key
 //
-// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 //
 // Takes any type of body and a specified content type.
 //
@@ -7548,7 +7758,7 @@ func (c *Client) AiGatewayKeysRotateWithBody(ctx context.Context, keyId string, 
 
 // AiGatewayKeysRotate Rotate a virtual key
 //
-// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -7635,7 +7845,7 @@ func (c *Client) AiGatewayTiersPut(ctx context.Context, key string, body AiGatew
 
 // AiNodesList List AI nodes
 //
-// The AI fleet. Roster fields are always present; live fields are null when Prometheus cannot be read (`prometheus_reachable: false`). Never 503.
+// The AI fleet. Roster fields are always present; live fields are null when monitoring cannot be read (`monitoring_reachable: false`). Never 503.
 //
 // Corresponds with GET /ai/nodes (the `AiNodesList` operationId).
 func (c *Client) AiNodesList(ctx context.Context, params *AiNodesListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -7657,6 +7867,44 @@ func (c *Client) AiNodesList(ctx context.Context, params *AiNodesListParams, req
 // Corresponds with GET /ai/nodes/{hostname} (the `AiNodesGet` operationId).
 func (c *Client) AiNodesGet(ctx context.Context, hostname string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAiNodesGetRequest(c.Server, hostname)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AuditEventsList List audit events
+//
+// Every recorded change on this platform, newest first (`occurred_at`, then `id`, descending). Pages are cursor-based and stable while new events are written: pass `next_cursor` as `cursor` to get the next page; it is null on the last one. A cursor that is not one of this list's is a 400 `invalid_cursor`.
+//
+// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+//
+// `before_state` and `after_state` are returned as the writer recorded them, except that every member whose name looks secret is null. For `entity_type` `licence` the `entity_id` is the licence serial, masked to its last group unless the caller holds `licence-admin-global`, as on `GET /licence`; the `entity_id` filter matches the stored id, never the masked one. Reading the log is not itself audited.
+//
+// Corresponds with GET /audit-events (the `AuditEventsList` operationId).
+func (c *Client) AuditEventsList(ctx context.Context, params *AuditEventsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAuditEventsListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AuditEventsGet One audit event
+//
+// One event by id, with the same secret-looking members withheld and the same licence serial masking as in the list.
+//
+// Corresponds with GET /audit-events/{event_id} (the `AuditEventsGet` operationId).
+func (c *Client) AuditEventsGet(ctx context.Context, eventId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAuditEventsGetRequest(c.Server, eventId)
 	if err != nil {
 		return nil, err
 	}
@@ -8214,7 +8462,7 @@ func (c *Client) ProjectsCreate(ctx context.Context, body ProjectsCreateJSONRequ
 
 // ProjectsDelete Retire a project
 //
-// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, Vault path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
+// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, secrets store path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
 //
 // Corresponds with DELETE /projects/{project_id} (the `ProjectsDelete` operationId).
 func (c *Client) ProjectsDelete(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -8508,7 +8756,7 @@ func (c *Client) ReleaseOperationsList(ctx context.Context, projectId string, pa
 //
 // * `dev` and `uat` start at once.
 // * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
-// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 //
 // Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
 //
@@ -8533,7 +8781,7 @@ func (c *Client) ReleasePromotionsCreateWithBody(ctx context.Context, projectId 
 //
 // * `dev` and `uat` start at once.
 // * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
-// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 //
 // Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
 //
@@ -8652,7 +8900,7 @@ func (c *Client) TenantsCreate(ctx context.Context, body TenantsCreateJSONReques
 
 // TenantsDelete Delete an empty tenant
 //
-// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its SSO `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 //
 // Corresponds with DELETE /tenants/{tenant_id} (the `TenantsDelete` operationId).
 func (c *Client) TenantsDelete(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -8762,7 +9010,7 @@ func (c *Client) TenantMembershipsList(ctx context.Context, tenantId string, par
 
 // TenantMembershipsDelete Remove a member
 //
-// Removes the user's membership of the tenant and re-syncs their Keycloak groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+// Removes the user's membership of the tenant and re-syncs their SSO groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 //
 // Corresponds with DELETE /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsDelete` operationId).
 func (c *Client) TenantMembershipsDelete(ctx context.Context, tenantId string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -8847,7 +9095,7 @@ func (c *Client) UsersList(ctx context.Context, params *UsersListParams, reqEdit
 
 // UsersCreateWithBody Create a person
 //
-// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no Keycloak configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `keycloak_not_configured` warning (`error` stays for a configured Keycloak that failed). `Idempotency-Key` is honoured.
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 //
 // Takes any type of body and a specified content type.
 //
@@ -8866,7 +9114,7 @@ func (c *Client) UsersCreateWithBody(ctx context.Context, contentType string, bo
 
 // UsersCreate Create a person
 //
-// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no Keycloak configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `keycloak_not_configured` warning (`error` stays for a configured Keycloak that failed). `Idempotency-Key` is honoured.
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -8885,7 +9133,7 @@ func (c *Client) UsersCreate(ctx context.Context, body UsersCreateJSONRequestBod
 
 // UsersDelete Deactivate a user
 //
-// Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{"is_active": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.
+// Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{"is_active": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`sso_disable_failed`, `sso_logout_failed`, `sso_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.
 //
 // Corresponds with DELETE /users/{user_id} (the `UsersDelete` operationId).
 func (c *Client) UsersDelete(ctx context.Context, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -8917,7 +9165,7 @@ func (c *Client) UsersGet(ctx context.Context, userId string, reqEditors ...Requ
 
 // UsersUpdateWithBody Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -8938,7 +9186,7 @@ func (c *Client) UsersUpdateWithBody(ctx context.Context, userId string, content
 
 // UsersUpdate Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -8959,7 +9207,7 @@ func (c *Client) UsersUpdate(ctx context.Context, userId string, body UsersUpdat
 
 // UsersUpdateWithApplicationMergePatchPlusJSONBody Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -8995,7 +9243,7 @@ func (c *Client) UserRolesList(ctx context.Context, userId string, params *UserR
 
 // UserRolesDelete Revoke a role
 //
-// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into SSO before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // Corresponds with DELETE /users/{user_id}/roles/{role} (the `UserRolesDelete` operationId).
 func (c *Client) UserRolesDelete(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -9027,7 +9275,7 @@ func (c *Client) UserRolesGet(ctx context.Context, userId string, role string, r
 
 // UserRolesPut Grant a role
 //
-// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into SSO before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // Corresponds with PUT /users/{user_id}/roles/{role} (the `UserRolesPut` operationId).
 func (c *Client) UserRolesPut(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -10424,6 +10672,214 @@ func NewAiNodesGetRequest(server string, hostname string) (*http.Request, error)
 	}
 
 	operationPath := fmt.Sprintf("/ai/nodes/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAuditEventsListRequest constructs an http.Request for the AuditEventsList method
+func NewAuditEventsListRequest(server string, params *AuditEventsListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/audit-events")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Actor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "actor", *params.Actor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.AuthKind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "auth_kind", *params.AuthKind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.TokenId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "token_id", *params.TokenId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.RequestId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "request_id", *params.RequestId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.EntityType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "entity_type", *params.EntityType, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.EntityId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "entity_id", *params.EntityId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Action != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "action", *params.Action, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.OccurredFrom != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "occurred_from", *params.OccurredFrom, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.OccurredTo != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "occurred_to", *params.OccurredTo, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAuditEventsGetRequest constructs an http.Request for the AuditEventsGet method
+func NewAuditEventsGetRequest(server string, eventId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "event_id", eventId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/audit-events/%s", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -13262,7 +13718,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiModelsCreateWithBodyWithResponse Add an AI model to the catalogue
 	//
-	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `nas_volume` are not accepted.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -13271,7 +13727,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiModelsCreateWithResponse Add an AI model to the catalogue
 	//
-	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+	// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `nas_volume` are not accepted.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -13280,7 +13736,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiModelsLoadTargetsListWithResponse List load targets
 	//
-	// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when Prometheus answers, static fallbacks otherwise.
+	// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when monitoring answers, static fallbacks otherwise.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -13321,7 +13777,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiModelsUpdateWithBodyWithResponse Change an AI model's metadata
 	//
-	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -13332,7 +13788,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiModelsUpdateWithResponse Change an AI model's metadata
 	//
-	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -13343,7 +13799,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiModelsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change an AI model's metadata
 	//
-	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+	// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -13361,9 +13817,9 @@ type ClientWithResponsesInterface interface {
 
 	// AiModelsNodeCachesDeleteWithResponse Remove a model's cache from a node
 	//
-	// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while Prometheus cannot be read.
+	// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while monitoring cannot be read.
 	//
-	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -13381,7 +13837,7 @@ type ClientWithResponsesInterface interface {
 	//
 	// Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.
 	//
-	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+	// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -13428,7 +13884,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiGatewayKeysCreateWithBodyWithResponse Create a virtual key
 	//
-	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -13437,7 +13893,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiGatewayKeysCreateWithResponse Create a virtual key
 	//
-	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -13446,7 +13902,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiGatewayKeysDeleteWithResponse Delete a virtual key
 	//
-	// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the Vault leaf and pointer the portal wrote for it (an adopted key's Vault leaf belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
+	// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the secrets store entry and pointer the portal wrote for it (an adopted key's secrets store entry belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -13497,7 +13953,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiGatewayKeysRotateWithBodyWithResponse Rotate a virtual key
 	//
-	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -13506,7 +13962,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiGatewayKeysRotateWithResponse Rotate a virtual key
 	//
-	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -13547,7 +14003,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiNodesListWithResponse List AI nodes
 	//
-	// The AI fleet. Roster fields are always present; live fields are null when Prometheus cannot be read (`prometheus_reachable: false`). Never 503.
+	// The AI fleet. Roster fields are always present; live fields are null when monitoring cannot be read (`monitoring_reachable: false`). Never 503.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -13562,6 +14018,28 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /ai/nodes/{hostname} (the `AiNodesGet` operationId).
 	AiNodesGetWithResponse(ctx context.Context, hostname string, reqEditors ...RequestEditorFn) (*AiNodesGetResponse, error)
+
+	// AuditEventsListWithResponse List audit events
+	//
+	// Every recorded change on this platform, newest first (`occurred_at`, then `id`, descending). Pages are cursor-based and stable while new events are written: pass `next_cursor` as `cursor` to get the next page; it is null on the last one. A cursor that is not one of this list's is a 400 `invalid_cursor`.
+	//
+	// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+	//
+	// `before_state` and `after_state` are returned as the writer recorded them, except that every member whose name looks secret is null. For `entity_type` `licence` the `entity_id` is the licence serial, masked to its last group unless the caller holds `licence-admin-global`, as on `GET /licence`; the `entity_id` filter matches the stored id, never the masked one. Reading the log is not itself audited.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /audit-events (the `AuditEventsList` operationId).
+	AuditEventsListWithResponse(ctx context.Context, params *AuditEventsListParams, reqEditors ...RequestEditorFn) (*AuditEventsListResponse, error)
+
+	// AuditEventsGetWithResponse One audit event
+	//
+	// One event by id, with the same secret-looking members withheld and the same licence serial masking as in the list.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /audit-events/{event_id} (the `AuditEventsGet` operationId).
+	AuditEventsGetWithResponse(ctx context.Context, eventId string, reqEditors ...RequestEditorFn) (*AuditEventsGetResponse, error)
 
 	// BrandGetWithResponse This platform's brand
 	//
@@ -13848,7 +14326,7 @@ type ClientWithResponsesInterface interface {
 
 	// ProjectsDeleteWithResponse Retire a project
 	//
-	// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, Vault path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
+	// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, secrets store path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -14000,7 +14478,7 @@ type ClientWithResponsesInterface interface {
 	//
 	// * `dev` and `uat` start at once.
 	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
-	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 	//
 	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
 	//
@@ -14015,7 +14493,7 @@ type ClientWithResponsesInterface interface {
 	//
 	// * `dev` and `uat` start at once.
 	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
-	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 	//
 	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
 	//
@@ -14072,7 +14550,7 @@ type ClientWithResponsesInterface interface {
 
 	// TenantsDeleteWithResponse Delete an empty tenant
 	//
-	// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+	// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its SSO `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -14128,7 +14606,7 @@ type ClientWithResponsesInterface interface {
 
 	// TenantMembershipsDeleteWithResponse Remove a member
 	//
-	// Removes the user's membership of the tenant and re-syncs their Keycloak groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+	// Removes the user's membership of the tenant and re-syncs their SSO groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -14169,7 +14647,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersCreateWithBodyWithResponse Create a person
 	//
-	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no Keycloak configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `keycloak_not_configured` warning (`error` stays for a configured Keycloak that failed). `Idempotency-Key` is honoured.
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -14178,7 +14656,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersCreateWithResponse Create a person
 	//
-	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no Keycloak configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `keycloak_not_configured` warning (`error` stays for a configured Keycloak that failed). `Idempotency-Key` is honoured.
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -14187,7 +14665,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersDeleteWithResponse Deactivate a user
 	//
-	// Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{"is_active": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.
+	// Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{"is_active": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`sso_disable_failed`, `sso_logout_failed`, `sso_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -14203,7 +14681,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersUpdateWithBodyWithResponse Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -14214,7 +14692,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersUpdateWithResponse Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -14225,7 +14703,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -14243,7 +14721,7 @@ type ClientWithResponsesInterface interface {
 
 	// UserRolesDeleteWithResponse Revoke a role
 	//
-	// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+	// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into SSO before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -14259,7 +14737,7 @@ type ClientWithResponsesInterface interface {
 
 	// UserRolesPutWithResponse Grant a role
 	//
-	// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+	// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into SSO before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -16307,6 +16785,130 @@ func (r AiNodesGetResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AiNodesGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AuditEventsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AuditEventPage
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AuditEventsListResponse) GetJSON200() *AuditEventPage {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AuditEventsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AuditEventsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AuditEventsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AuditEventsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AuditEventsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AuditEventsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AuditEventsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AuditEvent
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AuditEventsGetResponse) GetJSON200() *AuditEvent {
+	return r.JSON200
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r AuditEventsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AuditEventsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AuditEventsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AuditEventsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AuditEventsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AuditEventsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AuditEventsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AuditEventsGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -18453,6 +19055,10 @@ type ProdLockPutResponse struct {
 	JSON404 *Problem
 	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
 	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
 	// JSON422 the response for an HTTP 422 `application/json` response
 	JSON422 *Problem
 	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
@@ -18476,6 +19082,16 @@ func (r ProdLockPutResponse) GetJSON404() *Problem {
 // GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
 func (r ProdLockPutResponse) GetApplicationproblemJSON404() *Problem {
 	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ProdLockPutResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ProdLockPutResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
 }
 
 // GetJSON422 returns the response for an HTTP 422 `application/json` response
@@ -20546,7 +21162,7 @@ func (c *ClientWithResponses) AiModelsListWithResponse(ctx context.Context, para
 
 // AiModelsCreateWithBodyWithResponse Add an AI model to the catalogue
 //
-// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `nas_volume` are not accepted.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -20561,7 +21177,7 @@ func (c *ClientWithResponses) AiModelsCreateWithBodyWithResponse(ctx context.Con
 
 // AiModelsCreateWithResponse Add an AI model to the catalogue
 //
-// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `synology_volume` are not accepted.
+// Records a catalogue row. The model starts `planned`, with no central copy and no node cache: weights arrive only through the store actions, and pulling them is not part of v1. `status`, `location`, `offline_ready` and `nas_volume` are not accepted.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -20576,7 +21192,7 @@ func (c *ClientWithResponses) AiModelsCreateWithResponse(ctx context.Context, bo
 
 // AiModelsLoadTargetsListWithResponse List load targets
 //
-// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when Prometheus answers, static fallbacks otherwise.
+// The nodes and DGX clusters a model can be served on, with their VRAM budget. Live values when monitoring answers, static fallbacks otherwise.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -20647,7 +21263,7 @@ func (c *ClientWithResponses) AiModelsGetWithResponse(ctx context.Context, model
 
 // AiModelsUpdateWithBodyWithResponse Change an AI model's metadata
 //
-// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -20664,7 +21280,7 @@ func (c *ClientWithResponses) AiModelsUpdateWithBodyWithResponse(ctx context.Con
 
 // AiModelsUpdateWithResponse Change an AI model's metadata
 //
-// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -20681,7 +21297,7 @@ func (c *ClientWithResponses) AiModelsUpdateWithResponse(ctx context.Context, mo
 
 // AiModelsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change an AI model's metadata
 //
-// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `synology_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
+// Metadata only. `repo` is frozen; `status`, `location`, `offline_ready` and `nas_volume` are read-only (set by the store actions): each may be sent with its current value, and a different value is a 422.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -20711,9 +21327,9 @@ func (c *ClientWithResponses) AiModelsNodeCachesListWithResponse(ctx context.Con
 
 // AiModelsNodeCachesDeleteWithResponse Remove a model's cache from a node
 //
-// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while Prometheus cannot be read.
+// Deletes the node's local copy (recoverable: the central copy is untouched) and answers 202 with operation `model-store-run:<id>`. Refused while the model is loaded on that node, and — because that cannot be proven otherwise — while monitoring cannot be read.
 //
-// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -20743,7 +21359,7 @@ func (c *ClientWithResponses) AiModelsNodeCachesGetWithResponse(ctx context.Cont
 //
 // Copies the model from the central store to the node's local disk (a fast, offline-ready serving copy) and answers 202 with operation `model-store-run:<id>`. The model must have a central copy. When the node already holds a cached copy the answer is 200 with the cache and nothing is dispatched.
 //
-// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or DISPATCH_MODE `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
+// The run is dispatched to the runner and followed by the portal, which survives an API restart; its time budget starts when the runner job starts, not while it queues. On an estate that fakes dispatch (sandbox, or dispatch mode `dryrun` or `simulate`) the operation says `dispatch_mode: dryrun`: the run holds a fake pipeline id, nothing reaches the runner and nothing is simulated — a store run is never simulated, so under `simulate` it behaves exactly as under `dryrun` and the operation ends `failed`. Poll `GET /operations/{id}` (also the `Location` header) until `succeeded` or `failed`. `Idempotency-Key` is honoured: a retry with the same key and request gets the same answer.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -20820,7 +21436,7 @@ func (c *ClientWithResponses) AiGatewayKeysListWithResponse(ctx context.Context,
 
 // AiGatewayKeysCreateWithBodyWithResponse Create a virtual key
 //
-// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -20835,7 +21451,7 @@ func (c *ClientWithResponses) AiGatewayKeysCreateWithBodyWithResponse(ctx contex
 
 // AiGatewayKeysCreateWithResponse Create a virtual key
 //
-// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in Vault at `vault_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -20850,7 +21466,7 @@ func (c *ClientWithResponses) AiGatewayKeysCreateWithResponse(ctx context.Contex
 
 // AiGatewayKeysDeleteWithResponse Delete a virtual key
 //
-// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the Vault leaf and pointer the portal wrote for it (an adopted key's Vault leaf belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
+// Deletes the key in the gateway — IRREVERSIBLY: every client using it fails at once — then the secrets store entry and pointer the portal wrote for it (an adopted key's secrets store entry belongs to its consumer and is left alone), and marks the registry row deleted. Needs the admin permission; NOT destroy-gated (a token without `allow_destroy` may delete keys). A key the gateway had already lost is deleted from the registry the same way.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -20931,7 +21547,7 @@ func (c *ClientWithResponses) AiGatewayKeysUpdateWithApplicationMergePatchPlusJS
 
 // AiGatewayKeysRotateWithBodyWithResponse Rotate a virtual key
 //
-// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -20946,7 +21562,7 @@ func (c *ClientWithResponses) AiGatewayKeysRotateWithBodyWithResponse(ctx contex
 
 // AiGatewayKeysRotateWithResponse Rotate a virtual key
 //
-// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in Vault at `vault_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -21017,7 +21633,7 @@ func (c *ClientWithResponses) AiGatewayTiersPutWithResponse(ctx context.Context,
 
 // AiNodesListWithResponse List AI nodes
 //
-// The AI fleet. Roster fields are always present; live fields are null when Prometheus cannot be read (`prometheus_reachable: false`). Never 503.
+// The AI fleet. Roster fields are always present; live fields are null when monitoring cannot be read (`monitoring_reachable: false`). Never 503.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -21043,6 +21659,40 @@ func (c *ClientWithResponses) AiNodesGetWithResponse(ctx context.Context, hostna
 		return nil, err
 	}
 	return ParseAiNodesGetResponse(rsp)
+}
+
+// AuditEventsListWithResponse List audit events
+//
+// Every recorded change on this platform, newest first (`occurred_at`, then `id`, descending). Pages are cursor-based and stable while new events are written: pass `next_cursor` as `cursor` to get the next page; it is null on the last one. A cursor that is not one of this list's is a 400 `invalid_cursor`.
+//
+// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+//
+// `before_state` and `after_state` are returned as the writer recorded them, except that every member whose name looks secret is null. For `entity_type` `licence` the `entity_id` is the licence serial, masked to its last group unless the caller holds `licence-admin-global`, as on `GET /licence`; the `entity_id` filter matches the stored id, never the masked one. Reading the log is not itself audited.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /audit-events (the `AuditEventsList` operationId).
+func (c *ClientWithResponses) AuditEventsListWithResponse(ctx context.Context, params *AuditEventsListParams, reqEditors ...RequestEditorFn) (*AuditEventsListResponse, error) {
+	rsp, err := c.AuditEventsList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAuditEventsListResponse(rsp)
+}
+
+// AuditEventsGetWithResponse One audit event
+//
+// One event by id, with the same secret-looking members withheld and the same licence serial masking as in the list.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /audit-events/{event_id} (the `AuditEventsGet` operationId).
+func (c *ClientWithResponses) AuditEventsGetWithResponse(ctx context.Context, eventId string, reqEditors ...RequestEditorFn) (*AuditEventsGetResponse, error) {
+	rsp, err := c.AuditEventsGet(ctx, eventId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAuditEventsGetResponse(rsp)
 }
 
 // BrandGetWithResponse This platform's brand
@@ -21504,7 +22154,7 @@ func (c *ClientWithResponses) ProjectsCreateWithResponse(ctx context.Context, bo
 
 // ProjectsDeleteWithResponse Retire a project
 //
-// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, Vault path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
+// Retires the project: `status` becomes `retired` and that is all. Its `project_index`, `short_name` and `primary_domain` stay reserved, and nothing on the substrate is touched — no VM, DNS record, secrets store path or repository is removed. There is no way to wipe or tear down a project through this API. Retiring a retired project is a 204.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -21752,7 +22402,7 @@ func (c *ClientWithResponses) ReleaseOperationsListWithResponse(ctx context.Cont
 //
 // * `dev` and `uat` start at once.
 // * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
-// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 //
 // Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
 //
@@ -21773,7 +22423,7 @@ func (c *ClientWithResponses) ReleasePromotionsCreateWithBodyWithResponse(ctx co
 //
 // * `dev` and `uat` start at once.
 // * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
-// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's Release Manager. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
+// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 //
 // Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
 //
@@ -21872,7 +22522,7 @@ func (c *ClientWithResponses) TenantsCreateWithResponse(ctx context.Context, bod
 
 // TenantsDeleteWithResponse Delete an empty tenant
 //
-// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its Keycloak `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+// Deletes the tenant only when nothing but memberships hangs off it: no project of any status, no contract, no helpdesk record, no attributed resource, no live AI gateway key (a deleted key's registry row is kept and detached). Its memberships go with it, and its SSO `/tenants/<slug>` groups are removed. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -21964,7 +22614,7 @@ func (c *ClientWithResponses) TenantMembershipsListWithResponse(ctx context.Cont
 
 // TenantMembershipsDeleteWithResponse Remove a member
 //
-// Removes the user's membership of the tenant and re-syncs their Keycloak groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
+// Removes the user's membership of the tenant and re-syncs their SSO groups. This is NOT destroy-gated: it needs the write permission only, not a token created with `allow_destroy`. Service grants are NOT revoked: a user's grants are held per customer, not per tenant, and stay in force until revoked in the portal.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -22035,7 +22685,7 @@ func (c *ClientWithResponses) UsersListWithResponse(ctx context.Context, params 
 
 // UsersCreateWithBodyWithResponse Create a person
 //
-// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no Keycloak configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `keycloak_not_configured` warning (`error` stays for a configured Keycloak that failed). `Idempotency-Key` is honoured.
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -22050,7 +22700,7 @@ func (c *ClientWithResponses) UsersCreateWithBodyWithResponse(ctx context.Contex
 
 // UsersCreateWithResponse Create a person
 //
-// Creates the person with the role `user` and runs the portal's provisioning: username, SSO (Keycloak) account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no Keycloak configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `keycloak_not_configured` warning (`error` stays for a configured Keycloak that failed). `Idempotency-Key` is honoured.
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -22065,7 +22715,7 @@ func (c *ClientWithResponses) UsersCreateWithResponse(ctx context.Context, body 
 
 // UsersDeleteWithResponse Deactivate a user
 //
-// Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{"is_active": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO (Keycloak) account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`keycloak_disable_failed`, `keycloak_logout_failed`, `keycloak_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.
+// Answers 204 with no body, like every v1 `DELETE`. A downstream step that fails does not undo the deactivation and is not in this answer: it is logged and kept on the audit row (`warnings`). To get the step outcomes in the answer, deactivate with `PATCH` `{"is_active": false}` instead: the same gate, refusals and steps, answered 200 with the user and its `warnings`. Deactivation never deletes. It sets `is_active` to false and then, at once: clears the cached active state so signed-in sessions and API tokens stop on the next request; converges the SSO account, which disables it, and ends its open SSO sessions; removes the person from the desktop (`/vdi-users`) group; and blocks their GitLab account when they have one. Each of those steps that fails is a warning (`sso_disable_failed`, `sso_logout_failed`, `sso_not_configured`, `vdi_revoke_failed`, `gitlab_block_failed`, `gitlab_not_configured`, `session_cache_not_cleared`); the deactivation stands. Repeating it repeats the steps. Refused (409) for your own account (`cannot_deactivate_self`), the last active admin (`last_active_admin`) and a service account (`service_account_managed_elsewhere`). Tenant memberships, role grants and service grants are kept, so re-activating restores them. NOT done: the person's account on the partner portal is not disabled; disable it there.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -22093,7 +22743,7 @@ func (c *ClientWithResponses) UsersGetWithResponse(ctx context.Context, userId s
 
 // UsersUpdateWithBodyWithResponse Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -22110,7 +22760,7 @@ func (c *ClientWithResponses) UsersUpdateWithBodyWithResponse(ctx context.Contex
 
 // UsersUpdateWithResponse Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -22127,7 +22777,7 @@ func (c *ClientWithResponses) UsersUpdateWithResponse(ctx context.Context, userI
 
 // UsersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`keycloak_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach Keycloak are converged before the answer; a failure there is a `keycloak_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -22157,7 +22807,7 @@ func (c *ClientWithResponses) UserRolesListWithResponse(ctx context.Context, use
 
 // UserRolesDeleteWithResponse Revoke a role
 //
-// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+// Removes one role. Not destroy-gated: it needs the write permission only. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into SSO before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -22185,7 +22835,7 @@ func (c *ClientWithResponses) UserRolesGetWithResponse(ctx context.Context, user
 
 // UserRolesPutWithResponse Grant a role
 //
-// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into Keycloak before the answer; a failure there is a `keycloak_sync_failed` warning.
+// 201 when the role was granted, 200 when the user already held it (nothing changes). No body. The portal's role rules apply: the role must exist in the roles catalogue (`unknown_role`, 422); a key that is not grantable is refused (`role_not_grantable`, 400); `founder` and `ssh-console` are granted only by a holder and never to yourself; the last active admin keeps `admin`, and nobody removes their own; a user keeps at least one role (`last_role`, 409). An API token can never grant or revoke `admin`, `founder` or `ssh-console` (`role_not_manageable_by_token`), can never change the roles of its own account (`token_cannot_change_own_roles`), and grants or revokes only a role within its own effective scopes (`role_not_held_by_token`), all 403; a browser session is held to none of these three and keeps the portal's rules. The change is converged into SSO before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -23828,6 +24478,100 @@ func ParseAiNodesGetResponse(rsp *http.Response) (*AiNodesGetResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest AiNode
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAuditEventsListResponse parses an HTTP response from a AuditEventsListWithResponse call
+func ParseAuditEventsListResponse(rsp *http.Response) (*AuditEventsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AuditEventsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AuditEventPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAuditEventsGetResponse parses an HTTP response from a AuditEventsGetWithResponse call
+func ParseAuditEventsGetResponse(rsp *http.Response) (*AuditEventsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AuditEventsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AuditEvent
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -25602,6 +26346,20 @@ func ParseProdLockPutResponse(rsp *http.Response) (*ProdLockPutResponse, error) 
 			return nil, err
 		}
 		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
 
 	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
 		var dest Problem

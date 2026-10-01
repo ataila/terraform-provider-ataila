@@ -2,12 +2,14 @@
 # SHA256SUMS file, the registry manifest and a detached signature of the sums.
 #
 # CI runs `goreleaser release --clean --skip=publish,announce` on a v* tag, so
-# this file only builds and signs. Publishing (GitLab release, the public
-# mirror's release, the registries) is configured when the provider is
-# published, not before.
+# this file only builds and signs, and `release.disable` keeps it from ever
+# publishing. The publish:github CI job uploads these same files, unchanged,
+# as the GitHub release of the tag, where both registries read them (README,
+# "CI and releases").
 #
-# Signing uses the key whose fingerprint is in GPG_FINGERPRINT; the release CI
-# job refuses to start without it.
+# Signing uses the key whose fingerprint is in GPG_FINGERPRINT, an RSA key
+# without a passphrase (the registries verify RSA and DSA signatures only);
+# scripts/ci/signing-key.sh imports and checks it before this runs.
 version: 2
 
 project_name: terraform-provider-ataila

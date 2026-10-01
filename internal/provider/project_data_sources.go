@@ -80,10 +80,10 @@ func projectDataAttributes() map[string]schema.Attribute {
 				"ai":       schema.StringAttribute{Computed: true, MarkdownDescription: "The AI endpoint (`ai.`)."},
 			},
 		},
-		"harbor_namespace":      c("harbor_namespace"),
-		"gitlab_repositories":   schema.ListAttribute{MarkdownDescription: projectDocs["gitlab_repositories"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectRepoTypes}},
-		"kubernetes_namespaces": schema.ListAttribute{MarkdownDescription: projectDocs["kubernetes_namespaces"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectNSTypes}},
-		"vault_paths":           schema.ListAttribute{MarkdownDescription: projectDocs["vault_paths"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectVaultTypes}},
+		"image_registry_namespace": c("image_registry_namespace"),
+		"gitlab_repositories":      schema.ListAttribute{MarkdownDescription: projectDocs["gitlab_repositories"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectRepoTypes}},
+		"kubernetes_namespaces":    schema.ListAttribute{MarkdownDescription: projectDocs["kubernetes_namespaces"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectNSTypes}},
+		"secret_paths":             schema.ListAttribute{MarkdownDescription: projectDocs["secret_paths"], Computed: true, ElementType: types.ObjectType{AttrTypes: projectSecretTypes}},
 	}
 	for _, s := range projectSettings {
 		switch s.kind {
