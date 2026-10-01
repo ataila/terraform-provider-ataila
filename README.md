@@ -447,13 +447,20 @@ project, both **protected**:
 | Variable | Type | Value |
 |---|---|---|
 | `GPG_PRIVATE_KEY` | File, masked | The armored private key, base64-encoded on one line (`gpg --armor --export-secret-keys <fingerprint> \| base64 -w0`), because GitLab masks one-line values only. The armored key itself is accepted too, but cannot be masked. |
-| `GPG_FINGERPRINT` | Variable | The key's full fingerprint |
+| `GPG_FINGERPRINT` | Variable, masked | The key's full fingerprint |
 
 and protects the `v*` tags (Settings → Repository → Protected tags): protected variables reach protected refs
 only. The public key is then registered with each registry. `scripts/ci/signing-key.sh` checks all of this before
 goreleaser builds anything; while either variable is missing, or the key is not RSA or DSA, has a passphrase or
 is not the one the fingerprint names, the `release` job stops with `RELEASE STOPPED`, says which, and points
-here. The private key itself belongs in the company's secrets store, from which an operator sets the variable.
+here.
+
+The key is in place since 2026-10-01: `ATAILA Kft. (Budapest) <support@ataila.com>`, RSA-4096, fingerprint
+`9997D23D222203203B02B5EE51740425A2D915F8` (key ID `51740425A2D915F8`), valid for ten years, until 2036-09-28.
+Its public half is [`docs/signing-key.asc`](docs/signing-key.asc), the key both registries are given. The private
+key lives in the company's secrets store, in the provider signing-key entry; the CI variable is a copy, set from
+there. Before the key expires, an operator extends its expiry with the stored key and gives both registries the
+refreshed public key; a release signed with an expired key no longer verifies.
 
 ### Public mirror
 
