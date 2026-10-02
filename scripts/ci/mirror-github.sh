@@ -44,6 +44,21 @@ if [ "$(git rev-parse --is-shallow-repository)" = true ]; then
   exit 1
 fi
 
+# --force-rewrite: ONE forced push of the default branch, after a history
+# rewrite on GitLab (the job mirror:github:rewrite, which exists only for that
+# and is removed after it ran). Only for the commit MIRROR_FORCE names. No tag
+# is pushed: 0.x tags never go public, and the public repository holds none.
+if [ "${1:-}" = --force-rewrite ]; then
+  sha="${CI_COMMIT_SHA:?CI_COMMIT_SHA is not set}"
+  [ "${CI_COMMIT_BRANCH:-}" = "$branch" ] || { echo "mirror:github: only $branch is mirrored" >&2; exit 1; }
+  [ "${MIRROR_FORCE:-}" = "$sha" ] \
+    || { echo "mirror:github: MIRROR_FORCE does not name this commit; nothing forced" >&2; exit 1; }
+  before=$(git_push ls-remote "$url" "refs/heads/$branch" | cut -f1)
+  echo "mirror:github: forcing the public $branch from ${before:0:12} to ${sha:0:12} (history rewrite)"
+  git_push push --no-verify --force "$url" "$sha:refs/heads/$branch"
+  exit 0
+fi
+
 if [ -n "${CI_COMMIT_TAG:-}" ]; then
   [[ "$CI_COMMIT_TAG" =~ ^v([0-9]+)\.[0-9]+\.[0-9]+$ ]] \
     || { echo "mirror:github: $CI_COMMIT_TAG is not a release tag (vX.Y.Z); not mirrored" >&2; exit 1; }
