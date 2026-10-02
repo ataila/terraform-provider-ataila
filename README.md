@@ -16,7 +16,7 @@ versioned API, `/api/v1`, with an API token minted in the platform's portal.
 
 - Source: <https://github.com/ataila/terraform-provider-ataila>, the public, read-only mirror of the primary
   repository ([Public mirror](#public-mirror)). Its issue tracker is off.
-- Problems and questions: support@ataila.com; documentation at <https://www.ataila.eu/developers/terraform>.
+- Problems and questions: support@ataila.com; documentation at <https://www.ataila.com/developers/terraform>.
 - Registries, from 1.0.0: <https://search.opentofu.org/provider/ataila/ataila> (OpenTofu) and
   <https://registry.terraform.io/providers/ataila/ataila> (Terraform).
 
@@ -524,9 +524,11 @@ bash scripts/leak-guard.sh
 ```
 
 **Public host names.** A few names under the company's domains are public, and the guard lets exactly these
-through: `app.ataila.eu`, the partner portal every customer signs in to, which the platform's API descriptions
-name; `www.ataila.eu`; and the bare domains `ataila.eu` and `ataila.com`, the company's websites. No name under
-them passes, and no other name: nothing under `portal`, `api`, `gitlab`, `harbor`, `vault` or any other internal
+through: `www.ataila.com`, the company's website, where the provider's documentation is; the bare domain
+`ataila.com`; and, for the released history only, the names the website and the partner portal every customer
+signs in to had under the company's earlier website domain, which the README, the docs and the platform's API
+descriptions of earlier releases name (the guard builds those at run time, so that no file names that domain any
+more). No name under them passes, and no other name: nothing under `portal`, `api`, `gitlab`, `harbor`, `vault` or any other internal
 service, and the guard's self-test refuses such an entry on the list. The reason: these names are published to
 every customer and visitor, so naming them leaks nothing, while treating them as findings would have meant
 rewriting the history of every released tag for no gain. R1 of the publication readiness review: accepted by the

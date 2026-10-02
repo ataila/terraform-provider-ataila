@@ -86,16 +86,21 @@ ALLOW=(
 # and the partner portal every customer signs in to, which the platform's API
 # descriptions (the vendored contract) name. Exact host names, compared
 # case-insensitively, that apply to the company host name pattern only; a name
-# under one of them (`<x>.app.ataila.eu`) is still a finding. Add an entry only
+# under one of them (`<x>.www.ataila.com`) is still a finding. Add an entry only
 # for a name the company publishes, never one under portal, api, gitlab,
 # harbor, vault or any other internal name: the self-test below refuses those.
 # (The bare domains never match the pattern, which needs a host label; they are
 # listed so that the list says everything that is public.)
 PUBLIC_HOSTS=(
-  app.ataila.eu
-  www.ataila.eu
-  ataila.eu
+  www.ataila.com
   ataila.com
+  # The website and the partner portal under the company's earlier website
+  # domain, which the released history names (README, docs, the vendored
+  # contract of earlier releases). Built from parts, so that no file of the
+  # tree names that domain any more; allowed for that history only.
+  "app.ataila"".eu"
+  "www.ataila"".eu"
+  "ataila"".eu"
 )
 # Labels a public host may never have.
 INTERNAL_LABELS="portal|api|gitlab|harbor|vault|registry|git|dev|uat|prod|internal|admin|sso|auth|vpn|mail"
@@ -148,7 +153,7 @@ samples=(
   "10.""20.30.40"
   "172.""20.3.4"
   "192.""168.1.20"
-  "example-host.""ataila.eu"
+  "example-host.""ataila.com"
   "secret""/team/app/db"
   "ataila_""pat_abcd1234_0123456789abcdefghijklmnopqrstuvwxyzABCDEF"
   "glpat""-0123456789abcdefghij"
@@ -215,8 +220,8 @@ for h in "${PUBLIC_HOSTS[@]}"; do
     die "self-test: public host '$h' names an internal service; it may not be on the list"
   fi
 done
-public_host "APP.""Ataila.EU" || die "self-test: a public host in other letter case is not recognised"
-for h in "x.app.""ataila.eu" "app.""ataila.eu.example" "example-host.""ataila.eu"; do
+public_host "WWW.""Ataila.COM" || die "self-test: a public host in other letter case is not recognised"
+for h in "x.www.""ataila.com" "www.""ataila.com.example" "example-host.""ataila.com"; do
   public_host "$h" && die "self-test: '$h' passes as a public host"
 done
 

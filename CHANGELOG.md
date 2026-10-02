@@ -5,7 +5,16 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ## Unreleased
 
-Nothing yet.
+### Documentation
+
+- The README shows the company's logo at the top (`docs/images/ataila-logo.png`).
+- The documentation link points to the company's website, https://www.ataila.com/developers/terraform, in the
+  README and on the registry's overview page.
+
+### CI
+
+- The leak guard allows `www.ataila.com`, the company's website. The names under the company's earlier website
+  domain stay allowed for the released history only; no file names that domain any more.
 
 ## 1.1.0 (2026-10-02) — contract 1.0.206
 
@@ -111,7 +120,7 @@ provider speaks, changes only by addition. `~> 1.0` takes every 1.x release.
 - Signed with the organisation's RSA-4096 key, whose public half is `docs/signing-key.asc`.
 - The GitHub release holds the archives, `SHA256SUMS`, its signature and the registry manifest, and as extra
   assets the air-gapped mirror bundle (`terraform-provider-ataila_1.0.0_mirror.zip`) and its `.sha256`.
-- Problems and questions: support@ataila.com; documentation at https://www.ataila.eu/developers/terraform. The
+- Problems and questions: support@ataila.com; documentation at https://www.ataila.com/developers/terraform. The
   public repository's issue tracker is off.
 
 ### Added since 0.8.0
@@ -248,8 +257,8 @@ Codes the platform sends changed with them: the 503 `vault_write_failed` is `sec
 - Every release tag produces `terraform-provider-ataila_<version>_mirror.zip`: the binaries under both
   registry addresses in the filesystem mirror layout, with a README for `.tofurc` and `.terraformrc` (README,
   "Installing without internet access").
-- Leak guard: the public host names `app.ataila.eu` (the partner portal), `www.ataila.eu`, `ataila.eu` and
-  `ataila.com` are allowed, and nothing else under the company's domains; the self-test refuses an internal name
+- Leak guard: the public host names of the partner portal and of the company's websites, and the company's bare
+  domains, are allowed, and nothing else under the company's domains; the self-test refuses an internal name
   on that list. R1 of the publication readiness review: accepted by the founder 2026-10-01; no history rewrite,
   the existing tags stand. With it, `--strict` passes on v0.4.0, v0.5.0 and v0.6.0, the list of tolerated
   history findings is empty, and a new `leak-guard:strict` job runs on the default branch and on every tag and
