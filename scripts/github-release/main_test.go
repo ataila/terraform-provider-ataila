@@ -198,7 +198,8 @@ func writeDist(t *testing.T) string {
 		write("terraform-provider-ataila_1.2.3_manifest.json", `{"version":1}`)
 	write("terraform-provider-ataila_1.2.3_SHA256SUMS", sums)
 	write("terraform-provider-ataila_1.2.3_SHA256SUMS.sig", "signature")
-	write("terraform-provider-ataila_1.2.3_mirror.zip", "not a registry file")
+	// The mirror job's bundle and its sum, as sha256sum writes it.
+	write("terraform-provider-ataila_1.2.3_mirror.zip.sha256", write("terraform-provider-ataila_1.2.3_mirror.zip", "bundle"))
 	return dir
 }
 
@@ -223,11 +224,14 @@ func TestPublishCreatesADraftUploadsAndPublishes(t *testing.T) {
 			for n := range f.releases[0].Assets {
 				names = append(names, n)
 			}
-			if len(names) != 5 {
-				t.Fatalf("assets %v, want the 2 archives, the sums, their signature and the manifest", names)
+			if len(names) != 7 {
+				t.Fatalf("assets %v, want the 2 archives, the sums, their signature, the manifest, and the "+
+					"mirror bundle with its sum", names)
 			}
-			if _, ok := f.releases[0].Assets["terraform-provider-ataila_1.2.3_mirror.zip"]; ok {
-				t.Error("the mirror bundle was uploaded; the registries read every archive of a release")
+			for _, n := range []string{"terraform-provider-ataila_1.2.3_mirror.zip", "terraform-provider-ataila_1.2.3_mirror.zip.sha256"} {
+				if _, ok := f.releases[0].Assets[n]; !ok {
+					t.Errorf("%s was not attached", n)
+				}
 			}
 			// A second run finds the release published with these files and writes nothing.
 			before := f.writes
@@ -252,7 +256,7 @@ func TestPublishReusesTheDraftAnEarlierRunLeft(t *testing.T) {
 	if err := p.Publish("v1.2.3", testCommit, writeDist(t), "notes\n"); err != nil {
 		t.Fatal(err)
 	}
-	if len(f.releases) != 1 || f.releases[0].Draft || len(f.releases[0].Assets) != 5 {
+	if len(f.releases) != 1 || f.releases[0].Draft || len(f.releases[0].Assets) != 7 {
 		t.Fatalf("releases: %+v", f.releases[0])
 	}
 	if !strings.Contains(log.String(), "reusing the draft") || strings.Contains(log.String(), "uploaded terraform-provider-ataila_1.2.3_linux_amd64.zip") {
@@ -273,6 +277,15 @@ func TestPublishRefuses(t *testing.T) {
 		{"tag not on GitHub", func(f *fakeGitHub, _ string) { f.tagType = "" }, "v1.2.3", "is not on GitHub: the mirror:github job"},
 		{"tag names another commit", func(f *fakeGitHub, _ string) { f.tagSHA = strings.Repeat("ab", 20) }, "v1.2.3", "not the commit"},
 		{"not a release tag", func(*fakeGitHub, string) {}, "v1.2.3-rc1", "is not a release tag"},
+		// A dry run against a fake 0.x tag: refused before any request.
+		{"a 0.x tag", func(*fakeGitHub, string) {}, "v0.9.0", "below 1.0.0"},
+		{"the oldest 0.x tag", func(*fakeGitHub, string) {}, "v0.0.1", "below 1.0.0"},
+		{"no mirror bundle", func(_ *fakeGitHub, dist string) {
+			_ = os.Remove(filepath.Join(dist, "terraform-provider-ataila_1.2.3_mirror.zip"))
+		}, "v1.2.3", "the mirror job did not run"},
+		{"a mirror bundle that does not match its sum", func(_ *fakeGitHub, dist string) {
+			_ = os.WriteFile(filepath.Join(dist, "terraform-provider-ataila_1.2.3_mirror.zip"), []byte("changed"), 0o644)
+		}, "v1.2.3", "does not match its .sha256"},
 		{"an archive is missing", func(_ *fakeGitHub, dist string) {
 			_ = os.Remove(filepath.Join(dist, "terraform-provider-ataila_1.2.3_windows_amd64.zip"))
 		}, "v1.2.3", "which is not in"},

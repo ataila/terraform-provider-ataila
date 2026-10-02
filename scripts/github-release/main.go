@@ -7,15 +7,21 @@
 // files are the ones GitLab built and signed once.
 //
 //	go run ./scripts/github-release -repo ataila/terraform-provider-ataila \
-//	  -tag v0.7.0 -commit "$CI_COMMIT_SHA" -dir dist
+//	  -tag v1.0.0 -commit "$CI_COMMIT_SHA" -dir dist
 //
 // The token is read from GITHUB_RELEASE_TOKEN (its value, or the path of a
 // file holding it): a fine-grained token with contents read and write on that
 // repository only. It is never printed.
 //
+// Only a release of 1.0.0 or later is published: 0.x tags were never public.
+//
 // The steps, each safe to run again after a failure:
 //  1. The release files are complete: every archive SHA256SUMS lists is there
-//     and matches, and so are SHA256SUMS.sig and the registry manifest.
+//     and matches, and so are SHA256SUMS.sig and the registry manifest; the
+//     air-gapped mirror bundle (the mirror job's _mirror.zip and its .sha256)
+//     is there and matches its sum. The bundle is an extra asset: the
+//     registries read only the archives named _<os>_<arch>.zip, the sums, their
+//     signature and the manifest, and ignore every other asset.
 //  2. The tag is on GitHub (the mirror:github job pushes it) and names the
 //     commit that was built.
 //  3. A published release of the tag that already holds these files is left
@@ -41,6 +47,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -128,7 +135,8 @@ type Asset struct {
 
 // Files returns the release files of the version in dir, checked: every
 // archive SHA256SUMS lists is there with that sum, the manifest is listed and
-// matches, and the detached signature of the sums is there.
+// matches, the detached signature of the sums is there, and so is the mirror
+// bundle, matching its .sha256.
 func Files(dir, version string) ([]Asset, error) {
 	prefix := "terraform-provider-ataila_" + version + "_"
 	sumsName := prefix + "SHA256SUMS"
@@ -168,6 +176,11 @@ func Files(dir, version string) ([]Asset, error) {
 		return nil, fmt.Errorf("%s lists %d archives and %s manifest; the registries need both", sumsName, zips,
 			map[bool]string{true: "a", false: "no"}[manifest])
 	}
+	bundle, err := mirrorBundle(dir, version)
+	if err != nil {
+		return nil, err
+	}
+	names = append(names, bundle, bundle+".sha256")
 	sort.Strings(names)
 	var assets []Asset
 	for _, n := range names {
@@ -178,6 +191,26 @@ func Files(dir, version string) ([]Asset, error) {
 		assets = append(assets, Asset{Name: n, Path: filepath.Join(dir, n), Size: fi.Size()})
 	}
 	return assets, nil
+}
+
+// mirrorBundle checks the mirror job's bundle against its .sha256 and returns
+// its name.
+func mirrorBundle(dir, version string) (string, error) {
+	name := "terraform-provider-ataila_" + version + "_mirror.zip"
+	sumFile, err := os.ReadFile(filepath.Join(dir, name+".sha256"))
+	if err != nil {
+		return "", fmt.Errorf("no %s.sha256 in %s: the mirror job did not run or its files were not passed on", name, dir)
+	}
+	f := strings.Fields(string(sumFile))
+	data, err := os.ReadFile(filepath.Join(dir, name))
+	if err != nil {
+		return "", fmt.Errorf("no %s in %s: the mirror job did not run or its files were not passed on", name, dir)
+	}
+	sum := sha256.Sum256(data)
+	if len(f) < 1 || !strings.EqualFold(f[0], hex.EncodeToString(sum[:])) {
+		return "", fmt.Errorf("%s does not match its .sha256", name)
+	}
+	return name, nil
 }
 
 // Publisher talks to the GitHub REST API.
@@ -203,12 +236,16 @@ type release struct {
 	} `json:"assets"`
 }
 
-var semverTag = regexp.MustCompile(`^v[0-9]+\.[0-9]+\.[0-9]+$`)
+var semverTag = regexp.MustCompile(`^v([0-9]+)\.[0-9]+\.[0-9]+$`)
 
 // Publish runs the steps in the package comment.
 func (p *Publisher) Publish(tag, commit, dir, notes string) error {
-	if !semverTag.MatchString(tag) {
+	m := semverTag.FindStringSubmatch(tag)
+	if m == nil {
 		return fmt.Errorf("%q is not a release tag (vX.Y.Z)", tag)
+	}
+	if major, _ := strconv.Atoi(m[1]); major < 1 {
+		return fmt.Errorf("%s is below 1.0.0: 0.x releases are never published (1.0.0 is the first public release)", tag)
 	}
 	if commit == "" {
 		return errors.New("-commit is required")

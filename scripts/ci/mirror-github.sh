@@ -9,7 +9,8 @@
 # could gate it.
 #
 #   On the default branch: pushes that commit to the public default branch.
-#   On a v* tag:           pushes the tag (and the commits it needs).
+#   On a vX.Y.Z tag:       pushes the tag (and the commits it needs); never
+#                          a 0.x tag (1.0.0 is the first public release).
 #
 # It never forces: when the public history has diverged from GitLab's, the job
 # fails and a person decides. A commit the public branch already holds (a
@@ -44,7 +45,13 @@ if [ "$(git rev-parse --is-shallow-repository)" = true ]; then
 fi
 
 if [ -n "${CI_COMMIT_TAG:-}" ]; then
-  [[ "$CI_COMMIT_TAG" =~ ^v[0-9] ]] || { echo "mirror:github: $CI_COMMIT_TAG is not a release tag" >&2; exit 1; }
+  [[ "$CI_COMMIT_TAG" =~ ^v([0-9]+)\.[0-9]+\.[0-9]+$ ]] \
+    || { echo "mirror:github: $CI_COMMIT_TAG is not a release tag (vX.Y.Z); not mirrored" >&2; exit 1; }
+  # 0.x releases were never public: 1.0.0 is the first public release.
+  if [ "${BASH_REMATCH[1]}" -lt 1 ]; then
+    echo "mirror:github: $CI_COMMIT_TAG is below 1.0.0; 0.x tags are never mirrored" >&2
+    exit 1
+  fi
   git rev-parse --verify --quiet "refs/tags/$CI_COMMIT_TAG" >/dev/null \
     || git fetch --quiet origin "refs/tags/$CI_COMMIT_TAG:refs/tags/$CI_COMMIT_TAG"
   echo "mirror:github: pushing tag $CI_COMMIT_TAG"
