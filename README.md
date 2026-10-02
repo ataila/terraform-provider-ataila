@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/images/ataila-logo.png" alt="ATAILA" width="140"></p>
+
 # terraform-provider-ataila
 
 The OpenTofu and Terraform provider for the **ATAILA Cloud Platform**. It manages a platform through its
