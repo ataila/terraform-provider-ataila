@@ -110,9 +110,9 @@ Read-Only:
 - `fair_weight` (String) The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`.
 - `gpu_borrow` (String) Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card.
 - `gpu_enabled` (Boolean) Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
-- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`gpu_queue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+- `gpu_queue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
 - `gpu_shared` (String) Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.
-- `kueue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
 - `lim_cpu` (String) The namespace's total CPU limit, a CPU quantity such as `16`.
 - `lim_mem` (String) The namespace's total memory limit, with a unit, such as `32Gi`.
 - `namespace` (String) The environment's namespace.
@@ -135,9 +135,9 @@ Read-Only:
 - `fair_weight` (String) The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`.
 - `gpu_borrow` (String) Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card.
 - `gpu_enabled` (Boolean) Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
-- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`gpu_queue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+- `gpu_queue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
 - `gpu_shared` (String) Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.
-- `kueue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
 - `lim_cpu` (String) The namespace's total CPU limit, a CPU quantity such as `16`.
 - `lim_mem` (String) The namespace's total memory limit, with a unit, such as `32Gi`.
 - `namespace` (String) The environment's namespace.
@@ -160,9 +160,9 @@ Read-Only:
 - `fair_weight` (String) The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`.
 - `gpu_borrow` (String) Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card.
 - `gpu_enabled` (Boolean) Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
-- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`gpu_queue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+- `gpu_queue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
 - `gpu_shared` (String) Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.
-- `kueue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
 - `lim_cpu` (String) The namespace's total CPU limit, a CPU quantity such as `16`.
 - `lim_mem` (String) The namespace's total memory limit, with a unit, such as `32Gi`.
 - `namespace` (String) The environment's namespace.

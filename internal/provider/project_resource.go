@@ -461,10 +461,12 @@ func (r *projectResource) Create(ctx context.Context, req resource.CreateRequest
 					"  terraform untaint ataila_project.<name>  (Terraform)", ident))
 		}
 		// Read back what the quota requests changed. Should that read fail,
-		// the create's own answer still goes into the state: the project
-		// exists, and the next refresh reads its quota.
+		// the create's own answer still goes into the state, with each
+		// environment the requests changed as the platform answered it: the
+		// project exists, and the next refresh reads the rest.
 		if again, err := r.data.API.GetProject(ctx, id); err != nil {
 			resp.Diagnostics.Append(apiError("reading the project "+ident+" after setting its quota", err))
+			p = withQuotaAnswers(p, done)
 		} else {
 			p = again
 		}
@@ -574,29 +576,39 @@ func (r *projectResource) Update(ctx context.Context, req resource.UpdateRequest
 	// never on the settings). A refusal fails the apply with the platform's
 	// message, and the state still records what did change — the project's own
 	// change and the environments before the refused one — read back from the
-	// platform, so the next plan shows only what is left.
+	// platform, so the next plan shows only what is left. Every read after a
+	// change that went through only adds an error when it fails: the state is
+	// then built from the answers already in hand (the settings answer, the
+	// quota answers), never left as it was before the change.
 	quotaPlan := quotaPrior(plan["k8s_quota"], state["k8s_quota"], nil)
 	if patches := quotaPatches(plan["k8s_quota"], state["k8s_quota"]); len(patches) > 0 {
 		qws, done, _ := applyQuota(ctx, r.data.API, id, ident, patches, &resp.Diagnostics)
 		*ws = append(*ws, qws...)
 		warnings = warningsValue(*ws)
 		quotaPlan = quotaPrior(plan["k8s_quota"], state["k8s_quota"], quotaUnapplied(patches, done))
-		if p, err = r.data.API.GetProject(ctx, id); err != nil {
+		if again, err := r.data.API.GetProject(ctx, id); err != nil {
 			resp.Diagnostics.Append(apiError("reading the project "+ident+" after changing its quota", err))
-			return
+			p = withQuotaAnswers(p, done)
+		} else {
+			p = again
 		}
-	}
-	prov, err := r.data.API.GetProvisioning(ctx, id)
-	if err != nil {
-		resp.Diagnostics.Append(apiError("reading the provisioning of the project "+ident, err))
-		return
 	}
 	prior := map[string]attr.Value{}
 	for k, v := range plan {
 		prior[k] = v
 	}
 	prior["k8s_quota"] = quotaPlan
-	values := projectValues(p, prior, prov.StaleStages)
+	prov, err := r.data.API.GetProvisioning(ctx, id)
+	var stale []string
+	if err != nil {
+		resp.Diagnostics.Append(apiError("reading the provisioning of the project "+ident, err))
+	} else {
+		stale = prov.StaleStages
+	}
+	values := projectValues(p, prior, stale)
+	if err != nil {
+		values["stale_stages"] = state["stale_stages"] // unknown now: the last one read
+	}
 	values["warnings"] = warnings
 	resp.Diagnostics.Append(resp.State.Set(ctx, objectFrom(ctx, planObj.Type(ctx).(basetypes.ObjectType), values, &resp.Diagnostics))...)
 }

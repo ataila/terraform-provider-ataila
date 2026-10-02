@@ -161,18 +161,19 @@ type mockOrch struct {
 }
 
 type projectsState struct {
-	projects     map[int]*mockProject
-	orchs        map[int]*mockOrch
-	nextID       int
-	nextOrch     int
-	dispatchMode string
-	failStage    map[string]bool
-	manualStage  map[string]int // polls a stage waits for an operator; <0 for good
-	instant      bool           // a start runs every stage at once
-	nextRun      int            // stage run ids
-	kueueCards   map[string]int // clusters that run the GPU queue -> tenant cards
-	quotaPatches int            // quota PATCHes answered 200
-	quotaOff     bool           // a platform older than k8s_quota: no member, no route
+	projects      map[int]*mockProject
+	orchs         map[int]*mockOrch
+	nextID        int
+	nextOrch      int
+	dispatchMode  string
+	failStage     map[string]bool
+	manualStage   map[string]int // polls a stage waits for an operator; <0 for good
+	instant       bool           // a start runs every stage at once
+	nextRun       int            // stage run ids
+	gpuQueueCards map[string]int // clusters that run the GPU queue -> tenant cards
+	quotaPatches  int            // quota PATCHes answered 200
+	quotaOff      bool           // a platform older than k8s_quota: no member, no route
+	readFailsNext bool           // the project read after the next quota PATCH fails
 }
 
 func newProjectsState() *projectsState {

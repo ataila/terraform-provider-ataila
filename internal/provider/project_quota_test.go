@@ -43,7 +43,7 @@ var prodGPU040Re = strings.Replace(prodGPU40Re, `"40"`, `"040"`, 1)
 func TestAccProjectResource_K8sQuota(t *testing.T) {
 	m := newMock(t)
 	quotaScopes(m)
-	m.SetKueueCluster("prod-k8s", 1)
+	m.SetGPUQueueCluster("prod-k8s", 1)
 	_, tenantID := m.AddCustomer("EXAMPLE", "example")
 	var id string
 	var patches int
@@ -61,7 +61,7 @@ func TestAccProjectResource_K8sQuota(t *testing.T) {
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.gpu_borrow", "1"),
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.fair_weight", "1"),
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.gpu_enabled", "true"),
-					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.kueue", "true"),
+					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.gpu_queue", "true"),
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.cluster", "prod-k8s"),
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.namespace", "shop-prod"),
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.tier", "prod"),
@@ -71,7 +71,7 @@ func TestAccProjectResource_K8sQuota(t *testing.T) {
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.req_cpu", "8"),
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.dev.pods", "20"),
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.dev.overridden", "false"),
-					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.dev.kueue", "false"),
+					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.dev.gpu_queue", "false"),
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.dev.gpu_enabled", "false"),
 					resource.TestCheckNoResourceAttr(projectAddr, "k8s_quota.dev.reason"),
 					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.uat.tier", "nonprod"),
@@ -209,7 +209,7 @@ data "ataila_project" "q" {
 func TestAccProjectResource_K8sQuotaCohort(t *testing.T) {
 	m := newMock(t)
 	quotaScopes(m)
-	m.SetKueueCluster("prod-k8s", 1)
+	m.SetGPUQueueCluster("prod-k8s", 1)
 	_, tenantID := m.AddCustomer("EXAMPLE", "example")
 	holder := m.AddTestProject(tenantID, "first", "k8s")
 	m.SetProjectQuota(holder, "prod", map[string]string{"gpu_exclusive": "1"})
@@ -294,7 +294,7 @@ func TestAccProjectResource_K8sQuotaOlderPlatform(t *testing.T) {
 // creates another, so the test can clean up.
 func TestAccProjectResource_K8sQuotaNeedsTheGPUKey(t *testing.T) {
 	m := newMock(t)
-	m.SetKueueCluster("prod-k8s", 1)
+	m.SetGPUQueueCluster("prod-k8s", 1)
 	_, tenantID := m.AddCustomer("EXAMPLE", "example")
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: protoV6,
@@ -304,6 +304,48 @@ func TestAccProjectResource_K8sQuotaNeedsTheGPUKey(t *testing.T) {
 				ExpectError: words("k8s-gpu-admin-global"),
 			},
 			{PreConfig: allowDestroyEverywhere(m), Config: projectHCL(true, tenantID, "shop2")},
+		},
+	})
+}
+
+// An update whose read-back fails after its quota request went through still
+// records what changed: the error fails the apply, and the next plan is empty
+// — the settings change and the quota environment (its reason, which only the
+// state holds, included) are in the state, not dropped with the read.
+func TestAccProjectResource_K8sQuotaReadBackFails(t *testing.T) {
+	m := newMock(t)
+	quotaScopes(m)
+	_, tenantID := m.AddCustomer("EXAMPLE", "example")
+	quota := quotaHCL(envHCL("prod", `pods = "25"`, `reason = "more pods"`))
+	var patches int
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: protoV6,
+		Steps: []resource.TestStep{
+			{Config: projectHCL(false, tenantID, "shop")},
+			{
+				PreConfig:   m.FailReadAfterNextQuota,
+				Config:      withLongName(projectHCL(false, tenantID, "shop", quota), "Example Shop Two"),
+				ExpectError: words("after changing its quota"),
+			},
+			{
+				PreConfig: func() { patches = m.QuotaPatches() },
+				Config:    withLongName(projectHCL(false, tenantID, "shop", quota), "Example Shop Two"),
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()},
+				},
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(projectAddr, "long_name", "Example Shop Two"),
+					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.pods", "25"),
+					resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.reason", "more pods"),
+					check(func() error {
+						if got := m.QuotaPatches(); got != patches {
+							return fmt.Errorf("quota PATCHes = %d, want %d (nothing re-sent)", got, patches)
+						}
+						return nil
+					}),
+				),
+			},
+			{PreConfig: allowDestroyEverywhere(m), Config: projectHCL(true, tenantID, "shop", quota)},
 		},
 	})
 }

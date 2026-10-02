@@ -3540,19 +3540,19 @@
             "type": "boolean"
           },
           "gpu_exclusive": {
-            "description": "Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).",
+            "description": "Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`gpu_queue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).",
             "title": "Gpu Exclusive",
             "type": "string"
+          },
+          "gpu_queue": {
+            "description": "Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).",
+            "title": "Gpu Queue",
+            "type": "boolean"
           },
           "gpu_shared": {
             "description": "Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.",
             "title": "Gpu Shared",
             "type": "string"
-          },
-          "kueue": {
-            "description": "Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).",
-            "title": "Kueue",
-            "type": "boolean"
           },
           "lim_cpu": {
             "description": "The namespace's total CPU limit, a CPU quantity such as `16`.",
@@ -3623,7 +3623,7 @@
           "namespace",
           "cluster",
           "tier",
-          "kueue",
+          "gpu_queue",
           "req_cpu",
           "req_mem",
           "lim_cpu",
@@ -3678,7 +3678,7 @@
                 "type": "null"
               }
             ],
-            "description": "Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`). `null` returns the key to the tier default.",
+            "description": "Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`gpu_queue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`). `null` returns the key to the tier default.",
             "title": "Gpu Exclusive"
           },
           "gpu_shared": {
@@ -3841,19 +3841,19 @@
             "type": "boolean"
           },
           "gpu_exclusive": {
-            "description": "Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).",
+            "description": "Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`gpu_queue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).",
             "title": "Gpu Exclusive",
             "type": "string"
+          },
+          "gpu_queue": {
+            "description": "Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).",
+            "title": "Gpu Queue",
+            "type": "boolean"
           },
           "gpu_shared": {
             "description": "Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.",
             "title": "Gpu Shared",
             "type": "string"
-          },
-          "kueue": {
-            "description": "Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).",
-            "title": "Kueue",
-            "type": "boolean"
           },
           "lim_cpu": {
             "description": "The namespace's total CPU limit, a CPU quantity such as `16`.",
@@ -3954,7 +3954,7 @@
           "namespace",
           "cluster",
           "tier",
-          "kueue",
+          "gpu_queue",
           "req_cpu",
           "req_mem",
           "lim_cpu",
@@ -21097,7 +21097,7 @@
                 }
               }
             },
-            "description": "An ATAILA platform project (`platform_project_read_only`), or the portal's quota rules refused the change (`quota_conflict`; `detail` says which): the guaranteed GPU floors of the namespaces on the cluster would exceed its tenant cards; `gpu_shared` would rise while no cluster offers time-sliced units; a retired project asked for anything but a lower GPU quota; or the project changed while the change was prepared (retry).",
+            "description": "An ATAILA platform project (`platform_project_read_only`), or the portal's quota rules refused the change (`quota_conflict`; `detail` says which): the guaranteed GPU floors of the namespaces on the cluster would exceed its tenant cards; `gpu_shared` would rise on a cluster whose time-sliced capacity is not registered yet (where no time-sliced node exists at all, that is a 422); a retired project asked for anything but a lower GPU quota; or the project changed while the change was prepared (retry).",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"
@@ -21341,7 +21341,7 @@
                 }
               }
             },
-            "description": "An ATAILA platform project (`platform_project_read_only`), or the portal's quota rules refused the change (`quota_conflict`; `detail` says which): the guaranteed GPU floors of the namespaces on the cluster would exceed its tenant cards; `gpu_shared` would rise while no cluster offers time-sliced units; a retired project asked for anything but a lower GPU quota; or the project changed while the change was prepared (retry).",
+            "description": "An ATAILA platform project (`platform_project_read_only`), or the portal's quota rules refused the change (`quota_conflict`; `detail` says which): the guaranteed GPU floors of the namespaces on the cluster would exceed its tenant cards; `gpu_shared` would rise on a cluster whose time-sliced capacity is not registered yet (where no time-sliced node exists at all, that is a 422); a retired project asked for anything but a lower GPU quota; or the project changed while the change was prepared (retry).",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"

@@ -3855,14 +3855,14 @@ type KubernetesQuota struct {
 	// GpuEnabled Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
 	GpuEnabled bool `json:"gpu_enabled"`
 
-	// GpuExclusive Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+	// GpuExclusive Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`gpu_queue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
 	GpuExclusive string `json:"gpu_exclusive"`
+
+	// GpuQueue Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
+	GpuQueue bool `json:"gpu_queue"`
 
 	// GpuShared Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.
 	GpuShared string `json:"gpu_shared"`
-
-	// Kueue Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
-	Kueue bool `json:"kueue"`
 
 	// LimCpu The namespace's total CPU limit, a CPU quantity such as `16`.
 	LimCpu string `json:"lim_cpu"`
@@ -3916,7 +3916,7 @@ type KubernetesQuotaPatch struct {
 	// GpuBorrow Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card. `null` returns the key to the tier default.
 	GpuBorrow *string `json:"gpu_borrow,omitempty"`
 
-	// GpuExclusive Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`). `null` returns the key to the tier default.
+	// GpuExclusive Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`gpu_queue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`). `null` returns the key to the tier default.
 	GpuExclusive *string `json:"gpu_exclusive,omitempty"`
 
 	// GpuShared Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants. `null` returns the key to the tier default.
@@ -3970,14 +3970,14 @@ type KubernetesQuotaUpdated struct {
 	// GpuEnabled Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
 	GpuEnabled bool `json:"gpu_enabled"`
 
-	// GpuExclusive Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+	// GpuExclusive Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`gpu_queue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
 	GpuExclusive string `json:"gpu_exclusive"`
+
+	// GpuQueue Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
+	GpuQueue bool `json:"gpu_queue"`
 
 	// GpuShared Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.
 	GpuShared string `json:"gpu_shared"`
-
-	// Kueue Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
-	Kueue bool `json:"kueue"`
 
 	// LimCpu The namespace's total CPU limit, a CPU quantity such as `16`.
 	LimCpu string `json:"lim_cpu"`

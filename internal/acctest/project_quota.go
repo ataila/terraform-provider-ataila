@@ -69,15 +69,15 @@ func quotaValueError(key, value string) string {
 	return fmt.Sprintf("k8s quota %s: %q is not %s.", key, value, hint)
 }
 
-// SetKueueCluster makes a cluster run the GPU queue with the given tenant
+// SetGPUQueueCluster makes a cluster run the GPU queue with the given tenant
 // cards (0 cards: the queue runs, every floor is refused).
-func (m *MockAPI) SetKueueCluster(name string, cards int) {
+func (m *MockAPI) SetGPUQueueCluster(name string, cards int) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	if m.projects.kueueCards == nil {
-		m.projects.kueueCards = map[string]int{}
+	if m.projects.gpuQueueCards == nil {
+		m.projects.gpuQueueCards = map[string]int{}
 	}
-	m.projects.kueueCards[name] = cards
+	m.projects.gpuQueueCards[name] = cards
 }
 
 // ServeProjectQuota false makes the mock a platform release older than
@@ -87,6 +87,15 @@ func (m *MockAPI) ServeProjectQuota(on bool) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.projects.quotaOff = !on
+}
+
+// FailReadAfterNextQuota makes the project read that follows the next quota
+// PATCH answered 200 fail (a 403 problem): the read-back after a quota change
+// is lost, while the change itself is stored.
+func (m *MockAPI) FailReadAfterNextQuota() {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.projects.readFailsNext = true
 }
 
 // SetProjectQuota sets a project's overrides for one environment out of band,
@@ -159,7 +168,7 @@ func (p *mockProject) quotaEffective(env string) map[string]string {
 func (m *MockAPI) quotaEnvWire(p *mockProject, env string) map[string]any {
 	eff := p.quotaEffective(env)
 	cluster := quotaClusters[env]
-	_, kueue := m.projects.kueueCards[cluster]
+	_, queue := m.projects.gpuQueueCards[cluster]
 	keys := []string{}
 	for _, k := range quotaKeys {
 		if _, ok := p.quota[env][k]; ok {
@@ -174,7 +183,7 @@ func (m *MockAPI) quotaEnvWire(p *mockProject, env string) map[string]any {
 	}
 	out := map[string]any{
 		"env": env, "namespace": p.short + "-" + env, "cluster": cluster, "tier": quotaTier(env),
-		"kueue": kueue, "gpu_enabled": gpu, "overridden": len(keys) > 0, "overridden_keys": keys,
+		"gpu_queue": queue, "gpu_enabled": gpu, "overridden": len(keys) > 0, "overridden_keys": keys,
 	}
 	for _, k := range quotaKeys {
 		out[k] = eff[k]
@@ -221,14 +230,14 @@ func quotaProject(c *call, p *mockProject) *reply {
 // quotaGuards are the compiler's and the cohort's rules on the merged quota.
 func (m *MockAPI) quotaGuards(c *call, p *mockProject, env string, merged map[string]string) *reply {
 	cluster := quotaClusters[env]
-	cards, kueue := m.projects.kueueCards[cluster]
+	cards, queue := m.projects.gpuQueueCards[cluster]
 	gpu := false
 	for k := range quotaGPUKeys {
 		if n, _ := strconv.Atoi(merged[k]); n > 0 {
 			gpu = true
 		}
 	}
-	if gpu && !kueue {
+	if gpu && !queue {
 		r := c.problem(http.StatusUnprocessableEntity, "quota_refused",
 			fmt.Sprintf("Cluster %s (%s-%s) runs no Kueue, so it takes no GPU quota: gpu_exclusive, gpu_shared "+
 				"and gpu_borrow must stay 0 there.", cluster, p.short, env), nil)
@@ -393,6 +402,12 @@ func (m *MockAPI) projectQuotaUpdate(c *call, raw, env string) reply {
 	}
 	p.quotaReason[env] = strings.TrimSpace(reason)
 	m.projects.quotaPatches++
+	if m.projects.readFailsNext {
+		m.projects.readFailsNext = false
+		path := fmt.Sprintf("/projects/%d", p.id)
+		m.faults[path] = append(m.faults[path], Fault{Status: http.StatusForbidden, Code: "forbidden",
+			Method: http.MethodGet})
+	}
 	return ok(http.StatusOK, m.quotaUpdated(p, env))
 }
 

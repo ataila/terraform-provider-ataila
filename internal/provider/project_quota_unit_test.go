@@ -8,6 +8,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	"github.com/ataila/terraform-provider-ataila/internal/client"
 )
 
 // A respelling the platform reads as the same value is no change; anything
@@ -39,7 +41,7 @@ func quotaEnv(t *testing.T, values map[string]string, reason *string, overridden
 	t.Helper()
 	v := map[string]attr.Value{
 		"namespace": types.StringValue("shop-prod"), "cluster": types.StringValue("c"), "tier": types.StringValue("prod"),
-		"kueue": types.BoolValue(true), "gpu_enabled": types.BoolValue(false), "overridden": types.BoolValue(len(overridden) > 0),
+		"gpu_queue": types.BoolValue(true), "gpu_enabled": types.BoolValue(false), "overridden": types.BoolValue(len(overridden) > 0),
 	}
 	keys := make([]attr.Value, 0, len(overridden))
 	for _, k := range overridden {
@@ -101,5 +103,27 @@ func TestQuotaPatches(t *testing.T) {
 	defaulted := quotaPatches(quotaOf(t, quotaEnv(t, map[string]string{"pods": "25"}, nil)), bare)
 	if p := defaulted["prod"]; p["reason"] != defaultQuotaReason {
 		t.Errorf("no reason given: %v, want the default text", defaulted)
+	}
+}
+
+// withQuotaAnswers lays each answered environment over the project's quota and
+// leaves the rest, and the answer it was given, as they were.
+func TestWithQuotaAnswers(t *testing.T) {
+	p := client.ProjectData{"short_name": "shop", "k8s_quota": map[string]any{
+		"dev": map[string]any{"pods": "20"}, "prod": map[string]any{"pods": "30"}}}
+	got := withQuotaAnswers(p, map[string]client.ProjectData{"prod": {"pods": "40", "stale_stages": []any{}}})
+	quota := got["k8s_quota"].(map[string]any)
+	if quota["prod"].(map[string]any)["pods"] != "40" || quota["dev"].(map[string]any)["pods"] != "20" {
+		t.Fatalf("k8s_quota = %v", quota)
+	}
+	if p["k8s_quota"].(map[string]any)["prod"].(map[string]any)["pods"] != "30" {
+		t.Fatal("the project answer was modified")
+	}
+	if got["short_name"] != "shop" {
+		t.Fatalf("short_name = %v", got["short_name"])
+	}
+	vm := client.ProjectData{"short_name": "vm"}
+	if withQuotaAnswers(vm, map[string]client.ProjectData{"prod": {}})["k8s_quota"] != nil {
+		t.Fatal("a project without k8s_quota gained one")
 	}
 }

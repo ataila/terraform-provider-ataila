@@ -41,7 +41,7 @@ var quotaReadOnly = map[string]attr.Type{
 	"namespace":       types.StringType,
 	"cluster":         types.StringType,
 	"tier":            types.StringType,
-	"kueue":           types.BoolType,
+	"gpu_queue":       types.BoolType,
 	"gpu_enabled":     types.BoolType,
 	"overridden":      types.BoolType,
 	"overridden_keys": types.ListType{ElemType: types.StringType},
@@ -96,7 +96,7 @@ const quotaResourceDoc = quotaAttrDoc + "\n\n" +
 	"GitOps stages itself. A key left out keeps its current value; setting a key to the tier default's value " +
 	"keeps an override with that value (the portal's reset drops an environment's overrides altogether). A " +
 	"count may be spelled with leading zeros (`\"040\"` is 40): the state keeps the configuration's spelling. A " +
-	"GPU key above `0` is admitted only where the environment's cluster runs the GPU queue (`kueue`), and the " +
+	"GPU key above `0` is admitted only where the environment's cluster runs the GPU queue (`gpu_queue`), and the " +
 	"guaranteed floors of every namespace on one cluster may not exceed its tenant cards; the platform refuses " +
 	"otherwise and the apply fails with its message, nothing stored. Any change here needs a token holding " +
 	"`k8s-gpu-admin-global`; reading needs only the project read permission. Needs a platform release that " +
@@ -220,7 +220,7 @@ func quotaEnvValue(entry map[string]any, prior map[string]attr.Value, withReason
 		s, _ := entry[k].(string)
 		v[k] = nullIfEmpty(s)
 	}
-	for _, k := range []string{"kueue", "gpu_enabled", "overridden"} {
+	for _, k := range []string{"gpu_queue", "gpu_enabled", "overridden"} {
 		b, _ := entry[k].(bool)
 		v[k] = types.BoolValue(b)
 	}
@@ -465,24 +465,49 @@ func quotaPrior(plan, state attr.Value, unapplied map[string]bool) attr.Value {
 
 // quotaUnapplied are the environments whose request was needed but did not go
 // through: the refused one and every one after it.
-func quotaUnapplied(patches map[string]client.Patch, done map[string]bool) map[string]bool {
+func quotaUnapplied(patches map[string]client.Patch, done map[string]client.ProjectData) map[string]bool {
 	out := map[string]bool{}
 	for env := range patches {
-		if !done[env] {
+		if _, ok := done[env]; !ok {
 			out[env] = true
 		}
 	}
 	return out
 }
 
+// withQuotaAnswers is the project answer p with each environment a quota
+// request went through for replaced by the platform's answer to that request
+// (the same members, the environment's new effective quota): what the state
+// records when reading the project back after the requests fails. p itself is
+// not modified.
+func withQuotaAnswers(p client.ProjectData, done map[string]client.ProjectData) client.ProjectData {
+	raw, _ := p["k8s_quota"].(map[string]any)
+	if raw == nil || len(done) == 0 {
+		return p
+	}
+	quota := make(map[string]any, len(raw))
+	for env, v := range raw {
+		quota[env] = v
+	}
+	for env, answer := range done {
+		quota[env] = map[string]any(answer)
+	}
+	out := make(client.ProjectData, len(p))
+	for k, v := range p {
+		out[k] = v
+	}
+	out["k8s_quota"] = quota
+	return out
+}
+
 // applyQuota sends the quota requests the plan needs, one PATCH per
 // environment in the platform's order, and explains a refusal. It stops at the
-// first refusal and returns the API's warnings and the environments whose
-// request went through.
+// first refusal and returns the API's warnings and, per environment whose
+// request went through, the platform's answer to it.
 func applyQuota(ctx context.Context, api *client.API, id, ident string, patches map[string]client.Patch,
-	diags *diag.Diagnostics) ([]client.ApiWarning, map[string]bool, bool) {
+	diags *diag.Diagnostics) ([]client.ApiWarning, map[string]client.ProjectData, bool) {
 	var warnings []client.ApiWarning
-	done := map[string]bool{}
+	done := map[string]client.ProjectData{}
 	for _, env := range quotaEnvs {
 		patch, ok := patches[env]
 		if !ok {
@@ -494,7 +519,7 @@ func applyQuota(ctx context.Context, api *client.API, id, ident string, patches 
 			diags.Append(quotaWriteError(doing, ident, env, err))
 			return warnings, done, false
 		}
-		done[env] = true
+		done[env] = p
 		_, ws := projectWarnings(p)
 		addWarnings(diags, doing, ws)
 		warnings = append(warnings, *ws...)
@@ -528,7 +553,7 @@ func quotaWriteError(doing, ident, env string, err error) diag.Diagnostic {
 	case client.CodeQuotaRefused:
 		return diag.NewErrorDiagnostic(fmt.Sprintf("The platform refused the %s quota", env),
 			fmt.Sprintf("While %s, the platform's quota rules refused a value: a malformed quantity, a GPU key "+
-				"above 0 on a cluster that runs no GPU queue (k8s_quota.%s.kueue is false), or gpu_shared above "+
+				"above 0 on a cluster that runs no GPU queue (k8s_quota.%s.gpu_queue is false), or gpu_shared above "+
 				"0 where no time-sliced node exists. Nothing was stored.\n\n%s", doing, env, apiErr.Detail()))
 	case client.CodeQuotaConflict:
 		return diag.NewErrorDiagnostic(fmt.Sprintf("The %s quota conflicts with the cluster's capacity", env),
