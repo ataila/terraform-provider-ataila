@@ -570,4 +570,4 @@ Registering the provider, once, after the first published release (1.0.0):
 
 ## Licence
 
-Copyright (c) 2026 Macskásy Attila. Licensed under the [Mozilla Public License 2.0](LICENSE).
+Copyright (c) 2026 ATAILA Kft. Licensed under the [Mozilla Public License 2.0](LICENSE).

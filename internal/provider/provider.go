@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Macskásy Attila
+// Copyright (c) 2026 ATAILA Kft.
 // SPDX-License-Identifier: MPL-2.0
 
 // Package provider implements the ATAILA provider for OpenTofu and Terraform.

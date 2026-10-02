@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Macskásy Attila
+// Copyright (c) 2026 ATAILA Kft.
 // SPDX-License-Identifier: MPL-2.0
 
 // Command github-release publishes the signed release files that the release

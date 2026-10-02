@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (c) 2026 Macskásy Attila
+# Copyright (c) 2026 ATAILA Kft.
 # SPDX-License-Identifier: MPL-2.0
 #
 # Toolchain for CI jobs on a Linux shell runner. Source this file, then call
