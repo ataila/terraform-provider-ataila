@@ -220,6 +220,40 @@ func TestAccProvider_RefusesAnotherAPIMajor(t *testing.T) {
 	})
 }
 
+// The API version alone cannot tell an older platform apart (API 1.0.0 since
+// platform 1.0.155): a platform before 1.0.187 is refused at Configure, before
+// any read or write; 1.0.187 and later are accepted.
+func TestAccProvider_PlatformRelease(t *testing.T) {
+	for _, c := range []struct {
+		release string
+		refused bool
+	}{
+		{"1.0.176", true}, // renamed, but no declared Idempotency-Key or Location
+		{"1.0.155", true}, // API 1.0.0 with the pre-rename names
+		{"1.0.186", true},
+		{"banana", true},
+		{"1.0.187", false},
+		{"1.0.196", false},
+		{"1.1.0", false},
+	} {
+		t.Run(c.release, func(t *testing.T) {
+			m := acctest.NewMockAPI(t)
+			m.UseEnv(t)
+			m.SetMeta(func(meta map[string]any) { meta["platform_version"] = c.release })
+			step := resource.TestStep{Config: metaConfig}
+			if c.refused {
+				step.ExpectError = words("Unsupported ATAILA platform release")
+			} else {
+				step.Check = resource.TestCheckResourceAttr("data.ataila_meta.this", "platform_version", c.release)
+			}
+			resource.Test(t, resource.TestCase{ProtoV6ProviderFactories: protoV6, Steps: []resource.TestStep{step}})
+			if c.refused && m.Hits("/whoami") != 0 {
+				t.Error("the provider went on after refusing the platform")
+			}
+		})
+	}
+}
+
 func TestAccProvider_UnavailableAfterRetries(t *testing.T) {
 	m := acctest.NewMockAPI(t)
 	m.UseEnv(t)

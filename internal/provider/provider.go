@@ -210,6 +210,12 @@ func (p *ataProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		resp.Diagnostics.AddError("Unsupported ATAILA API version", upperFirst(err.Error())+".")
 		return
 	}
+	// The API version has been 1.0.0 since platform 1.0.155; the platform
+	// release says whether the contract this provider vendors is served.
+	if err := client.CheckPlatformVersion(meta.PlatformVersion); err != nil {
+		resp.Diagnostics.AddError("Unsupported ATAILA platform release", upperFirst(err.Error())+".")
+		return
+	}
 	tflog.Debug(ctx, "configured ATAILA provider", map[string]interface{}{
 		"api_version":      meta.ApiVersion,
 		"platform_version": meta.PlatformVersion,

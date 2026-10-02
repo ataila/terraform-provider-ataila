@@ -16,7 +16,10 @@ or renamed, and the platform's API v1 changes only by addition.
 ### Contract
 
 - The platform's `/api/v1` of platform release 1.0.187 (API 1.0.0), vendored as the platform exports it
-  (`api/openapi-v1.json`). The provider works with API 1.0.0 and later within major version 1.
+  (`api/openapi-v1.json`). The provider needs platform release 1.0.187 or later (API 1.0.0 or later within
+  major version 1) and refuses an older platform when it is configured, naming the minimum: every platform
+  since 1.0.155 serves API 1.0.0, but before 1.0.176 the members had other names, and before 1.0.187 the
+  `Idempotency-Key` parameter and the `Location` header were not declared.
 
 ### Provider objects
 

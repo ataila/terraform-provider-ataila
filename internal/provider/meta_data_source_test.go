@@ -20,7 +20,7 @@ func TestAccMetaDataSource(t *testing.T) {
 			Config: metaConfig,
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("data.ataila_meta.this", "api_version", "1.0.0"),
-				resource.TestCheckResourceAttr("data.ataila_meta.this", "platform_version", "1.0.0"),
+				resource.TestCheckResourceAttr("data.ataila_meta.this", "platform_version", "1.0.187"),
 				resource.TestCheckResourceAttr("data.ataila_meta.this", "tier", "standard"),
 				resource.TestCheckResourceAttr("data.ataila_meta.this", "tenancy_mode", "multi"),
 				resource.TestCheckResourceAttr("data.ataila_meta.this", "modules.#", "2"),

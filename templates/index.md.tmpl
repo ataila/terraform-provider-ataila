@@ -41,7 +41,9 @@ Problems and questions: support@ataila.com. Documentation: <https://www.ataila.e
 ## Behaviour
 
 - On start the provider reads `GET /api/v1/meta` and refuses a platform whose API major version is not 1,
-  or whose API is older than this provider release needs.
+  or whose release is older than **1.0.187**, the contract this provider release is built on: every platform
+  since 1.0.155 serves API 1.0.0, but before 1.0.176 the API named its members differently, and before 1.0.187
+  it did not declare the `Idempotency-Key` parameter and the `Location` header the provider relies on.
 - Requests answered with 429, 502, 503 or 504 are retried with backoff, honouring `Retry-After`.
   Nothing else is retried.
 - A refusal by the platform licence (HTTP 403 with a code starting `licence_`) is final; the error

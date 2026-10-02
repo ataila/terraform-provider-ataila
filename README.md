@@ -166,7 +166,9 @@ Without any network at all, leave the `direct` block out. The configuration keep
 ### What the provider does on every run
 
 - Reads `GET /api/v1/meta` when it is configured and refuses a platform whose API major version is not 1, or
-  whose API is older than the minimum this release needs.
+  whose release (`platform_version`) is older than 1.0.187, the contract this release vendors. The API version
+  alone cannot tell: every platform since 1.0.155 serves API 1.0.0, but before 1.0.176 the API named its members
+  differently, and before 1.0.187 it did not declare the `Idempotency-Key` parameter and the `Location` header.
 - Sends `Authorization: Bearer <token>` and `User-Agent: terraform-provider-ataila/<version>`.
 - Retries with backoff only on 429, 502, 503 and 504, honouring `Retry-After`. No other answer is retried.
 - Treats a licence refusal (403 whose `code` starts with `licence_`) as final and quotes the platform's remedy.

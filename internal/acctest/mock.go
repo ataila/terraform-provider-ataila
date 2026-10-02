@@ -155,7 +155,7 @@ func NewMockAPI(t testing.TB) *MockAPI {
 func DefaultMeta() map[string]any {
 	return map[string]any{
 		"api_version":             "1.0.0",
-		"platform_version":        "1.0.0",
+		"platform_version":        "1.0.187",
 		"tier":                    "standard",
 		"tenancy_mode":            "multi",
 		"modules":                 []string{"ai-gateway", "sp-mode"},

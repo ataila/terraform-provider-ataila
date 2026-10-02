@@ -178,3 +178,32 @@ func TestCheckAPIVersion(t *testing.T) {
 		t.Errorf("the minimum itself was refused: %v", err)
 	}
 }
+
+func TestCheckPlatformVersion(t *testing.T) {
+	if MinimumPlatformVersion != "1.0.187" {
+		t.Fatalf("MinimumPlatformVersion = %s; the vendored contract is that of 1.0.187", MinimumPlatformVersion)
+	}
+	for _, v := range []string{"1.0.187", "1.0.196", "v1.0.188", "1.1.0", "1.0.188-rc.1", "2.0.0"} {
+		if err := CheckPlatformVersion(v); err != nil {
+			t.Errorf("CheckPlatformVersion(%q) = %v", v, err)
+		}
+	}
+	for v, want := range map[string]string{
+		"1.0.176":      "older than 1.0.187",
+		"1.0.155":      "older than 1.0.187",
+		"1.0.187-rc.1": "older than 1.0.187",
+		"0.9.0":        "older than 1.0.187",
+		"dev":          "not a semantic version",
+		"":             "not a semantic version",
+	} {
+		err := CheckPlatformVersion(v)
+		var ve *VersionError
+		if !errors.As(err, &ve) || !strings.Contains(err.Error(), want) {
+			t.Errorf("CheckPlatformVersion(%q) = %v, want %q", v, err, want)
+		}
+	}
+	if err := CheckPlatformVersion("1.0.176"); !strings.Contains(err.Error(), "Idempotency-Key") ||
+		!strings.Contains(err.Error(), "Upgrade the platform to 1.0.187") {
+		t.Errorf("the refusal does not say why or what to do: %v", err)
+	}
+}
