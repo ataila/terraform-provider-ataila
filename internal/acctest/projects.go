@@ -148,6 +148,8 @@ type mockProject struct {
 	stages                        map[string]*mockStage
 	stale                         map[string]bool
 	members                       map[string]*mockProjectMember
+	quota                         map[string]map[string]string // env -> the keys set (k8s_quota)
+	quotaReason                   map[string]string            // env -> the reason of the last PATCH
 }
 
 type mockOrch struct {
@@ -168,6 +170,9 @@ type projectsState struct {
 	manualStage  map[string]int // polls a stage waits for an operator; <0 for good
 	instant      bool           // a start runs every stage at once
 	nextRun      int            // stage run ids
+	kueueCards   map[string]int // clusters that run the GPU queue -> tenant cards
+	quotaPatches int            // quota PATCHes answered 200
+	quotaOff     bool           // a platform older than k8s_quota: no member, no route
 }
 
 func newProjectsState() *projectsState {
@@ -457,6 +462,9 @@ func (m *MockAPI) projectWire(p *mockProject, extra map[string]any) map[string]a
 	} {
 		out[k] = v
 	}
+	if !m.projects.quotaOff {
+		out["k8s_quota"] = m.projectQuota(p)
+	}
 	for k, v := range extra {
 		out[k] = v
 	}
@@ -517,6 +525,13 @@ func (m *MockAPI) routeProjects(c *call) reply {
 			return m.projectMemberPut(c, parts[1], parts[3])
 		case http.MethodDelete:
 			return m.projectMemberDelete(c, parts[1], parts[3])
+		}
+	case len(parts) == 4 && parts[2] == "k8s-quota" && !m.projects.quotaOff:
+		switch method {
+		case http.MethodPatch:
+			return m.projectQuotaUpdate(c, parts[1], parts[3])
+		case http.MethodDelete:
+			return m.projectQuotaReset(c, parts[1], parts[3])
 		}
 	default:
 		return c.problem(http.StatusNotFound, "not_found", "", nil)

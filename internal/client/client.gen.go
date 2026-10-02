@@ -411,6 +411,123 @@ func (e GatewayKeyPatchEnv) Valid() bool {
 	}
 }
 
+// Defines values for KubernetesQuotaEnv.
+const (
+	KubernetesQuotaEnvDev  KubernetesQuotaEnv = "dev"
+	KubernetesQuotaEnvProd KubernetesQuotaEnv = "prod"
+	KubernetesQuotaEnvUat  KubernetesQuotaEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the KubernetesQuotaEnv enum.
+func (e KubernetesQuotaEnv) Valid() bool {
+	switch e {
+	case KubernetesQuotaEnvDev:
+		return true
+	case KubernetesQuotaEnvProd:
+		return true
+	case KubernetesQuotaEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for KubernetesQuotaTier.
+const (
+	KubernetesQuotaTierNonprod KubernetesQuotaTier = "nonprod"
+	KubernetesQuotaTierProd    KubernetesQuotaTier = "prod"
+)
+
+// Valid indicates whether the value is a known member of the KubernetesQuotaTier enum.
+func (e KubernetesQuotaTier) Valid() bool {
+	switch e {
+	case KubernetesQuotaTierNonprod:
+		return true
+	case KubernetesQuotaTierProd:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for KubernetesQuotaUpdatedDispatchStatus.
+const (
+	KubernetesQuotaUpdatedDispatchStatusAlreadyRunning   KubernetesQuotaUpdatedDispatchStatus = "already_running"
+	KubernetesQuotaUpdatedDispatchStatusBusy             KubernetesQuotaUpdatedDispatchStatus = "busy"
+	KubernetesQuotaUpdatedDispatchStatusDispatchFailed   KubernetesQuotaUpdatedDispatchStatus = "dispatch_failed"
+	KubernetesQuotaUpdatedDispatchStatusNotProvisioned   KubernetesQuotaUpdatedDispatchStatus = "not_provisioned"
+	KubernetesQuotaUpdatedDispatchStatusPartial          KubernetesQuotaUpdatedDispatchStatus = "partial"
+	KubernetesQuotaUpdatedDispatchStatusResumed          KubernetesQuotaUpdatedDispatchStatus = "resumed"
+	KubernetesQuotaUpdatedDispatchStatusStaleNotRecorded KubernetesQuotaUpdatedDispatchStatus = "stale_not_recorded"
+	KubernetesQuotaUpdatedDispatchStatusStarted          KubernetesQuotaUpdatedDispatchStatus = "started"
+	KubernetesQuotaUpdatedDispatchStatusUnchanged        KubernetesQuotaUpdatedDispatchStatus = "unchanged"
+)
+
+// Valid indicates whether the value is a known member of the KubernetesQuotaUpdatedDispatchStatus enum.
+func (e KubernetesQuotaUpdatedDispatchStatus) Valid() bool {
+	switch e {
+	case KubernetesQuotaUpdatedDispatchStatusAlreadyRunning:
+		return true
+	case KubernetesQuotaUpdatedDispatchStatusBusy:
+		return true
+	case KubernetesQuotaUpdatedDispatchStatusDispatchFailed:
+		return true
+	case KubernetesQuotaUpdatedDispatchStatusNotProvisioned:
+		return true
+	case KubernetesQuotaUpdatedDispatchStatusPartial:
+		return true
+	case KubernetesQuotaUpdatedDispatchStatusResumed:
+		return true
+	case KubernetesQuotaUpdatedDispatchStatusStaleNotRecorded:
+		return true
+	case KubernetesQuotaUpdatedDispatchStatusStarted:
+		return true
+	case KubernetesQuotaUpdatedDispatchStatusUnchanged:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for KubernetesQuotaUpdatedEnv.
+const (
+	KubernetesQuotaUpdatedEnvDev  KubernetesQuotaUpdatedEnv = "dev"
+	KubernetesQuotaUpdatedEnvProd KubernetesQuotaUpdatedEnv = "prod"
+	KubernetesQuotaUpdatedEnvUat  KubernetesQuotaUpdatedEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the KubernetesQuotaUpdatedEnv enum.
+func (e KubernetesQuotaUpdatedEnv) Valid() bool {
+	switch e {
+	case KubernetesQuotaUpdatedEnvDev:
+		return true
+	case KubernetesQuotaUpdatedEnvProd:
+		return true
+	case KubernetesQuotaUpdatedEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for KubernetesQuotaUpdatedTier.
+const (
+	KubernetesQuotaUpdatedTierNonprod KubernetesQuotaUpdatedTier = "nonprod"
+	KubernetesQuotaUpdatedTierProd    KubernetesQuotaUpdatedTier = "prod"
+)
+
+// Valid indicates whether the value is a known member of the KubernetesQuotaUpdatedTier enum.
+func (e KubernetesQuotaUpdatedTier) Valid() bool {
+	switch e {
+	case KubernetesQuotaUpdatedTierNonprod:
+		return true
+	case KubernetesQuotaUpdatedTierProd:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for LicenceState.
 const (
 	LicenceStateACTIVE            LicenceState = "ACTIVE"
@@ -2457,6 +2574,48 @@ func (e ProjectsListParamsStatus) Valid() bool {
 	}
 }
 
+// Defines values for ProjectK8sQuotaResetParamsEnv.
+const (
+	ProjectK8sQuotaResetParamsEnvDev  ProjectK8sQuotaResetParamsEnv = "dev"
+	ProjectK8sQuotaResetParamsEnvProd ProjectK8sQuotaResetParamsEnv = "prod"
+	ProjectK8sQuotaResetParamsEnvUat  ProjectK8sQuotaResetParamsEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the ProjectK8sQuotaResetParamsEnv enum.
+func (e ProjectK8sQuotaResetParamsEnv) Valid() bool {
+	switch e {
+	case ProjectK8sQuotaResetParamsEnvDev:
+		return true
+	case ProjectK8sQuotaResetParamsEnvProd:
+		return true
+	case ProjectK8sQuotaResetParamsEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectK8sQuotaUpdateParamsEnv.
+const (
+	ProjectK8sQuotaUpdateParamsEnvDev  ProjectK8sQuotaUpdateParamsEnv = "dev"
+	ProjectK8sQuotaUpdateParamsEnvProd ProjectK8sQuotaUpdateParamsEnv = "prod"
+	ProjectK8sQuotaUpdateParamsEnvUat  ProjectK8sQuotaUpdateParamsEnv = "uat"
+)
+
+// Valid indicates whether the value is a known member of the ProjectK8sQuotaUpdateParamsEnv enum.
+func (e ProjectK8sQuotaUpdateParamsEnv) Valid() bool {
+	switch e {
+	case ProjectK8sQuotaUpdateParamsEnvDev:
+		return true
+	case ProjectK8sQuotaUpdateParamsEnvProd:
+		return true
+	case ProjectK8sQuotaUpdateParamsEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ReleaseOperationsListParamsStatus.
 const (
 	ReleaseOperationsListParamsStatusAwaitingApproval ReleaseOperationsListParamsStatus = "awaiting_approval"
@@ -3673,6 +3832,205 @@ type KubernetesNamespace struct {
 	Namespace string `json:"namespace"`
 }
 
+// KubernetesQuota One environment's namespace quota on the Kubernetes backend: the EFFECTIVE
+// values (the tier default with this project's overrides merged over it), which
+// keys are overridden, the cluster the namespace lands on and whether that
+// cluster runs the GPU queue. GPU quota is in whole cards (`gpu_exclusive`, the
+// guaranteed floor; `gpu_borrow`, idle cards the namespace may borrow; `fair_weight`,
+// its share when borrowers compete); `gpu_shared` counts time-sliced units, which
+// exist only on a dedicated time-sliced node.
+type KubernetesQuota struct {
+	// Cluster The cluster the namespace lands on.
+	Cluster string `json:"cluster"`
+
+	// Env The environment: `dev`, `uat` or `prod`.
+	Env KubernetesQuotaEnv `json:"env"`
+
+	// FairWeight The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`.
+	FairWeight string `json:"fair_weight"`
+
+	// GpuBorrow Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card.
+	GpuBorrow string `json:"gpu_borrow"`
+
+	// GpuEnabled Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
+	GpuEnabled bool `json:"gpu_enabled"`
+
+	// GpuExclusive Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+	GpuExclusive string `json:"gpu_exclusive"`
+
+	// GpuShared Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.
+	GpuShared string `json:"gpu_shared"`
+
+	// Kueue Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
+	Kueue bool `json:"kueue"`
+
+	// LimCpu The namespace's total CPU limit, a CPU quantity such as `16`.
+	LimCpu string `json:"lim_cpu"`
+
+	// LimMem The namespace's total memory limit, with a unit, such as `32Gi`.
+	LimMem string `json:"lim_mem"`
+
+	// Namespace The environment's namespace.
+	Namespace string `json:"namespace"`
+
+	// Overridden Whether the environment has an override at all (`overridden_keys` names the keys). False: every value is the tier default.
+	Overridden bool `json:"overridden"`
+
+	// OverriddenKeys The keys set for this environment, in the order above.
+	OverriddenKeys *[]string `json:"overridden_keys,omitempty"`
+
+	// Pods How many pods the namespace may run, a whole number.
+	Pods string `json:"pods"`
+
+	// Pvc How many persistent volume claims the namespace may hold, a whole number.
+	Pvc string `json:"pvc"`
+
+	// ReqCpu CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`.
+	ReqCpu string `json:"req_cpu"`
+
+	// ReqMem Memory the namespace may request in total, with a unit, such as `16Gi`.
+	ReqMem string `json:"req_mem"`
+
+	// Storage Total persistent storage the namespace may claim, with a unit, such as `200Gi`.
+	Storage string `json:"storage"`
+
+	// Tier Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.
+	Tier KubernetesQuotaTier `json:"tier"`
+}
+
+// KubernetesQuotaEnv The environment: `dev`, `uat` or `prod`.
+type KubernetesQuotaEnv string
+
+// KubernetesQuotaTier Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.
+type KubernetesQuotaTier string
+
+// KubernetesQuotaPatch JSON Merge Patch (RFC 7396): a member that is omitted keeps its current
+// value; a member sent as `null` clears the field when the field is nullable
+// (every quota key is: `null` returns that key to the tier default), and
+// `null` for `reason` is a 422. Values are Kubernetes quantities as strings;
+// a JSON number is accepted for a count. At least one quota key must be sent.
+type KubernetesQuotaPatch struct {
+	// FairWeight The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`. `null` returns the key to the tier default.
+	FairWeight *string `json:"fair_weight,omitempty"`
+
+	// GpuBorrow Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card. `null` returns the key to the tier default.
+	GpuBorrow *string `json:"gpu_borrow,omitempty"`
+
+	// GpuExclusive Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`). `null` returns the key to the tier default.
+	GpuExclusive *string `json:"gpu_exclusive,omitempty"`
+
+	// GpuShared Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants. `null` returns the key to the tier default.
+	GpuShared *string `json:"gpu_shared,omitempty"`
+
+	// LimCpu The namespace's total CPU limit, a CPU quantity such as `16`. `null` returns the key to the tier default.
+	LimCpu *string `json:"lim_cpu,omitempty"`
+
+	// LimMem The namespace's total memory limit, with a unit, such as `32Gi`. `null` returns the key to the tier default.
+	LimMem *string `json:"lim_mem,omitempty"`
+
+	// Pods How many pods the namespace may run, a whole number. `null` returns the key to the tier default.
+	Pods *string `json:"pods,omitempty"`
+
+	// Pvc How many persistent volume claims the namespace may hold, a whole number. `null` returns the key to the tier default.
+	Pvc *string `json:"pvc,omitempty"`
+
+	// Reason Why this environment's quota differs from the tier default, 1-1000 characters. Required on every change: an override moves the project's billing basis.
+	Reason string `json:"reason"`
+
+	// ReqCpu CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`. `null` returns the key to the tier default.
+	ReqCpu *string `json:"req_cpu,omitempty"`
+
+	// ReqMem Memory the namespace may request in total, with a unit, such as `16Gi`. `null` returns the key to the tier default.
+	ReqMem *string `json:"req_mem,omitempty"`
+
+	// Storage Total persistent storage the namespace may claim, with a unit, such as `200Gi`. `null` returns the key to the tier default.
+	Storage *string `json:"storage,omitempty"`
+}
+
+// KubernetesQuotaUpdated The environment's quota after a change, and what the change set in
+// motion: the project's manifest was recompiled, the GitOps stages it leaves
+// stale were marked, and a provisioning walk over exactly those stages was
+// started when there were any (`operation_id` names it).
+type KubernetesQuotaUpdated struct {
+	// Cluster The cluster the namespace lands on.
+	Cluster string `json:"cluster"`
+
+	// DispatchStatus What happened after the change was saved. `started` (or `resumed`, a stalled walk taken over): a walk over the stale stages runs. `partial`: it runs, but a stage the change needs has never succeeded on this project, so the quota reaches the cluster only after a full provisioning start. `already_running` / `busy`: a walk was already running, the stages stay marked stale for it. `unchanged`: the compiled manifest did not change. `not_provisioned`: the GitOps stages have never run; the next provisioning start renders the quota. `stale_not_recorded` / `dispatch_failed`: the quota is saved but the walk did not start; start provisioning yourself (also a warning).
+	DispatchStatus KubernetesQuotaUpdatedDispatchStatus `json:"dispatch_status"`
+
+	// Env The environment: `dev`, `uat` or `prod`.
+	Env KubernetesQuotaUpdatedEnv `json:"env"`
+
+	// FairWeight The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`.
+	FairWeight string `json:"fair_weight"`
+
+	// GpuBorrow Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card.
+	GpuBorrow string `json:"gpu_borrow"`
+
+	// GpuEnabled Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
+	GpuEnabled bool `json:"gpu_enabled"`
+
+	// GpuExclusive Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+	GpuExclusive string `json:"gpu_exclusive"`
+
+	// GpuShared Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.
+	GpuShared string `json:"gpu_shared"`
+
+	// Kueue Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
+	Kueue bool `json:"kueue"`
+
+	// LimCpu The namespace's total CPU limit, a CPU quantity such as `16`.
+	LimCpu string `json:"lim_cpu"`
+
+	// LimMem The namespace's total memory limit, with a unit, such as `32Gi`.
+	LimMem string `json:"lim_mem"`
+
+	// Namespace The environment's namespace.
+	Namespace string `json:"namespace"`
+
+	// OperationId The provisioning operation started for the stale stages (`provision:<id>`, poll it at `GET /operations/{id}`); null when none was started (`dispatch_status` says why).
+	OperationId *string `json:"operation_id,omitempty"`
+
+	// Overridden Whether the environment has an override at all (`overridden_keys` names the keys). False: every value is the tier default.
+	Overridden bool `json:"overridden"`
+
+	// OverriddenKeys The keys set for this environment, in the order above.
+	OverriddenKeys *[]string `json:"overridden_keys,omitempty"`
+
+	// Pods How many pods the namespace may run, a whole number.
+	Pods string `json:"pods"`
+
+	// Pvc How many persistent volume claims the namespace may hold, a whole number.
+	Pvc string `json:"pvc"`
+
+	// ReqCpu CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`.
+	ReqCpu string `json:"req_cpu"`
+
+	// ReqMem Memory the namespace may request in total, with a unit, such as `16Gi`.
+	ReqMem string `json:"req_mem"`
+
+	// StaleStages The provisioning stages this change left stale, in apply order: stages already done whose rendering the quota affects. The started operation re-applies them.
+	StaleStages *[]string `json:"stale_stages,omitempty"`
+
+	// Storage Total persistent storage the namespace may claim, with a unit, such as `200Gi`.
+	Storage string `json:"storage"`
+
+	// Tier Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.
+	Tier KubernetesQuotaUpdatedTier `json:"tier"`
+
+	// Warnings What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person.
+	Warnings *[]ApiWarning `json:"warnings,omitempty"`
+}
+
+// KubernetesQuotaUpdatedDispatchStatus What happened after the change was saved. `started` (or `resumed`, a stalled walk taken over): a walk over the stale stages runs. `partial`: it runs, but a stage the change needs has never succeeded on this project, so the quota reaches the cluster only after a full provisioning start. `already_running` / `busy`: a walk was already running, the stages stay marked stale for it. `unchanged`: the compiled manifest did not change. `not_provisioned`: the GitOps stages have never run; the next provisioning start renders the quota. `stale_not_recorded` / `dispatch_failed`: the quota is saved but the walk did not start; start provisioning yourself (also a warning).
+type KubernetesQuotaUpdatedDispatchStatus string
+
+// KubernetesQuotaUpdatedEnv The environment: `dev`, `uat` or `prod`.
+type KubernetesQuotaUpdatedEnv string
+
+// KubernetesQuotaUpdatedTier Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.
+type KubernetesQuotaUpdatedTier string
+
 // LaunchCatalogEntry A launchable model on a node. Never the load or unload commands.
 type LaunchCatalogEntry struct {
 	// Enabled The entry is offered for loading in the portal.
@@ -4420,6 +4778,9 @@ type Project struct {
 	// IsSelf One of ATAILA's own platform projects: readable, never writable through v1.
 	IsSelf bool `json:"is_self"`
 
+	// K8sQuota Kubernetes backend only: the namespace quota of each environment (`dev`, `uat`, `prod`), the tier default with the project's overrides merged over it, GPU scheduling included. Null for a VM-backend project and for a project registered without a manifest. Changed per environment with `PATCH /projects/{id}/k8s-quota/{env}`. Keyed by environment.
+	K8sQuota *map[string]KubernetesQuota `json:"k8s_quota,omitempty"`
+
 	// LongName The project's display name, 2-60 characters. Double quotes, apostrophes, backslashes and control characters are refused: the name is written into the project's generated files.
 	LongName string `json:"long_name"`
 
@@ -5010,6 +5371,9 @@ type ProjectUpdated struct {
 
 	// IsSelf One of ATAILA's own platform projects: readable, never writable through v1.
 	IsSelf bool `json:"is_self"`
+
+	// K8sQuota Kubernetes backend only: the namespace quota of each environment (`dev`, `uat`, `prod`), the tier default with the project's overrides merged over it, GPU scheduling included. Null for a VM-backend project and for a project registered without a manifest. Changed per environment with `PATCH /projects/{id}/k8s-quota/{env}`. Keyed by environment.
+	K8sQuota *map[string]KubernetesQuota `json:"k8s_quota,omitempty"`
 
 	// LongName The project's display name, 2-60 characters. Double quotes, apostrophes, backslashes and control characters are refused: the name is written into the project's generated files.
 	LongName string `json:"long_name"`
@@ -5999,8 +6363,12 @@ type AiModelsListParams struct {
 	Repo *string `form:"repo,omitempty" json:"repo,omitempty"`
 
 	// Status Exact status.
-	Status      *string `form:"status,omitempty" json:"status,omitempty"`
-	Category    *string `form:"category,omitempty" json:"category,omitempty"`
+	Status *string `form:"status,omitempty" json:"status,omitempty"`
+
+	// Category Exact category, as `category` on a model (e.g. `coding`); omit it for every category.
+	Category *string `form:"category,omitempty" json:"category,omitempty"`
+
+	// GatewayTier Exact gateway tier, as `gateway_tier` on a model (e.g. `code`); omit it for every tier.
 	GatewayTier *string `form:"gateway_tier,omitempty" json:"gateway_tier,omitempty"`
 
 	// Limit Page size.
@@ -6012,7 +6380,7 @@ type AiModelsListParams struct {
 
 // AiModelsCreateParams defines parameters for AiModelsCreate.
 type AiModelsCreateParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
@@ -6036,21 +6404,23 @@ type AiModelsNodeCachesListParams struct {
 
 // AiModelsNodeCachesDeleteParams defines parameters for AiModelsNodeCachesDelete.
 type AiModelsNodeCachesDeleteParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
 // AiModelsNodeCachesPutParams defines parameters for AiModelsNodeCachesPut.
 type AiModelsNodeCachesPutParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
 // AiCatalogListParams defines parameters for AiCatalogList.
 type AiCatalogListParams struct {
 	// Host Exact host.
-	Host    *string `form:"host,omitempty" json:"host,omitempty"`
-	Enabled *bool   `form:"enabled,omitempty" json:"enabled,omitempty"`
+	Host *string `form:"host,omitempty" json:"host,omitempty"`
+
+	// Enabled `true`: only entries offered for loading; `false`: only the others; omit it for both.
+	Enabled *bool `form:"enabled,omitempty" json:"enabled,omitempty"`
 
 	// Limit Page size.
 	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
@@ -6074,11 +6444,15 @@ type AiClustersListParams struct {
 // AiGatewayKeysListParams defines parameters for AiGatewayKeysList.
 type AiGatewayKeysListParams struct {
 	// OrganizationId Only this tenant's keys.
-	OrganizationId *string                     `form:"organization_id,omitempty" json:"organization_id,omitempty"`
-	Env            *AiGatewayKeysListParamsEnv `form:"env,omitempty" json:"env,omitempty"`
+	OrganizationId *string `form:"organization_id,omitempty" json:"organization_id,omitempty"`
+
+	// Env Only keys of this environment (`dev`, `uat` or `prod`); omit it for every environment.
+	Env *AiGatewayKeysListParamsEnv `form:"env,omitempty" json:"env,omitempty"`
 
 	// App Exact app.
-	App    *string                        `form:"app,omitempty" json:"app,omitempty"`
+	App *string `form:"app,omitempty" json:"app,omitempty"`
+
+	// Origin Only keys of this origin: `api` (created here) or `adopted`; omit it for both.
 	Origin *AiGatewayKeysListParamsOrigin `form:"origin,omitempty" json:"origin,omitempty"`
 
 	// KeyAlias Exact alias: at most one live key. Finds the `id` to import a key by its name.
@@ -6099,13 +6473,13 @@ type AiGatewayKeysListParamsOrigin string
 
 // AiGatewayKeysCreateParams defines parameters for AiGatewayKeysCreate.
 type AiGatewayKeysCreateParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
 // AiGatewayKeysRotateParams defines parameters for AiGatewayKeysRotate.
 type AiGatewayKeysRotateParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
@@ -6174,6 +6548,7 @@ type BrandPutParams struct {
 
 // BrandAssetsListParams defines parameters for BrandAssetsList.
 type BrandAssetsListParams struct {
+	// Kind Only assets of this kind (`logo` or `favicon`); omit it for both.
 	Kind *BrandAssetsListParamsKind `form:"kind,omitempty" json:"kind,omitempty"`
 
 	// Sha256 Exact sha256 (lower-case hex) of the file.
@@ -6191,13 +6566,16 @@ type BrandAssetsListParamsKind string
 
 // BrandAssetsCreateMultipartBody defines parameters for BrandAssetsCreate.
 type BrandAssetsCreateMultipartBody struct {
-	File openapi_types.File                 `json:"file"`
+	// File The file; at most 512 KB. Its type is read from the bytes, not from the part's content type.
+	File openapi_types.File `json:"file"`
+
+	// Kind What the asset is for: a `logo` or a `favicon`.
 	Kind BrandAssetsCreateMultipartBodyKind `json:"kind"`
 }
 
 // BrandAssetsCreateParams defines parameters for BrandAssetsCreate.
 type BrandAssetsCreateParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
@@ -6210,8 +6588,10 @@ type CustomersListParams struct {
 	ShortName *string `form:"short_name,omitempty" json:"short_name,omitempty"`
 
 	// GitlabGroup Exact GitLab group.
-	GitlabGroup *string                    `form:"gitlab_group,omitempty" json:"gitlab_group,omitempty"`
-	Status      *CustomersListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	GitlabGroup *string `form:"gitlab_group,omitempty" json:"gitlab_group,omitempty"`
+
+	// Status Only customers in this status (`active`, `suspended` or `archived`); omit it for every status.
+	Status *CustomersListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
 
 	// Limit Page size.
 	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
@@ -6225,7 +6605,7 @@ type CustomersListParamsStatus string
 
 // CustomersCreateParams defines parameters for CustomersCreate.
 type CustomersCreateParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
@@ -6246,7 +6626,9 @@ type McpPostJSONBody struct {
 // McpPostJSONBody0 defines parameters for McpPost.
 type McpPostJSONBody0 struct {
 	// Id Absent on a notification, which gets no reply.
-	Id      *McpPostJSONBody_0_Id   `json:"id,omitempty"`
+	Id *McpPostJSONBody_0_Id `json:"id,omitempty"`
+
+	// Jsonrpc Always `2.0`.
 	Jsonrpc McpPostJSONBody0Jsonrpc `json:"jsonrpc"`
 
 	// Method `initialize`, `notifications/initialized`, `ping`, `tools/list` or `tools/call`; any other method is JSON-RPC error -32601.
@@ -6273,7 +6655,9 @@ type McpPostJSONBody0Jsonrpc string
 // McpPostJSONBody1 defines parameters for McpPost.
 type McpPostJSONBody1 = []struct {
 	// Id Absent on a notification, which gets no reply.
-	Id      *McpPostJSONBody_1_Id   `json:"id,omitempty"`
+	Id *McpPostJSONBody_1_Id `json:"id,omitempty"`
+
+	// Jsonrpc Always `2.0`.
 	Jsonrpc McpPostJSONBody1Jsonrpc `json:"jsonrpc"`
 
 	// Method `initialize`, `notifications/initialized`, `ping`, `tools/list` or `tools/call`; any other method is JSON-RPC error -32601.
@@ -6299,14 +6683,26 @@ type McpPostJSONBody1Jsonrpc string
 
 // McpPost200JSONResponseBody0 defines parameters for McpPost.
 type McpPost200JSONResponseBody0 struct {
+	// Error The JSON-RPC error; absent when `result` is present. A tool that ran and got an error answer is a `result` with `isError: true`, not this.
 	Error *struct {
-		Code    int         `json:"code"`
-		Data    interface{} `json:"data,omitempty"`
-		Message string      `json:"message"`
+		// Code -32700 parse error, -32600 invalid request, -32601 method not found, -32602 invalid params, -32603 internal error.
+		Code int `json:"code"`
+
+		// Data Optional extra detail; may be absent.
+		Data interface{} `json:"data,omitempty"`
+
+		// Message What went wrong, for a person.
+		Message string `json:"message"`
 	} `json:"error,omitempty"`
-	Id      *McpPost200JSONResponseBody_0_Id   `json:"id"`
+
+	// Id The `id` of the message this answers; null when the message could not be read (-32700, -32600).
+	Id *McpPost200JSONResponseBody_0_Id `json:"id"`
+
+	// Jsonrpc Always `2.0`.
 	Jsonrpc McpPost200JSONResponseBody0Jsonrpc `json:"jsonrpc"`
-	Result  *map[string]interface{}            `json:"result,omitempty"`
+
+	// Result The method's result; absent when `error` is present. For `tools/call`: the tool's `content` (the operation's answer as text), `isError`, and `structuredContent` when the answer is a JSON object.
+	Result *map[string]interface{} `json:"result,omitempty"`
 }
 
 // McpPost200JSONResponseBody0Id0 defines parameters for McpPost.
@@ -6325,14 +6721,26 @@ type McpPost200JSONResponseBody0Jsonrpc string
 
 // McpPost200JSONResponseBody1 defines parameters for McpPost.
 type McpPost200JSONResponseBody1 = []struct {
+	// Error The JSON-RPC error; absent when `result` is present. A tool that ran and got an error answer is a `result` with `isError: true`, not this.
 	Error *struct {
-		Code    int         `json:"code"`
-		Data    interface{} `json:"data,omitempty"`
-		Message string      `json:"message"`
+		// Code -32700 parse error, -32600 invalid request, -32601 method not found, -32602 invalid params, -32603 internal error.
+		Code int `json:"code"`
+
+		// Data Optional extra detail; may be absent.
+		Data interface{} `json:"data,omitempty"`
+
+		// Message What went wrong, for a person.
+		Message string `json:"message"`
 	} `json:"error,omitempty"`
-	Id      *McpPost200JSONResponseBody_1_Id   `json:"id"`
+
+	// Id The `id` of the message this answers; null when the message could not be read (-32700, -32600).
+	Id *McpPost200JSONResponseBody_1_Id `json:"id"`
+
+	// Jsonrpc Always `2.0`.
 	Jsonrpc McpPost200JSONResponseBody1Jsonrpc `json:"jsonrpc"`
-	Result  *map[string]interface{}            `json:"result,omitempty"`
+
+	// Result The method's result; absent when `error` is present. For `tools/call`: the tool's `content` (the operation's answer as text), `isError`, and `structuredContent` when the answer is a JSON object.
+	Result *map[string]interface{} `json:"result,omitempty"`
 }
 
 // McpPost200JSONResponseBody1Id0 defines parameters for McpPost.
@@ -6386,8 +6794,10 @@ type ProjectsListParams struct {
 	TenantId *string `form:"tenant_id,omitempty" json:"tenant_id,omitempty"`
 
 	// CustomerId Only this customer's, across its tenants.
-	CustomerId *string                   `form:"customer_id,omitempty" json:"customer_id,omitempty"`
-	Status     *ProjectsListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	CustomerId *string `form:"customer_id,omitempty" json:"customer_id,omitempty"`
+
+	// Status Only projects in this status (`planned`, `provisioning`, `active`, `paused` or `retired`); omit it for every status.
+	Status *ProjectsListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
 
 	// ShortName Exact short name.
 	ShortName *string `form:"short_name,omitempty" json:"short_name,omitempty"`
@@ -6404,9 +6814,15 @@ type ProjectsListParamsStatus string
 
 // ProjectsCreateParams defines parameters for ProjectsCreate.
 type ProjectsCreateParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
+
+// ProjectK8sQuotaResetParamsEnv defines parameters for ProjectK8sQuotaReset.
+type ProjectK8sQuotaResetParamsEnv string
+
+// ProjectK8sQuotaUpdateParamsEnv defines parameters for ProjectK8sQuotaUpdate.
+type ProjectK8sQuotaUpdateParamsEnv string
 
 // ProjectMembersListParams defines parameters for ProjectMembersList.
 type ProjectMembersListParams struct {
@@ -6419,14 +6835,16 @@ type ProjectMembersListParams struct {
 
 // ProjectProvisioningStartParams defines parameters for ProjectProvisioningStart.
 type ProjectProvisioningStartParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
 // ReleaseOperationsListParams defines parameters for ReleaseOperationsList.
 type ReleaseOperationsListParams struct {
 	// Status Only operations in this status.
-	Status    *ReleaseOperationsListParamsStatus    `form:"status,omitempty" json:"status,omitempty"`
+	Status *ReleaseOperationsListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// TargetEnv Only operations into this environment; omit it for every environment.
 	TargetEnv *ReleaseOperationsListParamsTargetEnv `form:"target_env,omitempty" json:"target_env,omitempty"`
 
 	// Component Excludes data copies (no component).
@@ -6450,7 +6868,7 @@ type ReleaseOperationsListParamsComponent string
 
 // ReleasePromotionsCreateParams defines parameters for ReleasePromotionsCreate.
 type ReleasePromotionsCreateParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
@@ -6471,7 +6889,7 @@ type TenantsListParams struct {
 
 // TenantsCreateParams defines parameters for TenantsCreate.
 type TenantsCreateParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
@@ -6493,8 +6911,10 @@ type UsersListParams struct {
 	Username *string `form:"username,omitempty" json:"username,omitempty"`
 
 	// Kind `human` (default) leaves service accounts out.
-	Kind     *UsersListParamsKind `form:"kind,omitempty" json:"kind,omitempty"`
-	IsActive *bool                `form:"is_active,omitempty" json:"is_active,omitempty"`
+	Kind *UsersListParamsKind `form:"kind,omitempty" json:"kind,omitempty"`
+
+	// IsActive `true`: only active people; `false`: only deactivated ones; omit it for both.
+	IsActive *bool `form:"is_active,omitempty" json:"is_active,omitempty"`
 
 	// TenantId Only members of this tenant.
 	TenantId *openapi_types.UUID `form:"tenant_id,omitempty" json:"tenant_id,omitempty"`
@@ -6517,7 +6937,7 @@ type UsersListParamsKind string
 
 // UsersCreateParams defines parameters for UsersCreate.
 type UsersCreateParams struct {
-	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
@@ -6586,6 +7006,12 @@ type ProjectsUpdateJSONRequestBody = ProjectPatch
 
 // ProjectsUpdateApplicationMergePatchPlusJSONRequestBody defines body for ProjectsUpdate for application/merge-patch+json ContentType.
 type ProjectsUpdateApplicationMergePatchPlusJSONRequestBody = ProjectPatch
+
+// ProjectK8sQuotaUpdateJSONRequestBody defines body for ProjectK8sQuotaUpdate for application/json ContentType.
+type ProjectK8sQuotaUpdateJSONRequestBody = KubernetesQuotaPatch
+
+// ProjectK8sQuotaUpdateApplicationMergePatchPlusJSONRequestBody defines body for ProjectK8sQuotaUpdate for application/merge-patch+json ContentType.
+type ProjectK8sQuotaUpdateApplicationMergePatchPlusJSONRequestBody = KubernetesQuotaPatch
 
 // ProjectMembersPutJSONRequestBody defines body for ProjectMembersPut for application/json ContentType.
 type ProjectMembersPutJSONRequestBody = ProjectMemberPut
@@ -8193,6 +8619,52 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
 	ProjectsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectK8sQuotaReset Reset an environment's namespace quota
+	//
+	// Drops every override of one environment: its quota returns to the tier default, GPU keys included (a floor of `0`, so the cards it held return to the cluster's pool). Not destroy-gated: the namespace, its workloads and its data are untouched; only the quota changes. The same work as a PATCH follows (recompile, stale stages, a provisioning walk); to see the quota and the walk it started, send the PATCH with every key `null` instead, or read `GET /projects/{id}/provisioning`.
+	//
+	// Corresponds with DELETE /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaReset` operationId).
+	ProjectK8sQuotaReset(ctx context.Context, projectId string, env ProjectK8sQuotaResetParamsEnv, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectK8sQuotaUpdateWithBody Change an environment's namespace quota
+	//
+	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+	//
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+	ProjectK8sQuotaUpdateWithBody(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectK8sQuotaUpdate Change an environment's namespace quota
+	//
+	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+	//
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+	ProjectK8sQuotaUpdate(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, body ProjectK8sQuotaUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectK8sQuotaUpdateWithApplicationMergePatchPlusJSONBody Change an environment's namespace quota
+	//
+	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+	//
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type.
+	//
+	// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+	ProjectK8sQuotaUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, body ProjectK8sQuotaUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ProjectMembersList A project's members
 	//
@@ -9927,6 +10399,92 @@ func (c *Client) ProjectsUpdate(ctx context.Context, projectId string, body Proj
 // Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
 func (c *Client) ProjectsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewProjectsUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectK8sQuotaReset Reset an environment's namespace quota
+//
+// Drops every override of one environment: its quota returns to the tier default, GPU keys included (a floor of `0`, so the cards it held return to the cluster's pool). Not destroy-gated: the namespace, its workloads and its data are untouched; only the quota changes. The same work as a PATCH follows (recompile, stale stages, a provisioning walk); to see the quota and the walk it started, send the PATCH with every key `null` instead, or read `GET /projects/{id}/provisioning`.
+//
+// Corresponds with DELETE /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaReset` operationId).
+func (c *Client) ProjectK8sQuotaReset(ctx context.Context, projectId string, env ProjectK8sQuotaResetParamsEnv, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectK8sQuotaResetRequest(c.Server, projectId, env)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectK8sQuotaUpdateWithBody Change an environment's namespace quota
+//
+// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+//
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+func (c *Client) ProjectK8sQuotaUpdateWithBody(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectK8sQuotaUpdateRequestWithBody(c.Server, projectId, env, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectK8sQuotaUpdate Change an environment's namespace quota
+//
+// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+//
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+func (c *Client) ProjectK8sQuotaUpdate(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, body ProjectK8sQuotaUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectK8sQuotaUpdateRequest(c.Server, projectId, env, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectK8sQuotaUpdateWithApplicationMergePatchPlusJSONBody Change an environment's namespace quota
+//
+// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+//
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type.
+//
+// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+func (c *Client) ProjectK8sQuotaUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, body ProjectK8sQuotaUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectK8sQuotaUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, projectId, env, body)
 	if err != nil {
 		return nil, err
 	}
@@ -13604,6 +14162,112 @@ func NewProjectsUpdateRequestWithBody(server string, projectId string, contentTy
 	return req, nil
 }
 
+// NewProjectK8sQuotaResetRequest constructs an http.Request for the ProjectK8sQuotaReset method
+func NewProjectK8sQuotaResetRequest(server string, projectId string, env ProjectK8sQuotaResetParamsEnv) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "env", env, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/k8s-quota/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectK8sQuotaUpdateRequest calls the generic ProjectK8sQuotaUpdate builder with application/json body
+func NewProjectK8sQuotaUpdateRequest(server string, projectId string, env ProjectK8sQuotaUpdateParamsEnv, body ProjectK8sQuotaUpdateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewProjectK8sQuotaUpdateRequestWithBody(server, projectId, env, "application/json", bodyReader)
+}
+
+// NewProjectK8sQuotaUpdateRequestWithApplicationMergePatchPlusJSONBody calls the generic ProjectK8sQuotaUpdate builder with application/merge-patch+json body
+func NewProjectK8sQuotaUpdateRequestWithApplicationMergePatchPlusJSONBody(server string, projectId string, env ProjectK8sQuotaUpdateParamsEnv, body ProjectK8sQuotaUpdateApplicationMergePatchPlusJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewProjectK8sQuotaUpdateRequestWithBody(server, projectId, env, "application/merge-patch+json", bodyReader)
+}
+
+// NewProjectK8sQuotaUpdateRequestWithBody constructs an http.Request for the ProjectK8sQuotaUpdate method, with any body, and a specified content type
+func NewProjectK8sQuotaUpdateRequestWithBody(server string, projectId string, env ProjectK8sQuotaUpdateParamsEnv, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "env", env, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/k8s-quota/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewProjectMembersListRequest constructs an http.Request for the ProjectMembersList method
 func NewProjectMembersListRequest(server string, projectId string, params *ProjectMembersListParams) (*http.Request, error) {
 	var err error
@@ -16058,6 +16722,54 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
 	ProjectsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectsUpdateResponse, error)
+
+	// ProjectK8sQuotaResetWithResponse Reset an environment's namespace quota
+	//
+	// Drops every override of one environment: its quota returns to the tier default, GPU keys included (a floor of `0`, so the cards it held return to the cluster's pool). Not destroy-gated: the namespace, its workloads and its data are untouched; only the quota changes. The same work as a PATCH follows (recompile, stale stages, a provisioning walk); to see the quota and the walk it started, send the PATCH with every key `null` instead, or read `GET /projects/{id}/provisioning`.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaReset` operationId).
+	ProjectK8sQuotaResetWithResponse(ctx context.Context, projectId string, env ProjectK8sQuotaResetParamsEnv, reqEditors ...RequestEditorFn) (*ProjectK8sQuotaResetResponse, error)
+
+	// ProjectK8sQuotaUpdateWithBodyWithResponse Change an environment's namespace quota
+	//
+	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+	//
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+	ProjectK8sQuotaUpdateWithBodyWithResponse(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProjectK8sQuotaUpdateResponse, error)
+
+	// ProjectK8sQuotaUpdateWithResponse Change an environment's namespace quota
+	//
+	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+	//
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+	ProjectK8sQuotaUpdateWithResponse(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, body ProjectK8sQuotaUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectK8sQuotaUpdateResponse, error)
+
+	// ProjectK8sQuotaUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change an environment's namespace quota
+	//
+	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+	//
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+	ProjectK8sQuotaUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, body ProjectK8sQuotaUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectK8sQuotaUpdateResponse, error)
 
 	// ProjectMembersListWithResponse A project's members
 	//
@@ -24405,14 +25117,26 @@ type McpPostResponse struct {
 	JSON200 *McpPost200JSONResponseBody
 	// JSON400 the response for an HTTP 400 `application/json` response
 	JSON400 *struct {
+		// Error The JSON-RPC error; absent when `result` is present. A tool that ran and got an error answer is a `result` with `isError: true`, not this.
 		Error *struct {
-			Code    int         `json:"code"`
-			Data    interface{} `json:"data,omitempty"`
-			Message string      `json:"message"`
+			// Code -32700 parse error, -32600 invalid request, -32601 method not found, -32602 invalid params, -32603 internal error.
+			Code int `json:"code"`
+
+			// Data Optional extra detail; may be absent.
+			Data interface{} `json:"data,omitempty"`
+
+			// Message What went wrong, for a person.
+			Message string `json:"message"`
 		} `json:"error,omitempty"`
-		Id      *McpPost400JSONResponseBody_Id    `json:"id"`
+
+		// Id The `id` of the message this answers; null when the message could not be read (-32700, -32600).
+		Id *McpPost400JSONResponseBody_Id `json:"id"`
+
+		// Jsonrpc Always `2.0`.
 		Jsonrpc McpPost400JSONResponseBodyJsonrpc `json:"jsonrpc"`
-		Result  *map[string]interface{}           `json:"result,omitempty"`
+
+		// Result The method's result; absent when `error` is present. For `tools/call`: the tool's `content` (the operation's answer as text), `isError`, and `structuredContent` when the answer is a JSON object.
+		Result *map[string]interface{} `json:"result,omitempty"`
 	}
 	// JSON401 the response for an HTTP 401 `application/json` response
 	JSON401 *Problem
@@ -24459,14 +25183,26 @@ func (r McpPostResponse) GetJSON200() *McpPost200JSONResponseBody {
 
 // GetJSON400 returns the response for an HTTP 400 `application/json` response
 func (r McpPostResponse) GetJSON400() *struct {
+	// Error The JSON-RPC error; absent when `result` is present. A tool that ran and got an error answer is a `result` with `isError: true`, not this.
 	Error *struct {
-		Code    int         `json:"code"`
-		Data    interface{} `json:"data,omitempty"`
-		Message string      `json:"message"`
+		// Code -32700 parse error, -32600 invalid request, -32601 method not found, -32602 invalid params, -32603 internal error.
+		Code int `json:"code"`
+
+		// Data Optional extra detail; may be absent.
+		Data interface{} `json:"data,omitempty"`
+
+		// Message What went wrong, for a person.
+		Message string `json:"message"`
 	} `json:"error,omitempty"`
-	Id      *McpPost400JSONResponseBody_Id    `json:"id"`
+
+	// Id The `id` of the message this answers; null when the message could not be read (-32700, -32600).
+	Id *McpPost400JSONResponseBody_Id `json:"id"`
+
+	// Jsonrpc Always `2.0`.
 	Jsonrpc McpPost400JSONResponseBodyJsonrpc `json:"jsonrpc"`
-	Result  *map[string]interface{}           `json:"result,omitempty"`
+
+	// Result The method's result; absent when `error` is present. For `tools/call`: the tool's `content` (the operation's answer as text), `isError`, and `structuredContent` when the answer is a JSON object.
+	Result *map[string]interface{} `json:"result,omitempty"`
 } {
 	return r.JSON400
 }
@@ -25975,6 +26711,437 @@ func (r ProjectsUpdateResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ProjectsUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ProjectK8sQuotaResetResponse204Headers the declared response headers of an HTTP 204 response for ProjectK8sQuotaReset
+type ProjectK8sQuotaResetResponse204Headers struct {
+	XRequestID *string
+}
+
+// ProjectK8sQuotaResetResponse401Headers the declared response headers of an HTTP 401 response for ProjectK8sQuotaReset
+type ProjectK8sQuotaResetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ProjectK8sQuotaResetResponse403Headers the declared response headers of an HTTP 403 response for ProjectK8sQuotaReset
+type ProjectK8sQuotaResetResponse403Headers struct {
+	XRequestID *string
+}
+
+// ProjectK8sQuotaResetResponse404Headers the declared response headers of an HTTP 404 response for ProjectK8sQuotaReset
+type ProjectK8sQuotaResetResponse404Headers struct {
+	XRequestID *string
+}
+
+// ProjectK8sQuotaResetResponse409Headers the declared response headers of an HTTP 409 response for ProjectK8sQuotaReset
+type ProjectK8sQuotaResetResponse409Headers struct {
+	XRequestID *string
+}
+
+// ProjectK8sQuotaResetResponse422Headers the declared response headers of an HTTP 422 response for ProjectK8sQuotaReset
+type ProjectK8sQuotaResetResponse422Headers struct {
+	XRequestID *string
+}
+
+// ProjectK8sQuotaResetResponse429Headers the declared response headers of an HTTP 429 response for ProjectK8sQuotaReset
+type ProjectK8sQuotaResetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectK8sQuotaResetResponse503Headers the declared response headers of an HTTP 503 response for ProjectK8sQuotaReset
+type ProjectK8sQuotaResetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectK8sQuotaResetResponseDefaultHeaders the declared response headers of an HTTP default response for ProjectK8sQuotaReset
+type ProjectK8sQuotaResetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ProjectK8sQuotaResetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *ProjectK8sQuotaResetResponse204Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ProjectK8sQuotaResetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ProjectK8sQuotaResetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ProjectK8sQuotaResetResponse404Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *ProjectK8sQuotaResetResponse409Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *ProjectK8sQuotaResetResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ProjectK8sQuotaResetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ProjectK8sQuotaResetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ProjectK8sQuotaResetResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ProjectK8sQuotaResetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ProjectK8sQuotaResetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectK8sQuotaResetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectK8sQuotaResetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectK8sQuotaResetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectK8sQuotaResetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ProjectK8sQuotaResetResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ProjectK8sQuotaResetResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ProjectK8sQuotaResetResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ProjectK8sQuotaResetResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ProjectK8sQuotaResetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ProjectK8sQuotaResetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ProjectK8sQuotaResetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ProjectK8sQuotaResetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectK8sQuotaResetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectK8sQuotaResetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectK8sQuotaResetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectK8sQuotaResetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectK8sQuotaResetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectK8sQuotaResetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ProjectK8sQuotaUpdateResponse200Headers the declared response headers of an HTTP 200 response for ProjectK8sQuotaUpdate
+type ProjectK8sQuotaUpdateResponse200Headers struct {
+	XRequestID *string
+}
+
+// ProjectK8sQuotaUpdateResponse401Headers the declared response headers of an HTTP 401 response for ProjectK8sQuotaUpdate
+type ProjectK8sQuotaUpdateResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ProjectK8sQuotaUpdateResponse403Headers the declared response headers of an HTTP 403 response for ProjectK8sQuotaUpdate
+type ProjectK8sQuotaUpdateResponse403Headers struct {
+	XRequestID *string
+}
+
+// ProjectK8sQuotaUpdateResponse404Headers the declared response headers of an HTTP 404 response for ProjectK8sQuotaUpdate
+type ProjectK8sQuotaUpdateResponse404Headers struct {
+	XRequestID *string
+}
+
+// ProjectK8sQuotaUpdateResponse409Headers the declared response headers of an HTTP 409 response for ProjectK8sQuotaUpdate
+type ProjectK8sQuotaUpdateResponse409Headers struct {
+	XRequestID *string
+}
+
+// ProjectK8sQuotaUpdateResponse422Headers the declared response headers of an HTTP 422 response for ProjectK8sQuotaUpdate
+type ProjectK8sQuotaUpdateResponse422Headers struct {
+	XRequestID *string
+}
+
+// ProjectK8sQuotaUpdateResponse429Headers the declared response headers of an HTTP 429 response for ProjectK8sQuotaUpdate
+type ProjectK8sQuotaUpdateResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectK8sQuotaUpdateResponse503Headers the declared response headers of an HTTP 503 response for ProjectK8sQuotaUpdate
+type ProjectK8sQuotaUpdateResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectK8sQuotaUpdateResponseDefaultHeaders the declared response headers of an HTTP default response for ProjectK8sQuotaUpdate
+type ProjectK8sQuotaUpdateResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ProjectK8sQuotaUpdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *KubernetesQuotaUpdated
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ProjectK8sQuotaUpdateResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ProjectK8sQuotaUpdateResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ProjectK8sQuotaUpdateResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ProjectK8sQuotaUpdateResponse404Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *ProjectK8sQuotaUpdateResponse409Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *ProjectK8sQuotaUpdateResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ProjectK8sQuotaUpdateResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ProjectK8sQuotaUpdateResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ProjectK8sQuotaUpdateResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectK8sQuotaUpdateResponse) GetJSON200() *KubernetesQuotaUpdated {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ProjectK8sQuotaUpdateResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ProjectK8sQuotaUpdateResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectK8sQuotaUpdateResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectK8sQuotaUpdateResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectK8sQuotaUpdateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectK8sQuotaUpdateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ProjectK8sQuotaUpdateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ProjectK8sQuotaUpdateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ProjectK8sQuotaUpdateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ProjectK8sQuotaUpdateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ProjectK8sQuotaUpdateResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ProjectK8sQuotaUpdateResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ProjectK8sQuotaUpdateResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ProjectK8sQuotaUpdateResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectK8sQuotaUpdateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectK8sQuotaUpdateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectK8sQuotaUpdateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectK8sQuotaUpdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectK8sQuotaUpdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectK8sQuotaUpdateResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -33143,6 +34310,78 @@ func (c *ClientWithResponses) ProjectsUpdateWithApplicationMergePatchPlusJSONBod
 		return nil, err
 	}
 	return ParseProjectsUpdateResponse(rsp)
+}
+
+// ProjectK8sQuotaResetWithResponse Reset an environment's namespace quota
+//
+// Drops every override of one environment: its quota returns to the tier default, GPU keys included (a floor of `0`, so the cards it held return to the cluster's pool). Not destroy-gated: the namespace, its workloads and its data are untouched; only the quota changes. The same work as a PATCH follows (recompile, stale stages, a provisioning walk); to see the quota and the walk it started, send the PATCH with every key `null` instead, or read `GET /projects/{id}/provisioning`.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaReset` operationId).
+func (c *ClientWithResponses) ProjectK8sQuotaResetWithResponse(ctx context.Context, projectId string, env ProjectK8sQuotaResetParamsEnv, reqEditors ...RequestEditorFn) (*ProjectK8sQuotaResetResponse, error) {
+	rsp, err := c.ProjectK8sQuotaReset(ctx, projectId, env, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectK8sQuotaResetResponse(rsp)
+}
+
+// ProjectK8sQuotaUpdateWithBodyWithResponse Change an environment's namespace quota
+//
+// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+//
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+func (c *ClientWithResponses) ProjectK8sQuotaUpdateWithBodyWithResponse(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProjectK8sQuotaUpdateResponse, error) {
+	rsp, err := c.ProjectK8sQuotaUpdateWithBody(ctx, projectId, env, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectK8sQuotaUpdateResponse(rsp)
+}
+
+// ProjectK8sQuotaUpdateWithResponse Change an environment's namespace quota
+//
+// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+//
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+func (c *ClientWithResponses) ProjectK8sQuotaUpdateWithResponse(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, body ProjectK8sQuotaUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectK8sQuotaUpdateResponse, error) {
+	rsp, err := c.ProjectK8sQuotaUpdate(ctx, projectId, env, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectK8sQuotaUpdateResponse(rsp)
+}
+
+// ProjectK8sQuotaUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change an environment's namespace quota
+//
+// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
+//
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /projects/{project_id}/k8s-quota/{env} (the `ProjectK8sQuotaUpdate` operationId).
+func (c *ClientWithResponses) ProjectK8sQuotaUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, projectId string, env ProjectK8sQuotaUpdateParamsEnv, body ProjectK8sQuotaUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectK8sQuotaUpdateResponse, error) {
+	rsp, err := c.ProjectK8sQuotaUpdateWithApplicationMergePatchPlusJSONBody(ctx, projectId, env, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectK8sQuotaUpdateResponse(rsp)
 }
 
 // ProjectMembersListWithResponse A project's members
@@ -42996,14 +44235,26 @@ func ParseMcpPostResponse(rsp *http.Response) (*McpPostResponse, error) {
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
 		var dest struct {
+			// Error The JSON-RPC error; absent when `result` is present. A tool that ran and got an error answer is a `result` with `isError: true`, not this.
 			Error *struct {
-				Code    int         `json:"code"`
-				Data    interface{} `json:"data,omitempty"`
-				Message string      `json:"message"`
+				// Code -32700 parse error, -32600 invalid request, -32601 method not found, -32602 invalid params, -32603 internal error.
+				Code int `json:"code"`
+
+				// Data Optional extra detail; may be absent.
+				Data interface{} `json:"data,omitempty"`
+
+				// Message What went wrong, for a person.
+				Message string `json:"message"`
 			} `json:"error,omitempty"`
-			Id      *McpPost400JSONResponseBody_Id    `json:"id"`
+
+			// Id The `id` of the message this answers; null when the message could not be read (-32700, -32600).
+			Id *McpPost400JSONResponseBody_Id `json:"id"`
+
+			// Jsonrpc Always `2.0`.
 			Jsonrpc McpPost400JSONResponseBodyJsonrpc `json:"jsonrpc"`
-			Result  *map[string]interface{}           `json:"result,omitempty"`
+
+			// Result The method's result; absent when `error` is present. For `tools/call`: the tool's `content` (the operation's answer as text), `isError`, and `structuredContent` when the answer is a JSON object.
+			Result *map[string]interface{} `json:"result,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -44835,6 +46086,506 @@ func ParseProjectsUpdateResponse(rsp *http.Response) (*ProjectsUpdateResponse, e
 		response.Headers503 = &headers
 	case true:
 		var headers ProjectsUpdateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseProjectK8sQuotaResetResponse parses an HTTP response from a ProjectK8sQuotaResetWithResponse call
+func ParseProjectK8sQuotaResetResponse(rsp *http.Response) (*ProjectK8sQuotaResetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectK8sQuotaResetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers ProjectK8sQuotaResetResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 401:
+		var headers ProjectK8sQuotaResetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ProjectK8sQuotaResetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ProjectK8sQuotaResetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 409:
+		var headers ProjectK8sQuotaResetResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 422:
+		var headers ProjectK8sQuotaResetResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers ProjectK8sQuotaResetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ProjectK8sQuotaResetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ProjectK8sQuotaResetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseProjectK8sQuotaUpdateResponse parses an HTTP response from a ProjectK8sQuotaUpdateWithResponse call
+func ParseProjectK8sQuotaUpdateResponse(rsp *http.Response) (*ProjectK8sQuotaUpdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectK8sQuotaUpdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KubernetesQuotaUpdated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ProjectK8sQuotaUpdateResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers ProjectK8sQuotaUpdateResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ProjectK8sQuotaUpdateResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ProjectK8sQuotaUpdateResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 409:
+		var headers ProjectK8sQuotaUpdateResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 422:
+		var headers ProjectK8sQuotaUpdateResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers ProjectK8sQuotaUpdateResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ProjectK8sQuotaUpdateResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ProjectK8sQuotaUpdateResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

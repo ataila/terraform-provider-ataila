@@ -84,6 +84,7 @@ func projectDataAttributes() map[string]schema.Attribute {
 		"gitlab_repositories":      dataNestedList(projectDocs["gitlab_repositories"], projectRepoTypes, contractDoc("GitLabRepository")),
 		"kubernetes_namespaces":    dataNestedList(projectDocs["kubernetes_namespaces"], projectNSTypes, contractDoc("KubernetesNamespace")),
 		"secret_paths":             dataNestedList(projectDocs["secret_paths"], projectSecretTypes, contractDoc("SecretPath")),
+		"k8s_quota":                projectQuotaDataAttribute(),
 	}
 	for _, s := range projectSettings {
 		switch s.kind {
@@ -156,6 +157,7 @@ func (d *projectDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return
 	}
 	values := projectValues(p, nil, prov.StaleStages)
+	values["k8s_quota"] = quotaValue(p, nil, false) // the data source's shape: no `reason`
 	resp.Diagnostics.Append(resp.State.Set(ctx, objectFrom(ctx, cfg.Type(ctx).(basetypes.ObjectType), values, &resp.Diagnostics))...)
 }
 

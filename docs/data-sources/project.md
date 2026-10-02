@@ -62,6 +62,7 @@ output "shop_repositories" {
 - `image_registry_namespace` (String) The project's container registry namespace.
 - `import_existing_repo` (Boolean) The GitLab repository already holds code: provisioning does not seed it from the template. Platform default `false`.
 - `is_self` (Boolean) One of the platform's own projects: readable, never writable through the API.
+- `k8s_quota` (Attributes) Kubernetes backend only: the namespace quota of each environment (`dev`, `uat`, `prod`) — the tier default with the project's overrides merged over it — including GPU scheduling: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards the namespace may borrow, preempted when the owner needs them back), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). Null for a VM-backend project and for a project registered without a manifest. (see [below for nested schema](#nestedatt--k8s_quota))
 - `kubernetes_namespaces` (Attributes List) The project's Kubernetes namespaces, by `env`. (see [below for nested schema](#nestedatt--kubernetes_namespaces))
 - `long_name` (String) Display name, 2-60 characters. Quotes, apostrophes, backslashes and control characters are refused because the name is copied into generated project files.
 - `mssql_edition` (String) SQL Server edition. Platform default `express`.
@@ -89,6 +90,91 @@ Read-Only:
 - `kind` (String) `app` or `www`. Other values may appear.
 - `path` (String) `<customer group>/<repository>`.
 - `primary` (Boolean) The project's main repository.
+
+
+<a id="nestedatt--k8s_quota"></a>
+### Nested Schema for `k8s_quota`
+
+Read-Only:
+
+- `dev` (Attributes) The `dev` environment's namespace quota. (see [below for nested schema](#nestedatt--k8s_quota--dev))
+- `prod` (Attributes) The `prod` environment's namespace quota. (see [below for nested schema](#nestedatt--k8s_quota--prod))
+- `uat` (Attributes) The `uat` environment's namespace quota. (see [below for nested schema](#nestedatt--k8s_quota--uat))
+
+<a id="nestedatt--k8s_quota--dev"></a>
+### Nested Schema for `k8s_quota.dev`
+
+Read-Only:
+
+- `cluster` (String) The cluster the namespace lands on.
+- `fair_weight` (String) The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`.
+- `gpu_borrow` (String) Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card.
+- `gpu_enabled` (Boolean) Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
+- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+- `gpu_shared` (String) Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.
+- `kueue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
+- `lim_cpu` (String) The namespace's total CPU limit, a CPU quantity such as `16`.
+- `lim_mem` (String) The namespace's total memory limit, with a unit, such as `32Gi`.
+- `namespace` (String) The environment's namespace.
+- `overridden` (Boolean) Whether the environment has an override at all (`overridden_keys` names the keys). False: every value is the tier default.
+- `overridden_keys` (List of String) The keys set for this environment, in the order above.
+- `pods` (String) How many pods the namespace may run, a whole number.
+- `pvc` (String) How many persistent volume claims the namespace may hold, a whole number.
+- `req_cpu` (String) CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`.
+- `req_mem` (String) Memory the namespace may request in total, with a unit, such as `16Gi`.
+- `storage` (String) Total persistent storage the namespace may claim, with a unit, such as `200Gi`.
+- `tier` (String) Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.
+
+
+<a id="nestedatt--k8s_quota--prod"></a>
+### Nested Schema for `k8s_quota.prod`
+
+Read-Only:
+
+- `cluster` (String) The cluster the namespace lands on.
+- `fair_weight` (String) The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`.
+- `gpu_borrow` (String) Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card.
+- `gpu_enabled` (Boolean) Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
+- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+- `gpu_shared` (String) Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.
+- `kueue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
+- `lim_cpu` (String) The namespace's total CPU limit, a CPU quantity such as `16`.
+- `lim_mem` (String) The namespace's total memory limit, with a unit, such as `32Gi`.
+- `namespace` (String) The environment's namespace.
+- `overridden` (Boolean) Whether the environment has an override at all (`overridden_keys` names the keys). False: every value is the tier default.
+- `overridden_keys` (List of String) The keys set for this environment, in the order above.
+- `pods` (String) How many pods the namespace may run, a whole number.
+- `pvc` (String) How many persistent volume claims the namespace may hold, a whole number.
+- `req_cpu` (String) CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`.
+- `req_mem` (String) Memory the namespace may request in total, with a unit, such as `16Gi`.
+- `storage` (String) Total persistent storage the namespace may claim, with a unit, such as `200Gi`.
+- `tier` (String) Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.
+
+
+<a id="nestedatt--k8s_quota--uat"></a>
+### Nested Schema for `k8s_quota.uat`
+
+Read-Only:
+
+- `cluster` (String) The cluster the namespace lands on.
+- `fair_weight` (String) The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`.
+- `gpu_borrow` (String) Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card.
+- `gpu_enabled` (Boolean) Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
+- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).
+- `gpu_shared` (String) Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.
+- `kueue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
+- `lim_cpu` (String) The namespace's total CPU limit, a CPU quantity such as `16`.
+- `lim_mem` (String) The namespace's total memory limit, with a unit, such as `32Gi`.
+- `namespace` (String) The environment's namespace.
+- `overridden` (Boolean) Whether the environment has an override at all (`overridden_keys` names the keys). False: every value is the tier default.
+- `overridden_keys` (List of String) The keys set for this environment, in the order above.
+- `pods` (String) How many pods the namespace may run, a whole number.
+- `pvc` (String) How many persistent volume claims the namespace may hold, a whole number.
+- `req_cpu` (String) CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`.
+- `req_mem` (String) Memory the namespace may request in total, with a unit, such as `16Gi`.
+- `storage` (String) Total persistent storage the namespace may claim, with a unit, such as `200Gi`.
+- `tier` (String) Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.
+
 
 
 <a id="nestedatt--kubernetes_namespaces"></a>

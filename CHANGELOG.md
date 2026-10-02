@@ -5,7 +5,32 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ## Unreleased
 
-Nothing yet.
+The next release is 1.1.0: 1.0.0 was tagged on 2026-10-02 before this addition landed, and an addition is a
+minor release under the stability promise below.
+
+### Added
+
+- `k8s_quota` on `ataila_project` (resource and data source): a Kubernetes project's namespace quota per
+  environment (`dev`, `uat`, `prod`), GPU scheduling included — the eleven quota keys as Kubernetes quantities
+  (`req_cpu` … `pods`, `gpu_exclusive` the guaranteed floor in whole cards, `gpu_borrow`, `gpu_shared`,
+  `fair_weight`) plus what the platform reports (`namespace`, `cluster`, `tier`, `kueue`, `gpu_enabled`,
+  `overridden`, `overridden_keys`). The resource sends the keys a configuration sets, with `reason`, through
+  `PATCH /projects/{id}/k8s-quota/{env}` after the project's own change, one request per environment; a key
+  left out keeps its current value, a count spelled with leading zeros keeps the configuration's spelling, a
+  changed reason alone re-sends the environment's overridden keys unchanged with it. A refusal (`quota_refused`,
+  `quota_conflict`, 403 without `k8s-gpu-admin-global`) fails the apply with the platform's reason, and the
+  state records what did change (the project's settings, the environments before the refused one), so the next
+  plan shows only what is left; on create the project is created and tainted, and the error says how to keep it.
+  Setting `k8s_quota` on a VM-backend project fails validation.
+
+### Contract
+
+- `api/openapi-v1.json` re-vendored, unchanged, from the platform's export of the release after 1.0.201,
+  which adds `Project.k8s_quota`, `KubernetesQuota`, `KubernetesQuotaPatch`, `KubernetesQuotaUpdated` and the two
+  quota operations (`PATCH` and `DELETE /projects/{project_id}/k8s-quota/{env}`); everything else in it is
+  additive over 1.0.187 and unused by the provider. The minimum platform stays 1.0.187: on a release that does not report
+  `k8s_quota` the attribute is null, and a configuration that sets it fails at plan time naming why
+  (on create, the quota request fails with "This platform does not serve the namespace quota").
 
 ## 1.0.0 (2026-10-02) — contract 1.0.187
 

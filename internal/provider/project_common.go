@@ -139,6 +139,7 @@ var projectDocs = map[string]string{
 		"`uat`). Production paths are never listed, nor the paths of a `vm` backend project.",
 	"warnings": "What did not go as planned in the last change made through the provider (for example " +
 		"stale stages that could not be recorded). Empty when everything went as planned.",
+	"k8s_quota": quotaAttrDoc,
 }
 
 var (
@@ -220,6 +221,8 @@ func projectValues(p client.ProjectData, prior map[string]attr.Value, stale []st
 	v["gitlab_repositories"] = objectList(outputs["gitlab_repositories"], projectRepoTypes)
 	v["kubernetes_namespaces"] = objectList(outputs["kubernetes_namespaces"], projectNSTypes)
 	v["secret_paths"] = objectList(outputs["secret_paths"], projectSecretTypes)
+	// The resource's shape (with `reason`); the data source replaces it with its own.
+	v["k8s_quota"] = quotaValue(p, prior["k8s_quota"], true)
 	return v
 }
 

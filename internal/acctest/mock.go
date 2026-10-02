@@ -192,6 +192,12 @@ func DefaultWhoami() map[string]any {
 	}
 }
 
+// DefaultScopes are the scopes the mock's token holds unless SetScopes changes
+// them: every read and admin key of the provider's resources, except the
+// Kubernetes GPU scheduling pair (a test that sets k8s_quota adds
+// k8s-gpu-admin-global).
+func DefaultScopes() []string { return defaultScopes() }
+
 func defaultScopes() []string {
 	return []string{"ai-center-admin-global", "ai-center-read-global", "ai-gateway-admin-global",
 		"ai-gateway-read-global", "ai-models-admin-global", "ai-models-read-global", "brand-center-admin-global",

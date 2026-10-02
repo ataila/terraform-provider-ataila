@@ -6,6 +6,7 @@ description: |-
   Creating a project records it; it provisions nothing and stays planned. Provisioning is a separate resource, ataila_project_provisioning. Changing a setting changes the record and marks the provisioning stages it affects stale (stale_stages); the next provisioning run re-applies them.
   Frozen keys (tenant_id, project_index, short_name, gitlab_repo_slug, primary_domain, deployment_backend, network_only) are set at create and never change. Changing one fails the plan; the provider never replaces a project.
   Settings left out of the configuration get the platform's default at create and keep their current value afterwards. description, github_user and github_repo_url are the exception: leaving them out clears them.
+  A Kubernetes project's namespace quota, GPU scheduling included, is k8s_quota: set the keys of an environment and the provider sends them to the platform's quota editor after the project is created or changed (one request per environment; the platform re-applies the project's GitOps stages itself).
   The platform's own projects (is_self) cannot be imported or changed through the API; the provider refuses at plan time.
   Destroy retires the project and needs allow_destroy = true on the provider and a token minted with destroy allowed. Retiring touches nothing on the substrate; a retired project keeps its project_index, short_name and primary_domain reserved for good. Destroying a project that is already retired only removes it from the state.
 ---
@@ -19,6 +20,8 @@ Creating a project **records** it; it provisions nothing and stays `planned`. Pr
 **Frozen keys** (`tenant_id`, `project_index`, `short_name`, `gitlab_repo_slug`, `primary_domain`, `deployment_backend`, `network_only`) are set at create and never change. Changing one **fails the plan**; the provider never replaces a project.
 
 Settings left out of the configuration get the platform's default at create and keep their current value afterwards. `description`, `github_user` and `github_repo_url` are the exception: leaving them out clears them.
+
+A Kubernetes project's namespace quota, GPU scheduling included, is `k8s_quota`: set the keys of an environment and the provider sends them to the platform's quota editor after the project is created or changed (one request per environment; the platform re-applies the project's GitOps stages itself).
 
 The platform's own projects (`is_self`) cannot be imported or changed through the API; the provider refuses at plan time.
 
@@ -39,6 +42,17 @@ resource "ataila_project" "shop" {
   # Settings left out get the platform's default at create.
   frontend_variant = "vue"
   enable_ai        = true
+
+  # Kubernetes projects: the namespace quota per environment, GPU scheduling
+  # included. One guaranteed card in production, one more borrowed when idle;
+  # the token needs k8s-gpu-admin-global for this.
+  k8s_quota = {
+    prod = {
+      gpu_exclusive = "1"
+      gpu_borrow    = "1"
+      reason        = "Nightly model training"
+    }
+  }
 }
 
 output "shop_frontend_url" {
@@ -83,6 +97,9 @@ output "shop_frontend_url" {
 - `github_user` (String) A GitHub user linked to the project. Leaving it out clears it.
 - `has_mobile` (Boolean) Include a mobile application. Platform default `false`. Leave it out to keep the current value.
 - `import_existing_repo` (Boolean) The GitLab repository already holds code: provisioning does not seed it from the template. Platform default `false`. Leave it out to keep the current value.
+- `k8s_quota` (Attributes) Kubernetes backend only: the namespace quota of each environment (`dev`, `uat`, `prod`) — the tier default with the project's overrides merged over it — including GPU scheduling: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards the namespace may borrow, preempted when the owner needs them back), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). Null for a VM-backend project and for a project registered without a manifest.
+
+Set any of the eleven quota keys of an environment and the provider sends the ones that differ (with `reason`) to the platform's quota editor, one request per environment, after the project is created or changed. The platform checks and compiles the change before storing it, then re-applies the project's GitOps stages itself. A key left out keeps its current value; setting a key to the tier default's value keeps an override with that value (the portal's reset drops an environment's overrides altogether). A count may be spelled with leading zeros (`"040"` is 40): the state keeps the configuration's spelling. A GPU key above `0` is admitted only where the environment's cluster runs the GPU queue (`kueue`), and the guaranteed floors of every namespace on one cluster may not exceed its tenant cards; the platform refuses otherwise and the apply fails with its message, nothing stored. Any change here needs a token holding `k8s-gpu-admin-global`; reading needs only the project read permission. Needs a platform release that reports `k8s_quota` on the project: on an older one the attribute is null, and setting it fails at plan time. (see [below for nested schema](#nestedatt--k8s_quota))
 - `mssql_edition` (String) SQL Server edition. Platform default `express`. Leave it out to keep the current value.
 - `network_only` (Boolean) Register the network zone only: no application and no web site. Forces `enable_static_site` and `enable_fullstack_app` off. Platform default `false`. **Frozen.**
 - `prod_object_storage_disks_per_vm` (Number) Object storage disks per node in production: 1 or 2. Platform default 2. Leave it out to keep the current value.
@@ -108,6 +125,103 @@ output "shop_frontend_url" {
 - `status` (String) `planned` until provisioning starts, then `provisioning`, `active` once every stage is done, `paused`, or `retired`. Read-only.
 - `urls` (Attributes) The project's public addresses, each null when the project has none: `static` (the web site), `frontend` (the application), `backend` (its API) and `ai` (its AI endpoint). (see [below for nested schema](#nestedatt--urls))
 - `warnings` (Attributes List) What did not go as planned in the last change made through the provider (for example stale stages that could not be recorded). Empty when everything went as planned. (see [below for nested schema](#nestedatt--warnings))
+
+<a id="nestedatt--k8s_quota"></a>
+### Nested Schema for `k8s_quota`
+
+Optional:
+
+- `dev` (Attributes) The `dev` environment's namespace quota. (see [below for nested schema](#nestedatt--k8s_quota--dev))
+- `prod` (Attributes) The `prod` environment's namespace quota. (see [below for nested schema](#nestedatt--k8s_quota--prod))
+- `uat` (Attributes) The `uat` environment's namespace quota. (see [below for nested schema](#nestedatt--k8s_quota--uat))
+
+<a id="nestedatt--k8s_quota--dev"></a>
+### Nested Schema for `k8s_quota.dev`
+
+Optional:
+
+- `fair_weight` (String) The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`. Leave it out to keep the current value.
+- `gpu_borrow` (String) Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card. Leave it out to keep the current value.
+- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`). Leave it out to keep the current value.
+- `gpu_shared` (String) Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants. Leave it out to keep the current value.
+- `lim_cpu` (String) The namespace's total CPU limit, a CPU quantity such as `16`. Leave it out to keep the current value.
+- `lim_mem` (String) The namespace's total memory limit, with a unit, such as `32Gi`. Leave it out to keep the current value.
+- `pods` (String) How many pods the namespace may run, a whole number. Leave it out to keep the current value.
+- `pvc` (String) How many persistent volume claims the namespace may hold, a whole number. Leave it out to keep the current value.
+- `reason` (String) Why this environment's quota differs from the tier default, 1-1000 characters; the platform records it with the environment's override (an override moves the project's billing basis). Sent with every change of this environment's keys. A new reason alone is sent too when the environment has an override (its overridden keys go again, unchanged, with it); without one there is nothing on the platform to carry it, and only the state records it. Left out, the reason given last is kept; when none was ever given, `Set through the ATAILA Terraform provider.` is sent and the state holds null. The platform does not report it back, so an imported project has none.
+- `req_cpu` (String) CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`. Leave it out to keep the current value.
+- `req_mem` (String) Memory the namespace may request in total, with a unit, such as `16Gi`. Leave it out to keep the current value.
+- `storage` (String) Total persistent storage the namespace may claim, with a unit, such as `200Gi`. Leave it out to keep the current value.
+
+Read-Only:
+
+- `cluster` (String) The cluster the namespace lands on.
+- `gpu_enabled` (Boolean) Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
+- `kueue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
+- `namespace` (String) The environment's namespace.
+- `overridden` (Boolean) Whether the environment has an override at all (`overridden_keys` names the keys). False: every value is the tier default.
+- `overridden_keys` (List of String) The keys set for this environment, in the order above.
+- `tier` (String) Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.
+
+
+<a id="nestedatt--k8s_quota--prod"></a>
+### Nested Schema for `k8s_quota.prod`
+
+Optional:
+
+- `fair_weight` (String) The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`. Leave it out to keep the current value.
+- `gpu_borrow` (String) Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card. Leave it out to keep the current value.
+- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`). Leave it out to keep the current value.
+- `gpu_shared` (String) Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants. Leave it out to keep the current value.
+- `lim_cpu` (String) The namespace's total CPU limit, a CPU quantity such as `16`. Leave it out to keep the current value.
+- `lim_mem` (String) The namespace's total memory limit, with a unit, such as `32Gi`. Leave it out to keep the current value.
+- `pods` (String) How many pods the namespace may run, a whole number. Leave it out to keep the current value.
+- `pvc` (String) How many persistent volume claims the namespace may hold, a whole number. Leave it out to keep the current value.
+- `reason` (String) Why this environment's quota differs from the tier default, 1-1000 characters; the platform records it with the environment's override (an override moves the project's billing basis). Sent with every change of this environment's keys. A new reason alone is sent too when the environment has an override (its overridden keys go again, unchanged, with it); without one there is nothing on the platform to carry it, and only the state records it. Left out, the reason given last is kept; when none was ever given, `Set through the ATAILA Terraform provider.` is sent and the state holds null. The platform does not report it back, so an imported project has none.
+- `req_cpu` (String) CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`. Leave it out to keep the current value.
+- `req_mem` (String) Memory the namespace may request in total, with a unit, such as `16Gi`. Leave it out to keep the current value.
+- `storage` (String) Total persistent storage the namespace may claim, with a unit, such as `200Gi`. Leave it out to keep the current value.
+
+Read-Only:
+
+- `cluster` (String) The cluster the namespace lands on.
+- `gpu_enabled` (Boolean) Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
+- `kueue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
+- `namespace` (String) The environment's namespace.
+- `overridden` (Boolean) Whether the environment has an override at all (`overridden_keys` names the keys). False: every value is the tier default.
+- `overridden_keys` (List of String) The keys set for this environment, in the order above.
+- `tier` (String) Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.
+
+
+<a id="nestedatt--k8s_quota--uat"></a>
+### Nested Schema for `k8s_quota.uat`
+
+Optional:
+
+- `fair_weight` (String) The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`. Leave it out to keep the current value.
+- `gpu_borrow` (String) Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card. Leave it out to keep the current value.
+- `gpu_exclusive` (String) Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`). Leave it out to keep the current value.
+- `gpu_shared` (String) Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants. Leave it out to keep the current value.
+- `lim_cpu` (String) The namespace's total CPU limit, a CPU quantity such as `16`. Leave it out to keep the current value.
+- `lim_mem` (String) The namespace's total memory limit, with a unit, such as `32Gi`. Leave it out to keep the current value.
+- `pods` (String) How many pods the namespace may run, a whole number. Leave it out to keep the current value.
+- `pvc` (String) How many persistent volume claims the namespace may hold, a whole number. Leave it out to keep the current value.
+- `reason` (String) Why this environment's quota differs from the tier default, 1-1000 characters; the platform records it with the environment's override (an override moves the project's billing basis). Sent with every change of this environment's keys. A new reason alone is sent too when the environment has an override (its overridden keys go again, unchanged, with it); without one there is nothing on the platform to carry it, and only the state records it. Left out, the reason given last is kept; when none was ever given, `Set through the ATAILA Terraform provider.` is sent and the state holds null. The platform does not report it back, so an imported project has none.
+- `req_cpu` (String) CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`. Leave it out to keep the current value.
+- `req_mem` (String) Memory the namespace may request in total, with a unit, such as `16Gi`. Leave it out to keep the current value.
+- `storage` (String) Total persistent storage the namespace may claim, with a unit, such as `200Gi`. Leave it out to keep the current value.
+
+Read-Only:
+
+- `cluster` (String) The cluster the namespace lands on.
+- `gpu_enabled` (Boolean) Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.
+- `kueue` (Boolean) Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).
+- `namespace` (String) The environment's namespace.
+- `overridden` (Boolean) Whether the environment has an override at all (`overridden_keys` names the keys). False: every value is the tier default.
+- `overridden_keys` (List of String) The keys set for this environment, in the order above.
+- `tier` (String) Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.
+
+
 
 <a id="nestedatt--gitlab_repositories"></a>
 ### Nested Schema for `gitlab_repositories`

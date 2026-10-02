@@ -10,6 +10,17 @@ resource "ataila_project" "shop" {
   # Settings left out get the platform's default at create.
   frontend_variant = "vue"
   enable_ai        = true
+
+  # Kubernetes projects: the namespace quota per environment, GPU scheduling
+  # included. One guaranteed card in production, one more borrowed when idle;
+  # the token needs k8s-gpu-admin-global for this.
+  k8s_quota = {
+    prod = {
+      gpu_exclusive = "1"
+      gpu_borrow    = "1"
+      reason        = "Nightly model training"
+    }
+  }
 }
 
 output "shop_frontend_url" {

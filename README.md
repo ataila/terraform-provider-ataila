@@ -201,7 +201,7 @@ Without any network at all, leave the `direct` block out. The configuration keep
 | [`ataila_user_role_grant`](docs/resources/user_role_grant.md) | One role held by one user (additive) | Removes the role |
 | [`ataila_ai_gateway_key`](docs/resources/ai_gateway_key.md) | A virtual key of the AI gateway; value returned once, rotation by trigger | Deletes in the gateway, irreversibly; not gated |
 | [`ataila_ai_serving_tier`](docs/resources/ai_serving_tier.md) | The pin and enabled flag of an existing serving tier | Forgets only |
-| [`ataila_project`](docs/resources/project.md) | A project record and its settings; provisions nothing | Retires; gated |
+| [`ataila_project`](docs/resources/project.md) | A project record, its settings and (Kubernetes projects) its namespace quota per environment; provisions nothing | Retires; gated |
 | [`ataila_project_provisioning`](docs/resources/project_provisioning.md) | Runs a project's provisioning and waits until it is converged | Forgets only |
 | [`ataila_project_member`](docs/resources/project_member.md) | A user's role in a project | Removes the membership |
 | [`ataila_licence_bundle`](docs/resources/licence_bundle.md) | The licence bundle installed on the platform (singleton) | Forgets only |
@@ -233,7 +233,11 @@ those stages. A project's `tenant_id`, `project_index`, `short_name`, `gitlab_re
 `deployment_backend` and `network_only` are frozen like the keys above. Destroying a project retires it (both
 switches): nothing on the substrate is removed, and its index, short name and domain stay reserved for good.
 Destroying a provisioning only forgets it; the API cannot undo provisioning. The platform's own projects
-(`is_self`) are read-only: the provider refuses to import or change them.
+(`is_self`) are read-only: the provider refuses to import or change them. A Kubernetes project's namespace quota,
+GPU scheduling included, is `k8s_quota` on the project: the keys a configuration sets go to the platform's quota
+editor, one request per environment, after the project's own change (the token needs `k8s-gpu-admin-global`);
+a refusal fails the apply with the platform's reason, and the state keeps what did change. It needs a platform
+release that reports `k8s_quota`; on an older one the attribute is null and setting it fails at plan time.
 
 **The licence and the brand are singletons** (import id `current`) that destroy only forgets. The licence
 bundle is compared by the digest of its document: the installed one is adopted without being sent again,
@@ -312,7 +316,7 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_permission_catalog`](docs/data-sources/permission_catalog.md) | Every permission key, with whether it is grantable and mintable |
 | [`ataila_ai_serving_tiers`](docs/data-sources/ai_serving_tiers.md) | The AI gateway's serving tiers and how each resolves now |
 | [`ataila_ai_gateway`](docs/data-sources/ai_gateway.md) | The AI gateway's base URL and tier names |
-| [`ataila_project`](docs/data-sources/project.md) | One project, by id or short name, with its settings, outputs and stale stages |
+| [`ataila_project`](docs/data-sources/project.md) | One project, by id or short name, with its settings, outputs, stale stages and namespace quota |
 | [`ataila_projects`](docs/data-sources/projects.md) | Project summaries filtered by tenant, customer, status or short name (all pages) |
 | [`ataila_project_stages`](docs/data-sources/project_stages.md) | A project's provisioning stages with dependencies and latest runs |
 | [`ataila_licence`](docs/data-sources/licence.md) | The licence state, tier, modules, term and document digest (never the bundle) |

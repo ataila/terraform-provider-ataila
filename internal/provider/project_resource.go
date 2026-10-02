@@ -177,6 +177,7 @@ func (r *projectResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 		"kubernetes_namespaces":    resourceNestedList(d["kubernetes_namespaces"], projectNSTypes, contractDoc("KubernetesNamespace"), nil),
 		"secret_paths":             resourceNestedList(d["secret_paths"], projectSecretTypes, contractDoc("SecretPath"), nil),
 		"warnings":                 resourceNestedList(d["warnings"], warningAttrTypes, contractDoc("ApiWarning"), nil),
+		"k8s_quota":                projectQuotaResourceAttribute(),
 	}
 	for _, s := range projectSettings {
 		attrs[s.name] = projectSettingResourceAttribute(s)
@@ -194,6 +195,10 @@ func (r *projectResource) Schema(_ context.Context, _ resource.SchemaRequest, re
 			"Settings left out of the configuration get the platform's default at create and keep their " +
 			"current value afterwards. `description`, `github_user` and `github_repo_url` are the exception: " +
 			"leaving them out clears them.\n\n" +
+			"A Kubernetes project's namespace quota, GPU scheduling included, is `k8s_quota`: set the keys of " +
+			"an environment and the provider sends them to the platform's quota editor after the project is " +
+			"created or changed (one request per environment; the platform re-applies the project's GitOps " +
+			"stages itself).\n\n" +
 			"The platform's own projects (`is_self`) cannot be imported or changed through the API; the " +
 			"provider refuses at plan time.\n\n" +
 			"**Destroy retires** the project and needs `allow_destroy = true` on the provider **and** a " +
@@ -259,6 +264,13 @@ func (r *projectResource) ValidateConfig(ctx context.Context, req resource.Valid
 	}
 	if backend.IsUnknown() {
 		return
+	}
+	var quota types.Object
+	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("k8s_quota"), &quota)...)
+	if backend.ValueString() == "vm" && !quota.IsNull() && !quota.IsUnknown() {
+		resp.Diagnostics.AddAttributeError(path.Root("k8s_quota"), "Only a Kubernetes project has a namespace quota",
+			"k8s_quota applies to deployment_backend = \"k8s\" projects only: a VM project has no namespaces. "+
+				"Remove k8s_quota, or create the project with the k8s backend.")
 	}
 	windows := []string{}
 	if mssql.ValueBool() {
@@ -345,11 +357,24 @@ func (r *projectResource) ModifyPlan(ctx context.Context, req resource.ModifyPla
 	for _, s := range projectSettings {
 		changed = changed || !plan[s.name].Equal(state[s.name])
 	}
+	if quotaMissing(plan["k8s_quota"], state["k8s_quota"]) && !retired && !boolAttr(state, "is_self") {
+		resp.Diagnostics.AddAttributeError(path.Root("k8s_quota"), "The platform reports no namespace quota for this project",
+			fmt.Sprintf("The project %s has no k8s_quota in the platform's answer, so it cannot be changed: either the "+
+				"project is not a Kubernetes project with a compiled manifest, or this platform release predates "+
+				"k8s_quota on the API (it needs a later release). Remove k8s_quota from the configuration.", ident))
+		return
+	}
+	changed = changed || quotaChanged(plan["k8s_quota"], state["k8s_quota"])
 	if !changed {
 		// Nothing the configuration sets differs (a spelling the platform
 		// normalises, for example): no update, and the outputs stay known.
+		// The quota keeps what the configuration writes (a respelt count, a
+		// reason with no override to carry it); the update then only records
+		// it in the state.
 		if !req.Plan.Raw.Equal(req.State.Raw) {
 			resp.Plan.Raw = req.State.Raw.Copy()
+			resp.Diagnostics.Append(resp.Plan.SetAttribute(ctx, path.Root("k8s_quota"),
+				quotaPlanned(plan["k8s_quota"], state["k8s_quota"]))...)
 		}
 		return
 	}
@@ -411,10 +436,46 @@ func (r *projectResource) Create(ctx context.Context, req resource.CreateRequest
 		resp.Diagnostics.Append(projectCreateError(short, err))
 		return
 	}
-	warnings, ws := projectWarnings(p)
+	_, ws := projectWarnings(p)
 	addWarnings(&resp.Diagnostics, "creating the project "+short, ws)
-	values := projectValues(p, plan, nil)
-	values["warnings"] = warnings
+	// The quota, when the configuration sets one: the create takes none, so
+	// it follows as the quota editor's own requests. A refusal here leaves the
+	// project created; the state records it so that the next apply retries
+	// the quota alone.
+	quotaPlan := quotaPrior(plan["k8s_quota"], nil, nil)
+	if patches := quotaPatches(plan["k8s_quota"], nil); len(patches) > 0 {
+		id := p.String("id")
+		ident := fmt.Sprintf("%s (id %s)", short, id)
+		qws, done, ok := applyQuota(ctx, r.data.API, id, ident, patches, &resp.Diagnostics)
+		*ws = append(*ws, qws...)
+		quotaPlan = quotaPrior(plan["k8s_quota"], nil, quotaUnapplied(patches, done))
+		if !ok {
+			// The project exists; only its quota was refused. The error above
+			// taints the resource, and a replacement would RETIRE the project
+			// (its names stay reserved for good) — so say how to keep it.
+			resp.Diagnostics.AddError("The project was created, its quota was refused",
+				fmt.Sprintf("The project %s is created and recorded in the state, but the quota above was "+
+					"refused, so the resource is tainted. Do NOT let the next apply replace it (that retires the "+
+					"project): clear the taint, fix k8s_quota, and apply again:\n"+
+					"  tofu untaint ataila_project.<name>       (OpenTofu)\n"+
+					"  terraform untaint ataila_project.<name>  (Terraform)", ident))
+		}
+		// Read back what the quota requests changed. Should that read fail,
+		// the create's own answer still goes into the state: the project
+		// exists, and the next refresh reads its quota.
+		if again, err := r.data.API.GetProject(ctx, id); err != nil {
+			resp.Diagnostics.Append(apiError("reading the project "+ident+" after setting its quota", err))
+		} else {
+			p = again
+		}
+	}
+	prior := map[string]attr.Value{}
+	for k, v := range plan {
+		prior[k] = v
+	}
+	prior["k8s_quota"] = quotaPlan
+	values := projectValues(p, prior, nil)
+	values["warnings"] = warningsValue(*ws)
 	resp.Diagnostics.Append(resp.State.Set(ctx, objectFrom(ctx, planObj.Type(ctx).(basetypes.ObjectType), values, &resp.Diagnostics))...)
 }
 
@@ -508,12 +569,34 @@ func (r *projectResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 	warnings, ws := projectWarnings(p)
 	addWarnings(&resp.Diagnostics, "changing the project "+ident, ws)
+	// The quota: one request per environment the plan needs, after the
+	// project's own change (the settings never depend on the quota, the quota
+	// never on the settings). A refusal fails the apply with the platform's
+	// message, and the state still records what did change — the project's own
+	// change and the environments before the refused one — read back from the
+	// platform, so the next plan shows only what is left.
+	quotaPlan := quotaPrior(plan["k8s_quota"], state["k8s_quota"], nil)
+	if patches := quotaPatches(plan["k8s_quota"], state["k8s_quota"]); len(patches) > 0 {
+		qws, done, _ := applyQuota(ctx, r.data.API, id, ident, patches, &resp.Diagnostics)
+		*ws = append(*ws, qws...)
+		warnings = warningsValue(*ws)
+		quotaPlan = quotaPrior(plan["k8s_quota"], state["k8s_quota"], quotaUnapplied(patches, done))
+		if p, err = r.data.API.GetProject(ctx, id); err != nil {
+			resp.Diagnostics.Append(apiError("reading the project "+ident+" after changing its quota", err))
+			return
+		}
+	}
 	prov, err := r.data.API.GetProvisioning(ctx, id)
 	if err != nil {
 		resp.Diagnostics.Append(apiError("reading the provisioning of the project "+ident, err))
 		return
 	}
-	values := projectValues(p, plan, prov.StaleStages)
+	prior := map[string]attr.Value{}
+	for k, v := range plan {
+		prior[k] = v
+	}
+	prior["k8s_quota"] = quotaPlan
+	values := projectValues(p, prior, prov.StaleStages)
 	values["warnings"] = warnings
 	resp.Diagnostics.Append(resp.State.Set(ctx, objectFrom(ctx, planObj.Type(ctx).(basetypes.ObjectType), values, &resp.Diagnostics))...)
 }

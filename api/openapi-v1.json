@@ -3506,6 +3506,473 @@
         "title": "KubernetesNamespace",
         "type": "object"
       },
+      "KubernetesQuota": {
+        "description": "One environment's namespace quota on the Kubernetes backend: the EFFECTIVE\nvalues (the tier default with this project's overrides merged over it), which\nkeys are overridden, the cluster the namespace lands on and whether that\ncluster runs the GPU queue. GPU quota is in whole cards (`gpu_exclusive`, the\nguaranteed floor; `gpu_borrow`, idle cards the namespace may borrow; `fair_weight`,\nits share when borrowers compete); `gpu_shared` counts time-sliced units, which\nexist only on a dedicated time-sliced node.",
+        "properties": {
+          "cluster": {
+            "description": "The cluster the namespace lands on.",
+            "title": "Cluster",
+            "type": "string"
+          },
+          "env": {
+            "description": "The environment: `dev`, `uat` or `prod`.",
+            "enum": [
+              "dev",
+              "uat",
+              "prod"
+            ],
+            "title": "Env",
+            "type": "string"
+          },
+          "fair_weight": {
+            "description": "The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`.",
+            "title": "Fair Weight",
+            "type": "string"
+          },
+          "gpu_borrow": {
+            "description": "Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card.",
+            "title": "Gpu Borrow",
+            "type": "string"
+          },
+          "gpu_enabled": {
+            "description": "Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.",
+            "title": "Gpu Enabled",
+            "type": "boolean"
+          },
+          "gpu_exclusive": {
+            "description": "Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).",
+            "title": "Gpu Exclusive",
+            "type": "string"
+          },
+          "gpu_shared": {
+            "description": "Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.",
+            "title": "Gpu Shared",
+            "type": "string"
+          },
+          "kueue": {
+            "description": "Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).",
+            "title": "Kueue",
+            "type": "boolean"
+          },
+          "lim_cpu": {
+            "description": "The namespace's total CPU limit, a CPU quantity such as `16`.",
+            "title": "Lim Cpu",
+            "type": "string"
+          },
+          "lim_mem": {
+            "description": "The namespace's total memory limit, with a unit, such as `32Gi`.",
+            "title": "Lim Mem",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "The environment's namespace.",
+            "title": "Namespace",
+            "type": "string"
+          },
+          "overridden": {
+            "description": "Whether the environment has an override at all (`overridden_keys` names the keys). False: every value is the tier default.",
+            "title": "Overridden",
+            "type": "boolean"
+          },
+          "overridden_keys": {
+            "default": [],
+            "description": "The keys set for this environment, in the order above.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Overridden Keys",
+            "type": "array"
+          },
+          "pods": {
+            "description": "How many pods the namespace may run, a whole number.",
+            "title": "Pods",
+            "type": "string"
+          },
+          "pvc": {
+            "description": "How many persistent volume claims the namespace may hold, a whole number.",
+            "title": "Pvc",
+            "type": "string"
+          },
+          "req_cpu": {
+            "description": "CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`.",
+            "title": "Req Cpu",
+            "type": "string"
+          },
+          "req_mem": {
+            "description": "Memory the namespace may request in total, with a unit, such as `16Gi`.",
+            "title": "Req Mem",
+            "type": "string"
+          },
+          "storage": {
+            "description": "Total persistent storage the namespace may claim, with a unit, such as `200Gi`.",
+            "title": "Storage",
+            "type": "string"
+          },
+          "tier": {
+            "description": "Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.",
+            "enum": [
+              "prod",
+              "nonprod"
+            ],
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "env",
+          "namespace",
+          "cluster",
+          "tier",
+          "kueue",
+          "req_cpu",
+          "req_mem",
+          "lim_cpu",
+          "lim_mem",
+          "pvc",
+          "storage",
+          "pods",
+          "gpu_exclusive",
+          "gpu_shared",
+          "gpu_borrow",
+          "fair_weight",
+          "gpu_enabled",
+          "overridden"
+        ],
+        "title": "KubernetesQuota",
+        "type": "object"
+      },
+      "KubernetesQuotaPatch": {
+        "additionalProperties": false,
+        "description": "JSON Merge Patch (RFC 7396): a member that is omitted keeps its current\nvalue; a member sent as `null` clears the field when the field is nullable\n(every quota key is: `null` returns that key to the tier default), and\n`null` for `reason` is a 422. Values are Kubernetes quantities as strings;\na JSON number is accepted for a count. At least one quota key must be sent.",
+        "properties": {
+          "fair_weight": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`. `null` returns the key to the tier default.",
+            "title": "Fair Weight"
+          },
+          "gpu_borrow": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card. `null` returns the key to the tier default.",
+            "title": "Gpu Borrow"
+          },
+          "gpu_exclusive": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`). `null` returns the key to the tier default.",
+            "title": "Gpu Exclusive"
+          },
+          "gpu_shared": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants. `null` returns the key to the tier default.",
+            "title": "Gpu Shared"
+          },
+          "lim_cpu": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The namespace's total CPU limit, a CPU quantity such as `16`. `null` returns the key to the tier default.",
+            "title": "Lim Cpu"
+          },
+          "lim_mem": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The namespace's total memory limit, with a unit, such as `32Gi`. `null` returns the key to the tier default.",
+            "title": "Lim Mem"
+          },
+          "pods": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "How many pods the namespace may run, a whole number. `null` returns the key to the tier default.",
+            "title": "Pods"
+          },
+          "pvc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "How many persistent volume claims the namespace may hold, a whole number. `null` returns the key to the tier default.",
+            "title": "Pvc"
+          },
+          "reason": {
+            "description": "Why this environment's quota differs from the tier default, 1-1000 characters. Required on every change: an override moves the project's billing basis.",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          },
+          "req_cpu": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`. `null` returns the key to the tier default.",
+            "title": "Req Cpu"
+          },
+          "req_mem": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Memory the namespace may request in total, with a unit, such as `16Gi`. `null` returns the key to the tier default.",
+            "title": "Req Mem"
+          },
+          "storage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Total persistent storage the namespace may claim, with a unit, such as `200Gi`. `null` returns the key to the tier default.",
+            "title": "Storage"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "title": "KubernetesQuotaPatch",
+        "type": "object"
+      },
+      "KubernetesQuotaUpdated": {
+        "description": "The environment's quota after a change, and what the change set in\nmotion: the project's manifest was recompiled, the GitOps stages it leaves\nstale were marked, and a provisioning walk over exactly those stages was\nstarted when there were any (`operation_id` names it).",
+        "properties": {
+          "cluster": {
+            "description": "The cluster the namespace lands on.",
+            "title": "Cluster",
+            "type": "string"
+          },
+          "dispatch_status": {
+            "description": "What happened after the change was saved. `started` (or `resumed`, a stalled walk taken over): a walk over the stale stages runs. `partial`: it runs, but a stage the change needs has never succeeded on this project, so the quota reaches the cluster only after a full provisioning start. `already_running` / `busy`: a walk was already running, the stages stay marked stale for it. `unchanged`: the compiled manifest did not change. `not_provisioned`: the GitOps stages have never run; the next provisioning start renders the quota. `stale_not_recorded` / `dispatch_failed`: the quota is saved but the walk did not start; start provisioning yourself (also a warning).",
+            "enum": [
+              "started",
+              "resumed",
+              "partial",
+              "already_running",
+              "busy",
+              "unchanged",
+              "not_provisioned",
+              "stale_not_recorded",
+              "dispatch_failed"
+            ],
+            "title": "Dispatch Status",
+            "type": "string"
+          },
+          "env": {
+            "description": "The environment: `dev`, `uat` or `prod`.",
+            "enum": [
+              "dev",
+              "uat",
+              "prod"
+            ],
+            "title": "Env",
+            "type": "string"
+          },
+          "fair_weight": {
+            "description": "The namespace's fair-share weight when idle GPUs are shared out among borrowers, a non-negative decimal such as `1`, `2` or `0.5`; the default is `1`.",
+            "title": "Fair Weight",
+            "type": "string"
+          },
+          "gpu_borrow": {
+            "description": "Whole GPU cards the namespace may BORROW from idle quota of the other namespaces on the same cluster, on top of its floor, a whole number; `0` = none. A borrower is preempted when the owner needs its card back. A namespace with a floor of `0` and `gpu_borrow` above `0` is a pure borrower and holds no guaranteed card.",
+            "title": "Gpu Borrow",
+            "type": "string"
+          },
+          "gpu_enabled": {
+            "description": "Whether the namespace takes part in GPU scheduling at all: true when any of `gpu_exclusive`, `gpu_shared` or `gpu_borrow` is above `0`.",
+            "title": "Gpu Enabled",
+            "type": "boolean"
+          },
+          "gpu_exclusive": {
+            "description": "Whole GPU cards GUARANTEED to the namespace (its floor), a whole number; `0` = none. The number the platform's cost view bills. A floor is admitted only on a cluster that runs the GPU queue (`kueue` true), and the floors of every namespace on one cluster may not exceed its tenant cards (409 `quota_conflict`).",
+            "title": "Gpu Exclusive",
+            "type": "string"
+          },
+          "gpu_shared": {
+            "description": "Time-sliced GPU units guaranteed to the namespace, a whole number; `0` = none. Only a cluster with a dedicated time-sliced node offers them (none in v1): raising it is refused until then. A slice carries no memory isolation between its tenants.",
+            "title": "Gpu Shared",
+            "type": "string"
+          },
+          "kueue": {
+            "description": "Whether the environment's cluster runs the GPU queue. When false the GPU keys must stay `0`: a GPU quota there is refused (422 `quota_refused`).",
+            "title": "Kueue",
+            "type": "boolean"
+          },
+          "lim_cpu": {
+            "description": "The namespace's total CPU limit, a CPU quantity such as `16`.",
+            "title": "Lim Cpu",
+            "type": "string"
+          },
+          "lim_mem": {
+            "description": "The namespace's total memory limit, with a unit, such as `32Gi`.",
+            "title": "Lim Mem",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "The environment's namespace.",
+            "title": "Namespace",
+            "type": "string"
+          },
+          "operation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The provisioning operation started for the stale stages (`provision:<id>`, poll it at `GET /operations/{id}`); null when none was started (`dispatch_status` says why).",
+            "title": "Operation Id"
+          },
+          "overridden": {
+            "description": "Whether the environment has an override at all (`overridden_keys` names the keys). False: every value is the tier default.",
+            "title": "Overridden",
+            "type": "boolean"
+          },
+          "overridden_keys": {
+            "default": [],
+            "description": "The keys set for this environment, in the order above.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Overridden Keys",
+            "type": "array"
+          },
+          "pods": {
+            "description": "How many pods the namespace may run, a whole number.",
+            "title": "Pods",
+            "type": "string"
+          },
+          "pvc": {
+            "description": "How many persistent volume claims the namespace may hold, a whole number.",
+            "title": "Pvc",
+            "type": "string"
+          },
+          "req_cpu": {
+            "description": "CPU the namespace may request in total, a CPU quantity such as `8`, `0.5` or `500m`.",
+            "title": "Req Cpu",
+            "type": "string"
+          },
+          "req_mem": {
+            "description": "Memory the namespace may request in total, with a unit, such as `16Gi`.",
+            "title": "Req Mem",
+            "type": "string"
+          },
+          "stale_stages": {
+            "default": [],
+            "description": "The provisioning stages this change left stale, in apply order: stages already done whose rendering the quota affects. The started operation re-applies them.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Stale Stages",
+            "type": "array"
+          },
+          "storage": {
+            "description": "Total persistent storage the namespace may claim, with a unit, such as `200Gi`.",
+            "title": "Storage",
+            "type": "string"
+          },
+          "tier": {
+            "description": "Which tier default the quota starts from: `prod` for the production environment, `nonprod` for `dev` and `uat`.",
+            "enum": [
+              "prod",
+              "nonprod"
+            ],
+            "title": "Tier",
+            "type": "string"
+          },
+          "warnings": {
+            "default": [],
+            "description": "What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person.",
+            "items": {
+              "$ref": "#/components/schemas/ApiWarning"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "env",
+          "namespace",
+          "cluster",
+          "tier",
+          "kueue",
+          "req_cpu",
+          "req_mem",
+          "lim_cpu",
+          "lim_mem",
+          "pvc",
+          "storage",
+          "pods",
+          "gpu_exclusive",
+          "gpu_shared",
+          "gpu_borrow",
+          "fair_weight",
+          "gpu_enabled",
+          "overridden",
+          "dispatch_status"
+        ],
+        "title": "KubernetesQuotaUpdated",
+        "type": "object"
+      },
       "LaunchCatalogEntry": {
         "description": "A launchable model on a node. Never the load or unload commands.",
         "properties": {
@@ -5669,6 +6136,21 @@
             "title": "Is Self",
             "type": "boolean"
           },
+          "k8s_quota": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/KubernetesQuota"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Kubernetes backend only: the namespace quota of each environment (`dev`, `uat`, `prod`), the tier default with the project's overrides merged over it, GPU scheduling included. Null for a VM-backend project and for a project registered without a manifest. Changed per environment with `PATCH /projects/{id}/k8s-quota/{env}`. Keyed by environment.",
+            "title": "K8S Quota"
+          },
           "long_name": {
             "description": "The project's display name, 2-60 characters. Double quotes, apostrophes, backslashes and control characters are refused: the name is written into the project's generated files.",
             "maxLength": 60,
@@ -7200,6 +7682,21 @@
             "description": "One of ATAILA's own platform projects: readable, never writable through v1.",
             "title": "Is Self",
             "type": "boolean"
+          },
+          "k8s_quota": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/KubernetesQuota"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Kubernetes backend only: the namespace quota of each environment (`dev`, `uat`, `prod`), the tier default with the project's overrides merged over it, GPU scheduling included. Null for a VM-backend project and for a project registered without a manifest. Changed per environment with `PATCH /projects/{id}/k8s-quota/{env}`. Keyed by environment.",
+            "title": "K8S Quota"
           },
           "long_name": {
             "description": "The project's display name, 2-60 characters. Double quotes, apostrophes, backslashes and control characters are refused: the name is written into the project's generated files.",
@@ -9872,7 +10369,7 @@
     }
   },
   "info": {
-    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code` (Errors, below). Timestamps are RFC 3339 in UTC. Every POST that creates or starts something (all of them except `POST /mcp`, which only reads) and the node-cache `PUT` and `DELETE` accept an `Idempotency-Key` header, declared on each: for 24 hours the same key with the same request replays the stored response (`Idempotent-Replayed: true`), with a different request it is a 409 `idempotency_key_reused`, and while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. PATCH bodies are JSON Merge Patch (RFC 7396). Limit: 600 requests per minute per token (429 `rate_limited` with `Retry-After`). Every response carries `X-Request-ID`.\n\n**Treat every API token as an operator credential.** A token is a remote handle on this portal, and the portal holds the credentials the platform itself runs on: whoever holds a token can do, through this API, everything its scopes allow on this installation. Give each token one purpose, only the scopes that purpose needs and the shortest lifetime that works; keep it in a secret store or a protected CI variable, never in a repository or a configuration file; create it with `allow_destroy` only when it is meant to remove things; and revoke it when its job is done.\n\n**Errors.** Every error is a problem document with these members: `type`, `urn:ataila:api:problem:<code>`, an identifier rather than a link; `title`, the HTTP status phrase; `status`, the HTTP status again; `detail`, what went wrong this time, for a person, worded freely; `code`, the stable reason to branch on; `instance`, the request path; and `request_id`, the same as the `X-Request-ID` header. Some codes add members, named below; ignore any member you do not know. Each operation names its own codes in its responses. These come from the layers every request passes through, so any operation can answer them:\n\n* 401 `not_authenticated`: no `Authorization` header, or not `Bearer <token>`. 401 `token_invalid`: the token is malformed or unknown, or a session token does not verify (an expired one included). 401 `token_expired` and `token_revoked`: the API token has expired or was revoked. 401 `principal_disabled`: the account behind the token or session is deactivated. 401 `token_ip_not_allowed`: the token's address allowlist does not include the caller. A 401 carries `WWW-Authenticate: Bearer`; retrying with the same credential does not help.\n* 403 `forbidden`: the operation needs a permission the caller lacks; `required` lists the permission keys, any one of which would do. A token holds only those of its scopes its owner still holds. 403 `destroy_not_allowed`: a destroy (archive, delete, deactivate, retire) with a token created without `allow_destroy`.\n* 403 `licence_locked`: the licence has expired or was revoked, so every change is refused except installing a licence (`PUT /licence/bundle`). 403 `licence_restricted`: this platform is not licensed yet, so nothing that grows it (customers, tenants, projects, releases, AI) can be added or changed. 403 `licence_required`: the licence lacks a module the operation needs, named in `entitlement`. 403 `licence_refused`: any other licence refusal. Each carries `state` (the licence state), `state_reason`, `remedy` (what an operator must do) and `remedy_url`. A read is never refused for a licence reason. Never retry a `licence_*` code: only a licence change alters the answer.\n* 400 `invalid_idempotency_key`: the `Idempotency-Key` is not 1-255 printable characters. 409 `idempotency_key_reused`: the key was used for a different request (method, path, query or body) in the last 24 hours. 429 `idempotency_request_in_progress`: the first request with the key is still running.\n* 400 `invalid_cursor`: the `cursor` is not one this list issued.\n* 422 `validation_failed`: the request does not match the schema; `errors` lists each failure (`loc`, `msg`, `type`) and `field` names the first offending member. 422 `immutable_field`: a change to a field that is frozen once created; `field` names it.\n* 429 `rate_limited`: more than 600 requests in a minute with this token.\n* 503 `unavailable`: the platform cannot answer right now. 503 `api_tokens_unconfigured`: API tokens are not configured on this platform; an operator must act, and retrying does not help.\n* 404 `not_found`: every path, this document and the interactive reference included, while the public API is switched off on this platform; and any path that does not exist. 405 `method_not_allowed`: the path exists, the method does not. 500 `internal_error`: an unexpected failure, with no detail; `request_id` finds it in the server log.\n\nA 429 and a 503 carry `Retry-After` (seconds) when a retry can succeed: wait that long, then send the same request again. When no specific code applies, `code` is the one for the status: `bad_request` (400), `not_authenticated` (401), `forbidden` (403), `not_found` (404), `method_not_allowed` (405), `conflict` (409), `gone` (410), `precondition_failed` (412), `unsupported_media_type` (415), `validation_failed` (422), `rate_limited` (429), `internal_error` (500), `bad_gateway` (502), `unavailable` (503) and `gateway_timeout` (504).",
+    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code` (Errors, below). Timestamps are RFC 3339 in UTC. Every POST that creates or starts something (all of them except `POST /mcp`, which only reads) and the node-cache `PUT` and `DELETE` accept an `Idempotency-Key` header, declared on each: for 24 hours the same key with the same request replays the stored response (`Idempotent-Replayed: true`), with a different request it is a 409 `idempotency_key_reused`, and while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. PATCH bodies are JSON Merge Patch (RFC 7396). Limit: 600 requests per minute per token (429 `rate_limited` with `Retry-After`). Every response carries `X-Request-ID`.\n\n**Treat every API token as an operator credential.** A token is a remote handle on this portal, and the portal holds the credentials the platform itself runs on: whoever holds a token can do, through this API, everything its scopes allow on this installation. Give each token one purpose, only the scopes that purpose needs and the shortest lifetime that works; keep it in a secret store or a protected CI variable, never in a repository or a configuration file; create it with `allow_destroy` only when it is meant to remove things; and revoke it when its job is done.\n\n**Errors.** Every error is a problem document with these members: `type`, `urn:ataila:api:problem:<code>`, an identifier rather than a link; `title`, the HTTP status phrase; `status`, the HTTP status again; `detail`, what went wrong this time, for a person, worded freely; `code`, the stable reason to branch on; `instance`, the request path; and `request_id`, the same as the `X-Request-ID` header. Some codes add members, named below; ignore any member you do not know. Each operation names its own codes in its responses. These come from the layers every request passes through, so any operation can answer them:\n\n* 401 `not_authenticated`: no `Authorization` header, or not `Bearer <token>`. 401 `token_invalid`: the token is malformed or unknown, or a session token does not verify (an expired one included). 401 `token_expired` and `token_revoked`: the API token has expired or was revoked. 401 `principal_disabled`: the account behind the token or session is deactivated. 401 `token_ip_not_allowed`: the token's address allowlist does not include the caller. A 401 carries `WWW-Authenticate: Bearer`; retrying with the same credential does not help.\n* 403 `forbidden`: the operation needs a permission the caller lacks; `required` lists the permission keys, any one of which would do. A token holds only those of its scopes its owner still holds. 403 `destroy_not_allowed`: a destroy (archive, delete, deactivate, retire) with a token created without `allow_destroy`.\n* 403 `licence_locked`: the licence has expired or was revoked, so every change is refused except installing a licence (`PUT /licence/bundle`). 403 `licence_restricted`: this platform is not licensed yet, so nothing that grows it (customers, tenants, projects, releases, AI) can be added or changed. 403 `licence_required`: the licence lacks a module the operation needs, named in `entitlement`. 403 `licence_refused`: any other licence refusal. Each carries `state` (the licence state), `state_reason`, `remedy` (what an operator must do) and `remedy_url`. A read is never refused for a licence reason. Never retry a `licence_*` code: only a licence change alters the answer.\n* 400 `invalid_idempotency_key`: the `Idempotency-Key` is not 1-255 printable ASCII characters without spaces. 409 `idempotency_key_reused`: the key was used for a different request (method, path, query or body) in the last 24 hours. 429 `idempotency_request_in_progress`: the first request with the key is still running.\n* 400 `invalid_cursor`: the `cursor` is not one this list issued.\n* 422 `validation_failed`: the request does not match the schema; `errors` lists each failure (`loc`, `msg`, `type`) and `field` names the first offending member. 422 `immutable_field`: a change to a field that is frozen once created; `field` names it.\n* 429 `rate_limited`: more than 600 requests in a minute with this token.\n* 503 `unavailable`: the platform cannot answer right now. 503 `api_tokens_unconfigured`: API tokens are not configured on this platform; an operator must act, and retrying does not help.\n* 404 `not_found`: every path, this document and the interactive reference included, while the public API is switched off on this platform; and any path that does not exist. 405 `method_not_allowed`: the path exists, the method does not. 500 `internal_error`: an unexpected failure, with no detail; `request_id` finds it in the server log.\n\nA 429 and a 503 carry `Retry-After` (seconds) when a retry can succeed: wait that long, then send the same request again. When no specific code applies, `code` is the one for the status: `bad_request` (400), `not_authenticated` (401), `forbidden` (403), `not_found` (404), `method_not_allowed` (405), `conflict` (409), `gone` (410), `precondition_failed` (412), `unsupported_media_type` (415), `validation_failed` (422), `rate_limited` (429), `internal_error` (500), `bad_gateway` (502), `unavailable` (503) and `gateway_timeout` (504).",
     "title": "ATAILA Cloud Platform API",
     "version": "1.0.0"
   },
@@ -9922,6 +10419,7 @@
             }
           },
           {
+            "description": "Exact category, as `category` on a model (e.g. `coding`); omit it for every category.",
             "in": "query",
             "name": "category",
             "required": false,
@@ -9935,10 +10433,12 @@
                   "type": "null"
                 }
               ],
+              "description": "Exact category, as `category` on a model (e.g. `coding`); omit it for every category.",
               "title": "Category"
             }
           },
           {
+            "description": "Exact gateway tier, as `gateway_tier` on a model (e.g. `code`); omit it for every tier.",
             "in": "query",
             "name": "gateway_tier",
             "required": false,
@@ -9952,6 +10452,7 @@
                   "type": "null"
                 }
               ],
+              "description": "Exact gateway tier, as `gateway_tier` on a model (e.g. `code`); omit it for every tier.",
               "title": "Gateway Tier"
             }
           },
@@ -10129,7 +10630,7 @@
         "operationId": "ai_models_create",
         "parameters": [
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -11628,7 +12129,7 @@
             }
           },
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -11675,7 +12176,7 @@
                 }
               }
             },
-            "description": "The `Idempotency-Key` is not 1-255 printable characters (`invalid_idempotency_key`).",
+            "description": "The `Idempotency-Key` is not 1-255 printable ASCII characters without spaces (`invalid_idempotency_key`).",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"
@@ -12096,7 +12597,7 @@
             }
           },
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -12161,7 +12662,7 @@
                 }
               }
             },
-            "description": "The `Idempotency-Key` is not 1-255 printable characters (`invalid_idempotency_key`).",
+            "description": "The `Idempotency-Key` is not 1-255 printable ASCII characters without spaces (`invalid_idempotency_key`).",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"
@@ -12394,6 +12895,7 @@
             }
           },
           {
+            "description": "`true`: only entries offered for loading; `false`: only the others; omit it for both.",
             "in": "query",
             "name": "enabled",
             "required": false,
@@ -12406,6 +12908,7 @@
                   "type": "null"
                 }
               ],
+              "description": "`true`: only entries offered for loading; `false`: only the others; omit it for both.",
               "title": "Enabled"
             }
           },
@@ -12939,6 +13442,7 @@
             }
           },
           {
+            "description": "Only keys of this environment (`dev`, `uat` or `prod`); omit it for every environment.",
             "in": "query",
             "name": "env",
             "required": false,
@@ -12956,6 +13460,7 @@
                   "type": "null"
                 }
               ],
+              "description": "Only keys of this environment (`dev`, `uat` or `prod`); omit it for every environment.",
               "title": "Env"
             }
           },
@@ -12978,6 +13483,7 @@
             }
           },
           {
+            "description": "Only keys of this origin: `api` (created here) or `adopted`; omit it for both.",
             "in": "query",
             "name": "origin",
             "required": false,
@@ -12994,6 +13500,7 @@
                   "type": "null"
                 }
               ],
+              "description": "Only keys of this origin: `api` (created here) or `adopted`; omit it for both.",
               "title": "Origin"
             }
           },
@@ -13190,7 +13697,7 @@
         "operationId": "ai_gateway_keys_create",
         "parameters": [
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -13418,10 +13925,12 @@
         "operationId": "ai_gateway_keys_delete",
         "parameters": [
           {
+            "description": "The key's id (`id` on a virtual key).",
             "in": "path",
             "name": "key_id",
             "required": true,
             "schema": {
+              "description": "The key's id (`id` on a virtual key).",
               "title": "Key Id",
               "type": "string"
             }
@@ -13601,10 +14110,12 @@
         "operationId": "ai_gateway_keys_get",
         "parameters": [
           {
+            "description": "The key's id (`id` on a virtual key).",
             "in": "path",
             "name": "key_id",
             "required": true,
             "schema": {
+              "description": "The key's id (`id` on a virtual key).",
               "title": "Key Id",
               "type": "string"
             }
@@ -13771,10 +14282,12 @@
         "operationId": "ai_gateway_keys_update",
         "parameters": [
           {
+            "description": "The key's id (`id` on a virtual key).",
             "in": "path",
             "name": "key_id",
             "required": true,
             "schema": {
+              "description": "The key's id (`id` on a virtual key).",
               "title": "Key Id",
               "type": "string"
             }
@@ -14018,16 +14531,18 @@
         "operationId": "ai_gateway_keys_rotate",
         "parameters": [
           {
+            "description": "The key's id (`id` on a virtual key).",
             "in": "path",
             "name": "key_id",
             "required": true,
             "schema": {
+              "description": "The key's id (`id` on a virtual key).",
               "title": "Key Id",
               "type": "string"
             }
           },
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -16100,6 +16615,7 @@
         "operationId": "brand_assets_list",
         "parameters": [
           {
+            "description": "Only assets of this kind (`logo` or `favicon`); omit it for both.",
             "in": "query",
             "name": "kind",
             "required": false,
@@ -16116,6 +16632,7 @@
                   "type": "null"
                 }
               ],
+              "description": "Only assets of this kind (`logo` or `favicon`); omit it for both.",
               "title": "Kind"
             }
           },
@@ -16312,7 +16829,7 @@
         "operationId": "brand_assets_create",
         "parameters": [
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -16335,10 +16852,12 @@
               "schema": {
                 "properties": {
                   "file": {
+                    "description": "The file; at most 512 KB. Its type is read from the bytes, not from the part's content type.",
                     "format": "binary",
                     "type": "string"
                   },
                   "kind": {
+                    "description": "What the asset is for: a `logo` or a `favicon`.",
                     "enum": [
                       "logo",
                       "favicon"
@@ -16810,6 +17329,7 @@
             }
           },
           {
+            "description": "Only customers in this status (`active`, `suspended` or `archived`); omit it for every status.",
             "in": "query",
             "name": "status",
             "required": false,
@@ -16827,6 +17347,7 @@
                   "type": "null"
                 }
               ],
+              "description": "Only customers in this status (`active`, `suspended` or `archived`); omit it for every status.",
               "title": "Status"
             }
           },
@@ -17004,7 +17525,7 @@
         "operationId": "customers_create",
         "parameters": [
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -18506,6 +19027,7 @@
                         "description": "Absent on a notification, which gets no reply."
                       },
                       "jsonrpc": {
+                        "description": "Always `2.0`.",
                         "enum": [
                           "2.0"
                         ],
@@ -18541,6 +19063,7 @@
                           "description": "Absent on a notification, which gets no reply."
                         },
                         "jsonrpc": {
+                          "description": "Always `2.0`.",
                           "enum": [
                             "2.0"
                           ],
@@ -18579,12 +19102,17 @@
                     {
                       "properties": {
                         "error": {
+                          "description": "The JSON-RPC error; absent when `result` is present. A tool that ran and got an error answer is a `result` with `isError: true`, not this.",
                           "properties": {
                             "code": {
+                              "description": "-32700 parse error, -32600 invalid request, -32601 method not found, -32602 invalid params, -32603 internal error.",
                               "type": "integer"
                             },
-                            "data": {},
+                            "data": {
+                              "description": "Optional extra detail; may be absent."
+                            },
                             "message": {
+                              "description": "What went wrong, for a person.",
                               "type": "string"
                             }
                           },
@@ -18605,15 +19133,18 @@
                             {
                               "type": "null"
                             }
-                          ]
+                          ],
+                          "description": "The `id` of the message this answers; null when the message could not be read (-32700, -32600)."
                         },
                         "jsonrpc": {
+                          "description": "Always `2.0`.",
                           "enum": [
                             "2.0"
                           ],
                           "type": "string"
                         },
                         "result": {
+                          "description": "The method's result; absent when `error` is present. For `tools/call`: the tool's `content` (the operation's answer as text), `isError`, and `structuredContent` when the answer is a JSON object.",
                           "type": "object"
                         }
                       },
@@ -18627,12 +19158,17 @@
                       "items": {
                         "properties": {
                           "error": {
+                            "description": "The JSON-RPC error; absent when `result` is present. A tool that ran and got an error answer is a `result` with `isError: true`, not this.",
                             "properties": {
                               "code": {
+                                "description": "-32700 parse error, -32600 invalid request, -32601 method not found, -32602 invalid params, -32603 internal error.",
                                 "type": "integer"
                               },
-                              "data": {},
+                              "data": {
+                                "description": "Optional extra detail; may be absent."
+                              },
                               "message": {
+                                "description": "What went wrong, for a person.",
                                 "type": "string"
                               }
                             },
@@ -18653,15 +19189,18 @@
                               {
                                 "type": "null"
                               }
-                            ]
+                            ],
+                            "description": "The `id` of the message this answers; null when the message could not be read (-32700, -32600)."
                           },
                           "jsonrpc": {
+                            "description": "Always `2.0`.",
                             "enum": [
                               "2.0"
                             ],
                             "type": "string"
                           },
                           "result": {
+                            "description": "The method's result; absent when `error` is present. For `tools/call`: the tool's `content` (the operation's answer as text), `isError`, and `structuredContent` when the answer is a JSON object.",
                             "type": "object"
                           }
                         },
@@ -18698,12 +19237,17 @@
                 "schema": {
                   "properties": {
                     "error": {
+                      "description": "The JSON-RPC error; absent when `result` is present. A tool that ran and got an error answer is a `result` with `isError: true`, not this.",
                       "properties": {
                         "code": {
+                          "description": "-32700 parse error, -32600 invalid request, -32601 method not found, -32602 invalid params, -32603 internal error.",
                           "type": "integer"
                         },
-                        "data": {},
+                        "data": {
+                          "description": "Optional extra detail; may be absent."
+                        },
                         "message": {
+                          "description": "What went wrong, for a person.",
                           "type": "string"
                         }
                       },
@@ -18724,15 +19268,18 @@
                         {
                           "type": "null"
                         }
-                      ]
+                      ],
+                      "description": "The `id` of the message this answers; null when the message could not be read (-32700, -32600)."
                     },
                     "jsonrpc": {
+                      "description": "Always `2.0`.",
                       "enum": [
                         "2.0"
                       ],
                       "type": "string"
                     },
                     "result": {
+                      "description": "The method's result; absent when `error` is present. For `tools/call`: the tool's `content` (the operation's answer as text), `isError`, and `structuredContent` when the answer is a JSON object.",
                       "type": "object"
                     }
                   },
@@ -19019,10 +19566,12 @@
         "operationId": "operations_get",
         "parameters": [
           {
+            "description": "The operation's id, `<kind>:<native id>`, as the `Location` header of the 202 that started it gives it.",
             "in": "path",
             "name": "operation_id",
             "required": true,
             "schema": {
+              "description": "The operation's id, `<kind>:<native id>`, as the `Location` header of the 202 that started it gives it.",
               "title": "Operation Id",
               "type": "string"
             }
@@ -19422,6 +19971,7 @@
             }
           },
           {
+            "description": "Only projects in this status (`planned`, `provisioning`, `active`, `paused` or `retired`); omit it for every status.",
             "in": "query",
             "name": "status",
             "required": false,
@@ -19441,6 +19991,7 @@
                   "type": "null"
                 }
               ],
+              "description": "Only projects in this status (`planned`, `provisioning`, `active`, `paused` or `retired`); omit it for every status.",
               "title": "Status"
             }
           },
@@ -19636,7 +20187,7 @@
         "operationId": "projects_create",
         "parameters": [
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -20427,6 +20978,474 @@
         ]
       }
     },
+    "/projects/{project_id}/k8s-quota/{env}": {
+      "delete": {
+        "description": "Drops every override of one environment: its quota returns to the tier default, GPU keys included (a floor of `0`, so the cards it held return to the cluster's pool). Not destroy-gated: the namespace, its workloads and its data are untouched; only the quota changes. The same work as a PATCH follows (recompile, stale stages, a provisioning walk); to see the quota and the walk it started, send the PATCH with every key `null` instead, or read `GET /projects/{id}/provisioning`.",
+        "operationId": "project_k8s_quota_reset",
+        "parameters": [
+          {
+            "description": "The environment: `dev`, `uat` or `prod`.",
+            "in": "path",
+            "name": "env",
+            "required": true,
+            "schema": {
+              "description": "The environment: `dev`, `uat` or `prod`.",
+              "enum": [
+                "dev",
+                "uat",
+                "prod"
+              ],
+              "title": "Env",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The project's id (`id` on a project).",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id (`id` on a project).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The environment's quota is the tier default again.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project (`project_not_found`), or the environment has no override (`quota_override_not_found`): it is on the tier default already.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "An ATAILA platform project (`platform_project_read_only`), or the portal's quota rules refused the change (`quota_conflict`; `detail` says which): the guaranteed GPU floors of the namespaces on the cluster would exceed its tenant cards; `gpu_shared` would rise while no cluster offers time-sliced units; a retired project asked for anything but a lower GPU quota; or the project changed while the change was prepared (retry).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A VM-backend project (`vm_projects_unsupported`: only a Kubernetes project has a namespace quota); a value the platform refuses (`quota_refused`; `detail` carries its message): a malformed quantity, a GPU key above `0` on a cluster that runs no GPU queue, `gpu_shared` above `0` where no time-sliced node exists; or the body is invalid.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Reset an environment's namespace quota",
+        "tags": [
+          "projects"
+        ]
+      },
+      "patch": {
+        "description": "Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.\n\nThe change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
+        "operationId": "project_k8s_quota_update",
+        "parameters": [
+          {
+            "description": "The environment: `dev`, `uat` or `prod`.",
+            "in": "path",
+            "name": "env",
+            "required": true,
+            "schema": {
+              "description": "The environment: `dev`, `uat` or `prod`.",
+              "enum": [
+                "dev",
+                "uat",
+                "prod"
+              ],
+              "title": "Env",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The project's id (`id` on a project).",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id (`id` on a project).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KubernetesQuotaPatch"
+              }
+            },
+            "application/merge-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KubernetesQuotaPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KubernetesQuotaUpdated"
+                }
+              }
+            },
+            "description": "The environment's quota after the change, and the walk it started.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project (`project_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "An ATAILA platform project (`platform_project_read_only`), or the portal's quota rules refused the change (`quota_conflict`; `detail` says which): the guaranteed GPU floors of the namespaces on the cluster would exceed its tenant cards; `gpu_shared` would rise while no cluster offers time-sliced units; a retired project asked for anything but a lower GPU quota; or the project changed while the change was prepared (retry).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A VM-backend project (`vm_projects_unsupported`: only a Kubernetes project has a namespace quota); a value the platform refuses (`quota_refused`; `detail` carries its message): a malformed quantity, a GPU key above `0` on a cluster that runs no GPU queue, `gpu_shared` above `0` where no time-sliced node exists; or the body is invalid.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Change an environment's namespace quota",
+        "tags": [
+          "projects"
+        ]
+      }
+    },
     "/projects/{project_id}/members": {
       "get": {
         "description": "The people given a role on this one project, in `user_id` order. Tenant members\nreach the project through the tenant and are not listed here.",
@@ -20640,10 +21659,12 @@
         "operationId": "project_members_delete",
         "parameters": [
           {
+            "description": "The person's id (`user_id` on a project member, `id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The person's id (`user_id` on a project member, `id` on a user).",
               "title": "User Id",
               "type": "string"
             }
@@ -20835,10 +21856,12 @@
         "operationId": "project_members_get",
         "parameters": [
           {
+            "description": "The person's id (`user_id` on a project member, `id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The person's id (`user_id` on a project member, `id` on a user).",
               "title": "User Id",
               "type": "string"
             }
@@ -21017,10 +22040,12 @@
         "operationId": "project_members_put",
         "parameters": [
           {
+            "description": "The person's id (`user_id` on a project member, `id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The person's id (`user_id` on a project member, `id` on a user).",
               "title": "User Id",
               "type": "string"
             }
@@ -21849,7 +22874,7 @@
             }
           },
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -22087,6 +23112,7 @@
             }
           },
           {
+            "description": "Only operations into this environment; omit it for every environment.",
             "in": "query",
             "name": "target_env",
             "required": false,
@@ -22105,6 +23131,7 @@
                   "type": "null"
                 }
               ],
+              "description": "Only operations into this environment; omit it for every environment.",
               "title": "Target Env"
             }
           },
@@ -22338,7 +23365,7 @@
             }
           },
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -22919,10 +23946,12 @@
         "operationId": "release_operations_get",
         "parameters": [
           {
+            "description": "The release operation's id (`id` on a release operation).",
             "in": "path",
             "name": "release_operation_id",
             "required": true,
             "schema": {
+              "description": "The release operation's id (`id` on a release operation).",
               "pattern": "^[1-9][0-9]{0,8}$",
               "title": "Release Operation Id",
               "type": "string"
@@ -23302,7 +24331,7 @@
         "operationId": "tenants_create",
         "parameters": [
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -23510,10 +24539,12 @@
         "operationId": "tenants_delete",
         "parameters": [
           {
+            "description": "The tenant's id (`id` on a tenant).",
             "in": "path",
             "name": "tenant_id",
             "required": true,
             "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
               "title": "Tenant Id",
               "type": "string"
             }
@@ -23693,10 +24724,12 @@
         "operationId": "tenants_get",
         "parameters": [
           {
+            "description": "The tenant's id (`id` on a tenant).",
             "in": "path",
             "name": "tenant_id",
             "required": true,
             "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
               "title": "Tenant Id",
               "type": "string"
             }
@@ -23863,10 +24896,12 @@
         "operationId": "tenants_update",
         "parameters": [
           {
+            "description": "The tenant's id (`id` on a tenant).",
             "in": "path",
             "name": "tenant_id",
             "required": true,
             "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
               "title": "Tenant Id",
               "type": "string"
             }
@@ -24070,10 +25105,12 @@
         "operationId": "tenant_memberships_list",
         "parameters": [
           {
+            "description": "The tenant's id (`id` on a tenant).",
             "in": "path",
             "name": "tenant_id",
             "required": true,
             "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
               "title": "Tenant Id",
               "type": "string"
             }
@@ -24274,19 +25311,23 @@
         "operationId": "tenant_memberships_delete",
         "parameters": [
           {
+            "description": "The tenant's id (`id` on a tenant).",
             "in": "path",
             "name": "tenant_id",
             "required": true,
             "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
               "title": "Tenant Id",
               "type": "string"
             }
           },
           {
+            "description": "The person's id (`user_id` on a membership, `id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The person's id (`user_id` on a membership, `id` on a user).",
               "title": "User Id",
               "type": "string"
             }
@@ -24446,19 +25487,23 @@
         "operationId": "tenant_memberships_get",
         "parameters": [
           {
+            "description": "The tenant's id (`id` on a tenant).",
             "in": "path",
             "name": "tenant_id",
             "required": true,
             "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
               "title": "Tenant Id",
               "type": "string"
             }
           },
           {
+            "description": "The person's id (`user_id` on a membership, `id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The person's id (`user_id` on a membership, `id` on a user).",
               "title": "User Id",
               "type": "string"
             }
@@ -24625,19 +25670,23 @@
         "operationId": "tenant_memberships_put",
         "parameters": [
           {
+            "description": "The tenant's id (`id` on a tenant).",
             "in": "path",
             "name": "tenant_id",
             "required": true,
             "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
               "title": "Tenant Id",
               "type": "string"
             }
           },
           {
+            "description": "The person's id (`user_id` on a membership, `id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The person's id (`user_id` on a membership, `id` on a user).",
               "title": "User Id",
               "type": "string"
             }
@@ -24884,6 +25933,7 @@
             }
           },
           {
+            "description": "`true`: only active people; `false`: only deactivated ones; omit it for both.",
             "in": "query",
             "name": "is_active",
             "required": false,
@@ -24896,6 +25946,7 @@
                   "type": "null"
                 }
               ],
+              "description": "`true`: only active people; `false`: only deactivated ones; omit it for both.",
               "title": "Is Active"
             }
           },
@@ -25129,7 +26180,7 @@
         "operationId": "users_create",
         "parameters": [
           {
-            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable characters without spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
             "in": "header",
             "name": "Idempotency-Key",
             "required": false,
@@ -25337,10 +26388,12 @@
         "operationId": "users_delete",
         "parameters": [
           {
+            "description": "The user's id (`id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The user's id (`id` on a user).",
               "title": "User Id",
               "type": "string"
             }
@@ -25520,10 +26573,12 @@
         "operationId": "users_get",
         "parameters": [
           {
+            "description": "The user's id (`id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The user's id (`id` on a user).",
               "title": "User Id",
               "type": "string"
             }
@@ -25690,10 +26745,12 @@
         "operationId": "users_update",
         "parameters": [
           {
+            "description": "The user's id (`id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The user's id (`id` on a user).",
               "title": "User Id",
               "type": "string"
             }
@@ -25917,10 +26974,12 @@
         "operationId": "user_roles_list",
         "parameters": [
           {
+            "description": "The user's id (`id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The user's id (`id` on a user).",
               "title": "User Id",
               "type": "string"
             }
@@ -26121,19 +27180,23 @@
         "operationId": "user_roles_delete",
         "parameters": [
           {
+            "description": "The user's id (`id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The user's id (`id` on a user).",
               "title": "User Id",
               "type": "string"
             }
           },
           {
+            "description": "The role's name, as `role` on a role grant: a permission key (`GET /permissions`) or a role name such as `user` or `admin`.",
             "in": "path",
             "name": "role",
             "required": true,
             "schema": {
+              "description": "The role's name, as `role` on a role grant: a permission key (`GET /permissions`) or a role name such as `user` or `admin`.",
               "title": "Role",
               "type": "string"
             }
@@ -26313,19 +27376,23 @@
         "operationId": "user_roles_get",
         "parameters": [
           {
+            "description": "The user's id (`id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The user's id (`id` on a user).",
               "title": "User Id",
               "type": "string"
             }
           },
           {
+            "description": "The role's name, as `role` on a role grant: a permission key (`GET /permissions`) or a role name such as `user` or `admin`.",
             "in": "path",
             "name": "role",
             "required": true,
             "schema": {
+              "description": "The role's name, as `role` on a role grant: a permission key (`GET /permissions`) or a role name such as `user` or `admin`.",
               "title": "Role",
               "type": "string"
             }
@@ -26492,19 +27559,23 @@
         "operationId": "user_roles_put",
         "parameters": [
           {
+            "description": "The user's id (`id` on a user).",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
+              "description": "The user's id (`id` on a user).",
               "title": "User Id",
               "type": "string"
             }
           },
           {
+            "description": "The role's name, as `role` on a role grant: a permission key (`GET /permissions`) or a role name such as `user` or `admin`.",
             "in": "path",
             "name": "role",
             "required": true,
             "schema": {
+              "description": "The role's name, as `role` on a role grant: a permission key (`GET /permissions`) or a role name such as `user` or `admin`.",
               "title": "Role",
               "type": "string"
             }

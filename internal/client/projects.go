@@ -17,6 +17,10 @@ const (
 	CodeOrchestrationInProgress = "orchestration_in_progress"
 	CodePlatformReadOnly        = "platform_project_read_only"
 	CodeProjectRetired          = "project_retired"
+	// The namespace quota (PATCH /projects/{id}/k8s-quota/{env}); a VM project
+	// answers CodeVMProjectsUnsupported (releases.go), as the releases do.
+	CodeQuotaRefused  = "quota_refused"
+	CodeQuotaConflict = "quota_conflict"
 )
 
 // ProjectData is a project as the API answers it, decoded generically: the
@@ -147,6 +151,24 @@ func (a *API) UpdateProject(ctx context.Context, id string, patch Patch) (Projec
 		return nil, err
 	}
 	return decodeProject("PATCH /projects/"+id, rsp.HTTPResponse, rsp.Body, http.StatusOK)
+}
+
+// UpdateProjectQuota sends PATCH /projects/{id}/k8s-quota/{env}: one
+// environment's Kubernetes namespace quota (Kubernetes projects only). The
+// answer is that environment's quota after the change, with "stale_stages",
+// "operation_id" (the provisioning walk the platform started, when any) and
+// "dispatch_status"; decoded generically like a project.
+func (a *API) UpdateProjectQuota(ctx context.Context, id, env string, patch Patch) (ProjectData, error) {
+	body, err := patchBody(patch)
+	if err != nil {
+		return nil, err
+	}
+	rsp, err := a.raw.ProjectK8sQuotaUpdateWithBodyWithResponse(ctx, id, ProjectK8sQuotaUpdateParamsEnv(env),
+		MergePatchContentType, body)
+	if err != nil {
+		return nil, err
+	}
+	return decodeProject("PATCH /projects/"+id+"/k8s-quota/"+env, rsp.HTTPResponse, rsp.Body, http.StatusOK)
 }
 
 // RetireProject sends DELETE /projects/{id}, which retires the project.
