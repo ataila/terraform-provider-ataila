@@ -35,7 +35,9 @@ public() { git --git-dir="$work/public.git" "$@"; }
 mirror() {
   local want="$1" rc=0
   shift
-  env "$@" bash "$script" >"$work/out" 2>&1 || rc=$?
+  # Only the variables given: a tag or branch pipeline running this test has
+  # its own CI_COMMIT_* in the environment, which must not leak into a case.
+  env -u CI_COMMIT_TAG -u CI_COMMIT_BRANCH -u CI_COMMIT_SHA -u MIRROR_FORCE "$@" bash "$script" >"$work/out" 2>&1 || rc=$?
   if [ "$want" = 0 ] && [ "$rc" -ne 0 ]; then fail "$* gave exit $rc: $(cat "$work/out")"; fi
   if [ "$want" = fail ] && [ "$rc" -eq 0 ]; then fail "$* was not refused: $(cat "$work/out")"; fi
 }
