@@ -14,6 +14,9 @@ provider stays at 0.x and any release may change.
   job keeps building with the Go cache lint saves, and saves none.
 - `release:dry-run` on the default branch exercises that path without a tag: the download, `goreleaser
   check`, and a snapshot build for the runner's platform.
+- The Go cache no longer stays in the runners' builds slots: every job but lint removes it after its script,
+  and lint, the one job that saves it, drops the build cache first (so the saved cache holds the modules and
+  the toolchain). Each job's log ends with the size its slot is left at.
 - Leak guard: the private key pattern also catches the armour of an OpenPGP private key (`BEGIN PGP PRIVATE
   KEY BLOCK` between the dashes); it caught the OpenSSH, RSA, EC, DSA, encrypted and plain PKCS#8 headers
   already. Its self-test checks every armour, and `scripts/ci/test-leak-guard.sh`, run by the leak-guard job,

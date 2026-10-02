@@ -70,9 +70,26 @@ default:
   # Removed here whether the job passed, failed or was cancelled, after
   # stopping a gpg-agent the release job may have started; the runner's
   # checkout (git clean -ffdx) removes whatever an aborted job left.
+  #
+  # The Go cache (.cache: modules, toolchain, build cache) is unpacked into
+  # each job's builds slot. The runner saves the cache after after_script, so
+  # lint, the one job that saves it, keeps it but drops the build cache first
+  # (rebuilt cheaply; it made up most of the files). Every other job only
+  # restored it and removes it here, so its slot holds no more than the
+  # checkout and the job's artifacts. The last line reports the slot's size.
   after_script:
     - if [ -d "$CI_PROJECT_DIR/.tmp/gnupg" ]; then GNUPGHOME="$CI_PROJECT_DIR/.tmp/gnupg" gpgconf --kill all || true; fi
     - rm -rf "$CI_PROJECT_DIR/.tmp"
+    - |
+      if [ -d "$CI_PROJECT_DIR/.cache" ]; then
+        chmod -R u+w "$CI_PROJECT_DIR/.cache" || true
+        if [ "$CI_JOB_NAME" = lint ]; then
+          rm -rf "$CI_PROJECT_DIR/.cache/gobuild"
+        else
+          rm -rf "$CI_PROJECT_DIR/.cache"
+        fi
+      fi
+    - echo "builds slot after the job:" $(du -sh "$CI_PROJECT_DIR" 2>/dev/null | cut -f1)
 
 .go:
   # The runners keep the cache locally, one archive per runner. Only lint
