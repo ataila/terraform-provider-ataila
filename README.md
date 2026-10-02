@@ -6,8 +6,9 @@ versioned API, `/api/v1`, with an API token minted in the platform's portal.
 - Registry address: `ataila/ataila` (OpenTofu and Terraform registries)
 - Plugin protocol: 6 only (terraform-plugin-framework)
 - Licence: [MPL-2.0](LICENSE)
-- Status: the first public release is **1.0.0**. From it on the stability promise holds: additive changes only
-  within API v1, and semantic versioning of the provider.
+- Status: **1.x**, published since 1.0.0, the first public release. The stability promise holds: semantic
+  versioning of the provider (within 1.x nothing is removed or renamed and no attribute changes its type), and
+  additive changes only within the platform's API v1. The provider needs platform release 1.0.187 or later.
 
 ## Source, support and documentation
 
@@ -36,7 +37,7 @@ terraform {
   required_providers {
     ataila = {
       source  = "ataila/ataila"
-      version = "~> 0.8.0"
+      version = "~> 1.0"
     }
   }
 }
@@ -73,8 +74,8 @@ terraform init && terraform plan
 ```
 
 `source = "ataila/ataila"` resolves to `registry.opentofu.org/ataila/ataila` under OpenTofu and to
-`registry.terraform.io/ataila/ataila` under Terraform; the same release is published to both. Until the first
-public release, 1.0.0, a minor release may break, hence `~> 0.8.0` (0.8.x only); from 1.0.0 on, `~> 1.0`.
+`registry.terraform.io/ataila/ataila` under Terraform; the same release is published to both. `~> 1.0` takes
+every 1.x release: within a major version a release only adds.
 
 ### Switching between OpenTofu and Terraform
 
@@ -93,7 +94,15 @@ load plugin schemas … unavailable provider "registry.opentofu.org/ataila/atail
 `terraform plan` shows no changes. Both commands ask for confirmation; `-auto-approve` skips it. A remote backend is changed in
 place, so switch once, not back and forth in parallel runs.
 
-### Upgrading
+### Upgrading from 0.8.x to 1.0.0
+
+Nothing changes in a configuration or a state: the schema versions are those of 0.8.0, and `plan` shows no
+changes. Move the version constraint to `~> 1.0`. 1.0.0 refuses, when it is configured, a platform older than
+release 1.0.187 (`Unsupported ATAILA platform release`), the contract it is built on; 0.8.x did not check, and
+failed later on such a platform with empty reads and refused writes. 0.x releases were never published: to
+upgrade from an older one, go through the sections below in order.
+
+### Upgrading from 0.7.x to 0.8.0
 
 From 0.7.x to 0.8.0 nothing changes in a configuration or a state: the schema versions are the same, and
 `plan` shows no changes. (Nested lists and objects of the data sources and resources became nested attributes so
@@ -441,7 +450,7 @@ A `vX.Y.Z` tag (it must match `version` in `main.go`) additionally runs:
 |---|---|---|
 | `release` | goreleaser: zip archives for every platform, one `SHA256SUMS`, the registry manifest and a detached GPG signature of the sums | every check, the strict leak guard included; the [signing key](#signing-key) |
 | `mirror` | the air-gapped mirror bundle ([Installing without internet access](#installing-without-internet-access)) from the build job's binaries | the strict leak guard; no key |
-| `mirror:github` | pushes the tag to the [public mirror](#public-mirror) (on the default branch: that commit) | both leak guards; `GITHUB_MIRROR_TOKEN` |
+| `mirror:github:tag` | pushes the tag to the [public mirror](#public-mirror) (`mirror:github` pushes the default branch) | both leak guards and `release`; `GITHUB_MIRROR_TOKEN` |
 | `publish:github` | publishes the `release` job's files, unchanged (archives, `SHA256SUMS`, its `.sig`, the manifest), as the GitHub release of the tag, where both registries read them | `release` and the strict leak guard; `GITHUB_RELEASE_TOKEN` |
 
 ### Signing key
@@ -454,7 +463,7 @@ project, both **protected**:
 | Variable | Type | Value |
 |---|---|---|
 | `GPG_PRIVATE_KEY` | File, masked | The armored private key, base64-encoded on one line (`gpg --armor --export-secret-keys <fingerprint> \| base64 -w0`), because GitLab masks one-line values only. The armored key itself is accepted too, but cannot be masked. |
-| `GPG_FINGERPRINT` | Variable, masked | The key's full fingerprint |
+| `GPG_FINGERPRINT` | Variable (masking optional: the fingerprint is public) | The key's full fingerprint |
 
 and protects the `v*` tags (Settings → Repository → Protected tags): protected variables reach protected refs
 only. The public key is then registered with each registry. `scripts/ci/signing-key.sh` checks all of this before
@@ -472,10 +481,11 @@ refreshed public key; a release signed with an expired key no longer verifies.
 ### Public mirror
 
 The public repository, `github.com/ataila/terraform-provider-ataila`, is a one-way, read-only mirror, fed by the
-`mirror:github` CI job only and never by a GitLab push mirror (Settings → Repository → Mirroring stays empty): a
-push mirror pushes before any pipeline runs, so nothing could gate it, while the job pushes only after the leak
-guard and the strict leak guard passed on exactly the commit it pushes. It pushes the default branch and each
-release tag of 1.0.0 or later (never a 0.x tag: 0.x was never public), skips a commit the public branch already
+`mirror:github` and `mirror:github:tag` CI jobs only and never by a GitLab push mirror (Settings → Repository →
+Mirroring stays empty): a push mirror pushes before any pipeline runs, so nothing could gate it, while the jobs
+push only after the leak guard and the strict leak guard passed on exactly the commit they push. They push the
+default branch and each release tag of 1.0.0 or later, a tag only after its signed release succeeded (never a
+0.x tag: 0.x was never public), skip a commit the public branch already
 holds, and never forces: a public history that has diverged stops the job for a person to decide. Nothing builds
 there; the release files are built and signed once, here, and `publish:github` uploads those same files, plus the
 air-gapped mirror bundle; it refuses any version below 1.0.0. `scripts/ci/test-mirror-github.sh`, run by lint,
@@ -508,41 +518,55 @@ them passes, and no other name: nothing under `portal`, `api`, `gitlab`, `harbor
 service, and the guard's self-test refuses such an entry on the list. The reason: these names are published to
 every customer and visitor, so naming them leaks nothing, while treating them as findings would have meant
 rewriting the history of every released tag for no gain. R1 of the publication readiness review: accepted by the
-founder 2026-10-01; no history rewrite, the existing tags stand.
+founder 2026-10-01; no history was rewritten for a finding. (The history was rewritten once, on 2026-10-02, for
+another reason: so that every commit's author is the company address; the CHANGELOG records it.)
 
 **Strict mode.** `--strict` refuses findings in history too, even those listed in `scripts/leak-guard-history.txt`
 (by commit and the sha256 of the finding, never the finding itself), which a normal run reports as `KNOWN` and
 passes. The `leak-guard:strict` job runs it on the default branch and on every tag, and `release`, `mirror`,
-`mirror:github` and `publish:github` all need it. The list is therefore empty: a finding in history is removed by
-rewriting that history before it is mirrored, not by listing it. Every existing tag (v0.4.0, v0.5.0, v0.6.0)
-passes `--strict` with this guard.
+`mirror:github`, `mirror:github:tag` and `publish:github` all need it. The list is therefore empty: a finding in history is removed by
+rewriting that history before it is mirrored, not by listing it. Every existing tag passes `--strict` with this
+guard (checked v0.4.0 to v0.8.0).
 
 ```shell
 bash scripts/leak-guard.sh --strict
 ```
 
-### Release checklist (1.0.0)
+### Inherited group variables
 
-The version moves to 1.0.0 only in the release commit; until then `main.go` says 0.8.0 and the constraints
-`~> 0.8.0`. The release commit and its tag:
+The parent GitLab group defines CI/CD variables (platform credentials and addresses) that every project in it
+inherits, this one included, on its protected refs. No job here needs them, so the project shadows each with an
+empty project-level variable of the same name (set 2026-10-02). The `leak-guard:strict` job, on the default
+branch and every tag, fails if one of them holds a value in this project's pipelines. Only the `GPG_*` and
+`GITHUB_*` variables are this project's own.
 
-1. The readiness re-run is done and the go is given for 1.0.0.
-2. `main.go`: `var version = "1.0.0"`.
-3. `~> 0.8.0` becomes `~> 1.0` in this README (the example and the sentence under it) and in
-   `examples/provider/provider.tf`; `go generate ./...` renders it into `docs/index.md`.
-4. CHANGELOG: the `## 1.0.0` section gets its date in place of "not yet released", and the empty
-   `## Unreleased` above it stays for what comes after. `publish:github` takes the release notes from
-   `## 1.0.0`.
-5. The platform's contract baseline is frozen at 1.0.0 as `openapi-v1.published.json` in the platform's
-   repository (its additive-only contract test compares against it from then on). Nothing changes here: until
-   then the platform's baseline lags the contract by design, additions being allowed.
-6. Commit with explicit paths, push the default branch, and wait for its pipeline to be green, `release:dry-run`
+### Releasing
+
+A release is a commit and an annotated tag on it:
+
+1. `main.go`: `var version = "<X.Y.Z>"`; for a new major version, the constraint `~> <X>.0` in this README (the
+   example and the sentence under it) and in `examples/provider/provider.tf`, then `go generate ./...`, which
+   renders it into `docs/index.md`.
+2. CHANGELOG: a `## <X.Y.Z> (<date>)` section, which `publish:github` takes as the release notes; `## Unreleased`
+   above it stays for what comes after.
+3. When the release vendors a new platform contract: the platform freezes its baseline of that contract in its
+   own repository (for 1.0.0, `openapi-v1.published.json`, which its additive-only contract test compares
+   against from then on). Nothing in this repository changes for it.
+4. Commit with explicit paths, push the default branch, and wait for its pipeline to be green, `release:dry-run`
    and `mirror:github` included.
-7. Tag `v1.0.0` (an annotated tag; `v*` tags are protected) on that commit and push the tag. Its pipeline runs
-   `release` (signed), `mirror` (the bundle), `mirror:github` (the tag) and `publish:github` (the release on
-   GitHub with every file and the bundle).
-8. Check the GitHub release's assets against `SHA256SUMS` and its signature against `docs/signing-key.asc`,
-   then register the provider with both registries (the public key, `docs/signing-key.asc`).
+5. Tag `v<X.Y.Z>` (annotated; `v*` tags are protected) on that commit and push the tag. Its pipeline runs
+   `release` (signed), `mirror` (the bundle), then `mirror:github:tag` (the tag, only after `release`
+   succeeded) and `publish:github` (the release on GitHub with every file and the bundle).
+6. Check the GitHub release's assets against `SHA256SUMS`, and the signature against `docs/signing-key.asc`.
+
+Registering the provider, once, after the first published release (1.0.0):
+
+- **Terraform Registry**: sign in at registry.terraform.io with a GitHub account that is an owner of the
+  `ataila` organisation; first add the signing key (`docs/signing-key.asc`) under the `ataila` namespace, then
+  publish the provider by choosing the repository. The registry reads the GitHub releases from then on.
+- **OpenTofu Registry**: submit the provider with the "Submit new Provider" issue form of the registry's GitHub
+  repository, then the key with the "Submit new Provider Signing Key" form, both from an account that is a
+  public member of the `ataila` organisation.
 
 ## Licence
 

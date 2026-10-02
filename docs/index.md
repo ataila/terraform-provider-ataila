@@ -24,8 +24,8 @@ terraform {
   required_providers {
     ataila = {
       source  = "ataila/ataila"
-      # 0.x: a minor release may break, so stay on 0.8.x.
-      version = "~> 0.8.0"
+      # Any 1.x: within a major version nothing is removed or renamed.
+      version = "~> 1.0"
     }
   }
 }

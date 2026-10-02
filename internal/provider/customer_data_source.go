@@ -48,7 +48,8 @@ func (d *customerDataSource) Schema(_ context.Context, _ datasource.SchemaReques
 	}
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "One customer, looked up by exactly one of `id`, `short_name` or `gitlab_group`. " +
-			"Archived customers are found too; check `status`.",
+			"Archived customers are found too; check `status`. The GitLab group's live status " +
+			"(`gitlab_status`, returned only on request because it asks GitLab) is not read.",
 		Attributes: map[string]schema.Attribute{
 			"id": lookup("id", "Set it to look the customer up by id.",
 				stringvalidator.RegexMatches(rxIntID, "must be a customer id (1 to 999999999, no leading zero)")),

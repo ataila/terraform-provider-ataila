@@ -5,13 +5,20 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ## Unreleased
 
-The next release is 1.0.0, prepared below; its release commit dates it (README, "Release checklist").
+Nothing yet.
 
-## 1.0.0 (not yet released) — the first public release
+## 1.0.0 (2026-10-02) — contract 1.0.187
 
 The first public release of the OpenTofu and Terraform provider for the ATAILA Cloud Platform, published to both
-registries as `ataila/ataila`. From this release on, semantic versioning holds: within 1.x nothing is removed
-or renamed, and the platform's API v1 changes only by addition.
+registries as `ataila/ataila`.
+
+### Stability promise
+
+From this release on, the provider follows semantic versioning. Within 1.x no resource, data source or
+attribute is removed or renamed, no attribute changes its type or meaning, and no change needs a configuration
+or a state to change: such a change waits for 2.0.0 and is announced in this file first. A minor release adds
+(resources, data sources, attributes, accepted values); a patch release fixes. The platform's API v1, which the
+provider speaks, changes only by addition. `~> 1.0` takes every 1.x release.
 
 ### Contract
 
@@ -55,6 +62,15 @@ or renamed, and the platform's API v1 changes only by addition.
 - Problems and questions: support@ataila.com; documentation at https://www.ataila.eu/developers/terraform. The
   public repository's issue tracker is off.
 
+### Added since 0.8.0
+
+- `ataila_project_provisioning`: `running_stages`, `failed_stages`, `needs_action_stages` and `message`.
+- `ataila_brand` data source: `attribution` and `first_party` (read-only on the platform).
+- The customer resource and data source state that the GitLab group's live status is not read.
+- The provider refuses a platform older than release 1.0.187 when it is configured (see Contract).
+- Proven end to end on a real platform (release 1.0.196) under both CLIs: read, import, create, no diff,
+  drift, frozen keys, the destroy switches, a project with its provisioning, a person, and the audit log.
+
 ### CI
 
 - The release job no longer `go install`s goreleaser: that fetched hundreds of megabytes of goreleaser's own
@@ -77,6 +93,11 @@ or renamed, and the platform's API v1 changes only by addition.
   repository, and the publisher's unit tests refuse fake 0.x tags.
 - `publish:github` attaches the air-gapped mirror bundle and its `.sha256` to the release, after checking the
   bundle against its sum.
+- The leak guard also refuses GitHub token shapes (classic and fine-grained); their findings are never printed.
+- `mirror:github` mirrors the default branch only; a release tag is mirrored by `mirror:github:tag`, which runs
+  only after `release` succeeded, so that no tag reaches the public repository without its release.
+- `leak-guard:strict` fails if one of the parent group's inherited CI/CD variables holds a value in this
+  project's pipelines (they are shadowed by empty project-level variables).
 - The history was rewritten once before publication so that every commit's author and committer, and every
   tag's tagger, is the company address; the trees, messages and dates are unchanged, and v0.4.0 to v0.8.0
   were re-created on the rewritten commits. A temporary job forced the rewritten default branch onto the

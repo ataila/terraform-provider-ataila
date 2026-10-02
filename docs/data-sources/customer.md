@@ -3,12 +3,12 @@
 page_title: "ataila_customer Data Source - ATAILA"
 subcategory: ""
 description: |-
-  One customer, looked up by exactly one of id, short_name or gitlab_group. Archived customers are found too; check status.
+  One customer, looked up by exactly one of id, short_name or gitlab_group. Archived customers are found too; check status. The GitLab group's live status (gitlab_status, returned only on request because it asks GitLab) is not read.
 ---
 
 # ataila_customer (Data Source)
 
-One customer, looked up by exactly one of `id`, `short_name` or `gitlab_group`. Archived customers are found too; check `status`.
+One customer, looked up by exactly one of `id`, `short_name` or `gitlab_group`. Archived customers are found too; check `status`. The GitLab group's live status (`gitlab_status`, returned only on request because it asks GitLab) is not read.
 
 ## Example Usage
 

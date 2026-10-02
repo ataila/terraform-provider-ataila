@@ -20,7 +20,7 @@ import (
 //go:generate go tool tfplugindocs generate --provider-name ataila --rendered-provider-name ATAILA
 
 // version is set by the release build (-X main.version=...).
-var version = "0.8.0"
+var version = "1.0.0"
 
 func main() {
 	var debug bool

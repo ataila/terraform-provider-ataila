@@ -59,6 +59,10 @@ type provisioningModel struct {
 	State        types.String   `tfsdk:"state"`
 	Stages       types.List     `tfsdk:"stages"`
 	StaleStages  types.List     `tfsdk:"stale_stages"`
+	Running      types.List     `tfsdk:"running_stages"`
+	Failed       types.List     `tfsdk:"failed_stages"`
+	NeedsAction  types.List     `tfsdk:"needs_action_stages"`
+	Message      types.String   `tfsdk:"message"`
 	OperationID  types.String   `tfsdk:"operation_id"`
 	Timeouts     timeouts.Value `tfsdk:"timeouts"`
 }
@@ -91,6 +95,10 @@ func (m *provisioningModel) fromAPI(p *client.Provisioning) {
 		stale = append(stale, types.StringValue(s))
 	}
 	m.StaleStages = types.ListValueMust(types.StringType, stale)
+	m.Running = stringsValue(p.RunningStages)
+	m.Failed = stringsValue(p.FailedStages)
+	m.NeedsAction = stringsValue(p.NeedsActionStages)
+	m.Message = stringOrNull(p.Message)
 	if m.OperationID.IsUnknown() {
 		m.OperationID = types.StringNull()
 	}
@@ -170,6 +178,22 @@ func (r *provisioningResource) Schema(ctx context.Context, _ resource.SchemaRequ
 				ElementType:         types.StringType,
 				PlanModifiers:       keepList,
 			},
+			"running_stages": schema.ListAttribute{
+				MarkdownDescription: client.Describe("Provisioning", "running_stages"),
+				Computed:            true, ElementType: types.StringType, PlanModifiers: keepList,
+			},
+			"failed_stages": schema.ListAttribute{
+				MarkdownDescription: client.Describe("Provisioning", "failed_stages"),
+				Computed:            true, ElementType: types.StringType, PlanModifiers: keepList,
+			},
+			"needs_action_stages": schema.ListAttribute{
+				MarkdownDescription: client.Describe("Provisioning", "needs_action_stages"),
+				Computed:            true, ElementType: types.StringType, PlanModifiers: keepList,
+			},
+			"message": schema.StringAttribute{
+				MarkdownDescription: client.Describe("Provisioning", "message"),
+				Computed:            true, PlanModifiers: keepString,
+			},
 			"operation_id": schema.StringAttribute{
 				MarkdownDescription: "The last provisioning operation the provider started or waited for " +
 					"(`provision:<n>`).",
@@ -213,6 +237,10 @@ func (r *provisioningResource) ModifyPlan(ctx context.Context, req resource.Modi
 	plan.State = types.StringUnknown()
 	plan.Stages = types.ListUnknown(types.ObjectType{AttrTypes: stageStateTypes})
 	plan.StaleStages = types.ListUnknown(types.StringType)
+	for _, v := range []*types.List{&plan.Running, &plan.Failed, &plan.NeedsAction} {
+		*v = types.ListUnknown(types.StringType)
+	}
+	plan.Message = types.StringUnknown()
 	plan.OperationID = types.StringUnknown()
 	resp.Diagnostics.Append(resp.Plan.Set(ctx, &plan)...)
 }
@@ -337,8 +365,13 @@ func (r *provisioningResource) provision(ctx context.Context, plan provisioningM
 		if state.Stages.IsUnknown() {
 			state.Stages = types.ListNull(types.ObjectType{AttrTypes: stageStateTypes})
 		}
-		if state.StaleStages.IsUnknown() {
-			state.StaleStages = types.ListNull(types.StringType)
+		for _, v := range []*types.List{&state.StaleStages, &state.Running, &state.Failed, &state.NeedsAction} {
+			if v.IsUnknown() {
+				*v = types.ListNull(types.StringType)
+			}
+		}
+		if state.Message.IsUnknown() {
+			state.Message = types.StringNull()
 		}
 		state.ID = plan.ProjectID
 	}
@@ -511,4 +544,13 @@ func (r *provisioningResource) ImportState(ctx context.Context, req resource.Imp
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), id)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("project_id"), id)...)
+}
+
+// stringsValue is a list of strings, empty (not null) for none.
+func stringsValue(items []string) types.List {
+	elems := make([]attr.Value, 0, len(items))
+	for _, s := range items {
+		elems = append(elems, types.StringValue(s))
+	}
+	return types.ListValueMust(types.StringType, elems)
 }

@@ -15,7 +15,7 @@
 #              GitHub release
 #
 # Nothing leaves GitLab unless the strict leak guard passed on that commit:
-# release, mirror, mirror:github and publish:github all need it. The two
+# release, mirror, mirror:github(:tag) and publish:github all need it. The two
 # GitHub jobs exist only while their tokens are set (README, "CI and releases").
 #
 # Jobs run on shell runners. Go, OpenTofu and Terraform are downloaded into the
@@ -171,6 +171,24 @@ leak-guard:strict:
     GIT_DEPTH: "0"
   script:
     - bash scripts/leak-guard.sh --strict
+    # The parent group's CI/CD variables (platform credentials no job here
+    # needs) reach this project's protected refs unless shadowed; empty
+    # project-level variables of the same names shadow them (README,
+    # "Inherited group variables"). None of them may hold a value here.
+    - |
+      found=0
+      for v in $(compgen -e); do
+        case "$v" in
+          GITLAB_PAT|VAULT_TOKEN|VAULT_ADDR|HARBOR_PIPELINE_ROBOT_*|*_WEBHOOK_HMAC_SECRET|*_PORTAL_URL)
+            found=$((found + 1))
+            if [ -n "${!v}" ]; then
+              echo "The inherited group variable $v holds a value in this project's pipelines; shadow it"
+              echo "with an empty project-level variable (README, \"Inherited group variables\")."
+              exit 1
+            fi ;;
+        esac
+      done
+      echo "inherited group variables: $found present, all empty"
 
 unit:
   stage: test
@@ -425,18 +443,15 @@ mirror:
     expire_in: never
 
 # The one-way mirror to the public repository (README, "CI and releases"): the
-# default branch and v* tags, pushed by this job only after both leak guards
-# passed on exactly that commit. Deliberately not a GitLab push mirror, which
-# pushes before any pipeline runs. Never forces. Exists only while the
-# protected, masked GITHUB_MIRROR_TOKEN is set.
+# default branch, pushed by this job only after both leak guards passed on
+# exactly that commit. Deliberately not a GitLab push mirror, which pushes
+# before any pipeline runs. Never forces. Exists only while the protected,
+# masked GITHUB_MIRROR_TOKEN is set.
 mirror:github:
   stage: publish
   cache: []
   interruptible: false
   rules:
-    # Release tags of 1.0.0 and later only: 0.x was never public (the script
-    # refuses one too).
-    - if: $GITHUB_MIRROR_TOKEN && $CI_COMMIT_TAG =~ /^v[1-9][0-9]*\.[0-9]+\.[0-9]+$/
     - if: $GITHUB_MIRROR_TOKEN && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   needs:
     - job: leak-guard
@@ -448,6 +463,22 @@ mirror:github:
     GIT_DEPTH: "0"
   script:
     - bash scripts/ci/mirror-github.sh
+
+# The same for a release tag of 1.0.0 or later (0.x was never public; the
+# script refuses one too), and only after the signed release succeeded: a tag
+# whose release failed never reaches the public repository, where it would
+# stand without its release.
+mirror:github:tag:
+  extends: mirror:github
+  rules:
+    - if: $GITHUB_MIRROR_TOKEN && $CI_COMMIT_TAG =~ /^v[1-9][0-9]*\.[0-9]+\.[0-9]+$/
+  needs:
+    - job: leak-guard
+      artifacts: false
+    - job: "leak-guard:strict"
+      artifacts: false
+    - job: release
+      artifacts: false
 
 # The signed files of the release job, published as the GitHub release of the
 # tag the mirror pushed, where both registries read them. Builds nothing.
@@ -468,7 +499,7 @@ publish:github:
     - job: mirror
     - job: "leak-guard:strict"
       artifacts: false
-    - job: "mirror:github"
+    - job: "mirror:github:tag"
       artifacts: false
       optional: true
   script:

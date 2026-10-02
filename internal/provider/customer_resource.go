@@ -141,7 +141,9 @@ func (r *customerResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 			"**Destroy archives** the customer and needs `allow_destroy = true` on the provider **and** a " +
 			"token minted with destroy allowed. The platform refuses while the customer has projects.\n\n" +
 			"Warnings from the platform (for example a GitLab group that could not be created yet) are " +
-			"reported as warnings; the customer exists.",
+			"reported as warnings; the customer exists.\n\n" +
+			"The GitLab group's live status (`gitlab_status`, which the API returns only on request) is not " +
+			"an attribute: reading it asks GitLab on every refresh.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				MarkdownDescription: d["id"],

@@ -56,9 +56,13 @@ output "shop_provisioned" {
 
 - `converged` (Boolean) Every stage is done and none is stale, by real or by simulated runs. `false` in the state makes the next plan an update that provisions again.
 - `dispatch_mode` (String) How the platform runs stages: `live`, `simulate` or `dryrun`.
+- `failed_stages` (List of String) The keys of the stages whose latest run failed.
 - `id` (String) The project id.
+- `message` (String) Under `dryrun` or `simulate`: what that means for this project's provisioning, for a person; null under `live`.
+- `needs_action_stages` (List of String) The keys of the stages waiting for an operator in the portal (`manual`).
 - `operation_id` (String) The last provisioning operation the provider started or waited for (`provision:<n>`).
 - `provisioned` (Boolean) Converged on real runs only (no stage simulated): the substrate exists.
+- `running_stages` (List of String) The keys of the stages running now.
 - `simulated` (Boolean) At least one stage's latest run was simulated: marked done, never run.
 - `stages` (Attributes List) The stages in apply order. The `ataila_project_stages` data source has more detail. (see [below for nested schema](#nestedatt--stages))
 - `stale_stages` (List of String) Stages done against older settings, in apply order.

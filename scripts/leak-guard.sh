@@ -16,7 +16,7 @@
 #   - host names under any of the company's domains (`<host>.ataila.<tld>`),
 #     but for the few public ones in PUBLIC_HOSTS below;
 #   - Vault KV paths (the "secret" mount followed by a slash and a path);
-#   - token shapes: platform API tokens, GitLab and Vault tokens, private keys;
+#   - token shapes: platform API tokens, GitLab, GitHub and Vault tokens, private keys;
 #   - internal code names.
 # Examples and docs use portal.example.com, which none of these match.
 #
@@ -61,12 +61,13 @@ PATTERNS=(
   "Vault path||(^|[^A-Za-z0-9_.-])secret/[A-Za-z0-9_.-]+"
   "platform API token||ataila_(pat|sat)_[A-Za-z0-9_]{20,}"
   "GitLab token||glpat-[A-Za-z0-9_-]{20,}"
+  "GitHub token||gh[pousr]_[A-Za-z0-9]{36,}|github_pat_[A-Za-z0-9_]{50,}"
   "Vault token||hv[sbr]\.[A-Za-z0-9_-]{20,}"
   "private key||-----BEGIN ([A-Z0-9]+ )*PRIVATE KEY( BLOCK)?-----"
   "internal code name|-i|lz[f]actory|landingzone[f]actory"
 )
 # Categories whose matches are never printed in full.
-SECRET_CATEGORIES="platform API token|GitLab token|Vault token|private key"
+SECRET_CATEGORIES="platform API token|GitLab token|GitHub token|Vault token|private key"
 
 # Documentation placeholders that may match a pattern above and are allowed.
 # Exact strings, compared case-insensitively. Add an entry only with a reason.
@@ -119,6 +120,7 @@ samples=(
   "secret""/team/app/db"
   "ataila_""pat_abcd1234_0123456789abcdefghijklmnopqrstuvwxyzABCDEF"
   "glpat""-0123456789abcdefghij"
+  "ghp""_0123456789abcdefghijklmnopqrstuvwxyzAB"
   "hvs"".CAESIJ0123456789abcdefghijk"
   "-----BEGIN ""OPENSSH PRIVATE KEY-----"
   "lz""factory"
@@ -130,6 +132,8 @@ negatives=(
   "192.0.2.10"
   "v1.10.2"
   "ataila_pat_…"
+  "github_pat_…"
+  "ghp_short"
   "-----BEGIN CERTIFICATE-----"
   "-----BEGIN PGP PUBLIC KEY BLOCK-----"
   "-----BEGIN PUBLIC KEY-----"

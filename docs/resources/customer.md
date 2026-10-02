@@ -6,6 +6,7 @@ description: |-
   Frozen keys (customer_index, short_name, gitlab_group, edition) are set at create and never change. Changing one in the configuration fails the plan; the provider never replaces a customer, because destroying one only archives it and an archived customer keeps its keys.
   Destroy archives the customer and needs allow_destroy = true on the provider and a token minted with destroy allowed. The platform refuses while the customer has projects.
   Warnings from the platform (for example a GitLab group that could not be created yet) are reported as warnings; the customer exists.
+  The GitLab group's live status (gitlab_status, which the API returns only on request) is not an attribute: reading it asks GitLab on every refresh.
 ---
 
 # ataila_customer (Resource)
@@ -17,6 +18,8 @@ A customer: a company on the platform. Creating one also creates its primary ten
 **Destroy archives** the customer and needs `allow_destroy = true` on the provider **and** a token minted with destroy allowed. The platform refuses while the customer has projects.
 
 Warnings from the platform (for example a GitLab group that could not be created yet) are reported as warnings; the customer exists.
+
+The GitLab group's live status (`gitlab_status`, which the API returns only on request) is not an attribute: reading it asks GitLab on every refresh.
 
 ## Example Usage
 

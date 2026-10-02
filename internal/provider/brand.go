@@ -654,8 +654,18 @@ func (d *brandDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 			"updated_at": dschema.StringAttribute{
 				MarkdownDescription: "When the brand last changed: RFC 3339 in UTC.", CustomType: TimestampType{}, Computed: true,
 			},
+			"attribution": s(client.Describe("Brand", "attribution")),
+			"first_party": dschema.BoolAttribute{MarkdownDescription: client.Describe("Brand", "first_party"), Computed: true},
 		},
 	}
+}
+
+// brandDataModel is the brand as the data source reads it: the resource's
+// attributes plus the two read-only ones.
+type brandDataModel struct {
+	brandModel
+	Attribution types.String `tfsdk:"attribution"`
+	FirstParty  types.Bool   `tfsdk:"first_party"`
 }
 
 func (d *brandDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
@@ -673,8 +683,10 @@ func (d *brandDataSource) Read(ctx context.Context, _ datasource.ReadRequest, re
 		resp.Diagnostics.AddError(summary, detail)
 		return
 	}
-	var m brandModel
+	var m brandDataModel
 	m.fromAPI(b)
+	m.Attribution = types.StringPointerValue(b.Attribution)
+	m.FirstParty = types.BoolPointerValue(b.FirstParty)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &m)...)
 }
 

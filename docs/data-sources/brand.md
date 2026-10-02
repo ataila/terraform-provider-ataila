@@ -25,8 +25,10 @@ output "brand_color" {
 
 ### Read-Only
 
+- `attribution` (String) Read-only. The line printed under the product name; computed from `first_party`, never stored and never settable.
 - `brand_color` (String) Six-digit hex colour, lower case.
 - `favicon_asset_id` (String) The favicon asset; null for the built-in one.
+- `first_party` (Boolean) Read-only. True only on ATAILA's own portal; selects the attribution line. No request can change it.
 - `id` (String) Always `current`.
 - `logo_asset_id` (String) The logo asset; null for the built-in logo.
 - `logo_offset_x` (Number) Horizontal nudge of the logo in pixels.

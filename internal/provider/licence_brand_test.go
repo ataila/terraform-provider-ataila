@@ -586,7 +586,8 @@ data "ataila_brand_asset" "by_sha" {
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttr("data.ataila_brand.this", "product_name", "Example Cloud"),
 				resource.TestCheckResourceAttr("data.ataila_brand.this", "version", "1"),
-				resource.TestCheckNoResourceAttr("data.ataila_brand.this", "attribution"),
+				resource.TestCheckResourceAttr("data.ataila_brand.this", "attribution", "Powered by the mock platform"),
+				resource.TestCheckResourceAttr("data.ataila_brand.this", "first_party", "false"),
 				resource.TestCheckResourceAttrPair("data.ataila_brand_asset.by_id", "sha256", assetAddr, "sha256"),
 				resource.TestCheckResourceAttrPair("data.ataila_brand_asset.by_sha", "id", assetAddr, "id"),
 				resource.TestCheckResourceAttr("data.ataila_brand_asset.by_sha", "width", "300"),
