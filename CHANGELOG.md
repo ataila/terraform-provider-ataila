@@ -74,6 +74,10 @@ or renamed, and the platform's API v1 changes only by addition.
   repository, and the publisher's unit tests refuse fake 0.x tags.
 - `publish:github` attaches the air-gapped mirror bundle and its `.sha256` to the release, after checking the
   bundle against its sum.
+- The history was rewritten once before publication so that every commit's author and committer, and every
+  tag's tagger, is the company address; the trees, messages and dates are unchanged, and v0.4.0 to v0.8.0
+  were re-created on the rewritten commits. A temporary job forced the rewritten default branch onto the
+  public repository once and was removed again.
 
 ## 0.8.0 (2026-10-01) — contract 1.0.187
 
