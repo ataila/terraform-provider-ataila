@@ -452,6 +452,9 @@ mirror:github:
   cache: []
   interruptible: false
   rules:
+    # Not in the one pipeline that forces a rewritten history (below).
+    - if: $MIRROR_FORCE
+      when: never
     - if: $GITHUB_MIRROR_TOKEN && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   needs:
     - job: leak-guard
@@ -479,6 +482,29 @@ mirror:github:tag:
       artifacts: false
     - job: release
       artifacts: false
+
+# TEMPORARY: the one forced push of the default branch to the public
+# repository after the author rewrite of two commits (the public author is the
+# company address). Exists only in the pipeline started through the API with
+# MIRROR_FORCE set to the rewritten commit's hash, after both leak guards; it
+# pushes no tag (v1.0.0 is older than the rewrite). Removed again in the next
+# commit.
+mirror:github:rewrite:
+  stage: publish
+  cache: []
+  interruptible: false
+  rules:
+    - if: $GITHUB_MIRROR_TOKEN && $MIRROR_FORCE == $CI_COMMIT_SHA && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  needs:
+    - job: leak-guard
+      artifacts: false
+    - job: "leak-guard:strict"
+      artifacts: false
+  variables:
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
+  script:
+    - bash scripts/ci/mirror-github.sh --force-rewrite
 
 # The signed files of the release job, published as the GitHub release of the
 # tag the mirror pushed, where both registries read them. Builds nothing.
