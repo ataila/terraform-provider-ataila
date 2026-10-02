@@ -6,15 +6,15 @@ versioned API, `/api/v1`, with an API token minted in the platform's portal.
 - Registry address: `ataila/ataila` (OpenTofu and Terraform registries)
 - Plugin protocol: 6 only (terraform-plugin-framework)
 - Licence: [MPL-2.0](LICENSE)
-- Status: **0.x, pre-release.** The stability promise (additive changes only within API v1, semantic versioning
-  of the provider) starts when the provider is first published. Until then any 0.x release may change.
+- Status: the first public release is **1.0.0**. From it on the stability promise holds: additive changes only
+  within API v1, and semantic versioning of the provider.
 
-## Source and issues
+## Source, support and documentation
 
 - Source: <https://github.com/ataila/terraform-provider-ataila>, the public, read-only mirror of the primary
-  repository ([Public mirror](#public-mirror)); it goes public with the first publication.
-- Issues: <https://github.com/ataila/terraform-provider-ataila/issues>
-- Registries, once published: <https://search.opentofu.org/provider/ataila/ataila> (OpenTofu) and
+  repository ([Public mirror](#public-mirror)). Its issue tracker is off.
+- Problems and questions: support@ataila.com; documentation at <https://www.ataila.eu/developers/terraform>.
+- Registries, from 1.0.0: <https://search.opentofu.org/provider/ataila/ataila> (OpenTofu) and
   <https://registry.terraform.io/providers/ataila/ataila> (Terraform).
 
 ## Supported CLIs
@@ -73,8 +73,8 @@ terraform init && terraform plan
 ```
 
 `source = "ataila/ataila"` resolves to `registry.opentofu.org/ataila/ataila` under OpenTofu and to
-`registry.terraform.io/ataila/ataila` under Terraform; the same release is published to both. While the version
-is 0.x a minor release may break, hence `~> 0.8.0` (0.8.x only).
+`registry.terraform.io/ataila/ataila` under Terraform; the same release is published to both. Until the first
+public release, 1.0.0, a minor release may break, hence `~> 0.8.0` (0.8.x only); from 1.0.0 on, `~> 1.0`.
 
 ### Switching between OpenTofu and Terraform
 
@@ -114,9 +114,11 @@ For an air-gapped installation, every release tag also produces `terraform-provi
 the same binaries under both registry addresses (`registry.opentofu.org/ataila/ataila` and
 `registry.terraform.io/ataila/ataila`), in the unpacked filesystem mirror layout both CLIs read
 (`<address>/<version>/<os>_<arch>/terraform-provider-ataila_v<version>`), with a `SHA256SUMS` of the binaries and a
-README. It holds linux_amd64, linux_arm64, darwin_arm64 and windows_amd64. Check the archive against its
-`.sha256`, unpack it on the machine, for example into `/opt/terraform/mirror`, and point the CLI at it with
-`provider_installation { filesystem_mirror }`.
+README. It holds linux_amd64, linux_arm64, darwin_arm64 and windows_amd64. From 1.0.0 the bundle and its
+`.sha256` are extra assets of the release on GitHub, next to the registry files; HashiCorp's registry ingests only
+the assets named `_<os>_<arch>.zip`, `_SHA256SUMS`, `_SHA256SUMS.sig` and `_manifest.json` and ignores every
+other. Check the archive against its `.sha256`, unpack it on the machine, for example into
+`/opt/terraform/mirror`, and point the CLI at it with `provider_installation { filesystem_mirror }`.
 
 OpenTofu, in `~/.tofurc` (`%APPDATA%\tofu.rc` on Windows):
 
@@ -471,9 +473,11 @@ The public repository, `github.com/ataila/terraform-provider-ataila`, is a one-w
 `mirror:github` CI job only and never by a GitLab push mirror (Settings → Repository → Mirroring stays empty): a
 push mirror pushes before any pipeline runs, so nothing could gate it, while the job pushes only after the leak
 guard and the strict leak guard passed on exactly the commit it pushes. It pushes the default branch and each
-`v*` tag, skips a commit the public branch already holds, and never forces: a public history that has diverged
-stops the job for a person to decide. Nothing builds there; the release files are built and signed once, here,
-and `publish:github` uploads those same files.
+release tag of 1.0.0 or later (never a 0.x tag: 0.x was never public), skips a commit the public branch already
+holds, and never forces: a public history that has diverged stops the job for a person to decide. Nothing builds
+there; the release files are built and signed once, here, and `publish:github` uploads those same files, plus the
+air-gapped mirror bundle; it refuses any version below 1.0.0. `scripts/ci/test-mirror-github.sh`, run by lint,
+checks the tag rule against a fake public repository.
 
 The two GitHub jobs exist only while their tokens are set. Until then a tag pipeline ends at `release` and
 `mirror`, and nothing fails for want of them.
@@ -514,6 +518,29 @@ passes `--strict` with this guard.
 ```shell
 bash scripts/leak-guard.sh --strict
 ```
+
+### Release checklist (1.0.0)
+
+The version moves to 1.0.0 only in the release commit; until then `main.go` says 0.8.0 and the constraints
+`~> 0.8.0`. The release commit and its tag:
+
+1. The readiness re-run is done and the go is given for 1.0.0.
+2. `main.go`: `var version = "1.0.0"`.
+3. `~> 0.8.0` becomes `~> 1.0` in this README (the example and the sentence under it) and in
+   `examples/provider/provider.tf`; `go generate ./...` renders it into `docs/index.md`.
+4. CHANGELOG: the `## 1.0.0` section gets its date in place of "not yet released", and the empty
+   `## Unreleased` above it stays for what comes after. `publish:github` takes the release notes from
+   `## 1.0.0`.
+5. The platform's contract baseline is frozen at 1.0.0 as `openapi-v1.published.json` in the platform's
+   repository (its additive-only contract test compares against it from then on). Nothing changes here: until
+   then the platform's baseline lags the contract by design, additions being allowed.
+6. Commit with explicit paths, push the default branch, and wait for its pipeline to be green, `release:dry-run`
+   and `mirror:github` included.
+7. Tag `v1.0.0` (an annotated tag; `v*` tags are protected) on that commit and push the tag. Its pipeline runs
+   `release` (signed), `mirror` (the bundle), `mirror:github` (the tag) and `publish:github` (the release on
+   GitHub with every file and the bundle).
+8. Check the GitHub release's assets against `SHA256SUMS` and its signature against `docs/signing-key.asc`,
+   then register the provider with both registries (the public key, `docs/signing-key.asc`).
 
 ## Licence
 

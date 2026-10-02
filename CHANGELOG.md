@@ -1,9 +1,56 @@
 # Changelog
 
-All notable changes to this provider. Versions follow semantic versioning; until the first publication the
-provider stays at 0.x and any release may change.
+All notable changes to this provider. Versions follow semantic versioning. 1.0.0 is the first public release;
+the 0.x releases before it were never published, and any of them could change what the one before did.
 
 ## Unreleased
+
+The next release is 1.0.0, prepared below; its release commit dates it (README, "Release checklist").
+
+## 1.0.0 (not yet released) — the first public release
+
+The first public release of the OpenTofu and Terraform provider for the ATAILA Cloud Platform, published to both
+registries as `ataila/ataila`. From this release on, semantic versioning holds: within 1.x nothing is removed
+or renamed, and the platform's API v1 changes only by addition.
+
+### Contract
+
+- The platform's `/api/v1` of platform release 1.0.187 (API 1.0.0), vendored as the platform exports it
+  (`api/openapi-v1.json`). The provider works with API 1.0.0 and later within major version 1.
+
+### Provider objects
+
+- 17 resources: `ataila_customer`, `ataila_tenant`, `ataila_tenant_membership`, `ataila_user`,
+  `ataila_user_role_grant`, `ataila_ai_gateway_key`, `ataila_ai_serving_tier`, `ataila_project`,
+  `ataila_project_provisioning`, `ataila_project_member`, `ataila_project_prod_lock`,
+  `ataila_release_promotion`, `ataila_ai_model`, `ataila_ai_model_node_cache`, `ataila_licence_bundle`,
+  `ataila_brand` and `ataila_brand_asset`.
+- 27 data sources: `ataila_meta`, `ataila_whoami`, `ataila_customer`, `ataila_tenant`, `ataila_tenants`,
+  `ataila_user`, `ataila_users`, `ataila_permission_catalog`, `ataila_ai_gateway`, `ataila_ai_serving_tiers`,
+  `ataila_project`, `ataila_projects`, `ataila_project_stages`, `ataila_release_state`,
+  `ataila_release_operation`, `ataila_ai_model`, `ataila_ai_models`, `ataila_ai_model_storage`,
+  `ataila_ai_model_launch_catalog`, `ataila_ai_load_targets`, `ataila_ai_node`, `ataila_ai_nodes`,
+  `ataila_dgx_clusters`, `ataila_licence`, `ataila_licence_socket_facts`, `ataila_brand` and
+  `ataila_brand_asset`.
+- Both CLIs are first-class: OpenTofu and Terraform 1.6 and later, every change tested against the oldest and
+  the newest of each, with one state shared by both.
+
+### Upgrading
+
+- From 0.8.x: nothing changes in a configuration or a state; `plan` shows no changes. Move the version
+  constraint to `~> 1.0`.
+- From 0.7.x: the same, plus 0.8.0's changes (nested lists and objects became described nested attributes,
+  values and types unchanged).
+- From 0.6.x or older: 0.7.0 renamed every attribute that named an internal system (its section below lists each,
+  old and new). The state upgrades itself on the first read; the configuration must use the new names.
+
+### Distribution
+
+- Signed with the organisation's RSA-4096 key, whose public half is `docs/signing-key.asc`.
+- The GitHub release holds the archives, `SHA256SUMS`, its signature and the registry manifest, and as extra
+  assets the air-gapped mirror bundle (`terraform-provider-ataila_1.0.0_mirror.zip`) and its `.sha256`.
+- Problems and questions: support@ataila.com; documentation at https://www.ataila.eu/developers/terraform. The
+  public repository's issue tracker is off.
 
 ### CI
 
@@ -22,6 +69,11 @@ provider stays at 0.x and any release may change.
   already. Its self-test checks every armour, and `scripts/ci/test-leak-guard.sh`, run by the leak-guard job,
   plants each in a scratch repository (in the tree and in history) and checks that a public key block, as
   `docs/signing-key.asc` holds, is no finding.
+- `mirror:github` never pushes a 0.x tag and `publish:github` refuses any version below 1.0.0, in their rules
+  and in the scripts; `scripts/ci/test-mirror-github.sh` (run by lint) checks the mirror against a fake public
+  repository, and the publisher's unit tests refuse fake 0.x tags.
+- `publish:github` attaches the air-gapped mirror bundle and its `.sha256` to the release, after checking the
+  bundle against its sum.
 
 ## 0.8.0 (2026-10-01) — contract 1.0.187
 
