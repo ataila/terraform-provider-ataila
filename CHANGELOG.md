@@ -102,6 +102,10 @@ provider speaks, changes only by addition. `~> 1.0` takes every 1.x release.
   tag's tagger, is the company address; the trees, messages and dates are unchanged, and v0.4.0 to v0.8.0
   were re-created on the rewritten commits. A temporary job forced the rewritten default branch onto the
   public repository once and was removed again.
+- The tag `v1.0.0` was re-created on the fixed commit `0573f1a` before any publication. Its first pipeline
+  stopped in lint (the mirror script's test inherited the pipeline's own tag variable), so nothing was
+  signed, mirrored or released from the first tag, which existed on the internal repository only. 1.0.0 is
+  the first public release; there is no 1.0.1.
 
 ## 0.8.0 (2026-10-01) — contract 1.0.187
 
