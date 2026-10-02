@@ -62,7 +62,7 @@ PATTERNS=(
   "platform API token||ataila_(pat|sat)_[A-Za-z0-9_]{20,}"
   "GitLab token||glpat-[A-Za-z0-9_-]{20,}"
   "Vault token||hv[sbr]\.[A-Za-z0-9_-]{20,}"
-  "private key||-----BEGIN ([A-Z0-9]+ )*PRIVATE KEY-----"
+  "private key||-----BEGIN ([A-Z0-9]+ )*PRIVATE KEY( BLOCK)?-----"
   "internal code name|-i|lz[f]actory|landingzone[f]actory"
 )
 # Categories whose matches are never printed in full.
@@ -131,6 +131,9 @@ negatives=(
   "v1.10.2"
   "ataila_pat_…"
   "-----BEGIN CERTIFICATE-----"
+  "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+  "-----BEGIN PUBLIC KEY-----"
+  "-----BEGIN PGP SIGNATURE-----"
   "terraform-provider-ataila.exe"
   "registry.opentofu.org/ataila/ataila"
   "github.com/ataila/terraform-provider-ataila"
@@ -146,6 +149,25 @@ for i in "${!PATTERNS[@]}"; do
     if grep -qE $flags -- "$re" <<<"$neg"; then
       die "self-test: pattern '$name' matches the harmless '$neg'"
     fi
+  done
+done
+
+# Every private key armour the guard must catch, built at run time so that
+# this file holds none of them.
+PRIVATE_KEY_HEADERS=(
+  "-----BEGIN ""PGP PRIVATE KEY BLOCK-----"
+  "-----BEGIN ""OPENSSH PRIVATE KEY-----"
+  "-----BEGIN ""RSA PRIVATE KEY-----"
+  "-----BEGIN ""EC PRIVATE KEY-----"
+  "-----BEGIN ""DSA PRIVATE KEY-----"
+  "-----BEGIN ""ENCRYPTED PRIVATE KEY-----"
+  "-----BEGIN ""PRIVATE KEY-----"
+)
+for entry in "${PATTERNS[@]}"; do
+  [[ "$entry" == "private key|"* ]] || continue
+  re="${entry#*|*|}"
+  for h in "${PRIVATE_KEY_HEADERS[@]}"; do
+    grep -qE -- "$re" <<<"$h" || die "self-test: the private key pattern does not match '${h:0:16}…'"
   done
 done
 

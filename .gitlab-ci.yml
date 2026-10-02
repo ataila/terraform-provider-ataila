@@ -131,6 +131,10 @@ leak-guard:
     GIT_STRATEGY: clone
     GIT_DEPTH: "0"
   script:
+    - export TMPDIR="$CI_PROJECT_DIR/.tmp" && mkdir -p "$TMPDIR"
+    # The guard itself on a scratch repository: planted private keys are
+    # found in the tree and in history; a public key block is not.
+    - bash scripts/ci/test-leak-guard.sh
     - bash scripts/leak-guard.sh
 
 # The same guard, refusing every finding in history: none may be listed in

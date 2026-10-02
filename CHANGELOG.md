@@ -14,6 +14,11 @@ provider stays at 0.x and any release may change.
   job keeps building with the Go cache lint saves, and saves none.
 - `release:dry-run` on the default branch exercises that path without a tag: the download, `goreleaser
   check`, and a snapshot build for the runner's platform.
+- Leak guard: the private key pattern also catches the armour of an OpenPGP private key (`BEGIN PGP PRIVATE
+  KEY BLOCK` between the dashes); it caught the OpenSSH, RSA, EC, DSA, encrypted and plain PKCS#8 headers
+  already. Its self-test checks every armour, and `scripts/ci/test-leak-guard.sh`, run by the leak-guard job,
+  plants each in a scratch repository (in the tree and in history) and checks that a public key block, as
+  `docs/signing-key.asc` holds, is no finding.
 
 ## 0.8.0 (2026-10-01) — contract 1.0.187
 
