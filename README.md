@@ -528,15 +528,32 @@ them passes, and no other name: nothing under `portal`, `api`, `gitlab`, `harbor
 service, and the guard's self-test refuses such an entry on the list. The reason: these names are published to
 every customer and visitor, so naming them leaks nothing, while treating them as findings would have meant
 rewriting the history of every released tag for no gain. R1 of the publication readiness review: accepted by the
-founder 2026-10-01; no history was rewritten for a finding. (The history was rewritten once, on 2026-10-02, for
-another reason: so that every commit's author is the company address; the CHANGELOG records it.)
+founder 2026-10-01; no history was rewritten for a finding. (The history was rewritten for another reason, so
+that every commit's author is the company address: once before publication, and once more before 1.1.0 for
+two commits made after 1.0.0; the CHANGELOG records both. The identity check below now refuses such a commit.)
 
-**Strict mode.** `--strict` refuses findings in history too, even those listed in `scripts/leak-guard-history.txt`
-(by commit and the sha256 of the finding, never the finding itself), which a normal run reports as `KNOWN` and
-passes. The `leak-guard:strict` job runs it on the default branch and on every tag, and `release`, `mirror`,
-`mirror:github`, `mirror:github:tag` and `publish:github` all need it. The list is therefore empty: a finding in history is removed by
-rewriting that history before it is mirrored, not by listing it. Every existing tag passes `--strict` with this
-guard (checked v0.4.0 to v0.8.0).
+**Identities.** The public history carries the organisation's identity only. A commit's author and committer
+address, and the tagger of an annotated tag, are published with every clone, so a personal address, or another
+organisation's, may not be among them. Under `--strict` the guard therefore also fails when a commit in the
+scanned history has an author or committer address other than `attila.macskasy@ataila.com`, when a
+`Co-Authored-By` trailer names another address than `noreply@anthropic.com` (the AI assistant that co-writes
+the commits) or none, or when an annotated tag in that history has another tagger. The two allowlists,
+`IDENTITY_ALLOW` and `COAUTHOR_ALLOW`, are at the top of `scripts/leak-guard.sh`; an address is added there only
+by a recorded decision. A normal run reports such an address as `IDENTITY` and passes, so a branch pipeline
+warns before the default branch refuses. Every mirror job needs the strict guard, so a commit with another
+identity never reaches the public repository. Set the identity in every clone you commit from:
+
+```shell
+git config user.name "Attila Macskasy"
+git config user.email attila.macskasy@ataila.com
+```
+
+**Strict mode.** `--strict` refuses the identities above, and findings in history too, even those listed in
+`scripts/leak-guard-history.txt` (by commit and the sha256 of the finding, never the finding itself), which a
+normal run reports as `KNOWN` and passes. The `leak-guard:strict` job runs it on the default branch and on every
+tag, and `release`, `mirror`, `mirror:github`, `mirror:github:tag` and `publish:github` all need it. The list is
+therefore empty: a finding in history is removed by rewriting that history before it is mirrored, not by listing
+it. Every existing tag passes `--strict` with this guard (checked v0.4.0 to v1.0.0, identities included).
 
 ```shell
 bash scripts/leak-guard.sh --strict

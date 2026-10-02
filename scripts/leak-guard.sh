@@ -31,6 +31,13 @@
 # a finding in history means that history is rewritten before it is mirrored.
 # A finding in the tree is never tolerated.
 #
+# Identities. The public history carries the organisation's identity only:
+# every commit's author and committer address, and the tagger of every
+# annotated tag in the history, is on IDENTITY_ALLOW, and every Co-Authored-By
+# trailer names an address on COAUTHOR_ALLOW. --strict fails on any other
+# address; a normal run reports it as IDENTITY and passes, so a branch warns
+# before the default branch refuses.
+#
 # Before scanning, the guard proves each pattern still matches a sample built
 # at run time, so a broken pattern fails loudly instead of passing silently.
 
@@ -45,7 +52,7 @@ while [ $# -gt 0 ]; do
     --history-only) mode=history ;;
     --strict) strict=true ;;
     --rev) rev="${2:?--rev needs a revision}"; shift ;;
-    -h|--help) sed -n '2,35p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,42p' "$0"; exit 0 ;;
     *) echo "leak-guard: unknown argument $1" >&2; exit 2 ;;
   esac
   shift
@@ -93,11 +100,36 @@ PUBLIC_HOSTS=(
 # Labels a public host may never have.
 INTERNAL_LABELS="portal|api|gitlab|harbor|vault|registry|git|dev|uat|prod|internal|admin|sso|auth|vpn|mail"
 
+# The identities the public history may carry, as exact addresses compared
+# case-insensitively (README, "Leak guard"). The history is published with
+# every clone, so it carries the organisation's identity only: a personal
+# address, or another organisation's, would be published with it. Authors,
+# committers and taggers: the company address. Co-Authored-By trailers: the
+# no-reply address of the AI assistant that co-writes the commits. Add an
+# address only by a decision recorded in the README.
+IDENTITY_ALLOW=(
+  attila.macskasy@ataila.com
+)
+COAUTHOR_ALLOW=(
+  noreply@anthropic.com
+)
+
 # public_host <finding>: the finding is exactly one of PUBLIC_HOSTS.
 public_host() {
   local m="${1,,}" h
   for h in "${PUBLIC_HOSTS[@]}"; do
     [ "$m" = "${h,,}" ] && return 0
+  done
+  return 1
+}
+
+# allowed_address <list name> <address>: the address is on that list.
+allowed_address() {
+  local -n list="$1"
+  local m="${2,,}" a
+  [ -n "$m" ] || return 1
+  for a in "${list[@]}"; do
+    [ "$m" = "${a,,}" ] && return 0
   done
   return 1
 }
@@ -186,6 +218,15 @@ done
 public_host "APP.""Ataila.EU" || die "self-test: a public host in other letter case is not recognised"
 for h in "x.app.""ataila.eu" "app.""ataila.eu.example" "example-host.""ataila.eu"; do
   public_host "$h" && die "self-test: '$h' passes as a public host"
+done
+
+# ── self-test: the identity lists ───────────────────────────────────────────
+allowed_address IDENTITY_ALLOW "${IDENTITY_ALLOW[0]^^}" || die "self-test: an allowed identity in other letter case is refused"
+for a in "someone@example.com" "" "${COAUTHOR_ALLOW[0]}" "x${IDENTITY_ALLOW[0]}" "${IDENTITY_ALLOW[0]}.example"; do
+  allowed_address IDENTITY_ALLOW "$a" && die "self-test: '$a' passes as an author, committer or tagger"
+done
+for a in "someone@example.com" "" "${IDENTITY_ALLOW[0]}"; do
+  allowed_address COAUTHOR_ALLOW "$a" && die "self-test: '$a' passes in a Co-Authored-By trailer"
 done
 
 # ── build the streams: "<location><TAB><text>" per line ──────────────────────
@@ -290,6 +331,47 @@ for entry in "${PATTERNS[@]}"; do
   done
 done
 
+# ── identities in history ───────────────────────────────────────────────────
+identities=0
+# identity <where> <address> <allowed>: one address that is not on its list.
+identity() {
+  if [ "$strict" = true ]; then
+    printf 'LEAK  %-26s %s: %s (allowed: %s)\n' "[identity]" "$1" "${2:-no address}" "$3"
+    found=1
+  else
+    printf 'IDENTITY %s: %s (allowed: %s; --strict refuses it)\n' "$1" "${2:-no address}" "$3"
+    identities=1
+  fi
+}
+if [ "$mode" != tree ]; then
+  authors="${IDENTITY_ALLOW[*]}"
+  coauthors="${COAUTHOR_ALLOW[*]}"
+  # The recorded addresses, never a .mailmap's replacement for them.
+  git log --no-use-mailmap --format="%H${TAB}%ae${TAB}%ce" "$rev" >"$work/idents" || die "git log failed"
+  while IFS="$TAB" read -r sha ae ce; do
+    allowed_address IDENTITY_ALLOW "$ae" || identity "commit ${sha:0:12} author" "$ae" "$authors"
+    allowed_address IDENTITY_ALLOW "$ce" || identity "commit ${sha:0:12} committer" "$ce" "$authors"
+  done <"$work/idents"
+  git log --no-use-mailmap --format="${marker} %H%n%B" "$rev" >"$work/messages" || die "git log failed"
+  awk -v marker="$marker" -v tab="$TAB" '
+    index($0, marker " ") == 1 { sha = substr($2, 1, 12); next }
+    tolower($0) ~ /^[ \t]*co-authored-by:/ { print sha tab $0 }
+  ' "$work/messages" >"$work/trailers"
+  while IFS="$TAB" read -r sha trailer; do
+    addr=$(sed -nE 's/.*<([^>]*)>.*/\1/p' <<<"$trailer")
+    allowed_address COAUTHOR_ALLOW "$addr" || identity "commit $sha Co-Authored-By" "$addr" "$coauthors"
+  done <"$work/trailers"
+  # Annotated tags in this history (a lightweight tag carries no identity).
+  git for-each-ref --merged "$rev" --format="%(objecttype)${TAB}%(refname:short)${TAB}%(taggeremail)" refs/tags \
+    >"$work/tags" || die "git for-each-ref failed"
+  while IFS="$TAB" read -r type name email; do
+    [ "$type" = tag ] || continue
+    email="${email#<}"
+    email="${email%>}"
+    allowed_address IDENTITY_ALLOW "$email" || identity "tag $name tagger" "$email" "$authors"
+  done <"$work/tags"
+fi
+
 summary="mode $mode"
 [ "$strict" = true ] && summary+=", strict"
 [ -n "${files:-}" ] && summary+=", $files files"
@@ -297,6 +379,9 @@ summary="mode $mode"
 if [ "$found" -ne 0 ]; then
   echo "leak-guard: FAILED ($summary). Remove the findings above; if one is in history, rewrite that history before anything is pushed or mirrored." >&2
   exit 1
+fi
+if [ "$identities" -ne 0 ]; then
+  echo "leak-guard: the identities above may not reach the public history: re-author those commits (or re-create those tags) before they reach the default branch; --strict refuses them."
 fi
 if [ "$tolerated" -ne 0 ]; then
   echo "leak-guard: clean but for the KNOWN history findings above ($summary). The history must be rewritten before it is mirrored: --strict refuses them."

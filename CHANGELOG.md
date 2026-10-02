@@ -48,6 +48,16 @@ plan with no changes.
 ### CI
 
 - Lint fails when a copyright notice names another holder than ATAILA Kft.
+- The strict leak guard (`leak-guard:strict`, `scripts/leak-guard.sh --strict`) also fails when a commit in the
+  scanned history has an author or committer address other than the company's, when a `Co-Authored-By` trailer
+  names another address than the AI assistant's no-reply address, or when an annotated tag in that history has
+  another tagger (README, "Leak guard": the public history carries the organisation's identity only). A normal
+  run reports such an address and passes. Every mirror job needs the strict guard, so such a commit no longer
+  reaches the public repository. Tested on scratch repositories in the `leak-guard` job.
+- The two commits of the `k8s_quota` work, made after 1.0.0 with another author address, were re-authored to the
+  company address before this release (trees, messages and dates unchanged but for one `Co-Authored-By`
+  trailer, which now names the model as the others do). A temporary job forced the rewritten default branch onto
+  the public repository once and was removed again; `v1.0.0` and everything before it are unchanged.
 
 ## 1.0.0 (2026-10-02) — contract 1.0.187
 

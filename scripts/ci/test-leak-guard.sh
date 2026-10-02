@@ -2,9 +2,11 @@
 # Copyright (c) 2026 ATAILA Kft.
 # SPDX-License-Identifier: MPL-2.0
 #
-# Tests scripts/leak-guard.sh on a scratch repository: every private key
+# Tests scripts/leak-guard.sh on scratch repositories: every private key
 # armour planted in a file, and in a commit that a later commit removed, is a
-# finding; a public key block (as docs/signing-key.asc holds) is not.
+# finding; a public key block (as docs/signing-key.asc holds) is not; under
+# --strict, an author, committer, co-author or tagger address off the guard's
+# lists is a finding.
 #
 # Usage: bash scripts/ci/test-leak-guard.sh   (run by the leak-guard CI job)
 set -euo pipefail
@@ -57,4 +59,57 @@ bash "$guard" --history-only >"$work/out" 2>&1 || rc=$?
 n=$(grep -c '^LEAK  \[private key\]' "$work/out" || true)
 [ "$n" -eq "${#headers[@]}" ] || fail "$n private key findings in history, want ${#headers[@]}"
 
-echo "test-leak-guard: ok (${#headers[@]} private key armours found in the tree and in history; a public key block passes)"
+# 4. Identities, in a second scratch repository: the organisation's address as
+#    author, committer and tagger, and the assistant's in Co-Authored-By, pass
+#    --strict; any other address in one of those places fails it, and a normal
+#    run reports it and passes.
+org="attila.macskasy@ataila.com"
+assistant="noreply@anthropic.com"
+other="someone@example.com"
+mkdir "$work/ident"
+cd "$work/ident"
+git init -q -b main .
+git config user.name "Leak Guard Test"
+git config user.email "$org"
+echo one >file.txt
+git add file.txt
+git commit -q -m "one" -m "Co-Authored-By: Assistant <$assistant>"
+git tag -a v1.0.0 -m "v1.0.0"
+good=$(git rev-parse HEAD)
+rc=0
+bash "$guard" --strict --history-only >"$work/out" 2>&1 || rc=$?
+[ "$rc" -eq 0 ] || fail "the allowed identities gave exit $rc, want 0: $(cat "$work/out")"
+
+# expect_identity <what>: --strict fails with one identity finding naming it,
+# a normal run passes and reports it; then back to the good commit.
+expect_identity() {
+  rc=0
+  bash "$guard" --strict --history-only >"$work/out" 2>&1 || rc=$?
+  [ "$rc" -eq 1 ] || fail "$1: --strict gave exit $rc, want 1: $(cat "$work/out")"
+  n=$(grep -c '^LEAK  \[identity\]' "$work/out" || true)
+  [ "$n" -eq 1 ] || fail "$1: $n identity findings, want 1: $(cat "$work/out")"
+  grep -q "$1" "$work/out" || fail "$1: the finding does not say where: $(cat "$work/out")"
+  rc=0
+  bash "$guard" --history-only >"$work/out" 2>&1 || rc=$?
+  [ "$rc" -eq 0 ] || fail "$1: a normal run gave exit $rc, want 0: $(cat "$work/out")"
+  grep -q '^IDENTITY ' "$work/out" || fail "$1: a normal run did not report it: $(cat "$work/out")"
+  git tag -d v9.9.9 >/dev/null 2>&1 || true
+  git reset -q --hard "$good"
+}
+
+echo two >>file.txt
+GIT_AUTHOR_EMAIL="$other" git commit -q -am "another author"
+expect_identity "author"
+echo two >>file.txt
+GIT_COMMITTER_EMAIL="$other" git commit -q -am "another committer"
+expect_identity "committer"
+echo two >>file.txt
+git commit -q -am "another co-author" -m "Co-Authored-By: Someone <$other>"
+expect_identity "Co-Authored-By"
+echo two >>file.txt
+git commit -q -am "a co-author without an address" -m "co-authored-by: Someone"
+expect_identity "Co-Authored-By"
+GIT_COMMITTER_EMAIL="$other" git tag -a v9.9.9 -m "v9.9.9"
+expect_identity "tagger"
+
+echo "test-leak-guard: ok (${#headers[@]} private key armours found in the tree and in history; a public key block passes; another author, committer, co-author or tagger fails --strict)"
