@@ -94,6 +94,12 @@ load plugin schemas … unavailable provider "registry.opentofu.org/ataila/atail
 `terraform plan` shows no changes. Both commands ask for confirmation; `-auto-approve` skips it. A remote backend is changed in
 place, so switch once, not back and forth in parallel runs.
 
+### Upgrading from 1.0.x to 1.1.0
+
+Nothing changes in a configuration or a state, and `~> 1.0` already takes 1.1.0. 1.1.0 adds `k8s_quota` on
+`ataila_project`, which needs platform release 1.0.203 or later; the provider itself still works with every
+platform from 1.0.187 on and refuses `k8s_quota` only where it is set on an older one.
+
 ### Upgrading from 0.8.x to 1.0.0
 
 Nothing changes in a configuration or a state: the schema versions are those of 0.8.0, and `plan` shows no

@@ -851,6 +851,7 @@ func (e ProjectApiExposure) Valid() bool {
 
 // Defines values for ProjectAppGateway.
 const (
+	ProjectAppGatewayAtaila    ProjectAppGateway = "ataila"
 	ProjectAppGatewayDedicated ProjectAppGateway = "dedicated"
 	ProjectAppGatewayShared    ProjectAppGateway = "shared"
 )
@@ -858,6 +859,8 @@ const (
 // Valid indicates whether the value is a known member of the ProjectAppGateway enum.
 func (e ProjectAppGateway) Valid() bool {
 	switch e {
+	case ProjectAppGatewayAtaila:
+		return true
 	case ProjectAppGatewayDedicated:
 		return true
 	case ProjectAppGatewayShared:
@@ -1538,6 +1541,7 @@ func (e ProjectUpdatedApiExposure) Valid() bool {
 
 // Defines values for ProjectUpdatedAppGateway.
 const (
+	ProjectUpdatedAppGatewayAtaila    ProjectUpdatedAppGateway = "ataila"
 	ProjectUpdatedAppGatewayDedicated ProjectUpdatedAppGateway = "dedicated"
 	ProjectUpdatedAppGatewayShared    ProjectUpdatedAppGateway = "shared"
 )
@@ -1545,6 +1549,8 @@ const (
 // Valid indicates whether the value is a known member of the ProjectUpdatedAppGateway enum.
 func (e ProjectUpdatedAppGateway) Valid() bool {
 	switch e {
+	case ProjectUpdatedAppGatewayAtaila:
+		return true
 	case ProjectUpdatedAppGatewayDedicated:
 		return true
 	case ProjectUpdatedAppGatewayShared:
@@ -4697,7 +4703,7 @@ type Project struct {
 	// ApiExposure Who reaches the PROD API: `INTERNAL_ONLY` (default) or `PUBLIC`. The UAT and DEV APIs are never public.
 	ApiExposure *ProjectApiExposure `json:"api_exposure,omitempty"`
 
-	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own.
+	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own; `ataila`: the platform's own gateway, carried only by the portal project, and never set by a request (create and PATCH take `shared` or `dedicated`).
 	AppGateway *ProjectAppGateway `json:"app_gateway,omitempty"`
 
 	// CreatedAt When the project was registered.
@@ -4836,7 +4842,7 @@ type Project struct {
 // ProjectApiExposure Who reaches the PROD API: `INTERNAL_ONLY` (default) or `PUBLIC`. The UAT and DEV APIs are never public.
 type ProjectApiExposure string
 
-// ProjectAppGateway `shared` rides the environment's app gateway; `dedicated` gets its own.
+// ProjectAppGateway `shared` rides the environment's app gateway; `dedicated` gets its own; `ataila`: the platform's own gateway, carried only by the portal project, and never set by a request (create and PATCH take `shared` or `dedicated`).
 type ProjectAppGateway string
 
 // ProjectDeploymentBackend `k8s` (default): namespaces on the shared Kubernetes clusters; `vm`: virtual machines of its own. Frozen.
@@ -5291,7 +5297,7 @@ type ProjectUpdated struct {
 	// ApiExposure Who reaches the PROD API: `INTERNAL_ONLY` (default) or `PUBLIC`. The UAT and DEV APIs are never public.
 	ApiExposure *ProjectUpdatedApiExposure `json:"api_exposure,omitempty"`
 
-	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own.
+	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own; `ataila`: the platform's own gateway, carried only by the portal project, and never set by a request (create and PATCH take `shared` or `dedicated`).
 	AppGateway *ProjectUpdatedAppGateway `json:"app_gateway,omitempty"`
 
 	// CreatedAt When the project was registered.
@@ -5433,7 +5439,7 @@ type ProjectUpdated struct {
 // ProjectUpdatedApiExposure Who reaches the PROD API: `INTERNAL_ONLY` (default) or `PUBLIC`. The UAT and DEV APIs are never public.
 type ProjectUpdatedApiExposure string
 
-// ProjectUpdatedAppGateway `shared` rides the environment's app gateway; `dedicated` gets its own.
+// ProjectUpdatedAppGateway `shared` rides the environment's app gateway; `dedicated` gets its own; `ataila`: the platform's own gateway, carried only by the portal project, and never set by a request (create and PATCH take `shared` or `dedicated`).
 type ProjectUpdatedAppGateway string
 
 // ProjectUpdatedDeploymentBackend `k8s` (default): namespaces on the shared Kubernetes clusters; `vm`: virtual machines of its own. Frozen.

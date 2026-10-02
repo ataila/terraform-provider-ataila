@@ -19,6 +19,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/providervalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
@@ -67,6 +68,22 @@ func (d *ProviderData) DispatchMode() string {
 		return ""
 	}
 	return string(d.Meta.DispatchModeEffective)
+}
+
+// featureRefused is the plan-time error for a feature the platform does not
+// serve yet (client.PlatformServes), or nil when it does or the platform is
+// unknown (an unconfigured provider is refused elsewhere).
+func (d *ProviderData) featureRefused(feature string, at path.Path, what string) diag.Diagnostic {
+	if d == nil || d.Meta == nil || client.PlatformServes(d.Meta.PlatformVersion, feature) {
+		return nil
+	}
+	minimum := client.FeatureMinimum(feature)
+	return diag.NewAttributeErrorDiagnostic(at,
+		fmt.Sprintf("%s needs platform release %s or later", what, minimum),
+		fmt.Sprintf("This platform is release %s. The provider works with it (it needs %s or later), but %s "+
+			"came with platform release %s: the platform would refuse the requests, so nothing was sent. "+
+			"Remove it from the configuration, or upgrade the platform to %s or later.",
+			d.Meta.PlatformVersion, client.MinimumPlatformVersion, what, minimum, minimum))
 }
 
 type providerModel struct {

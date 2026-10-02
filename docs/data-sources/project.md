@@ -34,7 +34,7 @@ output "shop_repositories" {
 
 - `allow_public_https_egress` (Boolean) Kubernetes projects: allow outbound HTTPS to the internet. Platform default `false`.
 - `api_exposure` (String) Who can reach the API. Platform default `INTERNAL_ONLY`.
-- `app_gateway` (String) `shared` uses the environment's application gateway, `dedicated` gets its own. Platform default `shared`.
+- `app_gateway` (String) `shared` uses the environment's application gateway, `dedicated` gets its own. Platform default `shared`. A read may also return `ataila`, the platform's own project's value (platform 1.0.206 and later); it cannot be set.
 - `created_at` (String) When the project was created: RFC 3339 in UTC, compared as an instant.
 - `customer_id` (String) Id of the customer of the owning tenant (null for a tenant without a customer, which only the platform's own projects have).
 - `deployment_backend` (String) `k8s` (the platform's default) or `vm`. **Frozen.**
@@ -62,7 +62,7 @@ output "shop_repositories" {
 - `image_registry_namespace` (String) The project's container registry namespace.
 - `import_existing_repo` (Boolean) The GitLab repository already holds code: provisioning does not seed it from the template. Platform default `false`.
 - `is_self` (Boolean) One of the platform's own projects: readable, never writable through the API.
-- `k8s_quota` (Attributes) Kubernetes backend only: the namespace quota of each environment (`dev`, `uat`, `prod`) — the tier default with the project's overrides merged over it — including GPU scheduling: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards the namespace may borrow, preempted when the owner needs them back), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). Null for a VM-backend project and for a project registered without a manifest. (see [below for nested schema](#nestedatt--k8s_quota))
+- `k8s_quota` (Attributes) Kubernetes backend only: the namespace quota of each environment (`dev`, `uat`, `prod`) — the tier default with the project's overrides merged over it — including GPU scheduling: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards the namespace may borrow, preempted when the owner needs them back), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). Null for a VM-backend project, for a project registered without a manifest, and on a platform before release 1.0.203. (see [below for nested schema](#nestedatt--k8s_quota))
 - `kubernetes_namespaces` (Attributes List) The project's Kubernetes namespaces, by `env`. (see [below for nested schema](#nestedatt--kubernetes_namespaces))
 - `long_name` (String) Display name, 2-60 characters. Quotes, apostrophes, backslashes and control characters are refused because the name is copied into generated project files.
 - `mssql_edition` (String) SQL Server edition. Platform default `express`.

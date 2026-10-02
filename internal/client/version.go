@@ -25,6 +25,34 @@ const (
 	MinimumPlatformVersion = "1.0.187"
 )
 
+// Features that need a later platform release than MinimumPlatformVersion.
+// The provider works with every platform from MinimumPlatformVersion on, and
+// refuses only the use of a feature its platform does not serve yet.
+const (
+	// FeatureK8sQuota is a Kubernetes project's namespace quota (`k8s_quota`
+	// on the project, and PATCH /projects/{id}/k8s-quota/{env}).
+	FeatureK8sQuota = "k8s_quota"
+)
+
+// featureMinimum is the platform release that brought each feature.
+var featureMinimum = map[string]string{
+	FeatureK8sQuota: "1.0.203",
+}
+
+// FeatureMinimum is the oldest platform release that serves a feature.
+func FeatureMinimum(feature string) string { return featureMinimum[feature] }
+
+// PlatformServes reports whether a platform release serves a feature. A
+// release that is not a semantic version serves none of them.
+func PlatformServes(platformVersion, feature string) bool {
+	minimum, ok := featureMinimum[feature]
+	if !ok {
+		return false
+	}
+	v := "v" + strings.TrimPrefix(strings.TrimSpace(platformVersion), "v")
+	return semver.IsValid(v) && semver.Compare(v, "v"+minimum) >= 0
+}
+
 // CheckPlatformVersion refuses a platform release older than
 // MinimumPlatformVersion, or one that does not report a semantic version.
 func CheckPlatformVersion(platformVersion string) error {

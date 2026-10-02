@@ -324,6 +324,18 @@ func projectIdent(v map[string]attr.Value) string {
 }
 
 func (r *projectResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+	// k8s_quota came with platform release 1.0.203; on an older platform a
+	// configuration that sets it is refused here, on create and on update.
+	if !req.Plan.Raw.IsNull() {
+		var quota types.Object
+		resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("k8s_quota"), &quota)...)
+		if !quota.IsNull() {
+			if d := r.data.featureRefused(client.FeatureK8sQuota, path.Root("k8s_quota"), "k8s_quota"); d != nil {
+				resp.Diagnostics.Append(d)
+				return
+			}
+		}
+	}
 	if req.State.Raw.IsNull() {
 		return // create
 	}

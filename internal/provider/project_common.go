@@ -57,7 +57,8 @@ var projectSettings = []projectSetting{
 		doc: "Who can reach the API. Platform default `INTERNAL_ONLY`."},
 	{name: "app_gateway", kind: kindString, enum: []string{"shared", "dedicated"},
 		doc: "`shared` uses the environment's application gateway, `dedicated` gets its own. Platform " +
-			"default `shared`."},
+			"default `shared`. A read may also return `ataila`, the platform's own project's value (platform " +
+			"1.0.206 and later); it cannot be set."},
 	{name: "enable_ai", kind: kindBool, doc: "An AI endpoint for the project. Platform default `false`."},
 	{name: "enable_web_www", kind: kindBool, doc: "A `www` web site repository. Platform default `true`."},
 	{name: "www_template", kind: kindString, enum: []string{"template-www", "template-blog"},

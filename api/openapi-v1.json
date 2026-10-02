@@ -5937,10 +5937,11 @@
           },
           "app_gateway": {
             "default": "shared",
-            "description": "`shared` rides the environment's app gateway; `dedicated` gets its own.",
+            "description": "`shared` rides the environment's app gateway; `dedicated` gets its own; `ataila`: the platform's own gateway, carried only by the portal project, and never set by a request (create and PATCH take `shared` or `dedicated`).",
             "enum": [
               "shared",
-              "dedicated"
+              "dedicated",
+              "ataila"
             ],
             "title": "App Gateway",
             "type": "string"
@@ -7484,10 +7485,11 @@
           },
           "app_gateway": {
             "default": "shared",
-            "description": "`shared` rides the environment's app gateway; `dedicated` gets its own.",
+            "description": "`shared` rides the environment's app gateway; `dedicated` gets its own; `ataila`: the platform's own gateway, carried only by the portal project, and never set by a request (create and PATCH take `shared` or `dedicated`).",
             "enum": [
               "shared",
-              "dedicated"
+              "dedicated",
+              "ataila"
             ],
             "title": "App Gateway",
             "type": "string"

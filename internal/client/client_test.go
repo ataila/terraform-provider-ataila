@@ -179,6 +179,23 @@ func TestCheckAPIVersion(t *testing.T) {
 	}
 }
 
+func TestPlatformServes(t *testing.T) {
+	if FeatureMinimum(FeatureK8sQuota) != "1.0.203" {
+		t.Fatalf("k8s_quota came with 1.0.203, not %s", FeatureMinimum(FeatureK8sQuota))
+	}
+	for v, want := range map[string]bool{
+		"1.0.187": false, "1.0.202": false, "1.0.203-rc.1": false, "dev": false, "": false,
+		"1.0.203": true, "v1.0.206": true, "1.1.0": true,
+	} {
+		if got := PlatformServes(v, FeatureK8sQuota); got != want {
+			t.Errorf("PlatformServes(%q, k8s_quota) = %v, want %v", v, got, want)
+		}
+	}
+	if PlatformServes("9.9.9", "no-such-feature") {
+		t.Error("an unknown feature is served")
+	}
+}
+
 func TestCheckPlatformVersion(t *testing.T) {
 	if MinimumPlatformVersion != "1.0.187" {
 		t.Fatalf("MinimumPlatformVersion = %s; the vendored contract is that of 1.0.187", MinimumPlatformVersion)

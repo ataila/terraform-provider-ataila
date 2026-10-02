@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Macskásy Attila
+// Copyright (c) 2026 ATAILA Kft.
 // SPDX-License-Identifier: MPL-2.0
 
 package provider
@@ -86,8 +86,8 @@ const quotaAttrDoc = "Kubernetes backend only: the namespace quota of each envir
 	"the tier default with the project's overrides merged over it — including GPU scheduling: `gpu_exclusive` " +
 	"(whole cards guaranteed, the floor), `gpu_borrow` (idle cards the namespace may borrow, preempted when the " +
 	"owner needs them back), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only " +
-	"where a dedicated time-sliced node exists). Null for a VM-backend project and for a project registered " +
-	"without a manifest."
+	"where a dedicated time-sliced node exists). Null for a VM-backend project, for a project registered " +
+	"without a manifest, and on a platform before release 1.0.203."
 
 const quotaResourceDoc = quotaAttrDoc + "\n\n" +
 	"Set any of the eleven quota keys of an environment and the provider sends the ones that differ (with " +
@@ -99,8 +99,10 @@ const quotaResourceDoc = quotaAttrDoc + "\n\n" +
 	"GPU key above `0` is admitted only where the environment's cluster runs the GPU queue (`gpu_queue`), and the " +
 	"guaranteed floors of every namespace on one cluster may not exceed its tenant cards; the platform refuses " +
 	"otherwise and the apply fails with its message, nothing stored. Any change here needs a token holding " +
-	"`k8s-gpu-admin-global`; reading needs only the project read permission. Needs a platform release that " +
-	"reports `k8s_quota` on the project: on an older one the attribute is null, and setting it fails at plan time."
+	"`k8s-gpu-admin-global`; reading needs only the project read permission. Needs platform release 1.0.203 or " +
+	"later: on an older platform the attribute is null, and a configuration that sets it is refused at plan time, " +
+	"on create and on update, before any request. Removing `k8s_quota` from the configuration, or destroying the " +
+	"project, changes no quota: the overrides stay on the platform (a destroyed project is retired)."
 
 func quotaEnvDoc(env string) string {
 	return fmt.Sprintf("The `%s` environment's namespace quota.", env)

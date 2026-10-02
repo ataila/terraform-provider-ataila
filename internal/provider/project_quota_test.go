@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Macskásy Attila
+// Copyright (c) 2026 ATAILA Kft.
 // SPDX-License-Identifier: MPL-2.0
 
 package provider_test
@@ -285,6 +285,58 @@ func TestAccProjectResource_K8sQuotaOlderPlatform(t *testing.T) {
 			},
 			{PreConfig: allowDestroyEverywhere(m), Config: projectHCL(true, tenantID, "shop")},
 		},
+	})
+}
+
+// The per-feature gate: on a platform before 1.0.203 (still at or above the
+// provider's minimum, 1.0.187) a project without k8s_quota works, and one that
+// sets k8s_quota is refused at plan time, on create, before any request; from
+// 1.0.203 on the same configuration applies.
+func TestAccProjectResource_K8sQuotaPlatformRelease(t *testing.T) {
+	t.Run("1.0.202 refused", func(t *testing.T) {
+		m := newMock(t)
+		quotaScopes(m)
+		m.ServeProjectQuota(false)
+		m.SetMeta(func(meta map[string]any) { meta["platform_version"] = "1.0.202" })
+		_, tenantID := m.AddCustomer("EXAMPLE", "example")
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: protoV6,
+			Steps: []resource.TestStep{
+				{
+					Config:      projectHCL(false, tenantID, "shop", quotaHCL(envHCL("prod", `pods = "25"`))),
+					ExpectError: words("k8s_quota needs platform release 1.0.203 or later"),
+				},
+				{
+					// Without k8s_quota the project is as before: the core minimum is 1.0.187.
+					Config: projectHCL(false, tenantID, "shop"),
+					Check:  resource.TestCheckNoResourceAttr(projectAddr, "k8s_quota"),
+				},
+				{
+					Config:      projectHCL(false, tenantID, "shop", quotaHCL(envHCL("prod", `pods = "25"`))),
+					ExpectError: words("This platform is release 1.0.202"),
+				},
+				{PreConfig: allowDestroyEverywhere(m), Config: projectHCL(true, tenantID, "shop")},
+			},
+		})
+		if n := m.Calls("PATCH", "/projects/1/k8s-quota/prod"); n != 0 {
+			t.Errorf("%d quota requests on a platform that does not serve them", n)
+		}
+	})
+	t.Run("1.0.203 accepted", func(t *testing.T) {
+		m := newMock(t)
+		quotaScopes(m)
+		m.SetMeta(func(meta map[string]any) { meta["platform_version"] = "1.0.203" })
+		_, tenantID := m.AddCustomer("EXAMPLE", "example")
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: protoV6,
+			Steps: []resource.TestStep{
+				{
+					Config: projectHCL(false, tenantID, "shop", quotaHCL(envHCL("prod", `pods = "25"`))),
+					Check:  resource.TestCheckResourceAttr(projectAddr, "k8s_quota.prod.pods", "25"),
+				},
+				{PreConfig: allowDestroyEverywhere(m), Config: projectHCL(true, tenantID, "shop")},
+			},
+		})
 	})
 }
 

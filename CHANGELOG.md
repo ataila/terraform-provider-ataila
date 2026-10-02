@@ -5,8 +5,12 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ## Unreleased
 
-The next release is 1.1.0: 1.0.0 was tagged on 2026-10-02 before this addition landed, and an addition is a
-minor release under the stability promise below.
+Nothing yet.
+
+## 1.1.0 (2026-10-02) — contract 1.0.206
+
+A minor release: additions only, under the stability promise of 1.0.0. A configuration and a state of 1.0.0
+plan with no changes.
 
 ### Added
 
@@ -21,17 +25,29 @@ minor release under the stability promise below.
   `quota_conflict`, 403 without `k8s-gpu-admin-global`) fails the apply with the platform's reason, and the
   state records what did change (the project's settings, the environments before the refused one), so the next
   plan shows only what is left — also when reading the project back afterwards fails (the state is then built
-  from the platform's answers to the requests that went through); on create the project is created and tainted, and the error says how to keep it.
-  Setting `k8s_quota` on a VM-backend project fails validation.
+  from the platform's answers to the requests that went through); on create the project is created and
+  tainted, and the error says how to keep it. Setting `k8s_quota` on a VM-backend project fails validation.
+  Removing `k8s_quota` from the configuration, or destroying the project, changes no quota.
+- `app_gateway` on `ataila_project` may read `ataila`, the value the platform's own project reports (platform
+  1.0.206 and later); it cannot be set.
+
+### Minimum platform, per feature
+
+- The provider still works with every platform from release 1.0.187 on. A feature that came later is refused
+  only where it is used: `k8s_quota` needs platform release 1.0.203 or later, and a configuration that sets it
+  on an older platform is refused at plan time, on create and on update, before any request, naming both
+  releases. On such a platform the attribute reads null, in the resource and in the data source.
 
 ### Contract
 
-- `api/openapi-v1.json` re-vendored, unchanged, from the platform's export of the release after 1.0.201,
-  which adds `Project.k8s_quota`, `KubernetesQuota`, `KubernetesQuotaPatch`, `KubernetesQuotaUpdated` and the two
-  quota operations (`PATCH` and `DELETE /projects/{project_id}/k8s-quota/{env}`); everything else in it is
-  additive over 1.0.187 and unused by the provider. The minimum platform stays 1.0.187: on a release that does not report
-  `k8s_quota` the attribute is null, and a configuration that sets it fails at plan time naming why
-  (on create, the quota request fails with "This platform does not serve the namespace quota").
+- `api/openapi-v1.json` is the platform's export of release 1.0.206, unchanged. Since 1.0.187 it adds
+  `Project.k8s_quota`, `KubernetesQuota`, `KubernetesQuotaPatch`, `KubernetesQuotaUpdated` and the two quota
+  operations (`PATCH` and `DELETE /projects/{project_id}/k8s-quota/{env}`, platform 1.0.203), and the read-only
+  `app_gateway` value `ataila` (1.0.206); everything else is unchanged.
+
+### CI
+
+- Lint fails when a copyright notice names another holder than ATAILA Kft.
 
 ## 1.0.0 (2026-10-02) — contract 1.0.187
 
