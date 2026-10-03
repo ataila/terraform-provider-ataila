@@ -55,6 +55,48 @@ OpenTofu and Terraform alike. The repository README, [Installing without interne
 access](https://github.com/ataila/terraform-provider-ataila#installing-without-internet-access), shows the
 `.tofurc` and `.terraformrc` settings.
 
+### OpenTofu until its registry lists the provider (temporary)
+
+**Temporary.** The OpenTofu registry does not list `ataila/ataila` yet: the signing key is in
+(`opentofu/registry` PR #5671, merged on 2026-10-02), the listing (PR #5669) is still open. Until then
+`tofu init` cannot download the provider, so OpenTofu installs it from a filesystem mirror; Terraform installs
+from its registry as usual. Fill the mirror from the [GitHub
+release](https://github.com/ataila/terraform-provider-ataila/releases): copy the signed archive for the
+platform, `terraform-provider-ataila_<version>_<os>_<arch>.zip`, unchanged into
+`<mirror>/registry.opentofu.org/ataila/ataila/`, or unpack the air-gapped mirror bundle,
+`terraform-provider-ataila_<version>_mirror.zip`, into `<mirror>`. Then, in `~/.tofurc` (`%APPDATA%\tofu.rc` on
+Windows):
+
+```hcl
+provider_installation {
+  filesystem_mirror {
+    path    = "/opt/terraform/mirror"
+    include = ["registry.opentofu.org/ataila/ataila"]
+  }
+  direct {
+    exclude = ["registry.opentofu.org/ataila/ataila"]
+  }
+}
+```
+
+`tofu init` reports the provider as `(unauthenticated)`: a mirror carries no signature for OpenTofu to check.
+Check the archive against the release's signed `SHA256SUMS` yourself, with its `.sig` and the public key
+[`docs/signing-key.asc`](https://github.com/ataila/terraform-provider-ataila/blob/main/docs/signing-key.asc)
+in the same directory:
+
+```shell
+gpg --import signing-key.asc
+gpg --verify terraform-provider-ataila_1.1.0_SHA256SUMS.sig terraform-provider-ataila_1.1.0_SHA256SUMS
+sha256sum --ignore-missing -c terraform-provider-ataila_1.1.0_SHA256SUMS
+```
+
+Expect `Good signature from "ATAILA Kft. (Budapest) <support@ataila.com>"` with the fingerprint
+`9997 D23D 2222 0320 3B02  B5EE 5174 0425 A2D9 15F8`, then `OK` for the archive. Once the listing is live,
+delete the `provider_installation` block and run `tofu init` again. The repository README, [OpenTofu until its
+registry lists the
+provider](https://github.com/ataila/terraform-provider-ataila#opentofu-until-its-registry-lists-the-provider-temporary),
+has the details, the bundle's check included.
+
 Problems and questions: support@ataila.com. Documentation: <https://www.ataila.com/developers/terraform>.
 
 ## Behaviour
@@ -82,19 +124,56 @@ Problems and questions: support@ataila.com. Documentation: <https://www.ataila.c
 
 ## Switching between OpenTofu and Terraform
 
-One configuration works with both CLIs, and so does one state, with one step in one direction. A state
+One configuration works with both CLIs, and so does one state, with one step in each direction. A state
 records the provider's full address, and `source = "ataila/ataila"` means
 `registry.opentofu.org/ataila/ataila` to OpenTofu and `registry.terraform.io/ataila/ataila` to Terraform.
+`terraform init` also tries to install the address a state names, and fails on OpenTofu's; `tofu init`
+installs only its own, so the address in a Terraform state stays unavailable to OpenTofu.
 
-| From → to | What to run |
+| From → to | What to run, once, in this order |
 |---|---|
-| Terraform → OpenTofu | Nothing. OpenTofu maps `registry.terraform.io/ataila/ataila` in a state to its own registry by itself, and its next apply records its own address. To record it at once: `tofu state replace-provider registry.terraform.io/ataila/ataila registry.opentofu.org/ataila/ataila` |
-| OpenTofu → Terraform | **Required**, once, before anything else: `terraform state replace-provider registry.opentofu.org/ataila/ataila registry.terraform.io/ataila/ataila` |
+| Terraform → OpenTofu | `tofu init`, then `tofu state replace-provider registry.terraform.io/ataila/ataila registry.opentofu.org/ataila/ataila`. Without the step `tofu plan` works (`No changes`) and `tofu output` prints the same outputs, but `tofu show` and `tofu show -json` fail until it has run or one `tofu apply` has recorded OpenTofu's address |
+| OpenTofu → Terraform | **Required**: `terraform state replace-provider registry.opentofu.org/ataila/ataila registry.terraform.io/ataila/ataila`, **then** `terraform init`, then `terraform plan`. A `terraform init` run before the step fails (below): run the step, then `terraform init` again |
 
-Without that step Terraform stops with *Missing required provider: This state requires provider
-registry.opentofu.org/ataila/ataila, but that provider isn't available* (Terraform 1.6 words it *Failed to
-load plugin schemas … unavailable provider "registry.opentofu.org/ataila/ataila"*). After it,
-`terraform plan` shows no changes. Both commands ask for confirmation; `-auto-approve` skips it.
+Without the step, measured with provider 1.1.0, OpenTofu 1.12.3 and Terraform 1.9.8 on 2026-10-03:
+
+- `tofu show` on a state Terraform wrote (`tofu providers` lists `registry.terraform.io/ataila/ataila` under
+  "Providers required by state"):
+
+  ```text
+  Error: Failed to load plugin schemas
+  Error while loading schemas for plugin components: failed to instantiate
+  provider "registry.terraform.io/ataila/ataila" to obtain schema: unavailable
+  provider "registry.terraform.io/ataila/ataila".
+  ```
+
+- `terraform init` on a state OpenTofu wrote, while it tries to download the OpenTofu address:
+
+  ```text
+  Error: Failed to query available provider packages
+  Could not retrieve the list of available versions for provider
+  registry.opentofu.org/ataila/ataila: provider registry registry.opentofu.org
+  does not have a provider named registry.opentofu.org/ataila/ataila
+  ```
+
+  Run the step, then `terraform init` again: a `terraform plan` straight after the step stops with
+  `Inconsistent dependency lock file`. After the second `init`, `terraform plan` shows no changes and
+  `terraform show` works. Once the OpenTofu registry lists the provider, the first error will likely read
+  differently; the order stays the same.
+
+```shell
+# Terraform → OpenTofu
+tofu init
+tofu state replace-provider registry.terraform.io/ataila/ataila registry.opentofu.org/ataila/ataila
+tofu plan && tofu show
+
+# OpenTofu → Terraform: replace-provider first, then init
+terraform state replace-provider registry.opentofu.org/ataila/ataila registry.terraform.io/ataila/ataila
+terraform init && terraform plan
+```
+
+Both `replace-provider` commands ask for confirmation; `-auto-approve` skips it. A remote backend is changed in
+place, so switch once, not back and forth in parallel runs.
 
 <!-- schema generated by tfplugindocs -->
 ## Schema

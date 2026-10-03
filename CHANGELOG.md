@@ -10,6 +10,20 @@ the 0.x releases before it were never published, and any of them could change wh
 - The README shows the company's logo at the top (`docs/images/ataila-logo.png`).
 - The documentation link points to the company's website, https://www.ataila.com/developers/terraform, in the
   README and on the registry's overview page.
+- "Switching between OpenTofu and Terraform" (README and the registry's overview page) follows what provider
+  1.1.0 did with OpenTofu 1.12.3 and Terraform 1.9.8 on 2026-10-03. Terraform → OpenTofu is not "nothing":
+  `tofu plan` and `tofu output` work on a Terraform state, but `tofu show` fails with *Failed to load plugin
+  schemas … unavailable provider "registry.terraform.io/ataila/ataila"* until
+  `tofu state replace-provider registry.terraform.io/ataila/ataila registry.opentofu.org/ataila/ataila` (or one
+  `tofu apply`) has run. OpenTofu → Terraform: the error a user meets first is `terraform init`'s *Failed to
+  query available provider packages … registry.opentofu.org does not have a provider named
+  registry.opentofu.org/ataila/ataila*, quoted now, and the order is `terraform state replace-provider`, then
+  `terraform init` (again, if it ran before).
+- New, temporary: "OpenTofu until its registry lists the provider". While the OpenTofu registry listing is
+  pending (`opentofu/registry` PR #5669; the signing key, PR #5671, was merged on 2026-10-02), OpenTofu installs
+  the provider from a filesystem mirror filled from the GitHub release (the platform archive or the air-gapped
+  mirror bundle). `tofu init` reports it as `unauthenticated`; the section gives the three commands that check
+  the archive against the signed `SHA256SUMS` instead.
 
 ### CI
 
