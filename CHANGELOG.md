@@ -3,10 +3,53 @@
 All notable changes to this provider. Versions follow semantic versioning. 1.0.0 is the first public release;
 the 0.x releases before it were never published, and any of them could change what the one before did.
 
-## Unreleased
+## 1.2.0 (TBD) — contract of platform release 1.0.9999
+
+A minor release: additions only, under the stability promise of 1.0.0. A configuration and a state of 1.1.0
+plan with no changes.
+
+### Added
+
+- `ataila_tenant_quota` resource: a tenant's **whole** quota set, `quota` = map of dimension (`vcpu`, `ram_gb`,
+  `disk_gb`, `desktops`, `vms`, `ai_tpm`, `ai_budget_eur_month`, `gpu`) to `{limit, policy, note}` (`policy`
+  `auto` by default, `approve_always` or `hard_cap`), through `GET` / `PUT /tenants/{id}/quotas`. The resource
+  owns the set the way the API replaces it: a dimension with a limit on the platform that the configuration
+  leaves out loses its limit on the next apply (no limit: every order touching it goes to an approval card), and
+  the plan warns, naming it. `usage` (every dimension: limit, policy, allocated, reserved, remaining), `notes`
+  and `warnings` are read back. The platform keeps four decimal places; the state keeps the configuration's
+  spelling of a limit it rounded. Destroy removes every limit (not gated: the platform treats it as a quota
+  change); import by the tenant's id; `tenant_id` forces a new resource. A tenant that does not exist, a token
+  without `orders-admin-global` and a platform without the endpoints are explained errors.
+- `ataila_tenant_quota` data source: the same set with `set_by` and `set_at` per limit, `usage` and `notes`.
+- `ataila_catalogue_items` data source: the enabled catalogue items in display order — key, kind, name, edition,
+  `requires_approval`, `sort_order`, and the order form, quota mapping and price basis as JSON text
+  (`spec_schema_json`, `quota_dimensions_json`, `price_hint_json`).
+- `ataila_orders` data source (`tenant_id`, optional `status`) and `ataila_order` data source (`id`, with
+  `events`): a tenant's orders, **read only** — approval, rejection and re-runs stay in the portal, and there is
+  no order resource. Each order carries its status, the quota check's `quota_result` and `quota_decision`, who
+  approved or rejected it and why, `operation_id`, and for an AI gateway key order the delivered key's `key_id`
+  and `key_alias` (never its value); its spec, quota check, overage and delivery facts are JSON text.
+
+### Minimum platform, per feature
+
+- The provider still works with every platform from release 1.0.187 on. Tenant quotas, the catalogue and the
+  order reads need platform release 1.0.9999 or later (`client.ReleaseQuotasOrders`); a configuration that uses
+  one of them on an older platform is refused at plan time, before any request, naming both releases.
+
+### Contract
+
+- `api/openapi-v1.json` is the platform's export of release 1.0.9999. Since 1.0.206 it adds the five operations
+  `tenant_quotas_get`, `tenant_quotas_put`, `catalogue_items_list`, `tenant_orders_list` and `orders_get` with
+  their schemas (`TenantQuotas`, `TenantQuota`, `TenantQuotaUsage`, `TenantQuotasPut`, `TenantQuotaIn`,
+  `CatalogueItem`, `CatalogueItemPage`, `Order`, `OrderPage`, `OrderDetail`, `OrderEvent`, `OrderQuotaCheck`,
+  `OrderQuotaDimension`), and from the platform releases in between `app_subdomain` on projects, the
+  `hostname_taken` refusal and documented codes; nothing is removed or changed (the platform's additive guard
+  checks every release against the contract published with 1.0.0).
 
 ### Documentation
 
+- Pages and examples for the new resource and the four data sources, and `examples/sp-tenant/`: a service
+  provider's customer tenant from code — its quota set, an AI gateway key inside it, and its orders read back.
 - The README shows the company's logo at the top (`docs/images/ataila-logo.png`).
 - The documentation link points to the company's website, https://www.ataila.com/developers/terraform, in the
   README and on the registry's overview page.
@@ -27,6 +70,8 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ### CI
 
+- The acceptance tests of the new resource and data sources are in the `tenancy` domain
+  (`scripts/ci/acc-domains.sh`: `Catalogue` and `Order` added).
 - The leak guard allows `www.ataila.com`, the company's website. The names under the company's earlier website
   domain stay allowed for the released history only; no file names that domain any more.
 

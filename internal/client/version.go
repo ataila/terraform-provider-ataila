@@ -32,11 +32,32 @@ const (
 	// FeatureK8sQuota is a Kubernetes project's namespace quota (`k8s_quota`
 	// on the project, and PATCH /projects/{id}/k8s-quota/{env}).
 	FeatureK8sQuota = "k8s_quota"
+	// FeatureTenantQuota is a tenant's quota set (GET and PUT
+	// /tenants/{id}/quotas): ataila_tenant_quota, resource and data source.
+	FeatureTenantQuota = "tenant_quota"
+	// FeatureCatalogue is the order catalogue (GET /catalogue):
+	// ataila_catalogue_items.
+	FeatureCatalogue = "catalogue"
+	// FeatureOrders are a tenant's orders, read only (GET
+	// /tenants/{id}/orders, GET /orders/{id}): ataila_orders, ataila_order.
+	FeatureOrders = "orders"
 )
+
+// ReleaseQuotasOrders is the platform release whose API serves tenant
+// quotas, the order catalogue and the order reads (FeatureTenantQuota,
+// FeatureCatalogue, FeatureOrders): one release brought all three.
+//
+// FABLE: set at merge — "1.0.9999" is a placeholder above every real
+// release, so that nothing is sent to a platform until the number is the
+// release that carries these endpoints.
+const ReleaseQuotasOrders = "1.0.9999"
 
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{
-	FeatureK8sQuota: "1.0.203",
+	FeatureK8sQuota:    "1.0.203",
+	FeatureTenantQuota: ReleaseQuotasOrders,
+	FeatureCatalogue:   ReleaseQuotasOrders,
+	FeatureOrders:      ReleaseQuotasOrders,
 }
 
 // FeatureMinimum is the oldest platform release that serves a feature.

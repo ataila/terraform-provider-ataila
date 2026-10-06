@@ -272,6 +272,12 @@ func (p *ataProvider) DataSources(_ context.Context) []func() datasource.DataSou
 		NewAINodeDataSource,
 		NewDGXClustersDataSource,
 		NewLaunchCatalogDataSource,
+		NewTenantQuotaDataSource,
+		NewCatalogueItemsDataSource,
+		NewOrdersDataSource,
+		NewOrderDataSource,
+		// part B (ai-gateway-billing M5): usage and rating — ai_usage.go,
+		// ai_rate.go — register here.
 	}
 }
 
@@ -294,6 +300,9 @@ func (p *ataProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewProjectProdLockResource,
 		NewAIModelResource,
 		NewAIModelNodeCacheResource,
+		NewTenantQuotaResource,
+		// part B (ai-gateway-billing M5): the rate card and rate plan
+		// resources — ai_rate.go — register here.
 	}
 }
 

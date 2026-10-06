@@ -194,6 +194,13 @@ terraform init && terraform plan
 Both `replace-provider` commands ask for confirmation; `-auto-approve` skips it. A remote backend is changed in
 place, so switch once, not back and forth in parallel runs.
 
+### Upgrading from 1.1.x to 1.2.0
+
+Nothing changes in a configuration or a state, and `~> 1.0` already takes 1.2.0. 1.2.0 adds tenant quotas
+(`ataila_tenant_quota`, resource and data source), the order catalogue (`ataila_catalogue_items`) and a tenant's
+orders, read only (`ataila_orders`, `ataila_order`); they need platform release 1.0.9999 or later, and the provider
+refuses them, at plan time and before any request, only where they are used on an older platform.
+
 ### Upgrading from 1.0.x to 1.1.0
 
 Nothing changes in a configuration or a state, and `~> 1.0` already takes 1.1.0. 1.1.0 adds `k8s_quota` on
@@ -317,6 +324,7 @@ Without any network at all, leave the `direct` block out. The configuration keep
 | [`ataila_project_prod_lock`](docs/resources/project_prod_lock.md) | A project's PROD data lock | Forgets only |
 | [`ataila_ai_model`](docs/resources/ai_model.md) | An AI model catalogue row (no weights) | Removes the row; refused while weights exist; not gated |
 | [`ataila_ai_model_node_cache`](docs/resources/ai_model_node_cache.md) | A cached copy of a model's weights on an AI node | Removes the node's copy |
+| [`ataila_tenant_quota`](docs/resources/tenant_quota.md) | A tenant's **whole** quota set: per dimension a limit and its policy | Removes every limit (orders then go to approval cards); not gated |
 
 **Destroy is off by default and needs two switches**: `allow_destroy = true` on the provider **and** a token
 minted with destroy allowed. With the provider switch off, destroying a customer or a tenant fails at plan
@@ -344,6 +352,18 @@ GPU scheduling included, is `k8s_quota` on the project: the keys a configuration
 editor, one request per environment, after the project's own change (the token needs `k8s-gpu-admin-global`);
 a refusal fails the apply with the platform's reason, and the state keeps what did change. It needs a platform
 release that reports `k8s_quota`; on an older one the attribute is null and setting it fails at plan time.
+
+**Tenant quotas and orders.** `ataila_tenant_quota` owns a tenant's **whole** quota set, exactly as the API's
+`PUT /tenants/{id}/quotas` replaces it: a dimension with a limit on the platform that the configuration leaves out
+**loses its limit** on the next apply (the plan shows it removed and warns), and every order touching that
+dimension then goes to an operator's approval card, never to automatic approval. Destroying it removes every
+limit; to stop managing a set without changing it, remove it from the state. The platform keeps four decimal
+places of a limit; the state keeps the configuration's spelling. Orders are **read only** (`ataila_orders`,
+`ataila_order`): a tenant orders in the portal and an operator approves, rejects or re-runs there; there is no
+order resource. An order's free-form members (its spec, quota check, delivery facts, timeline details) and a
+catalogue item's form are JSON text (`*_json`) for `jsondecode()`. The token needs `orders-admin-global` to change
+quotas and `orders-read-global` to read; the platform needs release 1.0.9999 or later (refused at plan time
+before it).
 
 **The licence and the brand are singletons** (import id `current`) that destroy only forgets. The licence
 bundle is compared by the digest of its document: the installed one is adopted without being sent again,
@@ -402,6 +422,7 @@ Import forms:
 | `ataila_project_prod_lock` | the project id |
 | `ataila_ai_model` | the id, or `repo:<org/name>` |
 | `ataila_ai_model_node_cache` | `<model_id>/<node>` |
+| `ataila_tenant_quota` | the tenant's id |
 
 ```shell
 tofu import ataila_customer.example short_name:EXAMPLE        # OpenTofu
@@ -439,6 +460,10 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_ai_node`](docs/data-sources/ai_node.md) | One AI node, by hostname |
 | [`ataila_dgx_clusters`](docs/data-sources/dgx_clusters.md) | The DGX clusters as recorded |
 | [`ataila_ai_model_launch_catalog`](docs/data-sources/ai_model_launch_catalog.md) | The models each node can launch |
+| [`ataila_tenant_quota`](docs/data-sources/tenant_quota.md) | A tenant's limits and, per dimension, what it holds against them |
+| [`ataila_catalogue_items`](docs/data-sources/catalogue_items.md) | What tenants can order: the enabled catalogue items, their forms and quota mapping |
+| [`ataila_orders`](docs/data-sources/orders.md) | A tenant's orders, newest first, optionally of one state (all pages) |
+| [`ataila_order`](docs/data-sources/order.md) | One order with its timeline; for an AI key order, the key it delivered (never its value) |
 
 Further resources follow milestone by milestone; each ships with its documentation, examples and tests.
 

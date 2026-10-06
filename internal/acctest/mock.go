@@ -93,6 +93,7 @@ type MockAPI struct {
 	brand      *brandState
 	releases   *releasesState
 	ai         *aiState
+	orders     *ordersState
 }
 
 type storedReply struct {
@@ -143,6 +144,7 @@ func NewMockAPI(t testing.TB) *MockAPI {
 		brand:      newBrandState(),
 		releases:   newReleasesState(),
 		ai:         newAIState(),
+		orders:     newOrdersState(),
 	}
 	principal, _ := m.whoami["principal"].(map[string]any)
 	m.users = newUsersState(principal, m.whoami["scopes"].([]string))
@@ -486,6 +488,13 @@ func (m *MockAPI) route(c *call) reply {
 			return ok(http.StatusOK, op)
 		}
 		return c.problem(http.StatusNotFound, "operation_not_found", "No such operation.", nil)
+	}
+	// A tenant's quotas and orders, the catalogue and orders (orders.go), before
+	// the tenancy routes, which own the rest of /tenants.
+	if rep, handled := m.routeOrders(c); handled {
+		return rep
+	}
+	switch {
 	case c.path == "/customers" || strings.HasPrefix(c.path, "/customers/"),
 		c.path == "/tenants" || strings.HasPrefix(c.path, "/tenants/"):
 		return m.routeTenancy(c)
