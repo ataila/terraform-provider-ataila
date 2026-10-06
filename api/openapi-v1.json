@@ -2159,6 +2159,106 @@
         "title": "CachedModelRef",
         "type": "object"
       },
+      "CatalogueItem": {
+        "description": "Something a tenant can order, with its order form and what an order of it counts\nagainst.",
+        "properties": {
+          "edition": {
+            "description": "Which platform editions offer it: `sp` (service-provider platforms) or `both`.",
+            "title": "Edition",
+            "type": "string"
+          },
+          "key": {
+            "description": "The item's key, e.g. `ai-gateway-key`.",
+            "title": "Key",
+            "type": "string"
+          },
+          "kind": {
+            "description": "What delivering an order of the item creates: `vdi-desktop`, `project-vm`, `ai-gateway-key`, `project`, `k8s-namespace`, `storage` or `manual` (an operator delivers it by hand).",
+            "title": "Kind",
+            "type": "string"
+          },
+          "name": {
+            "description": "Its display name.",
+            "title": "Name",
+            "type": "string"
+          },
+          "price_hint": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Which cost units price an order of the item (`unit_keys`: cost unit to quota dimension); null when the item has no price basis. The EUR estimate itself is computed per tenant, from its contract, in the portal.",
+            "title": "Price Hint"
+          },
+          "quota_dimensions": {
+            "additionalProperties": true,
+            "description": "How an order's `spec` maps onto quota dimensions: per dimension, `{\"const\": n}`, `{\"field\": \"<spec field>\"}` or `{\"field\": …, \"map\": {value: n}}`, optionally with `times`.",
+            "title": "Quota Dimensions",
+            "type": "object"
+          },
+          "requires_approval": {
+            "description": "Every order of the item goes to an operator's approval card, whatever the quota says.",
+            "title": "Requires Approval",
+            "type": "boolean"
+          },
+          "sort_order": {
+            "description": "Display order, ascending.",
+            "title": "Sort Order",
+            "type": "integer"
+          },
+          "spec_schema": {
+            "additionalProperties": true,
+            "description": "The order form, as a JSON Schema object (`type`, `properties`, `required`, defaults and limits): what an order's `spec` must satisfy.",
+            "title": "Spec Schema",
+            "type": "object"
+          }
+        },
+        "required": [
+          "key",
+          "kind",
+          "name",
+          "edition",
+          "requires_approval",
+          "sort_order"
+        ],
+        "title": "CatalogueItem",
+        "type": "object"
+      },
+      "CatalogueItemPage": {
+        "description": "One page of the catalogue's enabled items. `next_cursor` reads the next page.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/CatalogueItem"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "CatalogueItemPage",
+        "type": "object"
+      },
       "ClusterMember": {
         "description": "A node of a DGX cluster.",
         "properties": {
@@ -5670,6 +5770,776 @@
         "title": "Orchestration",
         "type": "object"
       },
+      "Order": {
+        "description": "A tenant's order of a catalogue item: what was asked for, how the quota decided,\nwho approved it, and what delivering it produced. Read only: approval, rejection and\nre-runs happen in the portal.",
+        "properties": {
+          "approval_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operator's reason; null if none.",
+            "title": "Approval Reason"
+          },
+          "approved_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it was approved; null if not.",
+            "title": "Approved At"
+          },
+          "approved_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operator who approved it; null for an automatic approval or none.",
+            "title": "Approved By"
+          },
+          "catalogue_item_key": {
+            "description": "The catalogue item ordered (`key`).",
+            "title": "Catalogue Item Key",
+            "type": "string"
+          },
+          "catalogue_item_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What delivering an order of the item creates: `vdi-desktop`, `project-vm`, `ai-gateway-key`, `project`, `k8s-namespace`, `storage` or `manual` (an operator delivers it by hand).",
+            "title": "Catalogue Item Kind"
+          },
+          "catalogue_item_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The item's display name.",
+            "title": "Catalogue Item Name"
+          },
+          "created_at": {
+            "description": "When it was placed.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tenant's customer when the order was placed; null when that customer is gone.",
+            "title": "Customer Id"
+          },
+          "dispatch": {
+            "additionalProperties": true,
+            "description": "What delivering it produced, stamped as each part exists: e.g. `run_kind` and `run_id`, an AI key's `key_id` and `key_alias`, `outcome`. Empty before delivery starts. Never a key's value: secret-looking members are null.",
+            "title": "Dispatch",
+            "type": "object"
+          },
+          "id": {
+            "description": "The order's id (a UUID).",
+            "title": "Id",
+            "type": "string"
+          },
+          "operation_id": {
+            "description": "The order as an operation, `order:<id>`: `GET /operations/{operation_id}`.",
+            "title": "Operation Id",
+            "type": "string"
+          },
+          "overage": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A one-off overage an operator approved: `dimensions`, each with `limit`, `total` and `over_by`. It never raised the tenant's quota. Null when none.",
+            "title": "Overage"
+          },
+          "project_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The project the order is for, when its item takes one; null otherwise.",
+            "title": "Project Id"
+          },
+          "quota_check": {
+            "$ref": "#/components/schemas/OrderQuotaCheck",
+            "description": "The quota check as recorded on the order: at submission, and again at an operator's approval."
+          },
+          "rejected_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it was rejected; null if not.",
+            "title": "Rejected At"
+          },
+          "rejected_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operator who rejected it; null if not.",
+            "title": "Rejected By"
+          },
+          "rejection_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operator's reason; null if not.",
+            "title": "Rejection Reason"
+          },
+          "requested_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The member who placed it (`id` on a user); null when that user no longer exists.",
+            "title": "Requested By"
+          },
+          "spec": {
+            "additionalProperties": true,
+            "description": "The order form as submitted (the item's `spec_schema`).",
+            "title": "Spec",
+            "type": "object"
+          },
+          "status": {
+            "description": "The order's state: `submitted`, `auto_approved` (within quota, approved by the platform), `awaiting_approval` (on an operator's approval card), `approved`, `rejected`, `dispatched`, `running`, `delivered`, `partial` (delivered in part; an operator can re-run it), `failed` or `cancelled` (withdrawn by the tenant before delivery started).",
+            "enum": [
+              "submitted",
+              "auto_approved",
+              "awaiting_approval",
+              "approved",
+              "rejected",
+              "dispatched",
+              "running",
+              "delivered",
+              "partial",
+              "failed",
+              "cancelled"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tenant_id": {
+            "description": "The tenant that placed it.",
+            "title": "Tenant Id",
+            "type": "string"
+          },
+          "tenant_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tenant's display name.",
+            "title": "Tenant Name"
+          },
+          "updated_at": {
+            "description": "Its last change.",
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tenant_id",
+          "catalogue_item_key",
+          "status",
+          "quota_check",
+          "operation_id",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "Order",
+        "type": "object"
+      },
+      "OrderDetail": {
+        "description": "One order with its timeline.",
+        "properties": {
+          "approval_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operator's reason; null if none.",
+            "title": "Approval Reason"
+          },
+          "approved_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it was approved; null if not.",
+            "title": "Approved At"
+          },
+          "approved_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operator who approved it; null for an automatic approval or none.",
+            "title": "Approved By"
+          },
+          "catalogue_item_key": {
+            "description": "The catalogue item ordered (`key`).",
+            "title": "Catalogue Item Key",
+            "type": "string"
+          },
+          "catalogue_item_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What delivering an order of the item creates: `vdi-desktop`, `project-vm`, `ai-gateway-key`, `project`, `k8s-namespace`, `storage` or `manual` (an operator delivers it by hand).",
+            "title": "Catalogue Item Kind"
+          },
+          "catalogue_item_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The item's display name.",
+            "title": "Catalogue Item Name"
+          },
+          "created_at": {
+            "description": "When it was placed.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tenant's customer when the order was placed; null when that customer is gone.",
+            "title": "Customer Id"
+          },
+          "dispatch": {
+            "additionalProperties": true,
+            "description": "What delivering it produced, stamped as each part exists: e.g. `run_kind` and `run_id`, an AI key's `key_id` and `key_alias`, `outcome`. Empty before delivery starts. Never a key's value: secret-looking members are null.",
+            "title": "Dispatch",
+            "type": "object"
+          },
+          "events": {
+            "description": "The order's timeline, oldest first.",
+            "items": {
+              "$ref": "#/components/schemas/OrderEvent"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "id": {
+            "description": "The order's id (a UUID).",
+            "title": "Id",
+            "type": "string"
+          },
+          "operation_id": {
+            "description": "The order as an operation, `order:<id>`: `GET /operations/{operation_id}`.",
+            "title": "Operation Id",
+            "type": "string"
+          },
+          "overage": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A one-off overage an operator approved: `dimensions`, each with `limit`, `total` and `over_by`. It never raised the tenant's quota. Null when none.",
+            "title": "Overage"
+          },
+          "project_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The project the order is for, when its item takes one; null otherwise.",
+            "title": "Project Id"
+          },
+          "quota_check": {
+            "$ref": "#/components/schemas/OrderQuotaCheck",
+            "description": "The quota check as recorded on the order: at submission, and again at an operator's approval."
+          },
+          "rejected_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it was rejected; null if not.",
+            "title": "Rejected At"
+          },
+          "rejected_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operator who rejected it; null if not.",
+            "title": "Rejected By"
+          },
+          "rejection_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operator's reason; null if not.",
+            "title": "Rejection Reason"
+          },
+          "requested_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The member who placed it (`id` on a user); null when that user no longer exists.",
+            "title": "Requested By"
+          },
+          "spec": {
+            "additionalProperties": true,
+            "description": "The order form as submitted (the item's `spec_schema`).",
+            "title": "Spec",
+            "type": "object"
+          },
+          "status": {
+            "description": "The order's state: `submitted`, `auto_approved` (within quota, approved by the platform), `awaiting_approval` (on an operator's approval card), `approved`, `rejected`, `dispatched`, `running`, `delivered`, `partial` (delivered in part; an operator can re-run it), `failed` or `cancelled` (withdrawn by the tenant before delivery started).",
+            "enum": [
+              "submitted",
+              "auto_approved",
+              "awaiting_approval",
+              "approved",
+              "rejected",
+              "dispatched",
+              "running",
+              "delivered",
+              "partial",
+              "failed",
+              "cancelled"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tenant_id": {
+            "description": "The tenant that placed it.",
+            "title": "Tenant Id",
+            "type": "string"
+          },
+          "tenant_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tenant's display name.",
+            "title": "Tenant Name"
+          },
+          "updated_at": {
+            "description": "Its last change.",
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tenant_id",
+          "catalogue_item_key",
+          "status",
+          "quota_check",
+          "operation_id",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "OrderDetail",
+        "type": "object"
+      },
+      "OrderEvent": {
+        "description": "One entry of an order's timeline. The timeline is append-only.",
+        "properties": {
+          "actor": {
+            "description": "Who: a person's e-mail address, or `system:<part>` when the platform did it.",
+            "title": "Actor",
+            "type": "string"
+          },
+          "at": {
+            "description": "When it happened.",
+            "format": "date-time",
+            "title": "At",
+            "type": "string"
+          },
+          "detail": {
+            "additionalProperties": true,
+            "description": "The entry's facts. Secret-looking members are null, and text naming the platform's internals is rewritten.",
+            "title": "Detail",
+            "type": "object"
+          },
+          "event": {
+            "description": "What happened, e.g. `submitted`, `auto_approved`, `awaiting_approval`, `approved`, `rejected`, `cancelled`, `dispatched`, `running`, `delivered`, `partial`, `failed`, `rerun_requested`, `key_revealed`.",
+            "title": "Event",
+            "type": "string"
+          },
+          "id": {
+            "description": "The entry's id; ids grow with time.",
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "at",
+          "actor",
+          "event"
+        ],
+        "title": "OrderEvent",
+        "type": "object"
+      },
+      "OrderPage": {
+        "description": "One page of a tenant's orders, newest first. `next_cursor` reads the next page.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "OrderPage",
+        "type": "object"
+      },
+      "OrderQuotaCheck": {
+        "description": "The quota check of an order: the decision and its reasons, per dimension.",
+        "properties": {
+          "decision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`auto_approved`, `awaiting_approval` or `refused`.",
+            "title": "Decision"
+          },
+          "dimensions": {
+            "description": "Each dimension the order touches.",
+            "items": {
+              "$ref": "#/components/schemas/OrderQuotaDimension"
+            },
+            "title": "Dimensions",
+            "type": "array"
+          },
+          "over_dimensions": {
+            "description": "The dimensions the order is over.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Over Dimensions",
+            "type": "array"
+          },
+          "reasons": {
+            "description": "Why the order went to a card or was refused, in words.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "refused_dimensions": {
+            "description": "The dimensions whose `hard_cap` refused it.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Refused Dimensions",
+            "type": "array"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`within` (every dimension within its limit), `over` (a card) or `refused_hard_cap`.",
+            "title": "Result"
+          }
+        },
+        "title": "OrderQuotaCheck",
+        "type": "object"
+      },
+      "OrderQuotaDimension": {
+        "description": "One dimension of an order's quota check, as the platform decided it when the\norder was placed (or approved).",
+        "properties": {
+          "allocated": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What the tenant held then; null when it could not be counted.",
+            "title": "Allocated"
+          },
+          "dimension": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).",
+            "title": "Dimension"
+          },
+          "forces_card": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This dimension alone sends the order to an approval card.",
+            "title": "Forces Card"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The limit then; null without one.",
+            "title": "Limit"
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The limit's policy then (`auto`, `approve_always`, `hard_cap`); null without a limit.",
+            "title": "Policy"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why, in words; null when within.",
+            "title": "Reason"
+          },
+          "remaining": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The limit minus `total`; null without a limit or a count.",
+            "title": "Remaining"
+          },
+          "requested": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What this order asks for.",
+            "title": "Requested"
+          },
+          "reserved": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What approved, undelivered orders held then.",
+            "title": "Reserved"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`within`, `over`, `unlimited` (no limit: a card) or `unknown` (not counted: a card).",
+            "title": "Result"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`allocated` + `reserved` + `requested`; null when a part is unknown.",
+            "title": "Total"
+          }
+        },
+        "title": "OrderQuotaDimension",
+        "type": "object"
+      },
       "Permission": {
         "description": "A fine-grained permission key the portal honours: one level of one\nfeature, in one scope.",
         "properties": {
@@ -5945,6 +6815,21 @@
             ],
             "title": "App Gateway",
             "type": "string"
+          },
+          "app_subdomain": {
+            "anyOf": [
+              {
+                "maxLength": 63,
+                "minLength": 1,
+                "pattern": "^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The application's own namespace on a domain it shares with another application, e.g. `partner`: one lowercase DNS label, not `ai`, `api`, `app`, `dev`, `prod`, `uat`, `www`. Set, the front end is `<app_subdomain>.<primary_domain>`, the API `api.<app_subdomain>.<primary_domain>` and the AI endpoint `ai.<app_subdomain>.<primary_domain>` (`dev.` and `uat.` in front for those environments); the web site stays `www.<primary_domain>`. Null: the domain's primary application, `app.<primary_domain>` and `api.<primary_domain>`. A value whose names another project already holds is refused (422 `hostname_taken`).",
+            "title": "App Subdomain"
           },
           "created_at": {
             "description": "When the project was registered.",
@@ -6342,6 +7227,21 @@
             ],
             "title": "App Gateway",
             "type": "string"
+          },
+          "app_subdomain": {
+            "anyOf": [
+              {
+                "maxLength": 63,
+                "minLength": 1,
+                "pattern": "^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The application's own namespace on a domain it shares with another application, e.g. `partner`: one lowercase DNS label, not `ai`, `api`, `app`, `dev`, `prod`, `uat`, `www`. Set, the front end is `<app_subdomain>.<primary_domain>`, the API `api.<app_subdomain>.<primary_domain>` and the AI endpoint `ai.<app_subdomain>.<primary_domain>` (`dev.` and `uat.` in front for those environments); the web site stays `www.<primary_domain>`. Null: the domain's primary application, `app.<primary_domain>` and `api.<primary_domain>`. A value whose names another project already holds is refused (422 `hostname_taken`).",
+            "title": "App Subdomain"
           },
           "deployment_backend": {
             "default": "k8s",
@@ -6893,6 +7793,21 @@
             ],
             "description": "`shared` rides the environment's app gateway; `dedicated` gets its own.",
             "title": "App Gateway"
+          },
+          "app_subdomain": {
+            "anyOf": [
+              {
+                "maxLength": 63,
+                "minLength": 1,
+                "pattern": "^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The application's own namespace on a domain it shares with another application, e.g. `partner`: one lowercase DNS label, not `ai`, `api`, `app`, `dev`, `prod`, `uat`, `www`. Set, the front end is `<app_subdomain>.<primary_domain>`, the API `api.<app_subdomain>.<primary_domain>` and the AI endpoint `ai.<app_subdomain>.<primary_domain>` (`dev.` and `uat.` in front for those environments); the web site stays `www.<primary_domain>`. Null: the domain's primary application, `app.<primary_domain>` and `api.<primary_domain>`. A value whose names another project already holds is refused (422 `hostname_taken`). null clears it.",
+            "title": "App Subdomain"
           },
           "deployment_backend": {
             "anyOf": [
@@ -7493,6 +8408,21 @@
             ],
             "title": "App Gateway",
             "type": "string"
+          },
+          "app_subdomain": {
+            "anyOf": [
+              {
+                "maxLength": 63,
+                "minLength": 1,
+                "pattern": "^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The application's own namespace on a domain it shares with another application, e.g. `partner`: one lowercase DNS label, not `ai`, `api`, `app`, `dev`, `prod`, `uat`, `www`. Set, the front end is `<app_subdomain>.<primary_domain>`, the API `api.<app_subdomain>.<primary_domain>` and the AI endpoint `ai.<app_subdomain>.<primary_domain>` (`dev.` and `uat.` in front for those environments); the web site stays `www.<primary_domain>`. Null: the domain's primary application, `app.<primary_domain>` and `api.<primary_domain>`. A value whose names another project already holds is refused (422 `hostname_taken`).",
+            "title": "App Subdomain"
           },
           "created_at": {
             "description": "When the project was registered.",
@@ -9794,6 +10724,306 @@
         "title": "TenantPatch",
         "type": "object"
       },
+      "TenantQuota": {
+        "description": "One limit the operator set for the tenant.",
+        "properties": {
+          "dimension": {
+            "description": "The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).",
+            "enum": [
+              "vcpu",
+              "ram_gb",
+              "disk_gb",
+              "desktops",
+              "vms",
+              "ai_tpm",
+              "ai_budget_eur_month",
+              "gpu"
+            ],
+            "title": "Dimension",
+            "type": "string"
+          },
+          "limit": {
+            "description": "The limit, in the dimension's unit; at most four decimal places are kept. `0` allows nothing.",
+            "format": "double",
+            "title": "Limit",
+            "type": "number"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operator's note on this limit; null when none.",
+            "title": "Note"
+          },
+          "policy": {
+            "description": "What an order touching the dimension gets: `auto` (within the limit it is approved by itself, over it goes to an operator's approval card), `approve_always` (every order goes to a card) or `hard_cap` (an order over the limit is refused when it is placed).",
+            "enum": [
+              "auto",
+              "approve_always",
+              "hard_cap"
+            ],
+            "title": "Policy",
+            "type": "string"
+          },
+          "set_at": {
+            "description": "When this limit was last changed. A replacement that leaves a limit, its policy and its note as they were keeps its `set_by` and `set_at`.",
+            "format": "date-time",
+            "title": "Set At",
+            "type": "string"
+          },
+          "set_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The user who last changed this limit (`id` on a user); null when that user no longer exists. A change through the API names the token's owner.",
+            "title": "Set By"
+          }
+        },
+        "required": [
+          "dimension",
+          "limit",
+          "policy",
+          "set_at"
+        ],
+        "title": "TenantQuota",
+        "type": "object"
+      },
+      "TenantQuotaIn": {
+        "additionalProperties": false,
+        "description": "One limit of the replacement set.",
+        "properties": {
+          "dimension": {
+            "description": "The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).",
+            "enum": [
+              "vcpu",
+              "ram_gb",
+              "disk_gb",
+              "desktops",
+              "vms",
+              "ai_tpm",
+              "ai_budget_eur_month",
+              "gpu"
+            ],
+            "title": "Dimension",
+            "type": "string"
+          },
+          "limit": {
+            "description": "The limit, 0 to 9999999999, in the dimension's unit; at most four decimal places are kept (the fifth rounds). `0` allows nothing.",
+            "format": "double",
+            "maximum": 9999999999.0,
+            "minimum": 0.0,
+            "title": "Limit",
+            "type": "number"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A note for operators, up to 500 characters.",
+            "title": "Note"
+          },
+          "policy": {
+            "default": "auto",
+            "description": "What an order touching the dimension gets: `auto` (within the limit it is approved by itself, over it goes to an operator's approval card), `approve_always` (every order goes to a card) or `hard_cap` (an order over the limit is refused when it is placed). Defaults to `auto`.",
+            "enum": [
+              "auto",
+              "approve_always",
+              "hard_cap"
+            ],
+            "title": "Policy",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dimension",
+          "limit"
+        ],
+        "title": "TenantQuotaIn",
+        "type": "object"
+      },
+      "TenantQuotaUsage": {
+        "description": "One dimension next to what the tenant holds: every dimension is listed, with or\nwithout a limit.",
+        "properties": {
+          "allocated": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What the tenant holds now, in the dimension's unit; null when the platform cannot count it (`notes` says why), and then every order touching it goes to a card.",
+            "title": "Allocated"
+          },
+          "dimension": {
+            "description": "The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).",
+            "enum": [
+              "vcpu",
+              "ram_gb",
+              "disk_gb",
+              "desktops",
+              "vms",
+              "ai_tpm",
+              "ai_budget_eur_month",
+              "gpu"
+            ],
+            "title": "Dimension",
+            "type": "string"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The limit; null when the tenant has none for this dimension (no limit, but every order touching it goes to an approval card).",
+            "title": "Limit"
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "enum": [
+                  "auto",
+                  "approve_always",
+                  "hard_cap"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The limit's policy; null when there is no limit.",
+            "title": "Policy"
+          },
+          "remaining": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`limit` minus `allocated` and `reserved`; null without a limit or a count. Negative when the tenant holds more than its limit.",
+            "title": "Remaining"
+          },
+          "reserved": {
+            "default": 0.0,
+            "description": "What approved orders not yet delivered hold.",
+            "format": "double",
+            "title": "Reserved",
+            "type": "number"
+          }
+        },
+        "required": [
+          "dimension"
+        ],
+        "title": "TenantQuotaUsage",
+        "type": "object"
+      },
+      "TenantQuotas": {
+        "description": "A tenant's quota set: the limits the operator set and, for every dimension, what\nthe tenant holds against them.",
+        "properties": {
+          "notes": {
+            "description": "Caveats about the counts, for a person: why a figure is missing or estimated.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Notes",
+            "type": "array"
+          },
+          "quotas": {
+            "description": "The limits, one per dimension that has one, by dimension. A dimension without a limit is not listed here.",
+            "items": {
+              "$ref": "#/components/schemas/TenantQuota"
+            },
+            "title": "Quotas",
+            "type": "array"
+          },
+          "tenant_id": {
+            "description": "The tenant (`id` on a tenant).",
+            "title": "Tenant Id",
+            "type": "string"
+          },
+          "tenant_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tenant's display name.",
+            "title": "Tenant Name"
+          },
+          "usage": {
+            "description": "Every dimension, in a fixed order, with its limit and what is held.",
+            "items": {
+              "$ref": "#/components/schemas/TenantQuotaUsage"
+            },
+            "title": "Usage",
+            "type": "array"
+          },
+          "warnings": {
+            "description": "What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person. Always empty on a read.",
+            "items": {
+              "$ref": "#/components/schemas/ApiWarning"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tenant_id"
+        ],
+        "title": "TenantQuotas",
+        "type": "object"
+      },
+      "TenantQuotasPut": {
+        "additionalProperties": false,
+        "description": "The tenant's COMPLETE quota set. A dimension left out loses its limit: no limit,\nbut every order touching it goes to an approval card (never automatic approval).",
+        "properties": {
+          "quotas": {
+            "description": "One entry per dimension that has a limit, each dimension at most once. An empty list removes every limit.",
+            "items": {
+              "$ref": "#/components/schemas/TenantQuotaIn"
+            },
+            "maxItems": 8,
+            "title": "Quotas",
+            "type": "array"
+          }
+        },
+        "required": [
+          "quotas"
+        ],
+        "title": "TenantQuotasPut",
+        "type": "object"
+      },
       "User": {
         "description": "A person on this platform, or a service account. Never carries a password\nor an SSO or GitLab identifier.",
         "properties": {
@@ -10371,7 +11601,7 @@
     }
   },
   "info": {
-    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code` (Errors, below). Timestamps are RFC 3339 in UTC. Every POST that creates or starts something (all of them except `POST /mcp`, which only reads) and the node-cache `PUT` and `DELETE` accept an `Idempotency-Key` header, declared on each: for 24 hours the same key with the same request replays the stored response (`Idempotent-Replayed: true`), with a different request it is a 409 `idempotency_key_reused`, and while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. PATCH bodies are JSON Merge Patch (RFC 7396). Limit: 600 requests per minute per token (429 `rate_limited` with `Retry-After`). Every response carries `X-Request-ID`.\n\n**Treat every API token as an operator credential.** A token is a remote handle on this portal, and the portal holds the credentials the platform itself runs on: whoever holds a token can do, through this API, everything its scopes allow on this installation. Give each token one purpose, only the scopes that purpose needs and the shortest lifetime that works; keep it in a secret store or a protected CI variable, never in a repository or a configuration file; create it with `allow_destroy` only when it is meant to remove things; and revoke it when its job is done.\n\n**Errors.** Every error is a problem document with these members: `type`, `urn:ataila:api:problem:<code>`, an identifier rather than a link; `title`, the HTTP status phrase; `status`, the HTTP status again; `detail`, what went wrong this time, for a person, worded freely; `code`, the stable reason to branch on; `instance`, the request path; and `request_id`, the same as the `X-Request-ID` header. Some codes add members, named below; ignore any member you do not know. Each operation names its own codes in its responses. These come from the layers every request passes through, so any operation can answer them:\n\n* 401 `not_authenticated`: no `Authorization` header, or not `Bearer <token>`. 401 `token_invalid`: the token is malformed or unknown, or a session token does not verify (an expired one included). 401 `token_expired` and `token_revoked`: the API token has expired or was revoked. 401 `principal_disabled`: the account behind the token or session is deactivated. 401 `token_ip_not_allowed`: the token's address allowlist does not include the caller. A 401 carries `WWW-Authenticate: Bearer`; retrying with the same credential does not help.\n* 403 `forbidden`: the operation needs a permission the caller lacks; `required` lists the permission keys, any one of which would do. A token holds only those of its scopes its owner still holds. 403 `destroy_not_allowed`: a destroy (archive, delete, deactivate, retire) with a token created without `allow_destroy`.\n* 403 `licence_locked`: the licence has expired or was revoked, so every change is refused except installing a licence (`PUT /licence/bundle`). 403 `licence_restricted`: this platform is not licensed yet, so nothing that grows it (customers, tenants, projects, releases, AI) can be added or changed. 403 `licence_required`: the licence lacks a module the operation needs, named in `entitlement`. 403 `licence_refused`: any other licence refusal. Each carries `state` (the licence state), `state_reason`, `remedy` (what an operator must do) and `remedy_url`. A read is never refused for a licence reason. Never retry a `licence_*` code: only a licence change alters the answer.\n* 400 `invalid_idempotency_key`: the `Idempotency-Key` is not 1-255 printable ASCII characters without spaces. 409 `idempotency_key_reused`: the key was used for a different request (method, path, query or body) in the last 24 hours. 429 `idempotency_request_in_progress`: the first request with the key is still running.\n* 400 `invalid_cursor`: the `cursor` is not one this list issued.\n* 422 `validation_failed`: the request does not match the schema; `errors` lists each failure (`loc`, `msg`, `type`) and `field` names the first offending member. 422 `immutable_field`: a change to a field that is frozen once created; `field` names it.\n* 429 `rate_limited`: more than 600 requests in a minute with this token.\n* 503 `unavailable`: the platform cannot answer right now. 503 `api_tokens_unconfigured`: API tokens are not configured on this platform; an operator must act, and retrying does not help.\n* 404 `not_found`: every path, this document and the interactive reference included, while the public API is switched off on this platform; and any path that does not exist. 405 `method_not_allowed`: the path exists, the method does not. 500 `internal_error`: an unexpected failure, with no detail; `request_id` finds it in the server log.\n\nA 429 and a 503 carry `Retry-After` (seconds) when a retry can succeed: wait that long, then send the same request again. When no specific code applies, `code` is the one for the status: `bad_request` (400), `not_authenticated` (401), `forbidden` (403), `not_found` (404), `method_not_allowed` (405), `conflict` (409), `gone` (410), `precondition_failed` (412), `unsupported_media_type` (415), `validation_failed` (422), `rate_limited` (429), `internal_error` (500), `bad_gateway` (502), `unavailable` (503) and `gateway_timeout` (504).",
+    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code` (Errors, below). Timestamps are RFC 3339 in UTC. Every POST that creates or starts something (all of them except `POST /mcp`, which only reads) and the node-cache `PUT` and `DELETE` accept an `Idempotency-Key` header, declared on each: for 24 hours the same key with the same request replays the stored response (`Idempotent-Replayed: true`), with a different request it is a 409 `idempotency_key_reused`, and while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. PATCH bodies are JSON Merge Patch (RFC 7396). Limit: 600 requests per minute per token (429 `rate_limited` with `Retry-After`). Every response carries `X-Request-ID`.\n\n**Treat every API token as an operator credential.** A token is a remote handle on this portal, and the portal holds the credentials the platform itself runs on: whoever holds a token can do, through this API, everything its scopes allow on this installation. Give each token one purpose, only the scopes that purpose needs and the shortest lifetime that works; keep it in a secret store or a protected CI variable, never in a repository or a configuration file; create it with `allow_destroy` only when it is meant to remove things; and revoke it when its job is done.\n\n**Errors.** Every error is a problem document with these members: `type`, `urn:ataila:api:problem:<code>`, an identifier rather than a link; `title`, the HTTP status phrase; `status`, the HTTP status again; `detail`, what went wrong this time, for a person, worded freely; `code`, the stable reason to branch on; `instance`, the request path; and `request_id`, the same as the `X-Request-ID` header. Some codes add members, named below; ignore any member you do not know. Each operation names its own codes in its responses. These come from the layers every request passes through, so any operation can answer them:\n\n* 401 `not_authenticated`: no `Authorization` header, or not `Bearer <token>`. 401 `token_invalid`: the token is malformed or unknown, or a session token does not verify (an expired one included). 401 `token_expired` and `token_revoked`: the API token has expired or was revoked. 401 `principal_disabled`: the account behind the token or session is deactivated. 401 `token_ip_not_allowed`: the token's address allowlist does not include the caller. A 401 carries `WWW-Authenticate: Bearer`; retrying with the same credential does not help.\n* 403 `forbidden`: the operation needs a permission the caller lacks; `required` lists the permission keys, any one of which would do. A token holds only those of its scopes its owner still holds. 403 `destroy_not_allowed`: a destroy (archive, delete, deactivate, retire) with a token created without `allow_destroy`.\n* 403 `licence_locked`: the licence has expired or was revoked, so every change is refused except installing a licence (`PUT /licence/bundle`). 403 `licence_restricted`: this platform is not licensed yet, so nothing that grows it (customers, tenants, projects, releases, AI) can be added or changed. 403 `licence_required`: the licence lacks a module the operation needs, named in `entitlement`. 403 `licence_refused`: any other licence refusal. Each carries `state` (the licence state), `state_reason`, `remedy` (what an operator must do) and `remedy_url`. A read is never refused for a licence reason. Never retry a `licence_*` code: only a licence change alters the answer.\n* 400 `invalid_idempotency_key`: the `Idempotency-Key` is not 1-255 printable ASCII characters without spaces. 409 `idempotency_key_reused`: the key was used for a different request (method, path, query or body) in the last 24 hours. 429 `idempotency_request_in_progress`: the first request with the key is still running.\n* 400 `invalid_cursor`: the `cursor` is not one this list issued.\n* 422 `validation_failed`: the request does not match the schema; `errors` lists each failure (`loc`, `msg`, `type`) and `field` names the first offending member. 422 `immutable_field`: a change to a field that is frozen once created; `field` names it.\n* 429 `rate_limited`: more than 600 requests in a minute with this token.\n* 503 `unavailable`: the platform cannot answer right now. 503 `api_tokens_unconfigured`: API tokens are not configured on this platform; an operator must act, and retrying does not help.\n* 404 `not_found`: every path, this document and the interactive reference included, while the public API is switched off on this platform; and any path that does not exist. 405 `method_not_allowed`: the path exists, the method does not. 500 `internal_error`: an unexpected failure, with no detail; `request_id` finds it in the server log.\n\n**Warnings.** A write that succeeded can still carry `warnings`, each with a stable `code`; each operation names the ones it can give. One can come with any write: `audit_not_recorded`, the change was made but its row in the audit log was not written.\n\nA 429 and a 503 carry `Retry-After` (seconds) when a retry can succeed: wait that long, then send the same request again. When no specific code applies, `code` is the one for the status: `bad_request` (400), `not_authenticated` (401), `forbidden` (403), `not_found` (404), `method_not_allowed` (405), `conflict` (409), `gone` (410), `precondition_failed` (412), `unsupported_media_type` (415), `validation_failed` (422), `rate_limited` (429), `internal_error` (500), `bad_gateway` (502), `unavailable` (503) and `gateway_timeout` (504).",
     "title": "ATAILA Cloud Platform API",
     "version": "1.0.0"
   },
@@ -13695,7 +14925,7 @@
         ]
       },
       "post": {
-        "description": "Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.",
+        "description": "Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it (`secret` is null, with a `secret_not_replayed` warning). Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.",
         "operationId": "ai_gateway_keys_create",
         "parameters": [
           {
@@ -14529,7 +15759,7 @@
     },
     "/ai/gateway/keys/{key_id}/rotations": {
       "post": {
-        "description": "A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.",
+        "description": "A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true; an idempotent replay answers `secret` null with a `secret_not_replayed` warning. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.",
         "operationId": "ai_gateway_keys_rotate",
         "parameters": [
           {
@@ -17289,6 +18519,181 @@
         ]
       }
     },
+    "/catalogue": {
+      "get": {
+        "description": "What tenants can order on this platform: every ENABLED catalogue item, in display\norder (`sort_order`, then `key`), with its order form (`spec_schema`), how an order\ncounts against the tenant's quotas (`quota_dimensions`), whether it always needs an\noperator's approval, and its price basis. This is the operator's view: the EUR estimate\na tenant sees is computed from that tenant's contract, in the portal.",
+        "operationId": "catalogue_items_list",
+        "parameters": [
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogueItemPage"
+                }
+              }
+            },
+            "description": "One page of the catalogue's enabled items.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "The order catalogue",
+        "tags": [
+          "orders"
+        ]
+      }
+    },
     "/customers": {
       "get": {
         "description": "The customers of this platform, in `id` order, archived ones included. The filters\nare exact and combine: `short_name`, `gitlab_group`, `status`. A list never contacts\nGitLab; read one customer with `include=gitlab_status` for its group's live state.",
@@ -17523,7 +18928,7 @@
         ]
       },
       "post": {
-        "description": "Creates the customer (with `status` `active` unless `suspended` is asked\nfor) and its primary tenant in one transaction, then creates or adopts its\nGitLab group. A GitLab failure does not fail the request: the customer exists,\nand `warnings` says what is missing. Send an `Idempotency-Key` to make a retry\nsafe: a retry with the same key and request gets the first answer and changes\nnothing.",
+        "description": "Creates the customer (with `status` `active` unless `suspended` is asked\nfor) and its primary tenant in one transaction, then creates or adopts its\nGitLab group. A GitLab failure does not fail the request: the customer exists,\nand `warnings` says what is missing: `gitlab_group_not_ready` (the group is there\nbut not ready yet), `gitlab_not_configured` (GitLab is not configured on this\nplatform) or `gitlab_group_failed`. Send an `Idempotency-Key` to make a retry\nsafe: a retry with the same key and request gets the first answer and changes\nnothing.",
         "operationId": "customers_create",
         "parameters": [
           {
@@ -17624,7 +19029,7 @@
                 }
               }
             },
-            "description": "A unique key is taken (`customer_index_taken`, `short_name_taken`, `gitlab_group_taken`), the group name collides with another customer's (`gitlab_group_collision`), or no index is left (`customer_index_exhausted`).",
+            "description": "A unique key is taken (`customer_index_taken`, `short_name_taken`, `gitlab_group_taken`; `customer_conflict` when a concurrent create took a key first and which one cannot be told), the group name collides with another customer's (`gitlab_group_collision`), or no index is left (`customer_index_exhausted`).",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"
@@ -17897,7 +19302,7 @@
         ]
       },
       "get": {
-        "description": "One customer by `id`, archived ones included. With `include=gitlab_status` the\ncustomer's GitLab group is looked up live (read-only); without it nothing outside\nthe platform is contacted.",
+        "description": "One customer by `id`, archived ones included. With `include=gitlab_status` the\ncustomer's GitLab group is looked up live (read-only); without it nothing outside\nthe platform is contacted. When the lookup cannot be made, `gitlab_status` is null\nwith a warning: `gitlab_not_configured`, or `gitlab_unreachable`.",
         "operationId": "customers_get",
         "parameters": [
           {
@@ -19736,6 +21141,180 @@
         ]
       }
     },
+    "/orders/{order_id}": {
+      "get": {
+        "description": "One order by `id`, with its timeline (`events`, oldest first): who placed it, how\nthe quota decided, who approved or rejected it and why, and each step of its delivery.\nNever a key's value: an AI key order names the key it delivered (`dispatch.key_id`,\n`dispatch.key_alias`), which `GET /ai/gateway/keys/{id}` reads.",
+        "operationId": "orders_get",
+        "parameters": [
+          {
+            "description": "The order's id (`id` on an order).",
+            "in": "path",
+            "name": "order_id",
+            "required": true,
+            "schema": {
+              "description": "The order's id (`id` on an order).",
+              "title": "Order Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDetail"
+                }
+              }
+            },
+            "description": "The order and its timeline.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such order (`order_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One order",
+        "tags": [
+          "orders"
+        ]
+      }
+    },
     "/permissions": {
       "get": {
         "description": "Every fine-grained permission key the portal honours, `<feature>-<level>-<scope>`. `grantable` says whether it may be granted to a person; `mintable` whether an API token may carry it (v1 tokens carry `-global` keys only, never `admin`, `founder`, `ssh-console` or a key of the `api-tokens` feature). The roles catalogue also holds role names that are not permission keys (`user`, `admin`, …); those can be granted too.",
@@ -20185,7 +21764,7 @@
         ]
       },
       "post": {
-        "description": "Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.",
+        "description": "Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.",
         "operationId": "projects_create",
         "parameters": [
           {
@@ -20286,7 +21865,7 @@
                 }
               }
             },
-            "description": "A unique key is taken, or no index is left (`project_index_exhausted`), or the customer is archived (`customer_archived`). The unique keys are checked in ONE fixed order — `short_name`, `project_index` (when sent), `primary_domain`, `gitlab_repo_slug` — and the FIRST one taken is the answer: `code` is `<key>_taken` and `field` names it. `conflicts` lists EVERY taken key in that order, each as `{field, code, project_id}` (`project_id`: the project holding it, null when a concurrent create took it). Retired projects keep their keys, so a retired project's values stay taken.",
+            "description": "A unique key is taken, or no index is left (`project_index_exhausted`), or the customer is archived (`customer_archived`). The unique keys are checked in ONE fixed order — `short_name`, `project_index` (when sent), `primary_domain`, `gitlab_repo_slug` — and the FIRST one taken is the answer: `code` is the key's (`short_name_taken`, `project_index_taken`, `primary_domain_taken` or `gitlab_repo_slug_taken`) and `field` names it. A concurrent create that takes a key after the check gives that key's code, or `project_conflict` when which one cannot be told. `conflicts` lists EVERY taken key in that order, each as `{field, code, project_id}` (`project_id`: the project holding it, null when a concurrent create took it). Retired projects keep their keys, so a retired project's values stay taken.",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"
@@ -20306,7 +21885,7 @@
                 }
               }
             },
-            "description": "No such tenant (`tenant_not_found`), an impossible combination (`invalid_combination`), the manifest compiler refused the input (`manifest_refused`, `windows_requires_vm_backend`; `detail` is its message), or the body is invalid.",
+            "description": "No such tenant (`tenant_not_found`), an impossible combination (`invalid_combination`), the manifest compiler refused the input (`manifest_refused`, `windows_requires_vm_backend`; `detail` is its message), the project would be served under hostnames another project already holds (`hostname_taken`): `hostnames` lists each as `{fqdn, field}`, and `field` names the member to change: `app_subdomain` when an application name (front end, API or AI endpoint, any environment) clashes, which a namespace on the shared domain resolves, `primary_domain` otherwise. Who holds a name is not disclosed. Names the project already held before a change never count, or the body is invalid.",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"
@@ -20752,7 +22331,7 @@
         ]
       },
       "patch": {
-        "description": "Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
+        "description": "Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
         "operationId": "projects_update",
         "parameters": [
           {
@@ -20895,7 +22474,7 @@
                 }
               }
             },
-            "description": "A frozen key was changed (`immutable_field`), an impossible combination (`invalid_combination`), a compiler refusal (`manifest_refused`, `windows_requires_vm_backend`), or the body is invalid.",
+            "description": "A frozen key was changed (`immutable_field`), an impossible combination (`invalid_combination`), a compiler refusal (`manifest_refused`, `windows_requires_vm_backend`), the project would be served under hostnames another project already holds (`hostname_taken`): `hostnames` lists each as `{fqdn, field}`, and `field` names the member to change: `app_subdomain` when an application name (front end, API or AI endpoint, any environment) clashes, which a namespace on the shared domain resolves, `primary_domain` otherwise. Who holds a name is not disclosed. Names the project already held before a change never count, or the body is invalid.",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"
@@ -21204,7 +22783,7 @@
         ]
       },
       "patch": {
-        "description": "Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.\n\nThe change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
+        "description": "Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.\n\nThe change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
         "operationId": "project_k8s_quota_update",
         "parameters": [
           {
@@ -25876,6 +27455,622 @@
         ]
       }
     },
+    "/tenants/{tenant_id}/orders": {
+      "get": {
+        "description": "The tenant's orders, newest first (`created_at`, then `id`), each with its quota\ncheck, its decision and what delivering it produced. Read only: an order is approved,\nrejected or re-run in the portal. The timeline of one order is `GET /orders/{id}`.",
+        "operationId": "tenant_orders_list",
+        "parameters": [
+          {
+            "description": "The tenant's id (`id` on a tenant).",
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only orders in these states; repeat it for several (`?status=awaiting_approval&status=approved`).",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "enum": [
+                      "submitted",
+                      "auto_approved",
+                      "awaiting_approval",
+                      "approved",
+                      "rejected",
+                      "dispatched",
+                      "running",
+                      "delivered",
+                      "partial",
+                      "failed",
+                      "cancelled"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only orders in these states; repeat it for several (`?status=awaiting_approval&status=approved`).",
+              "title": "Status"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderPage"
+                }
+              }
+            },
+            "description": "One page of the tenant's orders, newest first.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A tenant's orders",
+        "tags": [
+          "orders"
+        ]
+      }
+    },
+    "/tenants/{tenant_id}/quotas": {
+      "get": {
+        "description": "The limits the operator set for the tenant (`quotas`, one per dimension that has one) and, for every dimension, the limit next to what the tenant holds (`usage`), with caveats about the counts (`notes`). Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.",
+        "operationId": "tenant_quotas_get",
+        "parameters": [
+          {
+            "description": "The tenant's id (`id` on a tenant).",
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantQuotas"
+                }
+              }
+            },
+            "description": "The tenant's limits and, per dimension, what it holds.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A tenant's quotas",
+        "tags": [
+          "orders"
+        ]
+      },
+      "put": {
+        "description": "Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.\n\nWithin a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.",
+        "operationId": "tenant_quotas_put",
+        "parameters": [
+          {
+            "description": "The tenant's id (`id` on a tenant).",
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantQuotasPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantQuotas"
+                }
+              }
+            },
+            "description": "The tenant's quotas after the replacement.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The body is invalid: an unknown dimension or policy, a dimension named twice, or a limit below 0 or above 9999999999 (`validation_failed`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Replace a tenant's quotas",
+        "tags": [
+          "orders"
+        ]
+      }
+    },
     "/users": {
       "get": {
         "description": "The people on this platform, in `id` order; service accounts only with `kind`\n`service` or `all`. The filters combine (all must hold): `email` and `username` are\nexact and case-insensitive, `is_active`, `tenant_id` (members of that tenant),\n`customer_id` (members of any of its tenants), `role` (holders of that role).\nDeactivated people are listed unless `is_active` is `true`.",
@@ -26178,7 +28373,7 @@
         ]
       },
       "post": {
-        "description": "Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.",
+        "description": "Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_username_failed`, `provisioning_sso_failed`, `provisioning_gitlab_user_failed` or `provisioning_gitlab_group_member_failed`; `provisioning_failed` when provisioning did not run or report at all) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.",
         "operationId": "users_create",
         "parameters": [
           {
@@ -26279,7 +28474,7 @@
                 }
               }
             },
-            "description": "The e-mail address (`email_taken`) or username (`username_taken`) is taken, deactivated users included.",
+            "description": "The e-mail address (`email_taken`) or username (`username_taken`) is taken, deactivated users included; `user_conflict` when a concurrent request took one first and which cannot be told.",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"
@@ -26743,7 +28938,7 @@
         ]
       },
       "patch": {
-        "description": "Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
+        "description": "Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
         "operationId": "users_update",
         "parameters": [
           {
@@ -26865,7 +29060,7 @@
                 }
               }
             },
-            "description": "The e-mail address is taken (`email_taken`), the user is a service account (`service_account_managed_elsewhere`), or a deactivation is refused (`cannot_deactivate_self`, `last_active_admin`).",
+            "description": "The e-mail address is taken (`email_taken`, or `user_conflict` when a concurrent request took it first), the user is a service account (`service_account_managed_elsewhere`), or a deactivation is refused (`cannot_deactivate_self`, `last_active_admin`).",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"
@@ -28009,6 +30204,10 @@
     {
       "description": "The platform audit log: every recorded change, read-only.",
       "name": "audit"
+    },
+    {
+      "description": "Tenant quotas, the order catalogue and tenant orders (orders are read-only).",
+      "name": "orders"
     },
     {
       "description": "Model Context Protocol: every GET operation as a read-only tool.",

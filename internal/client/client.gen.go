@@ -795,6 +795,96 @@ func (e OrchestrationStatus) Valid() bool {
 	}
 }
 
+// Defines values for OrderStatus.
+const (
+	OrderStatusApproved         OrderStatus = "approved"
+	OrderStatusAutoApproved     OrderStatus = "auto_approved"
+	OrderStatusAwaitingApproval OrderStatus = "awaiting_approval"
+	OrderStatusCancelled        OrderStatus = "cancelled"
+	OrderStatusDelivered        OrderStatus = "delivered"
+	OrderStatusDispatched       OrderStatus = "dispatched"
+	OrderStatusFailed           OrderStatus = "failed"
+	OrderStatusPartial          OrderStatus = "partial"
+	OrderStatusRejected         OrderStatus = "rejected"
+	OrderStatusRunning          OrderStatus = "running"
+	OrderStatusSubmitted        OrderStatus = "submitted"
+)
+
+// Valid indicates whether the value is a known member of the OrderStatus enum.
+func (e OrderStatus) Valid() bool {
+	switch e {
+	case OrderStatusApproved:
+		return true
+	case OrderStatusAutoApproved:
+		return true
+	case OrderStatusAwaitingApproval:
+		return true
+	case OrderStatusCancelled:
+		return true
+	case OrderStatusDelivered:
+		return true
+	case OrderStatusDispatched:
+		return true
+	case OrderStatusFailed:
+		return true
+	case OrderStatusPartial:
+		return true
+	case OrderStatusRejected:
+		return true
+	case OrderStatusRunning:
+		return true
+	case OrderStatusSubmitted:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for OrderDetailStatus.
+const (
+	OrderDetailStatusApproved         OrderDetailStatus = "approved"
+	OrderDetailStatusAutoApproved     OrderDetailStatus = "auto_approved"
+	OrderDetailStatusAwaitingApproval OrderDetailStatus = "awaiting_approval"
+	OrderDetailStatusCancelled        OrderDetailStatus = "cancelled"
+	OrderDetailStatusDelivered        OrderDetailStatus = "delivered"
+	OrderDetailStatusDispatched       OrderDetailStatus = "dispatched"
+	OrderDetailStatusFailed           OrderDetailStatus = "failed"
+	OrderDetailStatusPartial          OrderDetailStatus = "partial"
+	OrderDetailStatusRejected         OrderDetailStatus = "rejected"
+	OrderDetailStatusRunning          OrderDetailStatus = "running"
+	OrderDetailStatusSubmitted        OrderDetailStatus = "submitted"
+)
+
+// Valid indicates whether the value is a known member of the OrderDetailStatus enum.
+func (e OrderDetailStatus) Valid() bool {
+	switch e {
+	case OrderDetailStatusApproved:
+		return true
+	case OrderDetailStatusAutoApproved:
+		return true
+	case OrderDetailStatusAwaitingApproval:
+		return true
+	case OrderDetailStatusCancelled:
+		return true
+	case OrderDetailStatusDelivered:
+		return true
+	case OrderDetailStatusDispatched:
+		return true
+	case OrderDetailStatusFailed:
+		return true
+	case OrderDetailStatusPartial:
+		return true
+	case OrderDetailStatusRejected:
+		return true
+	case OrderDetailStatusRunning:
+		return true
+	case OrderDetailStatusSubmitted:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PermissionLevel.
 const (
 	PermissionLevelAdmin PermissionLevel = "admin"
@@ -2078,22 +2168,22 @@ func (e SecretPathEnv) Valid() bool {
 
 // Defines values for ServingTierSource.
 const (
-	Auto       ServingTierSource = "auto"
-	None       ServingTierSource = "none"
-	Pin        ServingTierSource = "pin"
-	PinOffline ServingTierSource = "pin-offline"
+	ServingTierSourceAuto       ServingTierSource = "auto"
+	ServingTierSourceNone       ServingTierSource = "none"
+	ServingTierSourcePin        ServingTierSource = "pin"
+	ServingTierSourcePinOffline ServingTierSource = "pin-offline"
 )
 
 // Valid indicates whether the value is a known member of the ServingTierSource enum.
 func (e ServingTierSource) Valid() bool {
 	switch e {
-	case Auto:
+	case ServingTierSourceAuto:
 		return true
-	case None:
+	case ServingTierSourceNone:
 		return true
-	case Pin:
+	case ServingTierSourcePin:
 		return true
-	case PinOffline:
+	case ServingTierSourcePinOffline:
 		return true
 	default:
 		return false
@@ -2199,6 +2289,177 @@ func (e StoreRunDispatchMode) Valid() bool {
 	case StoreRunDispatchModeDryrun:
 		return true
 	case StoreRunDispatchModeLive:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TenantQuotaDimension.
+const (
+	TenantQuotaDimensionAiBudgetEurMonth TenantQuotaDimension = "ai_budget_eur_month"
+	TenantQuotaDimensionAiTpm            TenantQuotaDimension = "ai_tpm"
+	TenantQuotaDimensionDesktops         TenantQuotaDimension = "desktops"
+	TenantQuotaDimensionDiskGb           TenantQuotaDimension = "disk_gb"
+	TenantQuotaDimensionGpu              TenantQuotaDimension = "gpu"
+	TenantQuotaDimensionRamGb            TenantQuotaDimension = "ram_gb"
+	TenantQuotaDimensionVcpu             TenantQuotaDimension = "vcpu"
+	TenantQuotaDimensionVms              TenantQuotaDimension = "vms"
+)
+
+// Valid indicates whether the value is a known member of the TenantQuotaDimension enum.
+func (e TenantQuotaDimension) Valid() bool {
+	switch e {
+	case TenantQuotaDimensionAiBudgetEurMonth:
+		return true
+	case TenantQuotaDimensionAiTpm:
+		return true
+	case TenantQuotaDimensionDesktops:
+		return true
+	case TenantQuotaDimensionDiskGb:
+		return true
+	case TenantQuotaDimensionGpu:
+		return true
+	case TenantQuotaDimensionRamGb:
+		return true
+	case TenantQuotaDimensionVcpu:
+		return true
+	case TenantQuotaDimensionVms:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TenantQuotaPolicy.
+const (
+	TenantQuotaPolicyApproveAlways TenantQuotaPolicy = "approve_always"
+	TenantQuotaPolicyAuto          TenantQuotaPolicy = "auto"
+	TenantQuotaPolicyHardCap       TenantQuotaPolicy = "hard_cap"
+)
+
+// Valid indicates whether the value is a known member of the TenantQuotaPolicy enum.
+func (e TenantQuotaPolicy) Valid() bool {
+	switch e {
+	case TenantQuotaPolicyApproveAlways:
+		return true
+	case TenantQuotaPolicyAuto:
+		return true
+	case TenantQuotaPolicyHardCap:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TenantQuotaInDimension.
+const (
+	TenantQuotaInDimensionAiBudgetEurMonth TenantQuotaInDimension = "ai_budget_eur_month"
+	TenantQuotaInDimensionAiTpm            TenantQuotaInDimension = "ai_tpm"
+	TenantQuotaInDimensionDesktops         TenantQuotaInDimension = "desktops"
+	TenantQuotaInDimensionDiskGb           TenantQuotaInDimension = "disk_gb"
+	TenantQuotaInDimensionGpu              TenantQuotaInDimension = "gpu"
+	TenantQuotaInDimensionRamGb            TenantQuotaInDimension = "ram_gb"
+	TenantQuotaInDimensionVcpu             TenantQuotaInDimension = "vcpu"
+	TenantQuotaInDimensionVms              TenantQuotaInDimension = "vms"
+)
+
+// Valid indicates whether the value is a known member of the TenantQuotaInDimension enum.
+func (e TenantQuotaInDimension) Valid() bool {
+	switch e {
+	case TenantQuotaInDimensionAiBudgetEurMonth:
+		return true
+	case TenantQuotaInDimensionAiTpm:
+		return true
+	case TenantQuotaInDimensionDesktops:
+		return true
+	case TenantQuotaInDimensionDiskGb:
+		return true
+	case TenantQuotaInDimensionGpu:
+		return true
+	case TenantQuotaInDimensionRamGb:
+		return true
+	case TenantQuotaInDimensionVcpu:
+		return true
+	case TenantQuotaInDimensionVms:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TenantQuotaInPolicy.
+const (
+	TenantQuotaInPolicyApproveAlways TenantQuotaInPolicy = "approve_always"
+	TenantQuotaInPolicyAuto          TenantQuotaInPolicy = "auto"
+	TenantQuotaInPolicyHardCap       TenantQuotaInPolicy = "hard_cap"
+)
+
+// Valid indicates whether the value is a known member of the TenantQuotaInPolicy enum.
+func (e TenantQuotaInPolicy) Valid() bool {
+	switch e {
+	case TenantQuotaInPolicyApproveAlways:
+		return true
+	case TenantQuotaInPolicyAuto:
+		return true
+	case TenantQuotaInPolicyHardCap:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TenantQuotaUsageDimension.
+const (
+	TenantQuotaUsageDimensionAiBudgetEurMonth TenantQuotaUsageDimension = "ai_budget_eur_month"
+	TenantQuotaUsageDimensionAiTpm            TenantQuotaUsageDimension = "ai_tpm"
+	TenantQuotaUsageDimensionDesktops         TenantQuotaUsageDimension = "desktops"
+	TenantQuotaUsageDimensionDiskGb           TenantQuotaUsageDimension = "disk_gb"
+	TenantQuotaUsageDimensionGpu              TenantQuotaUsageDimension = "gpu"
+	TenantQuotaUsageDimensionRamGb            TenantQuotaUsageDimension = "ram_gb"
+	TenantQuotaUsageDimensionVcpu             TenantQuotaUsageDimension = "vcpu"
+	TenantQuotaUsageDimensionVms              TenantQuotaUsageDimension = "vms"
+)
+
+// Valid indicates whether the value is a known member of the TenantQuotaUsageDimension enum.
+func (e TenantQuotaUsageDimension) Valid() bool {
+	switch e {
+	case TenantQuotaUsageDimensionAiBudgetEurMonth:
+		return true
+	case TenantQuotaUsageDimensionAiTpm:
+		return true
+	case TenantQuotaUsageDimensionDesktops:
+		return true
+	case TenantQuotaUsageDimensionDiskGb:
+		return true
+	case TenantQuotaUsageDimensionGpu:
+		return true
+	case TenantQuotaUsageDimensionRamGb:
+		return true
+	case TenantQuotaUsageDimensionVcpu:
+		return true
+	case TenantQuotaUsageDimensionVms:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TenantQuotaUsagePolicy.
+const (
+	TenantQuotaUsagePolicyApproveAlways TenantQuotaUsagePolicy = "approve_always"
+	TenantQuotaUsagePolicyAuto          TenantQuotaUsagePolicy = "auto"
+	TenantQuotaUsagePolicyHardCap       TenantQuotaUsagePolicy = "hard_cap"
+)
+
+// Valid indicates whether the value is a known member of the TenantQuotaUsagePolicy enum.
+func (e TenantQuotaUsagePolicy) Valid() bool {
+	switch e {
+	case TenantQuotaUsagePolicyApproveAlways:
+		return true
+	case TenantQuotaUsagePolicyAuto:
+		return true
+	case TenantQuotaUsagePolicyHardCap:
 		return true
 	default:
 		return false
@@ -2685,6 +2946,51 @@ func (e ReleaseOperationsListParamsComponent) Valid() bool {
 	case ReleaseOperationsListParamsComponentAppApi:
 		return true
 	case ReleaseOperationsListParamsComponentWww:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TenantOrdersListParamsStatus.
+const (
+	TenantOrdersListParamsStatusApproved         TenantOrdersListParamsStatus = "approved"
+	TenantOrdersListParamsStatusAutoApproved     TenantOrdersListParamsStatus = "auto_approved"
+	TenantOrdersListParamsStatusAwaitingApproval TenantOrdersListParamsStatus = "awaiting_approval"
+	TenantOrdersListParamsStatusCancelled        TenantOrdersListParamsStatus = "cancelled"
+	TenantOrdersListParamsStatusDelivered        TenantOrdersListParamsStatus = "delivered"
+	TenantOrdersListParamsStatusDispatched       TenantOrdersListParamsStatus = "dispatched"
+	TenantOrdersListParamsStatusFailed           TenantOrdersListParamsStatus = "failed"
+	TenantOrdersListParamsStatusPartial          TenantOrdersListParamsStatus = "partial"
+	TenantOrdersListParamsStatusRejected         TenantOrdersListParamsStatus = "rejected"
+	TenantOrdersListParamsStatusRunning          TenantOrdersListParamsStatus = "running"
+	TenantOrdersListParamsStatusSubmitted        TenantOrdersListParamsStatus = "submitted"
+)
+
+// Valid indicates whether the value is a known member of the TenantOrdersListParamsStatus enum.
+func (e TenantOrdersListParamsStatus) Valid() bool {
+	switch e {
+	case TenantOrdersListParamsStatusApproved:
+		return true
+	case TenantOrdersListParamsStatusAutoApproved:
+		return true
+	case TenantOrdersListParamsStatusAwaitingApproval:
+		return true
+	case TenantOrdersListParamsStatusCancelled:
+		return true
+	case TenantOrdersListParamsStatusDelivered:
+		return true
+	case TenantOrdersListParamsStatusDispatched:
+		return true
+	case TenantOrdersListParamsStatusFailed:
+		return true
+	case TenantOrdersListParamsStatusPartial:
+		return true
+	case TenantOrdersListParamsStatusRejected:
+		return true
+	case TenantOrdersListParamsStatusRunning:
+		return true
+	case TenantOrdersListParamsStatusSubmitted:
 		return true
 	default:
 		return false
@@ -3372,6 +3678,46 @@ type CachedModelRef struct {
 
 	// SizeGb The copy's size on the node's disk in GB, when measured.
 	SizeGb *float64 `json:"size_gb,omitempty"`
+}
+
+// CatalogueItem Something a tenant can order, with its order form and what an order of it counts
+// against.
+type CatalogueItem struct {
+	// Edition Which platform editions offer it: `sp` (service-provider platforms) or `both`.
+	Edition string `json:"edition"`
+
+	// Key The item's key, e.g. `ai-gateway-key`.
+	Key string `json:"key"`
+
+	// Kind What delivering an order of the item creates: `vdi-desktop`, `project-vm`, `ai-gateway-key`, `project`, `k8s-namespace`, `storage` or `manual` (an operator delivers it by hand).
+	Kind string `json:"kind"`
+
+	// Name Its display name.
+	Name string `json:"name"`
+
+	// PriceHint Which cost units price an order of the item (`unit_keys`: cost unit to quota dimension); null when the item has no price basis. The EUR estimate itself is computed per tenant, from its contract, in the portal.
+	PriceHint *map[string]interface{} `json:"price_hint,omitempty"`
+
+	// QuotaDimensions How an order's `spec` maps onto quota dimensions: per dimension, `{"const": n}`, `{"field": "<spec field>"}` or `{"field": …, "map": {value: n}}`, optionally with `times`.
+	QuotaDimensions *map[string]interface{} `json:"quota_dimensions,omitempty"`
+
+	// RequiresApproval Every order of the item goes to an operator's approval card, whatever the quota says.
+	RequiresApproval bool `json:"requires_approval"`
+
+	// SortOrder Display order, ascending.
+	SortOrder int `json:"sort_order"`
+
+	// SpecSchema The order form, as a JSON Schema object (`type`, `properties`, `required`, defaults and limits): what an order's `spec` must satisfy.
+	SpecSchema *map[string]interface{} `json:"spec_schema,omitempty"`
+}
+
+// CatalogueItemPage One page of the catalogue's enabled items. `next_cursor` reads the next page.
+type CatalogueItemPage struct {
+	// Items This page's items, in the list's order.
+	Items []CatalogueItem `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
 }
 
 // ClusterMember A node of a DGX cluster.
@@ -4591,6 +4937,246 @@ type OrchestrationKind string
 // OrchestrationStatus The operation's status, as `GET /operations/{id}` reports it.
 type OrchestrationStatus string
 
+// Order A tenant's order of a catalogue item: what was asked for, how the quota decided,
+// who approved it, and what delivering it produced. Read only: approval, rejection and
+// re-runs happen in the portal.
+type Order struct {
+	// ApprovalReason The operator's reason; null if none.
+	ApprovalReason *string `json:"approval_reason,omitempty"`
+
+	// ApprovedAt When it was approved; null if not.
+	ApprovedAt *time.Time `json:"approved_at,omitempty"`
+
+	// ApprovedBy The operator who approved it; null for an automatic approval or none.
+	ApprovedBy *string `json:"approved_by,omitempty"`
+
+	// CatalogueItemKey The catalogue item ordered (`key`).
+	CatalogueItemKey string `json:"catalogue_item_key"`
+
+	// CatalogueItemKind What delivering an order of the item creates: `vdi-desktop`, `project-vm`, `ai-gateway-key`, `project`, `k8s-namespace`, `storage` or `manual` (an operator delivers it by hand).
+	CatalogueItemKind *string `json:"catalogue_item_kind,omitempty"`
+
+	// CatalogueItemName The item's display name.
+	CatalogueItemName *string `json:"catalogue_item_name,omitempty"`
+
+	// CreatedAt When it was placed.
+	CreatedAt time.Time `json:"created_at"`
+
+	// CustomerId The tenant's customer when the order was placed; null when that customer is gone.
+	CustomerId *string `json:"customer_id,omitempty"`
+
+	// Dispatch What delivering it produced, stamped as each part exists: e.g. `run_kind` and `run_id`, an AI key's `key_id` and `key_alias`, `outcome`. Empty before delivery starts. Never a key's value: secret-looking members are null.
+	Dispatch *map[string]interface{} `json:"dispatch,omitempty"`
+
+	// Id The order's id (a UUID).
+	Id string `json:"id"`
+
+	// OperationId The order as an operation, `order:<id>`: `GET /operations/{operation_id}`.
+	OperationId string `json:"operation_id"`
+
+	// Overage A one-off overage an operator approved: `dimensions`, each with `limit`, `total` and `over_by`. It never raised the tenant's quota. Null when none.
+	Overage *map[string]interface{} `json:"overage,omitempty"`
+
+	// ProjectId The project the order is for, when its item takes one; null otherwise.
+	ProjectId *string `json:"project_id,omitempty"`
+
+	// QuotaCheck The quota check as recorded on the order: at submission, and again at an operator's approval.
+	QuotaCheck OrderQuotaCheck `json:"quota_check"`
+
+	// RejectedAt When it was rejected; null if not.
+	RejectedAt *time.Time `json:"rejected_at,omitempty"`
+
+	// RejectedBy The operator who rejected it; null if not.
+	RejectedBy *string `json:"rejected_by,omitempty"`
+
+	// RejectionReason The operator's reason; null if not.
+	RejectionReason *string `json:"rejection_reason,omitempty"`
+
+	// RequestedBy The member who placed it (`id` on a user); null when that user no longer exists.
+	RequestedBy *string `json:"requested_by,omitempty"`
+
+	// Spec The order form as submitted (the item's `spec_schema`).
+	Spec *map[string]interface{} `json:"spec,omitempty"`
+
+	// Status The order's state: `submitted`, `auto_approved` (within quota, approved by the platform), `awaiting_approval` (on an operator's approval card), `approved`, `rejected`, `dispatched`, `running`, `delivered`, `partial` (delivered in part; an operator can re-run it), `failed` or `cancelled` (withdrawn by the tenant before delivery started).
+	Status OrderStatus `json:"status"`
+
+	// TenantId The tenant that placed it.
+	TenantId string `json:"tenant_id"`
+
+	// TenantName The tenant's display name.
+	TenantName *string `json:"tenant_name,omitempty"`
+
+	// UpdatedAt Its last change.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// OrderStatus The order's state: `submitted`, `auto_approved` (within quota, approved by the platform), `awaiting_approval` (on an operator's approval card), `approved`, `rejected`, `dispatched`, `running`, `delivered`, `partial` (delivered in part; an operator can re-run it), `failed` or `cancelled` (withdrawn by the tenant before delivery started).
+type OrderStatus string
+
+// OrderDetail One order with its timeline.
+type OrderDetail struct {
+	// ApprovalReason The operator's reason; null if none.
+	ApprovalReason *string `json:"approval_reason,omitempty"`
+
+	// ApprovedAt When it was approved; null if not.
+	ApprovedAt *time.Time `json:"approved_at,omitempty"`
+
+	// ApprovedBy The operator who approved it; null for an automatic approval or none.
+	ApprovedBy *string `json:"approved_by,omitempty"`
+
+	// CatalogueItemKey The catalogue item ordered (`key`).
+	CatalogueItemKey string `json:"catalogue_item_key"`
+
+	// CatalogueItemKind What delivering an order of the item creates: `vdi-desktop`, `project-vm`, `ai-gateway-key`, `project`, `k8s-namespace`, `storage` or `manual` (an operator delivers it by hand).
+	CatalogueItemKind *string `json:"catalogue_item_kind,omitempty"`
+
+	// CatalogueItemName The item's display name.
+	CatalogueItemName *string `json:"catalogue_item_name,omitempty"`
+
+	// CreatedAt When it was placed.
+	CreatedAt time.Time `json:"created_at"`
+
+	// CustomerId The tenant's customer when the order was placed; null when that customer is gone.
+	CustomerId *string `json:"customer_id,omitempty"`
+
+	// Dispatch What delivering it produced, stamped as each part exists: e.g. `run_kind` and `run_id`, an AI key's `key_id` and `key_alias`, `outcome`. Empty before delivery starts. Never a key's value: secret-looking members are null.
+	Dispatch *map[string]interface{} `json:"dispatch,omitempty"`
+
+	// Events The order's timeline, oldest first.
+	Events *[]OrderEvent `json:"events,omitempty"`
+
+	// Id The order's id (a UUID).
+	Id string `json:"id"`
+
+	// OperationId The order as an operation, `order:<id>`: `GET /operations/{operation_id}`.
+	OperationId string `json:"operation_id"`
+
+	// Overage A one-off overage an operator approved: `dimensions`, each with `limit`, `total` and `over_by`. It never raised the tenant's quota. Null when none.
+	Overage *map[string]interface{} `json:"overage,omitempty"`
+
+	// ProjectId The project the order is for, when its item takes one; null otherwise.
+	ProjectId *string `json:"project_id,omitempty"`
+
+	// QuotaCheck The quota check as recorded on the order: at submission, and again at an operator's approval.
+	QuotaCheck OrderQuotaCheck `json:"quota_check"`
+
+	// RejectedAt When it was rejected; null if not.
+	RejectedAt *time.Time `json:"rejected_at,omitempty"`
+
+	// RejectedBy The operator who rejected it; null if not.
+	RejectedBy *string `json:"rejected_by,omitempty"`
+
+	// RejectionReason The operator's reason; null if not.
+	RejectionReason *string `json:"rejection_reason,omitempty"`
+
+	// RequestedBy The member who placed it (`id` on a user); null when that user no longer exists.
+	RequestedBy *string `json:"requested_by,omitempty"`
+
+	// Spec The order form as submitted (the item's `spec_schema`).
+	Spec *map[string]interface{} `json:"spec,omitempty"`
+
+	// Status The order's state: `submitted`, `auto_approved` (within quota, approved by the platform), `awaiting_approval` (on an operator's approval card), `approved`, `rejected`, `dispatched`, `running`, `delivered`, `partial` (delivered in part; an operator can re-run it), `failed` or `cancelled` (withdrawn by the tenant before delivery started).
+	Status OrderDetailStatus `json:"status"`
+
+	// TenantId The tenant that placed it.
+	TenantId string `json:"tenant_id"`
+
+	// TenantName The tenant's display name.
+	TenantName *string `json:"tenant_name,omitempty"`
+
+	// UpdatedAt Its last change.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// OrderDetailStatus The order's state: `submitted`, `auto_approved` (within quota, approved by the platform), `awaiting_approval` (on an operator's approval card), `approved`, `rejected`, `dispatched`, `running`, `delivered`, `partial` (delivered in part; an operator can re-run it), `failed` or `cancelled` (withdrawn by the tenant before delivery started).
+type OrderDetailStatus string
+
+// OrderEvent One entry of an order's timeline. The timeline is append-only.
+type OrderEvent struct {
+	// Actor Who: a person's e-mail address, or `system:<part>` when the platform did it.
+	Actor string `json:"actor"`
+
+	// At When it happened.
+	At time.Time `json:"at"`
+
+	// Detail The entry's facts. Secret-looking members are null, and text naming the platform's internals is rewritten.
+	Detail *map[string]interface{} `json:"detail,omitempty"`
+
+	// Event What happened, e.g. `submitted`, `auto_approved`, `awaiting_approval`, `approved`, `rejected`, `cancelled`, `dispatched`, `running`, `delivered`, `partial`, `failed`, `rerun_requested`, `key_revealed`.
+	Event string `json:"event"`
+
+	// Id The entry's id; ids grow with time.
+	Id string `json:"id"`
+}
+
+// OrderPage One page of a tenant's orders, newest first. `next_cursor` reads the next page.
+type OrderPage struct {
+	// Items This page's items, in the list's order.
+	Items []Order `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// OrderQuotaCheck The quota check of an order: the decision and its reasons, per dimension.
+type OrderQuotaCheck struct {
+	// Decision `auto_approved`, `awaiting_approval` or `refused`.
+	Decision *string `json:"decision,omitempty"`
+
+	// Dimensions Each dimension the order touches.
+	Dimensions *[]OrderQuotaDimension `json:"dimensions,omitempty"`
+
+	// OverDimensions The dimensions the order is over.
+	OverDimensions *[]string `json:"over_dimensions,omitempty"`
+
+	// Reasons Why the order went to a card or was refused, in words.
+	Reasons *[]string `json:"reasons,omitempty"`
+
+	// RefusedDimensions The dimensions whose `hard_cap` refused it.
+	RefusedDimensions *[]string `json:"refused_dimensions,omitempty"`
+
+	// Result `within` (every dimension within its limit), `over` (a card) or `refused_hard_cap`.
+	Result *string `json:"result,omitempty"`
+}
+
+// OrderQuotaDimension One dimension of an order's quota check, as the platform decided it when the
+// order was placed (or approved).
+type OrderQuotaDimension struct {
+	// Allocated What the tenant held then; null when it could not be counted.
+	Allocated *float64 `json:"allocated,omitempty"`
+
+	// Dimension The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).
+	Dimension *string `json:"dimension,omitempty"`
+
+	// ForcesCard This dimension alone sends the order to an approval card.
+	ForcesCard *bool `json:"forces_card,omitempty"`
+
+	// Limit The limit then; null without one.
+	Limit *float64 `json:"limit,omitempty"`
+
+	// Policy The limit's policy then (`auto`, `approve_always`, `hard_cap`); null without a limit.
+	Policy *string `json:"policy,omitempty"`
+
+	// Reason Why, in words; null when within.
+	Reason *string `json:"reason,omitempty"`
+
+	// Remaining The limit minus `total`; null without a limit or a count.
+	Remaining *float64 `json:"remaining,omitempty"`
+
+	// Requested What this order asks for.
+	Requested *float64 `json:"requested,omitempty"`
+
+	// Reserved What approved, undelivered orders held then.
+	Reserved *float64 `json:"reserved,omitempty"`
+
+	// Result `within`, `over`, `unlimited` (no limit: a card) or `unknown` (not counted: a card).
+	Result *string `json:"result,omitempty"`
+
+	// Total `allocated` + `reserved` + `requested`; null when a part is unknown.
+	Total *float64 `json:"total,omitempty"`
+}
+
 // Permission A fine-grained permission key the portal honours: one level of one
 // feature, in one scope.
 type Permission struct {
@@ -4705,6 +5291,9 @@ type Project struct {
 
 	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own; `ataila`: the platform's own gateway, carried only by the portal project, and never set by a request (create and PATCH take `shared` or `dedicated`).
 	AppGateway *ProjectAppGateway `json:"app_gateway,omitempty"`
+
+	// AppSubdomain The application's own namespace on a domain it shares with another application, e.g. `partner`: one lowercase DNS label, not `ai`, `api`, `app`, `dev`, `prod`, `uat`, `www`. Set, the front end is `<app_subdomain>.<primary_domain>`, the API `api.<app_subdomain>.<primary_domain>` and the AI endpoint `ai.<app_subdomain>.<primary_domain>` (`dev.` and `uat.` in front for those environments); the web site stays `www.<primary_domain>`. Null: the domain's primary application, `app.<primary_domain>` and `api.<primary_domain>`. A value whose names another project already holds is refused (422 `hostname_taken`).
+	AppSubdomain *string `json:"app_subdomain,omitempty"`
 
 	// CreatedAt When the project was registered.
 	CreatedAt time.Time `json:"created_at"`
@@ -4880,6 +5469,9 @@ type ProjectCreate struct {
 
 	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own.
 	AppGateway *ProjectCreateAppGateway `json:"app_gateway,omitempty"`
+
+	// AppSubdomain The application's own namespace on a domain it shares with another application, e.g. `partner`: one lowercase DNS label, not `ai`, `api`, `app`, `dev`, `prod`, `uat`, `www`. Set, the front end is `<app_subdomain>.<primary_domain>`, the API `api.<app_subdomain>.<primary_domain>` and the AI endpoint `ai.<app_subdomain>.<primary_domain>` (`dev.` and `uat.` in front for those environments); the web site stays `www.<primary_domain>`. Null: the domain's primary application, `app.<primary_domain>` and `api.<primary_domain>`. A value whose names another project already holds is refused (422 `hostname_taken`).
+	AppSubdomain *string `json:"app_subdomain,omitempty"`
 
 	// DeploymentBackend `k8s` (default): namespaces on the shared Kubernetes clusters; `vm`: virtual machines of its own. Frozen.
 	DeploymentBackend *ProjectCreateDeploymentBackend `json:"deployment_backend,omitempty"`
@@ -5107,6 +5699,9 @@ type ProjectPatch struct {
 	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own.
 	AppGateway *ProjectPatchAppGateway `json:"app_gateway,omitempty"`
 
+	// AppSubdomain The application's own namespace on a domain it shares with another application, e.g. `partner`: one lowercase DNS label, not `ai`, `api`, `app`, `dev`, `prod`, `uat`, `www`. Set, the front end is `<app_subdomain>.<primary_domain>`, the API `api.<app_subdomain>.<primary_domain>` and the AI endpoint `ai.<app_subdomain>.<primary_domain>` (`dev.` and `uat.` in front for those environments); the web site stays `www.<primary_domain>`. Null: the domain's primary application, `app.<primary_domain>` and `api.<primary_domain>`. A value whose names another project already holds is refused (422 `hostname_taken`). null clears it.
+	AppSubdomain *string `json:"app_subdomain,omitempty"`
+
 	// DeploymentBackend Frozen.
 	DeploymentBackend *ProjectPatchDeploymentBackend `json:"deployment_backend,omitempty"`
 
@@ -5299,6 +5894,9 @@ type ProjectUpdated struct {
 
 	// AppGateway `shared` rides the environment's app gateway; `dedicated` gets its own; `ataila`: the platform's own gateway, carried only by the portal project, and never set by a request (create and PATCH take `shared` or `dedicated`).
 	AppGateway *ProjectUpdatedAppGateway `json:"app_gateway,omitempty"`
+
+	// AppSubdomain The application's own namespace on a domain it shares with another application, e.g. `partner`: one lowercase DNS label, not `ai`, `api`, `app`, `dev`, `prod`, `uat`, `www`. Set, the front end is `<app_subdomain>.<primary_domain>`, the API `api.<app_subdomain>.<primary_domain>` and the AI endpoint `ai.<app_subdomain>.<primary_domain>` (`dev.` and `uat.` in front for those environments); the web site stays `www.<primary_domain>`. Null: the domain's primary application, `app.<primary_domain>` and `api.<primary_domain>`. A value whose names another project already holds is refused (422 `hostname_taken`).
+	AppSubdomain *string `json:"app_subdomain,omitempty"`
 
 	// CreatedAt When the project was registered.
 	CreatedAt time.Time `json:"created_at"`
@@ -6160,6 +6758,111 @@ type TenantPatch struct {
 	Slug *string `json:"slug,omitempty"`
 }
 
+// TenantQuota One limit the operator set for the tenant.
+type TenantQuota struct {
+	// Dimension The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).
+	Dimension TenantQuotaDimension `json:"dimension"`
+
+	// Limit The limit, in the dimension's unit; at most four decimal places are kept. `0` allows nothing.
+	Limit float64 `json:"limit"`
+
+	// Note The operator's note on this limit; null when none.
+	Note *string `json:"note,omitempty"`
+
+	// Policy What an order touching the dimension gets: `auto` (within the limit it is approved by itself, over it goes to an operator's approval card), `approve_always` (every order goes to a card) or `hard_cap` (an order over the limit is refused when it is placed).
+	Policy TenantQuotaPolicy `json:"policy"`
+
+	// SetAt When this limit was last changed. A replacement that leaves a limit, its policy and its note as they were keeps its `set_by` and `set_at`.
+	SetAt time.Time `json:"set_at"`
+
+	// SetBy The user who last changed this limit (`id` on a user); null when that user no longer exists. A change through the API names the token's owner.
+	SetBy *string `json:"set_by,omitempty"`
+}
+
+// TenantQuotaDimension The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).
+type TenantQuotaDimension string
+
+// TenantQuotaPolicy What an order touching the dimension gets: `auto` (within the limit it is approved by itself, over it goes to an operator's approval card), `approve_always` (every order goes to a card) or `hard_cap` (an order over the limit is refused when it is placed).
+type TenantQuotaPolicy string
+
+// TenantQuotaIn One limit of the replacement set.
+type TenantQuotaIn struct {
+	// Dimension The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).
+	Dimension TenantQuotaInDimension `json:"dimension"`
+
+	// Limit The limit, 0 to 9999999999, in the dimension's unit; at most four decimal places are kept (the fifth rounds). `0` allows nothing.
+	Limit float64 `json:"limit"`
+
+	// Note A note for operators, up to 500 characters.
+	Note *string `json:"note,omitempty"`
+
+	// Policy What an order touching the dimension gets: `auto` (within the limit it is approved by itself, over it goes to an operator's approval card), `approve_always` (every order goes to a card) or `hard_cap` (an order over the limit is refused when it is placed). Defaults to `auto`.
+	Policy *TenantQuotaInPolicy `json:"policy,omitempty"`
+}
+
+// TenantQuotaInDimension The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).
+type TenantQuotaInDimension string
+
+// TenantQuotaInPolicy What an order touching the dimension gets: `auto` (within the limit it is approved by itself, over it goes to an operator's approval card), `approve_always` (every order goes to a card) or `hard_cap` (an order over the limit is refused when it is placed). Defaults to `auto`.
+type TenantQuotaInPolicy string
+
+// TenantQuotaUsage One dimension next to what the tenant holds: every dimension is listed, with or
+// without a limit.
+type TenantQuotaUsage struct {
+	// Allocated What the tenant holds now, in the dimension's unit; null when the platform cannot count it (`notes` says why), and then every order touching it goes to a card.
+	Allocated *float64 `json:"allocated,omitempty"`
+
+	// Dimension The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).
+	Dimension TenantQuotaUsageDimension `json:"dimension"`
+
+	// Limit The limit; null when the tenant has none for this dimension (no limit, but every order touching it goes to an approval card).
+	Limit *float64 `json:"limit,omitempty"`
+
+	// Policy The limit's policy; null when there is no limit.
+	Policy *TenantQuotaUsagePolicy `json:"policy,omitempty"`
+
+	// Remaining `limit` minus `allocated` and `reserved`; null without a limit or a count. Negative when the tenant holds more than its limit.
+	Remaining *float64 `json:"remaining,omitempty"`
+
+	// Reserved What approved orders not yet delivered hold.
+	Reserved *float64 `json:"reserved,omitempty"`
+}
+
+// TenantQuotaUsageDimension The quota dimension: `vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute, the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) or `gpu` (dedicated GPU cards; shown, never ordered).
+type TenantQuotaUsageDimension string
+
+// TenantQuotaUsagePolicy defines model for TenantQuotaUsage.Policy.
+type TenantQuotaUsagePolicy string
+
+// TenantQuotas A tenant's quota set: the limits the operator set and, for every dimension, what
+// the tenant holds against them.
+type TenantQuotas struct {
+	// Notes Caveats about the counts, for a person: why a figure is missing or estimated.
+	Notes *[]string `json:"notes,omitempty"`
+
+	// Quotas The limits, one per dimension that has one, by dimension. A dimension without a limit is not listed here.
+	Quotas *[]TenantQuota `json:"quotas,omitempty"`
+
+	// TenantId The tenant (`id` on a tenant).
+	TenantId string `json:"tenant_id"`
+
+	// TenantName The tenant's display name.
+	TenantName *string `json:"tenant_name,omitempty"`
+
+	// Usage Every dimension, in a fixed order, with its limit and what is held.
+	Usage *[]TenantQuotaUsage `json:"usage,omitempty"`
+
+	// Warnings What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person. Always empty on a read.
+	Warnings *[]ApiWarning `json:"warnings,omitempty"`
+}
+
+// TenantQuotasPut The tenant's COMPLETE quota set. A dimension left out loses its limit: no limit,
+// but every order touching it goes to an approval card (never automatic approval).
+type TenantQuotasPut struct {
+	// Quotas One entry per dimension that has a limit, each dimension at most once. An empty list removes every limit.
+	Quotas []TenantQuotaIn `json:"quotas"`
+}
+
 // User A person on this platform, or a service account. Never carries a password
 // or an SSO or GitLab identifier.
 type User struct {
@@ -6588,6 +7291,15 @@ type BrandAssetsCreateParams struct {
 // BrandAssetsCreateMultipartBodyKind defines parameters for BrandAssetsCreate.
 type BrandAssetsCreateMultipartBodyKind string
 
+// CatalogueItemsListParams defines parameters for CatalogueItemsList.
+type CatalogueItemsListParams struct {
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
 // CustomersListParams defines parameters for CustomersList.
 type CustomersListParams struct {
 	// ShortName Exact short name.
@@ -6908,6 +7620,21 @@ type TenantMembershipsListParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
 
+// TenantOrdersListParams defines parameters for TenantOrdersList.
+type TenantOrdersListParams struct {
+	// Status Only orders in these states; repeat it for several (`?status=awaiting_approval&status=approved`).
+	Status *[]TenantOrdersListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// TenantOrdersListParamsStatus defines parameters for TenantOrdersList.
+type TenantOrdersListParamsStatus string
+
 // UsersListParams defines parameters for UsersList.
 type UsersListParams struct {
 	// Email Exact address, compared lower-cased.
@@ -7039,6 +7766,9 @@ type TenantsUpdateApplicationMergePatchPlusJSONRequestBody = TenantPatch
 
 // TenantMembershipsPutJSONRequestBody defines body for TenantMembershipsPut for application/json ContentType.
 type TenantMembershipsPutJSONRequestBody = MembershipPut
+
+// TenantQuotasPutJSONRequestBody defines body for TenantQuotasPut for application/json ContentType.
+type TenantQuotasPutJSONRequestBody = TenantQuotasPut
 
 // UsersCreateJSONRequestBody defines body for UsersCreate for application/json ContentType.
 type UsersCreateJSONRequestBody = UserCreate
@@ -8138,7 +8868,7 @@ type ClientInterface interface {
 
 	// AiGatewayKeysCreateWithBody Create a virtual key
 	//
-	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it (`secret` is null, with a `secret_not_replayed` warning). Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -8147,7 +8877,7 @@ type ClientInterface interface {
 
 	// AiGatewayKeysCreate Create a virtual key
 	//
-	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it (`secret` is null, with a `secret_not_replayed` warning). Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -8203,7 +8933,7 @@ type ClientInterface interface {
 
 	// AiGatewayKeysRotateWithBody Rotate a virtual key
 	//
-	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true; an idempotent replay answers `secret` null with a `secret_not_replayed` warning. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -8212,7 +8942,7 @@ type ClientInterface interface {
 
 	// AiGatewayKeysRotate Rotate a virtual key
 	//
-	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true; an idempotent replay answers `secret` null with a `secret_not_replayed` warning. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -8347,6 +9077,17 @@ type ClientInterface interface {
 	// Corresponds with GET /brand/assets/{asset_id} (the `BrandAssetsGet` operationId).
 	BrandAssetsGet(ctx context.Context, assetId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CatalogueItemsList The order catalogue
+	//
+	// What tenants can order on this platform: every ENABLED catalogue item, in display
+	// order (`sort_order`, then `key`), with its order form (`spec_schema`), how an order
+	// counts against the tenant's quotas (`quota_dimensions`), whether it always needs an
+	// operator's approval, and its price basis. This is the operator's view: the EUR estimate
+	// a tenant sees is computed from that tenant's contract, in the portal.
+	//
+	// Corresponds with GET /catalogue (the `CatalogueItemsList` operationId).
+	CatalogueItemsList(ctx context.Context, params *CatalogueItemsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CustomersList List customers
 	//
 	// The customers of this platform, in `id` order, archived ones included. The filters
@@ -8361,7 +9102,9 @@ type ClientInterface interface {
 	// Creates the customer (with `status` `active` unless `suspended` is asked
 	// for) and its primary tenant in one transaction, then creates or adopts its
 	// GitLab group. A GitLab failure does not fail the request: the customer exists,
-	// and `warnings` says what is missing. Send an `Idempotency-Key` to make a retry
+	// and `warnings` says what is missing: `gitlab_group_not_ready` (the group is there
+	// but not ready yet), `gitlab_not_configured` (GitLab is not configured on this
+	// platform) or `gitlab_group_failed`. Send an `Idempotency-Key` to make a retry
 	// safe: a retry with the same key and request gets the first answer and changes
 	// nothing.
 	//
@@ -8375,7 +9118,9 @@ type ClientInterface interface {
 	// Creates the customer (with `status` `active` unless `suspended` is asked
 	// for) and its primary tenant in one transaction, then creates or adopts its
 	// GitLab group. A GitLab failure does not fail the request: the customer exists,
-	// and `warnings` says what is missing. Send an `Idempotency-Key` to make a retry
+	// and `warnings` says what is missing: `gitlab_group_not_ready` (the group is there
+	// but not ready yet), `gitlab_not_configured` (GitLab is not configured on this
+	// platform) or `gitlab_group_failed`. Send an `Idempotency-Key` to make a retry
 	// safe: a retry with the same key and request gets the first answer and changes
 	// nothing.
 	//
@@ -8398,7 +9143,8 @@ type ClientInterface interface {
 	//
 	// One customer by `id`, archived ones included. With `include=gitlab_status` the
 	// customer's GitLab group is looked up live (read-only); without it nothing outside
-	// the platform is contacted.
+	// the platform is contacted. When the lookup cannot be made, `gitlab_status` is null
+	// with a warning: `gitlab_not_configured`, or `gitlab_unreachable`.
 	//
 	// Corresponds with GET /customers/{customer_id} (the `CustomersGet` operationId).
 	CustomersGet(ctx context.Context, customerId string, params *CustomersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -8544,6 +9290,16 @@ type ClientInterface interface {
 	// Corresponds with GET /operations/{operation_id} (the `OperationsGet` operationId).
 	OperationsGet(ctx context.Context, operationId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// OrdersGet One order
+	//
+	// One order by `id`, with its timeline (`events`, oldest first): who placed it, how
+	// the quota decided, who approved or rejected it and why, and each step of its delivery.
+	// Never a key's value: an AI key order names the key it delivered (`dispatch.key_id`,
+	// `dispatch.key_alias`), which `GET /ai/gateway/keys/{id}` reads.
+	//
+	// Corresponds with GET /orders/{order_id} (the `OrdersGet` operationId).
+	OrdersGet(ctx context.Context, orderId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// PermissionsList The permission catalogue
 	//
 	// Every fine-grained permission key the portal honours, `<feature>-<level>-<scope>`. `grantable` says whether it may be granted to a person; `mintable` whether an API token may carry it (v1 tokens carry `-global` keys only, never `admin`, `founder`, `ssh-console` or a key of the `api-tokens` feature). The roles catalogue also holds role names that are not permission keys (`user`, `admin`, …); those can be granted too.
@@ -8560,7 +9316,7 @@ type ClientInterface interface {
 
 	// ProjectsCreateWithBody Register a project
 	//
-	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -8569,7 +9325,7 @@ type ClientInterface interface {
 
 	// ProjectsCreate Register a project
 	//
-	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -8595,7 +9351,7 @@ type ClientInterface interface {
 
 	// ProjectsUpdateWithBody Change a project
 	//
-	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -8606,7 +9362,7 @@ type ClientInterface interface {
 
 	// ProjectsUpdate Change a project
 	//
-	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -8617,7 +9373,7 @@ type ClientInterface interface {
 
 	// ProjectsUpdateWithApplicationMergePatchPlusJSONBody Change a project
 	//
-	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -8637,7 +9393,7 @@ type ClientInterface interface {
 	//
 	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 	//
-	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -8650,7 +9406,7 @@ type ClientInterface interface {
 	//
 	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 	//
-	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -8663,7 +9419,7 @@ type ClientInterface interface {
 	//
 	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 	//
-	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -8942,6 +9698,44 @@ type ClientInterface interface {
 	// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
 	TenantMembershipsPut(ctx context.Context, tenantId string, userId string, body TenantMembershipsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// TenantOrdersList A tenant's orders
+	//
+	// The tenant's orders, newest first (`created_at`, then `id`), each with its quota
+	// check, its decision and what delivering it produced. Read only: an order is approved,
+	// rejected or re-run in the portal. The timeline of one order is `GET /orders/{id}`.
+	//
+	// Corresponds with GET /tenants/{tenant_id}/orders (the `TenantOrdersList` operationId).
+	TenantOrdersList(ctx context.Context, tenantId string, params *TenantOrdersListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantQuotasGet A tenant's quotas
+	//
+	// The limits the operator set for the tenant (`quotas`, one per dimension that has one) and, for every dimension, the limit next to what the tenant holds (`usage`), with caveats about the counts (`notes`). Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+	//
+	// Corresponds with GET /tenants/{tenant_id}/quotas (the `TenantQuotasGet` operationId).
+	TenantQuotasGet(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantQuotasPutWithBody Replace a tenant's quotas
+	//
+	// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+	//
+	// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/quotas (the `TenantQuotasPut` operationId).
+	TenantQuotasPutWithBody(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantQuotasPut Replace a tenant's quotas
+	//
+	// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+	//
+	// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/quotas (the `TenantQuotasPut` operationId).
+	TenantQuotasPut(ctx context.Context, tenantId string, body TenantQuotasPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// UsersList List users
 	//
 	// The people on this platform, in `id` order; service accounts only with `kind`
@@ -8955,7 +9749,7 @@ type ClientInterface interface {
 
 	// UsersCreateWithBody Create a person
 	//
-	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_username_failed`, `provisioning_sso_failed`, `provisioning_gitlab_user_failed` or `provisioning_gitlab_group_member_failed`; `provisioning_failed` when provisioning did not run or report at all) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -8964,7 +9758,7 @@ type ClientInterface interface {
 
 	// UsersCreate Create a person
 	//
-	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_username_failed`, `provisioning_sso_failed`, `provisioning_gitlab_user_failed` or `provisioning_gitlab_group_member_failed`; `provisioning_failed` when provisioning did not run or report at all) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -8989,7 +9783,7 @@ type ClientInterface interface {
 
 	// UsersUpdateWithBody Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -9000,7 +9794,7 @@ type ClientInterface interface {
 
 	// UsersUpdate Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -9011,7 +9805,7 @@ type ClientInterface interface {
 
 	// UsersUpdateWithApplicationMergePatchPlusJSONBody Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -9417,7 +10211,7 @@ func (c *Client) AiGatewayKeysList(ctx context.Context, params *AiGatewayKeysLis
 
 // AiGatewayKeysCreateWithBody Create a virtual key
 //
-// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it (`secret` is null, with a `secret_not_replayed` warning). Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes any type of body and a specified content type.
 //
@@ -9436,7 +10230,7 @@ func (c *Client) AiGatewayKeysCreateWithBody(ctx context.Context, params *AiGate
 
 // AiGatewayKeysCreate Create a virtual key
 //
-// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it (`secret` is null, with a `secret_not_replayed` warning). Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -9552,7 +10346,7 @@ func (c *Client) AiGatewayKeysUpdateWithApplicationMergePatchPlusJSONBody(ctx co
 
 // AiGatewayKeysRotateWithBody Rotate a virtual key
 //
-// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true; an idempotent replay answers `secret` null with a `secret_not_replayed` warning. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes any type of body and a specified content type.
 //
@@ -9571,7 +10365,7 @@ func (c *Client) AiGatewayKeysRotateWithBody(ctx context.Context, keyId string, 
 
 // AiGatewayKeysRotate Rotate a virtual key
 //
-// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true; an idempotent replay answers `secret` null with a `secret_not_replayed` warning. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -9866,6 +10660,27 @@ func (c *Client) BrandAssetsGet(ctx context.Context, assetId string, reqEditors 
 	return c.Client.Do(req)
 }
 
+// CatalogueItemsList The order catalogue
+//
+// What tenants can order on this platform: every ENABLED catalogue item, in display
+// order (`sort_order`, then `key`), with its order form (`spec_schema`), how an order
+// counts against the tenant's quotas (`quota_dimensions`), whether it always needs an
+// operator's approval, and its price basis. This is the operator's view: the EUR estimate
+// a tenant sees is computed from that tenant's contract, in the portal.
+//
+// Corresponds with GET /catalogue (the `CatalogueItemsList` operationId).
+func (c *Client) CatalogueItemsList(ctx context.Context, params *CatalogueItemsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCatalogueItemsListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // CustomersList List customers
 //
 // The customers of this platform, in `id` order, archived ones included. The filters
@@ -9890,7 +10705,9 @@ func (c *Client) CustomersList(ctx context.Context, params *CustomersListParams,
 // Creates the customer (with `status` `active` unless `suspended` is asked
 // for) and its primary tenant in one transaction, then creates or adopts its
 // GitLab group. A GitLab failure does not fail the request: the customer exists,
-// and `warnings` says what is missing. Send an `Idempotency-Key` to make a retry
+// and `warnings` says what is missing: `gitlab_group_not_ready` (the group is there
+// but not ready yet), `gitlab_not_configured` (GitLab is not configured on this
+// platform) or `gitlab_group_failed`. Send an `Idempotency-Key` to make a retry
 // safe: a retry with the same key and request gets the first answer and changes
 // nothing.
 //
@@ -9914,7 +10731,9 @@ func (c *Client) CustomersCreateWithBody(ctx context.Context, params *CustomersC
 // Creates the customer (with `status` `active` unless `suspended` is asked
 // for) and its primary tenant in one transaction, then creates or adopts its
 // GitLab group. A GitLab failure does not fail the request: the customer exists,
-// and `warnings` says what is missing. Send an `Idempotency-Key` to make a retry
+// and `warnings` says what is missing: `gitlab_group_not_ready` (the group is there
+// but not ready yet), `gitlab_not_configured` (GitLab is not configured on this
+// platform) or `gitlab_group_failed`. Send an `Idempotency-Key` to make a retry
 // safe: a retry with the same key and request gets the first answer and changes
 // nothing.
 //
@@ -9957,7 +10776,8 @@ func (c *Client) CustomersDelete(ctx context.Context, customerId string, reqEdit
 //
 // One customer by `id`, archived ones included. With `include=gitlab_status` the
 // customer's GitLab group is looked up live (read-only); without it nothing outside
-// the platform is contacted.
+// the platform is contacted. When the lookup cannot be made, `gitlab_status` is null
+// with a warning: `gitlab_not_configured`, or `gitlab_unreachable`.
 //
 // Corresponds with GET /customers/{customer_id} (the `CustomersGet` operationId).
 func (c *Client) CustomersGet(ctx context.Context, customerId string, params *CustomersGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -10243,6 +11063,26 @@ func (c *Client) OperationsGet(ctx context.Context, operationId string, reqEdito
 	return c.Client.Do(req)
 }
 
+// OrdersGet One order
+//
+// One order by `id`, with its timeline (`events`, oldest first): who placed it, how
+// the quota decided, who approved or rejected it and why, and each step of its delivery.
+// Never a key's value: an AI key order names the key it delivered (`dispatch.key_id`,
+// `dispatch.key_alias`), which `GET /ai/gateway/keys/{id}` reads.
+//
+// Corresponds with GET /orders/{order_id} (the `OrdersGet` operationId).
+func (c *Client) OrdersGet(ctx context.Context, orderId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOrdersGetRequest(c.Server, orderId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // PermissionsList The permission catalogue
 //
 // Every fine-grained permission key the portal honours, `<feature>-<level>-<scope>`. `grantable` says whether it may be granted to a person; `mintable` whether an API token may carry it (v1 tokens carry `-global` keys only, never `admin`, `founder`, `ssh-console` or a key of the `api-tokens` feature). The roles catalogue also holds role names that are not permission keys (`user`, `admin`, …); those can be granted too.
@@ -10279,7 +11119,7 @@ func (c *Client) ProjectsList(ctx context.Context, params *ProjectsListParams, r
 
 // ProjectsCreateWithBody Register a project
 //
-// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes any type of body and a specified content type.
 //
@@ -10298,7 +11138,7 @@ func (c *Client) ProjectsCreateWithBody(ctx context.Context, params *ProjectsCre
 
 // ProjectsCreate Register a project
 //
-// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -10354,7 +11194,7 @@ func (c *Client) ProjectsGet(ctx context.Context, projectId string, reqEditors .
 
 // ProjectsUpdateWithBody Change a project
 //
-// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -10375,7 +11215,7 @@ func (c *Client) ProjectsUpdateWithBody(ctx context.Context, projectId string, c
 
 // ProjectsUpdate Change a project
 //
-// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -10396,7 +11236,7 @@ func (c *Client) ProjectsUpdate(ctx context.Context, projectId string, body Proj
 
 // ProjectsUpdateWithApplicationMergePatchPlusJSONBody Change a project
 //
-// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -10436,7 +11276,7 @@ func (c *Client) ProjectK8sQuotaReset(ctx context.Context, projectId string, env
 //
 // Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 //
-// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -10459,7 +11299,7 @@ func (c *Client) ProjectK8sQuotaUpdateWithBody(ctx context.Context, projectId st
 //
 // Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 //
-// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -10482,7 +11322,7 @@ func (c *Client) ProjectK8sQuotaUpdate(ctx context.Context, projectId string, en
 //
 // Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 //
-// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -11061,6 +11901,84 @@ func (c *Client) TenantMembershipsPut(ctx context.Context, tenantId string, user
 	return c.Client.Do(req)
 }
 
+// TenantOrdersList A tenant's orders
+//
+// The tenant's orders, newest first (`created_at`, then `id`), each with its quota
+// check, its decision and what delivering it produced. Read only: an order is approved,
+// rejected or re-run in the portal. The timeline of one order is `GET /orders/{id}`.
+//
+// Corresponds with GET /tenants/{tenant_id}/orders (the `TenantOrdersList` operationId).
+func (c *Client) TenantOrdersList(ctx context.Context, tenantId string, params *TenantOrdersListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantOrdersListRequest(c.Server, tenantId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantQuotasGet A tenant's quotas
+//
+// The limits the operator set for the tenant (`quotas`, one per dimension that has one) and, for every dimension, the limit next to what the tenant holds (`usage`), with caveats about the counts (`notes`). Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+//
+// Corresponds with GET /tenants/{tenant_id}/quotas (the `TenantQuotasGet` operationId).
+func (c *Client) TenantQuotasGet(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantQuotasGetRequest(c.Server, tenantId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantQuotasPutWithBody Replace a tenant's quotas
+//
+// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+//
+// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /tenants/{tenant_id}/quotas (the `TenantQuotasPut` operationId).
+func (c *Client) TenantQuotasPutWithBody(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantQuotasPutRequestWithBody(c.Server, tenantId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantQuotasPut Replace a tenant's quotas
+//
+// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+//
+// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /tenants/{tenant_id}/quotas (the `TenantQuotasPut` operationId).
+func (c *Client) TenantQuotasPut(ctx context.Context, tenantId string, body TenantQuotasPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantQuotasPutRequest(c.Server, tenantId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // UsersList List users
 //
 // The people on this platform, in `id` order; service accounts only with `kind`
@@ -11084,7 +12002,7 @@ func (c *Client) UsersList(ctx context.Context, params *UsersListParams, reqEdit
 
 // UsersCreateWithBody Create a person
 //
-// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_username_failed`, `provisioning_sso_failed`, `provisioning_gitlab_user_failed` or `provisioning_gitlab_group_member_failed`; `provisioning_failed` when provisioning did not run or report at all) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 //
 // Takes any type of body and a specified content type.
 //
@@ -11103,7 +12021,7 @@ func (c *Client) UsersCreateWithBody(ctx context.Context, params *UsersCreatePar
 
 // UsersCreate Create a person
 //
-// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_username_failed`, `provisioning_sso_failed`, `provisioning_gitlab_user_failed` or `provisioning_gitlab_group_member_failed`; `provisioning_failed` when provisioning did not run or report at all) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -11158,7 +12076,7 @@ func (c *Client) UsersGet(ctx context.Context, userId string, reqEditors ...Requ
 
 // UsersUpdateWithBody Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -11179,7 +12097,7 @@ func (c *Client) UsersUpdateWithBody(ctx context.Context, userId string, content
 
 // UsersUpdate Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -11200,7 +12118,7 @@ func (c *Client) UsersUpdate(ctx context.Context, userId string, body UsersUpdat
 
 // UsersUpdateWithApplicationMergePatchPlusJSONBody Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -13236,6 +14154,72 @@ func NewBrandAssetsGetRequest(server string, assetId string) (*http.Request, err
 	return req, nil
 }
 
+// NewCatalogueItemsListRequest constructs an http.Request for the CatalogueItemsList method
+func NewCatalogueItemsListRequest(server string, params *CatalogueItemsListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/catalogue")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCustomersListRequest constructs an http.Request for the CustomersList method
 func NewCustomersListRequest(server string, params *CustomersListParams) (*http.Request, error) {
 	var err error
@@ -13778,6 +14762,40 @@ func NewOperationsGetRequest(server string, operationId string) (*http.Request, 
 	}
 
 	operationPath := fmt.Sprintf("/operations/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewOrdersGetRequest constructs an http.Request for the OrdersGet method
+func NewOrdersGetRequest(server string, orderId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "order_id", orderId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/orders/%s", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -15400,6 +16418,172 @@ func NewTenantMembershipsPutRequestWithBody(server string, tenantId string, user
 	return req, nil
 }
 
+// NewTenantOrdersListRequest constructs an http.Request for the TenantOrdersList method
+func NewTenantOrdersListRequest(server string, tenantId string, params *TenantOrdersListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/orders", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTenantQuotasGetRequest constructs an http.Request for the TenantQuotasGet method
+func NewTenantQuotasGetRequest(server string, tenantId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/quotas", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTenantQuotasPutRequest calls the generic TenantQuotasPut builder with application/json body
+func NewTenantQuotasPutRequest(server string, tenantId string, body TenantQuotasPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewTenantQuotasPutRequestWithBody(server, tenantId, "application/json", bodyReader)
+}
+
+// NewTenantQuotasPutRequestWithBody constructs an http.Request for the TenantQuotasPut method, with any body, and a specified content type
+func NewTenantQuotasPutRequestWithBody(server string, tenantId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/quotas", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewUsersListRequest constructs an http.Request for the UsersList method
 func NewUsersListRequest(server string, params *UsersListParams) (*http.Request, error) {
 	var err error
@@ -16193,7 +17377,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiGatewayKeysCreateWithBodyWithResponse Create a virtual key
 	//
-	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it (`secret` is null, with a `secret_not_replayed` warning). Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -16202,7 +17386,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiGatewayKeysCreateWithResponse Create a virtual key
 	//
-	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it (`secret` is null, with a `secret_not_replayed` warning). Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -16262,7 +17446,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiGatewayKeysRotateWithBodyWithResponse Rotate a virtual key
 	//
-	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true; an idempotent replay answers `secret` null with a `secret_not_replayed` warning. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -16271,7 +17455,7 @@ type ClientWithResponsesInterface interface {
 
 	// AiGatewayKeysRotateWithResponse Rotate a virtual key
 	//
-	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true; an idempotent replay answers `secret` null with a `secret_not_replayed` warning. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -16424,6 +17608,19 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /brand/assets/{asset_id} (the `BrandAssetsGet` operationId).
 	BrandAssetsGetWithResponse(ctx context.Context, assetId string, reqEditors ...RequestEditorFn) (*BrandAssetsGetResponse, error)
 
+	// CatalogueItemsListWithResponse The order catalogue
+	//
+	// What tenants can order on this platform: every ENABLED catalogue item, in display
+	// order (`sort_order`, then `key`), with its order form (`spec_schema`), how an order
+	// counts against the tenant's quotas (`quota_dimensions`), whether it always needs an
+	// operator's approval, and its price basis. This is the operator's view: the EUR estimate
+	// a tenant sees is computed from that tenant's contract, in the portal.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /catalogue (the `CatalogueItemsList` operationId).
+	CatalogueItemsListWithResponse(ctx context.Context, params *CatalogueItemsListParams, reqEditors ...RequestEditorFn) (*CatalogueItemsListResponse, error)
+
 	// CustomersListWithResponse List customers
 	//
 	// The customers of this platform, in `id` order, archived ones included. The filters
@@ -16440,7 +17637,9 @@ type ClientWithResponsesInterface interface {
 	// Creates the customer (with `status` `active` unless `suspended` is asked
 	// for) and its primary tenant in one transaction, then creates or adopts its
 	// GitLab group. A GitLab failure does not fail the request: the customer exists,
-	// and `warnings` says what is missing. Send an `Idempotency-Key` to make a retry
+	// and `warnings` says what is missing: `gitlab_group_not_ready` (the group is there
+	// but not ready yet), `gitlab_not_configured` (GitLab is not configured on this
+	// platform) or `gitlab_group_failed`. Send an `Idempotency-Key` to make a retry
 	// safe: a retry with the same key and request gets the first answer and changes
 	// nothing.
 	//
@@ -16454,7 +17653,9 @@ type ClientWithResponsesInterface interface {
 	// Creates the customer (with `status` `active` unless `suspended` is asked
 	// for) and its primary tenant in one transaction, then creates or adopts its
 	// GitLab group. A GitLab failure does not fail the request: the customer exists,
-	// and `warnings` says what is missing. Send an `Idempotency-Key` to make a retry
+	// and `warnings` says what is missing: `gitlab_group_not_ready` (the group is there
+	// but not ready yet), `gitlab_not_configured` (GitLab is not configured on this
+	// platform) or `gitlab_group_failed`. Send an `Idempotency-Key` to make a retry
 	// safe: a retry with the same key and request gets the first answer and changes
 	// nothing.
 	//
@@ -16479,7 +17680,8 @@ type ClientWithResponsesInterface interface {
 	//
 	// One customer by `id`, archived ones included. With `include=gitlab_status` the
 	// customer's GitLab group is looked up live (read-only); without it nothing outside
-	// the platform is contacted.
+	// the platform is contacted. When the lookup cannot be made, `gitlab_status` is null
+	// with a warning: `gitlab_not_configured`, or `gitlab_unreachable`.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -16639,6 +17841,18 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /operations/{operation_id} (the `OperationsGet` operationId).
 	OperationsGetWithResponse(ctx context.Context, operationId string, reqEditors ...RequestEditorFn) (*OperationsGetResponse, error)
 
+	// OrdersGetWithResponse One order
+	//
+	// One order by `id`, with its timeline (`events`, oldest first): who placed it, how
+	// the quota decided, who approved or rejected it and why, and each step of its delivery.
+	// Never a key's value: an AI key order names the key it delivered (`dispatch.key_id`,
+	// `dispatch.key_alias`), which `GET /ai/gateway/keys/{id}` reads.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /orders/{order_id} (the `OrdersGet` operationId).
+	OrdersGetWithResponse(ctx context.Context, orderId string, reqEditors ...RequestEditorFn) (*OrdersGetResponse, error)
+
 	// PermissionsListWithResponse The permission catalogue
 	//
 	// Every fine-grained permission key the portal honours, `<feature>-<level>-<scope>`. `grantable` says whether it may be granted to a person; `mintable` whether an API token may carry it (v1 tokens carry `-global` keys only, never `admin`, `founder`, `ssh-console` or a key of the `api-tokens` feature). The roles catalogue also holds role names that are not permission keys (`user`, `admin`, …); those can be granted too.
@@ -16659,7 +17873,7 @@ type ClientWithResponsesInterface interface {
 
 	// ProjectsCreateWithBodyWithResponse Register a project
 	//
-	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -16668,7 +17882,7 @@ type ClientWithResponsesInterface interface {
 
 	// ProjectsCreateWithResponse Register a project
 	//
-	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -16698,7 +17912,7 @@ type ClientWithResponsesInterface interface {
 
 	// ProjectsUpdateWithBodyWithResponse Change a project
 	//
-	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -16709,7 +17923,7 @@ type ClientWithResponsesInterface interface {
 
 	// ProjectsUpdateWithResponse Change a project
 	//
-	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -16720,7 +17934,7 @@ type ClientWithResponsesInterface interface {
 
 	// ProjectsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a project
 	//
-	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+	// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -16742,7 +17956,7 @@ type ClientWithResponsesInterface interface {
 	//
 	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 	//
-	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -16755,7 +17969,7 @@ type ClientWithResponsesInterface interface {
 	//
 	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 	//
-	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -16768,7 +17982,7 @@ type ClientWithResponsesInterface interface {
 	//
 	// Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 	//
-	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+	// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -17079,6 +18293,48 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PUT /tenants/{tenant_id}/memberships/{user_id} (the `TenantMembershipsPut` operationId).
 	TenantMembershipsPutWithResponse(ctx context.Context, tenantId string, userId string, body TenantMembershipsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantMembershipsPutResponse, error)
 
+	// TenantOrdersListWithResponse A tenant's orders
+	//
+	// The tenant's orders, newest first (`created_at`, then `id`), each with its quota
+	// check, its decision and what delivering it produced. Read only: an order is approved,
+	// rejected or re-run in the portal. The timeline of one order is `GET /orders/{id}`.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /tenants/{tenant_id}/orders (the `TenantOrdersList` operationId).
+	TenantOrdersListWithResponse(ctx context.Context, tenantId string, params *TenantOrdersListParams, reqEditors ...RequestEditorFn) (*TenantOrdersListResponse, error)
+
+	// TenantQuotasGetWithResponse A tenant's quotas
+	//
+	// The limits the operator set for the tenant (`quotas`, one per dimension that has one) and, for every dimension, the limit next to what the tenant holds (`usage`), with caveats about the counts (`notes`). Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /tenants/{tenant_id}/quotas (the `TenantQuotasGet` operationId).
+	TenantQuotasGetWithResponse(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*TenantQuotasGetResponse, error)
+
+	// TenantQuotasPutWithBodyWithResponse Replace a tenant's quotas
+	//
+	// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+	//
+	// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/quotas (the `TenantQuotasPut` operationId).
+	TenantQuotasPutWithBodyWithResponse(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TenantQuotasPutResponse, error)
+
+	// TenantQuotasPutWithResponse Replace a tenant's quotas
+	//
+	// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+	//
+	// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/quotas (the `TenantQuotasPut` operationId).
+	TenantQuotasPutWithResponse(ctx context.Context, tenantId string, body TenantQuotasPutJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantQuotasPutResponse, error)
+
 	// UsersListWithResponse List users
 	//
 	// The people on this platform, in `id` order; service accounts only with `kind`
@@ -17094,7 +18350,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersCreateWithBodyWithResponse Create a person
 	//
-	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_username_failed`, `provisioning_sso_failed`, `provisioning_gitlab_user_failed` or `provisioning_gitlab_group_member_failed`; `provisioning_failed` when provisioning did not run or report at all) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -17103,7 +18359,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersCreateWithResponse Create a person
 	//
-	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
+	// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_username_failed`, `provisioning_sso_failed`, `provisioning_gitlab_user_failed` or `provisioning_gitlab_group_member_failed`; `provisioning_failed` when provisioning did not run or report at all) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -17132,7 +18388,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersUpdateWithBodyWithResponse Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -17143,7 +18399,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersUpdateWithResponse Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -17154,7 +18410,7 @@ type ClientWithResponsesInterface interface {
 
 	// UsersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a user
 	//
-	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+	// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 	//
 	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 	//
@@ -23395,6 +24651,162 @@ func (r BrandAssetsGetResponse) ContentType() string {
 	return ""
 }
 
+// CatalogueItemsListResponse200Headers the declared response headers of an HTTP 200 response for CatalogueItemsList
+type CatalogueItemsListResponse200Headers struct {
+	XRequestID *string
+}
+
+// CatalogueItemsListResponse401Headers the declared response headers of an HTTP 401 response for CatalogueItemsList
+type CatalogueItemsListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// CatalogueItemsListResponse403Headers the declared response headers of an HTTP 403 response for CatalogueItemsList
+type CatalogueItemsListResponse403Headers struct {
+	XRequestID *string
+}
+
+// CatalogueItemsListResponse429Headers the declared response headers of an HTTP 429 response for CatalogueItemsList
+type CatalogueItemsListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CatalogueItemsListResponse503Headers the declared response headers of an HTTP 503 response for CatalogueItemsList
+type CatalogueItemsListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CatalogueItemsListResponseDefaultHeaders the declared response headers of an HTTP default response for CatalogueItemsList
+type CatalogueItemsListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type CatalogueItemsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CatalogueItemPage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *CatalogueItemsListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *CatalogueItemsListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *CatalogueItemsListResponse403Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *CatalogueItemsListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *CatalogueItemsListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CatalogueItemsListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CatalogueItemsListResponse) GetJSON200() *CatalogueItemPage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r CatalogueItemsListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r CatalogueItemsListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r CatalogueItemsListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CatalogueItemsListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r CatalogueItemsListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r CatalogueItemsListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r CatalogueItemsListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r CatalogueItemsListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CatalogueItemsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CatalogueItemsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CatalogueItemsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CatalogueItemsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CatalogueItemsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CatalogueItemsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // CustomersListResponse200Headers the declared response headers of an HTTP 200 response for CustomersList
 type CustomersListResponse200Headers struct {
 	XRequestID *string
@@ -25619,6 +27031,183 @@ func (r OperationsGetResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r OperationsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// OrdersGetResponse200Headers the declared response headers of an HTTP 200 response for OrdersGet
+type OrdersGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// OrdersGetResponse401Headers the declared response headers of an HTTP 401 response for OrdersGet
+type OrdersGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// OrdersGetResponse403Headers the declared response headers of an HTTP 403 response for OrdersGet
+type OrdersGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// OrdersGetResponse404Headers the declared response headers of an HTTP 404 response for OrdersGet
+type OrdersGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// OrdersGetResponse429Headers the declared response headers of an HTTP 429 response for OrdersGet
+type OrdersGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// OrdersGetResponse503Headers the declared response headers of an HTTP 503 response for OrdersGet
+type OrdersGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// OrdersGetResponseDefaultHeaders the declared response headers of an HTTP default response for OrdersGet
+type OrdersGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type OrdersGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *OrderDetail
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *OrdersGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *OrdersGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *OrdersGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *OrdersGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *OrdersGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *OrdersGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *OrdersGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r OrdersGetResponse) GetJSON200() *OrderDetail {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r OrdersGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r OrdersGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r OrdersGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r OrdersGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r OrdersGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r OrdersGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r OrdersGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r OrdersGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r OrdersGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r OrdersGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r OrdersGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r OrdersGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r OrdersGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r OrdersGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r OrdersGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r OrdersGetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -31270,6 +32859,558 @@ func (r TenantMembershipsPutResponse) ContentType() string {
 	return ""
 }
 
+// TenantOrdersListResponse200Headers the declared response headers of an HTTP 200 response for TenantOrdersList
+type TenantOrdersListResponse200Headers struct {
+	XRequestID *string
+}
+
+// TenantOrdersListResponse401Headers the declared response headers of an HTTP 401 response for TenantOrdersList
+type TenantOrdersListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// TenantOrdersListResponse403Headers the declared response headers of an HTTP 403 response for TenantOrdersList
+type TenantOrdersListResponse403Headers struct {
+	XRequestID *string
+}
+
+// TenantOrdersListResponse404Headers the declared response headers of an HTTP 404 response for TenantOrdersList
+type TenantOrdersListResponse404Headers struct {
+	XRequestID *string
+}
+
+// TenantOrdersListResponse429Headers the declared response headers of an HTTP 429 response for TenantOrdersList
+type TenantOrdersListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantOrdersListResponse503Headers the declared response headers of an HTTP 503 response for TenantOrdersList
+type TenantOrdersListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantOrdersListResponseDefaultHeaders the declared response headers of an HTTP default response for TenantOrdersList
+type TenantOrdersListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type TenantOrdersListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *OrderPage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *TenantOrdersListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *TenantOrdersListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *TenantOrdersListResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *TenantOrdersListResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *TenantOrdersListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *TenantOrdersListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *TenantOrdersListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantOrdersListResponse) GetJSON200() *OrderPage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r TenantOrdersListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r TenantOrdersListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r TenantOrdersListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r TenantOrdersListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantOrdersListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantOrdersListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r TenantOrdersListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r TenantOrdersListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r TenantOrdersListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r TenantOrdersListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantOrdersListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantOrdersListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantOrdersListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantOrdersListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantOrdersListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantOrdersListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// TenantQuotasGetResponse200Headers the declared response headers of an HTTP 200 response for TenantQuotasGet
+type TenantQuotasGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// TenantQuotasGetResponse401Headers the declared response headers of an HTTP 401 response for TenantQuotasGet
+type TenantQuotasGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// TenantQuotasGetResponse403Headers the declared response headers of an HTTP 403 response for TenantQuotasGet
+type TenantQuotasGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// TenantQuotasGetResponse404Headers the declared response headers of an HTTP 404 response for TenantQuotasGet
+type TenantQuotasGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// TenantQuotasGetResponse429Headers the declared response headers of an HTTP 429 response for TenantQuotasGet
+type TenantQuotasGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantQuotasGetResponse503Headers the declared response headers of an HTTP 503 response for TenantQuotasGet
+type TenantQuotasGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantQuotasGetResponseDefaultHeaders the declared response headers of an HTTP default response for TenantQuotasGet
+type TenantQuotasGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type TenantQuotasGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TenantQuotas
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *TenantQuotasGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *TenantQuotasGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *TenantQuotasGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *TenantQuotasGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *TenantQuotasGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *TenantQuotasGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *TenantQuotasGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantQuotasGetResponse) GetJSON200() *TenantQuotas {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r TenantQuotasGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r TenantQuotasGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r TenantQuotasGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r TenantQuotasGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantQuotasGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantQuotasGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r TenantQuotasGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r TenantQuotasGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r TenantQuotasGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r TenantQuotasGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantQuotasGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantQuotasGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantQuotasGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantQuotasGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantQuotasGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantQuotasGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// TenantQuotasPutResponse200Headers the declared response headers of an HTTP 200 response for TenantQuotasPut
+type TenantQuotasPutResponse200Headers struct {
+	XRequestID *string
+}
+
+// TenantQuotasPutResponse401Headers the declared response headers of an HTTP 401 response for TenantQuotasPut
+type TenantQuotasPutResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// TenantQuotasPutResponse403Headers the declared response headers of an HTTP 403 response for TenantQuotasPut
+type TenantQuotasPutResponse403Headers struct {
+	XRequestID *string
+}
+
+// TenantQuotasPutResponse404Headers the declared response headers of an HTTP 404 response for TenantQuotasPut
+type TenantQuotasPutResponse404Headers struct {
+	XRequestID *string
+}
+
+// TenantQuotasPutResponse422Headers the declared response headers of an HTTP 422 response for TenantQuotasPut
+type TenantQuotasPutResponse422Headers struct {
+	XRequestID *string
+}
+
+// TenantQuotasPutResponse429Headers the declared response headers of an HTTP 429 response for TenantQuotasPut
+type TenantQuotasPutResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantQuotasPutResponse503Headers the declared response headers of an HTTP 503 response for TenantQuotasPut
+type TenantQuotasPutResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantQuotasPutResponseDefaultHeaders the declared response headers of an HTTP default response for TenantQuotasPut
+type TenantQuotasPutResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type TenantQuotasPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TenantQuotas
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *TenantQuotasPutResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *TenantQuotasPutResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *TenantQuotasPutResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *TenantQuotasPutResponse404Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *TenantQuotasPutResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *TenantQuotasPutResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *TenantQuotasPutResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *TenantQuotasPutResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantQuotasPutResponse) GetJSON200() *TenantQuotas {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r TenantQuotasPutResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r TenantQuotasPutResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r TenantQuotasPutResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r TenantQuotasPutResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantQuotasPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantQuotasPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r TenantQuotasPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r TenantQuotasPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r TenantQuotasPutResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r TenantQuotasPutResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r TenantQuotasPutResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r TenantQuotasPutResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantQuotasPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantQuotasPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantQuotasPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantQuotasPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantQuotasPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantQuotasPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // UsersListResponse200Headers the declared response headers of an HTTP 200 response for UsersList
 type UsersListResponse200Headers struct {
 	XRequestID *string
@@ -33476,7 +35617,7 @@ func (c *ClientWithResponses) AiGatewayKeysListWithResponse(ctx context.Context,
 
 // AiGatewayKeysCreateWithBodyWithResponse Create a virtual key
 //
-// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it (`secret` is null, with a `secret_not_replayed` warning). Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -33491,7 +35632,7 @@ func (c *ClientWithResponses) AiGatewayKeysCreateWithBodyWithResponse(ctx contex
 
 // AiGatewayKeysCreateWithResponse Create a virtual key
 //
-// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it. Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Mints a key named `<tenant-slug>-<env>-<app>[-<feature>]` and stores its value in the secrets store at `secret_path` (always). The value is in this response only when `expose_secret` is true; an idempotent replay never carries it (`secret` is null, with a `secret_not_replayed` warning). Budgets are soft: the gateway alerts and never blocks. The answer shows what was written (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -33587,7 +35728,7 @@ func (c *ClientWithResponses) AiGatewayKeysUpdateWithApplicationMergePatchPlusJS
 
 // AiGatewayKeysRotateWithBodyWithResponse Rotate a virtual key
 //
-// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true; an idempotent replay answers `secret` null with a `secret_not_replayed` warning. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -33602,7 +35743,7 @@ func (c *ClientWithResponses) AiGatewayKeysRotateWithBodyWithResponse(ctx contex
 
 // AiGatewayKeysRotateWithResponse Rotate a virtual key
 //
-// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// A new value under the same alias, with the key's current allowlist, limits and soft budget. The new value is stored in the secrets store at `secret_path` and is in this response only when `expose_secret` is true; an idempotent replay answers `secret` null with a `secret_not_replayed` warning. The old value stops working at once. The answer shows registry values (`live` is `not_read`, `spend_usd` null): GET the key for its live values. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -33851,6 +35992,25 @@ func (c *ClientWithResponses) BrandAssetsGetWithResponse(ctx context.Context, as
 	return ParseBrandAssetsGetResponse(rsp)
 }
 
+// CatalogueItemsListWithResponse The order catalogue
+//
+// What tenants can order on this platform: every ENABLED catalogue item, in display
+// order (`sort_order`, then `key`), with its order form (`spec_schema`), how an order
+// counts against the tenant's quotas (`quota_dimensions`), whether it always needs an
+// operator's approval, and its price basis. This is the operator's view: the EUR estimate
+// a tenant sees is computed from that tenant's contract, in the portal.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /catalogue (the `CatalogueItemsList` operationId).
+func (c *ClientWithResponses) CatalogueItemsListWithResponse(ctx context.Context, params *CatalogueItemsListParams, reqEditors ...RequestEditorFn) (*CatalogueItemsListResponse, error) {
+	rsp, err := c.CatalogueItemsList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCatalogueItemsListResponse(rsp)
+}
+
 // CustomersListWithResponse List customers
 //
 // The customers of this platform, in `id` order, archived ones included. The filters
@@ -33873,7 +36033,9 @@ func (c *ClientWithResponses) CustomersListWithResponse(ctx context.Context, par
 // Creates the customer (with `status` `active` unless `suspended` is asked
 // for) and its primary tenant in one transaction, then creates or adopts its
 // GitLab group. A GitLab failure does not fail the request: the customer exists,
-// and `warnings` says what is missing. Send an `Idempotency-Key` to make a retry
+// and `warnings` says what is missing: `gitlab_group_not_ready` (the group is there
+// but not ready yet), `gitlab_not_configured` (GitLab is not configured on this
+// platform) or `gitlab_group_failed`. Send an `Idempotency-Key` to make a retry
 // safe: a retry with the same key and request gets the first answer and changes
 // nothing.
 //
@@ -33893,7 +36055,9 @@ func (c *ClientWithResponses) CustomersCreateWithBodyWithResponse(ctx context.Co
 // Creates the customer (with `status` `active` unless `suspended` is asked
 // for) and its primary tenant in one transaction, then creates or adopts its
 // GitLab group. A GitLab failure does not fail the request: the customer exists,
-// and `warnings` says what is missing. Send an `Idempotency-Key` to make a retry
+// and `warnings` says what is missing: `gitlab_group_not_ready` (the group is there
+// but not ready yet), `gitlab_not_configured` (GitLab is not configured on this
+// platform) or `gitlab_group_failed`. Send an `Idempotency-Key` to make a retry
 // safe: a retry with the same key and request gets the first answer and changes
 // nothing.
 //
@@ -33930,7 +36094,8 @@ func (c *ClientWithResponses) CustomersDeleteWithResponse(ctx context.Context, c
 //
 // One customer by `id`, archived ones included. With `include=gitlab_status` the
 // customer's GitLab group is looked up live (read-only); without it nothing outside
-// the platform is contacted.
+// the platform is contacted. When the lookup cannot be made, `gitlab_status` is null
+// with a warning: `gitlab_not_configured`, or `gitlab_unreachable`.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -34174,6 +36339,24 @@ func (c *ClientWithResponses) OperationsGetWithResponse(ctx context.Context, ope
 	return ParseOperationsGetResponse(rsp)
 }
 
+// OrdersGetWithResponse One order
+//
+// One order by `id`, with its timeline (`events`, oldest first): who placed it, how
+// the quota decided, who approved or rejected it and why, and each step of its delivery.
+// Never a key's value: an AI key order names the key it delivered (`dispatch.key_id`,
+// `dispatch.key_alias`), which `GET /ai/gateway/keys/{id}` reads.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /orders/{order_id} (the `OrdersGet` operationId).
+func (c *ClientWithResponses) OrdersGetWithResponse(ctx context.Context, orderId string, reqEditors ...RequestEditorFn) (*OrdersGetResponse, error) {
+	rsp, err := c.OrdersGet(ctx, orderId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOrdersGetResponse(rsp)
+}
+
 // PermissionsListWithResponse The permission catalogue
 //
 // Every fine-grained permission key the portal honours, `<feature>-<level>-<scope>`. `grantable` says whether it may be granted to a person; `mintable` whether an API token may carry it (v1 tokens carry `-global` keys only, never `admin`, `founder`, `ssh-console` or a key of the `api-tokens` feature). The roles catalogue also holds role names that are not permission keys (`user`, `admin`, …); those can be granted too.
@@ -34206,7 +36389,7 @@ func (c *ClientWithResponses) ProjectsListWithResponse(ctx context.Context, para
 
 // ProjectsCreateWithBodyWithResponse Register a project
 //
-// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -34221,7 +36404,7 @@ func (c *ClientWithResponses) ProjectsCreateWithBodyWithResponse(ctx context.Con
 
 // ProjectsCreateWithResponse Register a project
 //
-// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -34269,7 +36452,7 @@ func (c *ClientWithResponses) ProjectsGetWithResponse(ctx context.Context, proje
 
 // ProjectsUpdateWithBodyWithResponse Change a project
 //
-// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -34286,7 +36469,7 @@ func (c *ClientWithResponses) ProjectsUpdateWithBodyWithResponse(ctx context.Con
 
 // ProjectsUpdateWithResponse Change a project
 //
-// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -34303,7 +36486,7 @@ func (c *ClientWithResponses) ProjectsUpdateWithResponse(ctx context.Context, pr
 
 // ProjectsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a project
 //
-// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
+// Changes the record and recompiles its manifest; dispatches nothing. The provisioning stages the change leaves stale are marked and returned as `stale_stages`; `POST /projects/{id}/provisioning` re-applies exactly those. Only a stage already done can be stale: one never applied is applied with the new manifest by the next start anyway. When the change is saved but the stale stages cannot be recorded, the answer carries a `stale_stages_not_recorded` warning, and the next provisioning start will not re-apply them. Frozen: `project_index`, `short_name`, `gitlab_repo_slug`, `tenant_id`, `deployment_backend`, `network_only`, `primary_domain` (the current value is accepted, a different one is a 422). The create rules are checked on the merged result.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -34337,7 +36520,7 @@ func (c *ClientWithResponses) ProjectK8sQuotaResetWithResponse(ctx context.Conte
 //
 // Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 //
-// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -34356,7 +36539,7 @@ func (c *ClientWithResponses) ProjectK8sQuotaUpdateWithBodyWithResponse(ctx cont
 //
 // Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 //
-// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -34375,7 +36558,7 @@ func (c *ClientWithResponses) ProjectK8sQuotaUpdateWithResponse(ctx context.Cont
 //
 // Sets one or more quota keys of one environment of a Kubernetes project — CPU, memory, storage and pods, and the GPU keys: `gpu_exclusive` (whole cards guaranteed, the floor), `gpu_borrow` (idle cards it may borrow, preempted when the owner returns), `fair_weight` (its share among borrowers) and `gpu_shared` (time-sliced units, only where a dedicated time-sliced node exists). `reason` is required on every change. A key sent as `null` returns to the tier default. Exactly the portal's quota editor: the same rules, the same refusals.
 //
-// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
+// The change is checked and compiled BEFORE it is stored (a refused value never lands), then the project's manifest is recompiled and the GitOps stages it leaves stale are re-applied by a provisioning walk the platform starts for you: `operation_id` names it (poll `GET /operations/{id}`), `dispatch_status` says what started; when no walk could be started the quota is still saved and the answer carries a `provisioning_not_started` warning: start provisioning yourself. A retired project may only lower its GPU quota (its namespace keeps its queue until it is torn down).
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -34866,6 +37049,72 @@ func (c *ClientWithResponses) TenantMembershipsPutWithResponse(ctx context.Conte
 	return ParseTenantMembershipsPutResponse(rsp)
 }
 
+// TenantOrdersListWithResponse A tenant's orders
+//
+// The tenant's orders, newest first (`created_at`, then `id`), each with its quota
+// check, its decision and what delivering it produced. Read only: an order is approved,
+// rejected or re-run in the portal. The timeline of one order is `GET /orders/{id}`.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /tenants/{tenant_id}/orders (the `TenantOrdersList` operationId).
+func (c *ClientWithResponses) TenantOrdersListWithResponse(ctx context.Context, tenantId string, params *TenantOrdersListParams, reqEditors ...RequestEditorFn) (*TenantOrdersListResponse, error) {
+	rsp, err := c.TenantOrdersList(ctx, tenantId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantOrdersListResponse(rsp)
+}
+
+// TenantQuotasGetWithResponse A tenant's quotas
+//
+// The limits the operator set for the tenant (`quotas`, one per dimension that has one) and, for every dimension, the limit next to what the tenant holds (`usage`), with caveats about the counts (`notes`). Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /tenants/{tenant_id}/quotas (the `TenantQuotasGet` operationId).
+func (c *ClientWithResponses) TenantQuotasGetWithResponse(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*TenantQuotasGetResponse, error) {
+	rsp, err := c.TenantQuotasGet(ctx, tenantId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantQuotasGetResponse(rsp)
+}
+
+// TenantQuotasPutWithBodyWithResponse Replace a tenant's quotas
+//
+// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+//
+// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /tenants/{tenant_id}/quotas (the `TenantQuotasPut` operationId).
+func (c *ClientWithResponses) TenantQuotasPutWithBodyWithResponse(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TenantQuotasPutResponse, error) {
+	rsp, err := c.TenantQuotasPutWithBody(ctx, tenantId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantQuotasPutResponse(rsp)
+}
+
+// TenantQuotasPutWithResponse Replace a tenant's quotas
+//
+// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+//
+// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /tenants/{tenant_id}/quotas (the `TenantQuotasPut` operationId).
+func (c *ClientWithResponses) TenantQuotasPutWithResponse(ctx context.Context, tenantId string, body TenantQuotasPutJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantQuotasPutResponse, error) {
+	rsp, err := c.TenantQuotasPut(ctx, tenantId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantQuotasPutResponse(rsp)
+}
+
 // UsersListWithResponse List users
 //
 // The people on this platform, in `id` order; service accounts only with `kind`
@@ -34887,7 +37136,7 @@ func (c *ClientWithResponses) UsersListWithResponse(ctx context.Context, params 
 
 // UsersCreateWithBodyWithResponse Create a person
 //
-// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_username_failed`, `provisioning_sso_failed`, `provisioning_gitlab_user_failed` or `provisioning_gitlab_group_member_failed`; `provisioning_failed` when provisioning did not run or report at all) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -34902,7 +37151,7 @@ func (c *ClientWithResponses) UsersCreateWithBodyWithResponse(ctx context.Contex
 
 // UsersCreateWithResponse Create a person
 //
-// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_<step>_failed`) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
+// Creates the person with the role `user` and runs the portal's provisioning: username, SSO account, and — with `needs_git_access` — a GitLab account and group membership. No password is set and none is ever returned: the person cannot sign in until an operator resets their password in the portal or they use the self-service reset. A provisioning step that fails is a `warnings` entry (`provisioning_username_failed`, `provisioning_sso_failed`, `provisioning_gitlab_user_failed` or `provisioning_gitlab_group_member_failed`; `provisioning_failed` when provisioning did not run or report at all) and `provisioning_status` is `ok`, `partial` or `error`; the person exists either way, so the answer is 201. On a platform with no SSO configured at all the SSO step is skipped, not failed: `provisioning_status` is `partial` with a `sso_not_configured` warning (`error` stays for a configured SSO that failed). `Idempotency-Key` is honoured.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -34949,7 +37198,7 @@ func (c *ClientWithResponses) UsersGetWithResponse(ctx context.Context, userId s
 
 // UsersUpdateWithBodyWithResponse Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -34966,7 +37215,7 @@ func (c *ClientWithResponses) UsersUpdateWithBodyWithResponse(ctx context.Contex
 
 // UsersUpdateWithResponse Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -34983,7 +37232,7 @@ func (c *ClientWithResponses) UsersUpdateWithResponse(ctx context.Context, userI
 
 // UsersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a user
 //
-// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning step now; switching it off removes no account. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
+// Only the members in the body change. `username` and `ad_username` are create-only: sending the current value is accepted, any other value is a 422 `immutable_field` naming the field, whether or not the person has an SSO account (`sso_linked`). Changing `email` answers with an `email_keyed_grants_affected` warning. `is_active: false` is a deactivation, with the same destroy gate, refusals and steps as `DELETE`; `is_active: true` re-activates (the SSO account is enabled and the GitLab account unblocked; desktop access is not restored). Switching `needs_git_access` on runs the GitLab provisioning steps now, with the provisioning warnings of `POST /users`; switching it off removes no account, and a failure to record that is a `needs_git_access_not_saved` warning. Changes that reach the SSO account are converged before the answer; a failure there is a `sso_sync_failed` warning.
 //
 // The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
 //
@@ -42279,6 +44528,186 @@ func ParseBrandAssetsGetResponse(rsp *http.Response) (*BrandAssetsGetResponse, e
 	return response, nil
 }
 
+// ParseCatalogueItemsListResponse parses an HTTP response from a CatalogueItemsListWithResponse call
+func ParseCatalogueItemsListResponse(rsp *http.Response) (*CatalogueItemsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CatalogueItemsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogueItemPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers CatalogueItemsListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers CatalogueItemsListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers CatalogueItemsListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 429:
+		var headers CatalogueItemsListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers CatalogueItemsListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers CatalogueItemsListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseCustomersListResponse parses an HTTP response from a CustomersListWithResponse call
 func ParseCustomersListResponse(rsp *http.Response) (*CustomersListResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -44817,6 +47246,210 @@ func ParseOperationsGetResponse(rsp *http.Response) (*OperationsGetResponse, err
 		response.Headers503 = &headers
 	case true:
 		var headers OperationsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseOrdersGetResponse parses an HTTP response from a OrdersGetWithResponse call
+func ParseOrdersGetResponse(rsp *http.Response) (*OrdersGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &OrdersGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OrderDetail
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers OrdersGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers OrdersGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers OrdersGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers OrdersGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers OrdersGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers OrdersGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers OrdersGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -51377,6 +54010,642 @@ func ParseTenantMembershipsPutResponse(rsp *http.Response) (*TenantMembershipsPu
 		response.Headers503 = &headers
 	case true:
 		var headers TenantMembershipsPutResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseTenantOrdersListResponse parses an HTTP response from a TenantOrdersListWithResponse call
+func ParseTenantOrdersListResponse(rsp *http.Response) (*TenantOrdersListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantOrdersListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OrderPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers TenantOrdersListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers TenantOrdersListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers TenantOrdersListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers TenantOrdersListResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers TenantOrdersListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers TenantOrdersListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers TenantOrdersListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseTenantQuotasGetResponse parses an HTTP response from a TenantQuotasGetWithResponse call
+func ParseTenantQuotasGetResponse(rsp *http.Response) (*TenantQuotasGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantQuotasGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TenantQuotas
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers TenantQuotasGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers TenantQuotasGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers TenantQuotasGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers TenantQuotasGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers TenantQuotasGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers TenantQuotasGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers TenantQuotasGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseTenantQuotasPutResponse parses an HTTP response from a TenantQuotasPutWithResponse call
+func ParseTenantQuotasPutResponse(rsp *http.Response) (*TenantQuotasPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantQuotasPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TenantQuotas
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers TenantQuotasPutResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers TenantQuotasPutResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers TenantQuotasPutResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers TenantQuotasPutResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 422:
+		var headers TenantQuotasPutResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers TenantQuotasPutResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers TenantQuotasPutResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers TenantQuotasPutResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
