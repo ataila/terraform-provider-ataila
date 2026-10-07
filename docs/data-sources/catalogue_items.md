@@ -3,12 +3,12 @@
 page_title: "ataila_catalogue_items Data Source - ATAILA"
 subcategory: ""
 description: |-
-  What tenants can order on the platform: every enabled catalogue item, in display order, with its order form, how an order of it counts against the tenant's quotas (ataila_tenant_quota), and whether every order of it needs an operator's approval. This is the operator's view; a tenant orders, and sees its price estimate, in the portal. Needs a token holding orders-read-global (or orders-admin-global) and platform release 1.0.9999 or later.
+  What tenants can order on the platform: every enabled catalogue item, in display order, with its order form, how an order of it counts against the tenant's quotas (ataila_tenant_quota), and whether every order of it needs an operator's approval. This is the operator's view; a tenant orders, and sees its price estimate, in the portal. Needs a token holding orders-read-global (or orders-admin-global) and platform release 1.0.233 or later.
 ---
 
 # ataila_catalogue_items (Data Source)
 
-What tenants can order on the platform: every enabled catalogue item, in display order, with its order form, how an order of it counts against the tenant's quotas (`ataila_tenant_quota`), and whether every order of it needs an operator's approval. This is the operator's view; a tenant orders, and sees its price estimate, in the portal. Needs a token holding `orders-read-global` (or `orders-admin-global`) and platform release 1.0.9999 or later.
+What tenants can order on the platform: every enabled catalogue item, in display order, with its order form, how an order of it counts against the tenant's quotas (`ataila_tenant_quota`), and whether every order of it needs an operator's approval. This is the operator's view; a tenant orders, and sees its price estimate, in the portal. Needs a token holding `orders-read-global` (or `orders-admin-global`) and platform release 1.0.233 or later.
 
 ## Example Usage
 

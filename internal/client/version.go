@@ -41,16 +41,24 @@ const (
 	// FeatureOrders are a tenant's orders, read only (GET
 	// /tenants/{id}/orders, GET /orders/{id}): ataila_orders, ataila_order.
 	FeatureOrders = "orders"
+	// FeatureAIUsage is AI usage per tenant and month, rated (GET
+	// /tenants/{id}/ai-usage, GET /ai/gateway/usage): ataila_ai_usage,
+	// ataila_ai_gateway_usage.
+	FeatureAIUsage = "ai_usage"
+	// FeatureAIRates are the AI rate card and tenant rate plans (GET and PUT
+	// /ai/rate-card[/{tier}], GET, PUT and DELETE /tenants/{id}/ai-rate-plan):
+	// ataila_ai_rate_card and ataila_ai_rate_plan, resources and data sources.
+	FeatureAIRates = "ai_rates"
 )
 
 // ReleaseQuotasOrders is the platform release whose API serves tenant
 // quotas, the order catalogue and the order reads (FeatureTenantQuota,
 // FeatureCatalogue, FeatureOrders): one release brought all three.
-//
-// FABLE: set at merge — "1.0.9999" is a placeholder above every real
-// release, so that nothing is sent to a platform until the number is the
-// release that carries these endpoints.
-const ReleaseQuotasOrders = "1.0.9999"
+const ReleaseQuotasOrders = "1.0.233"
+
+// ReleaseAIBilling is the platform release whose API serves rated AI usage,
+// the AI rate card and tenant rate plans (FeatureAIUsage, FeatureAIRates).
+const ReleaseAIBilling = "1.0.236"
 
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{
@@ -58,6 +66,8 @@ var featureMinimum = map[string]string{
 	FeatureTenantQuota: ReleaseQuotasOrders,
 	FeatureCatalogue:   ReleaseQuotasOrders,
 	FeatureOrders:      ReleaseQuotasOrders,
+	FeatureAIUsage:     ReleaseAIBilling,
+	FeatureAIRates:     ReleaseAIBilling,
 }
 
 // FeatureMinimum is the oldest platform release that serves a feature.

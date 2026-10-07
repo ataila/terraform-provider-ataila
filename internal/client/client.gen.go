@@ -2952,6 +2952,24 @@ func (e ReleaseOperationsListParamsComponent) Valid() bool {
 	}
 }
 
+// Defines values for TenantAiUsageGetParamsFormat.
+const (
+	Csv  TenantAiUsageGetParamsFormat = "csv"
+	Json TenantAiUsageGetParamsFormat = "json"
+)
+
+// Valid indicates whether the value is a known member of the TenantAiUsageGetParamsFormat enum.
+func (e TenantAiUsageGetParamsFormat) Valid() bool {
+	switch e {
+	case Csv:
+		return true
+	case Json:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for TenantOrdersListParamsStatus.
 const (
 	TenantOrdersListParamsStatusApproved         TenantOrdersListParamsStatus = "approved"
@@ -3016,6 +3034,30 @@ func (e UsersListParamsKind) Valid() bool {
 	default:
 		return false
 	}
+}
+
+// AiEffectiveRate What one tier costs the tenant today, and why.
+type AiEffectiveRate struct {
+	// Basis `plan` (its own rate), `list`, `contract_included` (0 EUR) or `none` (not priced).
+	Basis string `json:"basis"`
+
+	// EurPer1mInput EUR per one million input (prompt) tokens.
+	EurPer1mInput *float64 `json:"eur_per_1m_input,omitempty"`
+
+	// EurPer1mOutput EUR per one million output (completion) tokens.
+	EurPer1mOutput *float64 `json:"eur_per_1m_output,omitempty"`
+
+	// ListEurPer1mInput The list rate beside it, for comparison.
+	ListEurPer1mInput *float64 `json:"list_eur_per_1m_input,omitempty"`
+
+	// ListEurPer1mOutput The list rate beside it, for comparison.
+	ListEurPer1mOutput *float64 `json:"list_eur_per_1m_output,omitempty"`
+
+	// Tier The serving tier, e.g. `general`, `code`, `embed`.
+	Tier string `json:"tier"`
+
+	// ValidFrom Since when.
+	ValidFrom *openapi_types.Date `json:"valid_from,omitempty"`
 }
 
 // AiGateway The platform's AI gateway: one OpenAI-compatible endpoint in front of
@@ -3462,6 +3504,140 @@ type AiNodePage struct {
 
 	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
 	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// AiRate One rate: a price per one million tokens for one tier, from `valid_from` until
+// `valid_to` (open when null).
+type AiRate struct {
+	// EurPer1mInput EUR per one million input (prompt) tokens.
+	EurPer1mInput float64 `json:"eur_per_1m_input"`
+
+	// EurPer1mOutput EUR per one million output (completion) tokens.
+	EurPer1mOutput float64 `json:"eur_per_1m_output"`
+
+	// Note The operator's note.
+	Note *string `json:"note,omitempty"`
+
+	// SetAt When it was set.
+	SetAt *time.Time `json:"set_at,omitempty"`
+
+	// SetBy The user who set it (`id` on a user); null when that user no longer exists.
+	SetBy *string `json:"set_by,omitempty"`
+
+	// Tier The serving tier, e.g. `general`, `code`, `embed`.
+	Tier string `json:"tier"`
+
+	// ValidFrom The first billing day the rate applies.
+	ValidFrom openapi_types.Date `json:"valid_from"`
+
+	// ValidTo The last billing day it applies; null while it is open.
+	ValidTo *openapi_types.Date `json:"valid_to,omitempty"`
+}
+
+// AiRateCard The platform's list rate per serving tier (the rate card): what a tenant without
+// its own rate pays. Tiers the platform knows appear even without a rate.
+type AiRateCard struct {
+	// AsOf Today, in the billing time zone.
+	AsOf openapi_types.Date `json:"as_of"`
+
+	// Currency Always `EUR`.
+	Currency *string `json:"currency,omitempty"`
+
+	// History Every list rate ever set, newest first.
+	History *[]AiRate `json:"history,omitempty"`
+
+	// Tiers Per tier, by name.
+	Tiers *[]AiRateCardTier `json:"tiers,omitempty"`
+
+	// Unit Always `1M tokens`.
+	Unit *string `json:"unit,omitempty"`
+}
+
+// AiRateCardPut A tier's list rate from `valid_from`.
+type AiRateCardPut struct {
+	// EurPer1mInput EUR per one million input (prompt) tokens. 0 to 1000000.
+	EurPer1mInput float64 `json:"eur_per_1m_input"`
+
+	// EurPer1mOutput EUR per one million output (completion) tokens. 0 to 1000000.
+	EurPer1mOutput float64 `json:"eur_per_1m_output"`
+
+	// Note A note, up to 500 characters.
+	Note *string `json:"note,omitempty"`
+
+	// ValidFrom The first billing day it applies; default today. From 2020-01-01 to three years ahead: an earlier day re-prices the usage since then (rating is at read time); a later one schedules the change, and a second scheduled change edits the first.
+	ValidFrom *openapi_types.Date `json:"valid_from,omitempty"`
+}
+
+// AiRateCardTier One serving tier's list rate.
+type AiRateCardTier struct {
+	// Current The list rate in force today; null when the tier has none (not priced).
+	Current *AiRate `json:"current,omitempty"`
+
+	// Seedable Whether the platform's cloud-anchored seed can price this tier.
+	Seedable *bool `json:"seedable,omitempty"`
+
+	// Tier The serving tier, e.g. `general`, `code`, `embed`.
+	Tier string `json:"tier"`
+
+	// Upcoming The next scheduled change; null when none is scheduled.
+	Upcoming *AiRate `json:"upcoming,omitempty"`
+}
+
+// AiRateCardTierChanged One tier's list rate after a `PUT`.
+type AiRateCardTierChanged struct {
+	// AsOf Today, in the billing time zone.
+	AsOf openapi_types.Date `json:"as_of"`
+
+	// Changed False when the same rate was already in force: nothing was changed or recorded.
+	Changed bool `json:"changed"`
+
+	// Current The list rate in force today; null when the tier has none (not priced).
+	Current *AiRate `json:"current,omitempty"`
+
+	// History This tier's list rates, newest first.
+	History *[]AiRate `json:"history,omitempty"`
+
+	// Seedable Whether the platform's cloud-anchored seed can price this tier.
+	Seedable *bool `json:"seedable,omitempty"`
+
+	// Tier The serving tier, e.g. `general`, `code`, `embed`.
+	Tier string `json:"tier"`
+
+	// Upcoming The next scheduled change; null when none is scheduled.
+	Upcoming *AiRate `json:"upcoming,omitempty"`
+
+	// Warnings What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person.
+	Warnings *[]ApiWarning `json:"warnings,omitempty"`
+}
+
+// AiRatePlanContract The tenant's contract that decides whether metered AI is included.
+type AiRatePlanContract struct {
+	// EndDate Its last day; null when open.
+	EndDate *openapi_types.Date `json:"end_date,omitempty"`
+
+	// Id The contract's id.
+	Id *string `json:"id,omitempty"`
+
+	// StartDate Its first day.
+	StartDate *openapi_types.Date `json:"start_date,omitempty"`
+
+	// Status Its status, e.g. `active`.
+	Status *string `json:"status,omitempty"`
+}
+
+// AiRatePlanRateIn One tier of the plan.
+type AiRatePlanRateIn struct {
+	// EurPer1mInput EUR per one million input (prompt) tokens. 0 to 1000000.
+	EurPer1mInput float64 `json:"eur_per_1m_input"`
+
+	// EurPer1mOutput EUR per one million output (completion) tokens. 0 to 1000000.
+	EurPer1mOutput float64 `json:"eur_per_1m_output"`
+
+	// Note A note, up to 500 characters.
+	Note *string `json:"note,omitempty"`
+
+	// Tier The serving tier, e.g. `general`, `code`, `embed`. Letters, digits, `.`, `_` and `-`, 1-64 characters, starting with a letter or digit.
+	Tier string `json:"tier"`
 }
 
 // ApiWarning Something that did not go as planned, on a request that still succeeded
@@ -3967,6 +4143,37 @@ type DgxClusterPage struct {
 	NextCursor *string `json:"next_cursor,omitempty"`
 }
 
+// GatewayAiUsage Every tenant's AI usage for a month, rated, heaviest first, and the unattributed
+// bucket.
+type GatewayAiUsage struct {
+	// Month The month, `YYYY-MM`, in the billing time zone.
+	Month string `json:"month"`
+
+	// RateBasis `list` when every tenant's tiers were priced, `none` when some were not, `pending` when the rates could not be read.
+	RateBasis *string `json:"rate_basis,omitempty"`
+
+	// RatedComplete Every token was priced; false when a tier had no rate (a floor).
+	RatedComplete *bool `json:"rated_complete,omitempty"`
+
+	// RatedEur EUR of the tenants (the unattributed bucket is not billed); null when not priced.
+	RatedEur *float64 `json:"rated_eur,omitempty"`
+
+	// Tenants Per tenant, heaviest first.
+	Tenants *[]GatewayUsageTenant `json:"tenants,omitempty"`
+
+	// Totals The platform's counts, every key included.
+	Totals UsageCounts `json:"totals"`
+
+	// Tz The billing time zone.
+	Tz string `json:"tz"`
+
+	// Unattributed Keys no tenant could be found for; null when every key was attributed.
+	Unattributed *GatewayUsageTenant `json:"unattributed,omitempty"`
+
+	// UnratedTiers Tiers some tenant used without a rate.
+	UnratedTiers *[]string `json:"unrated_tiers,omitempty"`
+}
+
 // GatewayKey An AI gateway virtual key: what one application of one tenant calls the
 // gateway with, the tiers it may call and its limits. The key's value is
 // never returned after the request that made it (`secret`).
@@ -4148,6 +4355,72 @@ type GatewayKeyPatchEnv string
 type GatewayKeyRotation struct {
 	// ExposeSecret Return the NEW value in this response (`secret`). It is stored in the secrets store either way.
 	ExposeSecret *bool `json:"expose_secret,omitempty"`
+}
+
+// GatewayUsageTenant One tenant's month on the AI gateway (or the unattributed bucket).
+type GatewayUsageTenant struct {
+	// Attribution Usage rows per attribution method (`registry`, `map`, `project`, `unattributed`).
+	Attribution *map[string]int `json:"attribution,omitempty"`
+
+	// CacheHits Calls answered from the gateway's cache.
+	CacheHits *int `json:"cache_hits,omitempty"`
+
+	// Calls Calls.
+	Calls *int `json:"calls,omitempty"`
+
+	// CompletionTokens Output tokens.
+	CompletionTokens *int `json:"completion_tokens,omitempty"`
+
+	// CustomerId The tenant's customer.
+	CustomerId *string `json:"customer_id,omitempty"`
+
+	// CustomerName The customer's name.
+	CustomerName *string `json:"customer_name,omitempty"`
+
+	// Failures Calls that failed (refused or errored).
+	Failures *int `json:"failures,omitempty"`
+
+	// KeyAliases Their aliases.
+	KeyAliases *[]string `json:"key_aliases,omitempty"`
+
+	// Keys Keys with usage this month.
+	Keys int `json:"keys"`
+
+	// LastSeen The last call in the month.
+	LastSeen *time.Time `json:"last_seen,omitempty"`
+
+	// PromptTokens Input tokens.
+	PromptTokens *int `json:"prompt_tokens,omitempty"`
+
+	// RateBases Every basis that priced something.
+	RateBases *[]string `json:"rate_bases,omitempty"`
+
+	// RateBasis Which rate priced it: `plan` (the tenant's own rate), `list` (the rate card), `contract_included` (an active contract includes metered AI: 0 EUR), `none` (no rate: not priced) or `pending` (the rates could not be read just now; usage is still shown).
+	RateBasis *string `json:"rate_basis,omitempty"`
+
+	// RatedComplete Every token was priced; false when a tier had no rate (a floor).
+	RatedComplete *bool `json:"rated_complete,omitempty"`
+
+	// RatedEur EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing. The unattributed bucket is priced at the list rate, for information: it is billed to nobody.
+	RatedEur *float64 `json:"rated_eur,omitempty"`
+
+	// ShadowUsd The AI gateway's own price in USD (its shadow price, used for budget enforcement on the gateway). Not the bill: the bill is `rated_eur`.
+	ShadowUsd *float64 `json:"shadow_usd,omitempty"`
+
+	// TenantId The tenant; null for the unattributed bucket (keys no tenant could be found for).
+	TenantId *string `json:"tenant_id,omitempty"`
+
+	// TenantName The tenant's display name.
+	TenantName *string `json:"tenant_name,omitempty"`
+
+	// TenantSlug The tenant's slug.
+	TenantSlug *string `json:"tenant_slug,omitempty"`
+
+	// TotalTokens Input and output tokens together.
+	TotalTokens *int `json:"total_tokens,omitempty"`
+
+	// UnratedTiers Tiers without a rate.
+	UnratedTiers *[]string `json:"unrated_tiers,omitempty"`
 }
 
 // GitLabGroupStatus The customer's top-level GitLab group as GitLab reports it right now.
@@ -6709,6 +6982,116 @@ type Tenant struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+// TenantAiRatePlan A tenant's own AI rates (its rate plan): per tier, a price instead of the list
+// rate. A tier without one costs the list rate.
+type TenantAiRatePlan struct {
+	// AsOf Today, in the billing time zone.
+	AsOf openapi_types.Date `json:"as_of"`
+
+	// Changed After a `PUT`: false when the same plan was already in force (nothing changed or recorded). Null on a read.
+	Changed *bool `json:"changed,omitempty"`
+
+	// Contract That contract; null when none.
+	Contract *AiRatePlanContract `json:"contract,omitempty"`
+
+	// ContractIncluded True while an active contract includes metered AI: it is priced at 0 EUR.
+	ContractIncluded *bool `json:"contract_included,omitempty"`
+
+	// Currency Always `EUR`.
+	Currency *string `json:"currency,omitempty"`
+
+	// Effective What each tier costs the tenant today and why, the list rate beside it.
+	Effective *[]AiEffectiveRate `json:"effective,omitempty"`
+
+	// History Every plan rate ever set, newest first.
+	History *[]AiRate `json:"history,omitempty"`
+
+	// Rates The plan's rates in force today, by tier; empty when the tenant pays the list rate.
+	Rates *[]AiRate `json:"rates,omitempty"`
+
+	// TenantId The tenant (`id` on a tenant).
+	TenantId string `json:"tenant_id"`
+
+	// TenantName The tenant's display name.
+	TenantName *string `json:"tenant_name,omitempty"`
+
+	// Unit Always `1M tokens`.
+	Unit *string `json:"unit,omitempty"`
+
+	// Upcoming Scheduled changes of the plan.
+	Upcoming *[]AiRate `json:"upcoming,omitempty"`
+
+	// Warnings What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person. Always empty on a read.
+	Warnings *[]ApiWarning `json:"warnings,omitempty"`
+}
+
+// TenantAiRatePlanPut The tenant's WHOLE plan. A tier in `rates` costs the tenant that rate from
+// `valid_from`; a tier LEFT OUT goes back to the list rate from that day; `[]` ends the
+// plan.
+type TenantAiRatePlanPut struct {
+	// Rates One entry per tier, each tier at most once; `[]` = no plan.
+	Rates []AiRatePlanRateIn `json:"rates"`
+
+	// ValidFrom The first billing day the plan applies; default today. Same bounds as on the rate card.
+	ValidFrom *openapi_types.Date `json:"valid_from,omitempty"`
+}
+
+// TenantAiUsage One tenant's AI usage for a month, rated, operator view: totals, per key (and per
+// tier and model under each key), per tier, per day, the month-end forecast and the
+// budget.
+type TenantAiUsage struct {
+	// Budget The monthly AI budget against the spend; null when the tenant has no `ai_budget_eur_month` quota.
+	Budget *UsageBudget `json:"budget,omitempty"`
+
+	// ByDay Per billing day, from the first of the month to today (or the month's end).
+	ByDay *[]UsageDay `json:"by_day,omitempty"`
+
+	// ByKey Per key, heaviest first.
+	ByKey *[]UsageKey `json:"by_key,omitempty"`
+
+	// ByTier Per serving tier, heaviest first.
+	ByTier *[]UsageTier `json:"by_tier,omitempty"`
+
+	// Forecast The month-end projection.
+	Forecast UsageForecast `json:"forecast"`
+
+	// Month The month, `YYYY-MM`, in the billing time zone.
+	Month string `json:"month"`
+
+	// OldestMonth The tenant's oldest month with usage, `YYYY-MM`; null when none.
+	OldestMonth *string `json:"oldest_month,omitempty"`
+
+	// RateBases Every basis that priced something this month.
+	RateBases *[]string `json:"rate_bases,omitempty"`
+
+	// RateBasis Which rate priced it: `plan` (the tenant's own rate), `list` (the rate card), `contract_included` (an active contract includes metered AI: 0 EUR), `none` (no rate: not priced) or `pending` (the rates could not be read just now; usage is still shown). For the month: `plan` when any day used the tenant's own rate.
+	RateBasis *string `json:"rate_basis,omitempty"`
+
+	// RatedComplete Every token was priced; false when a tier had no rate (a floor).
+	RatedComplete *bool `json:"rated_complete,omitempty"`
+
+	// RatedEur EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing.
+	RatedEur *float64 `json:"rated_eur,omitempty"`
+
+	// TenantId The tenant (`id` on a tenant).
+	TenantId string `json:"tenant_id"`
+
+	// TenantName The tenant's display name.
+	TenantName *string `json:"tenant_name,omitempty"`
+
+	// TenantSlug The tenant's slug.
+	TenantSlug *string `json:"tenant_slug,omitempty"`
+
+	// Totals The month's counts.
+	Totals UsageCounts `json:"totals"`
+
+	// Tz The billing time zone, e.g. `Europe/Budapest`.
+	Tz string `json:"tz"`
+
+	// UnratedTiers Tiers used this month that have no rate: not priced, so `rated_eur` is a floor.
+	UnratedTiers *[]string `json:"unrated_tiers,omitempty"`
+}
+
 // TenantCreate A further tenant of an existing customer.
 type TenantCreate struct {
 	// CustomerId The customer the tenant belongs to. Frozen after create.
@@ -6861,6 +7244,212 @@ type TenantQuotas struct {
 type TenantQuotasPut struct {
 	// Quotas One entry per dimension that has a limit, each dimension at most once. An empty list removes every limit.
 	Quotas []TenantQuotaIn `json:"quotas"`
+}
+
+// UsageBudget The tenant's monthly AI budget (its `ai_budget_eur_month` quota) against the
+// rated spend.
+type UsageBudget struct {
+	// Complete False when `spent` is a floor (a tier had no rate).
+	Complete *bool `json:"complete,omitempty"`
+
+	// EnforcedOnGateway True for `hard_cap`: the gateway stops the keys at the limit.
+	EnforcedOnGateway *bool `json:"enforced_on_gateway,omitempty"`
+
+	// Forecast Projected EUR at month end.
+	Forecast *float64 `json:"forecast,omitempty"`
+
+	// ForecastPct `forecast` as a percentage of `limit`.
+	ForecastPct *float64 `json:"forecast_pct,omitempty"`
+
+	// Limit The budget, EUR per month.
+	Limit float64 `json:"limit"`
+
+	// Pct `spent` as a percentage of `limit`.
+	Pct *float64 `json:"pct,omitempty"`
+
+	// Policy The quota's policy: `auto` and `approve_always` alert only; `hard_cap` stops the tenant's keys on the gateway at the limit.
+	Policy *string `json:"policy,omitempty"`
+
+	// Spent Rated EUR this month; null when not known.
+	Spent *float64 `json:"spent,omitempty"`
+
+	// State `ok`, `warn` (80 % or more), `reached` (100 % or more) or `unknown`.
+	State string `json:"state"`
+}
+
+// UsageCounts Call and token counts.
+type UsageCounts struct {
+	// CacheHits Calls answered from the gateway's cache.
+	CacheHits *int `json:"cache_hits,omitempty"`
+
+	// Calls Calls.
+	Calls *int `json:"calls,omitempty"`
+
+	// CompletionTokens Output tokens.
+	CompletionTokens *int `json:"completion_tokens,omitempty"`
+
+	// Failures Calls that failed (refused or errored).
+	Failures *int `json:"failures,omitempty"`
+
+	// PromptTokens Input tokens.
+	PromptTokens *int `json:"prompt_tokens,omitempty"`
+
+	// ShadowUsd The AI gateway's own price in USD (its shadow price, used for budget enforcement on the gateway). Not the bill: the bill is `rated_eur`.
+	ShadowUsd *float64 `json:"shadow_usd,omitempty"`
+
+	// TotalTokens Input and output tokens together.
+	TotalTokens *int `json:"total_tokens,omitempty"`
+}
+
+// UsageDay One billing day of the month, zero when nothing was used.
+type UsageDay struct {
+	// Calls Calls.
+	Calls *int `json:"calls,omitempty"`
+
+	// Day The billing day (in the billing time zone, `tz`).
+	Day openapi_types.Date `json:"day"`
+
+	// RatedEur EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing.
+	RatedEur *float64 `json:"rated_eur,omitempty"`
+
+	// ShadowUsd The AI gateway's own price in USD (its shadow price, used for budget enforcement on the gateway). Not the bill: the bill is `rated_eur`.
+	ShadowUsd *float64 `json:"shadow_usd,omitempty"`
+
+	// TotalTokens Tokens.
+	TotalTokens *int `json:"total_tokens,omitempty"`
+}
+
+// UsageForecast The month-end projection: month to date divided by the elapsed days, times the
+// days in the month. A past month projects to its total.
+type UsageForecast struct {
+	// Calls Projected calls.
+	Calls int `json:"calls"`
+
+	// DaysInMonth Days in the month.
+	DaysInMonth int `json:"days_in_month"`
+
+	// ElapsedDays Billing days elapsed, today included.
+	ElapsedDays int `json:"elapsed_days"`
+
+	// RatedEur Projected EUR; null when not priced.
+	RatedEur *float64 `json:"rated_eur,omitempty"`
+
+	// ShadowUsd Projected shadow price in USD.
+	ShadowUsd *float64 `json:"shadow_usd,omitempty"`
+
+	// TotalTokens Projected tokens.
+	TotalTokens int `json:"total_tokens"`
+}
+
+// UsageKey One AI gateway key's month.
+type UsageKey struct {
+	// App Its application, when known.
+	App *string `json:"app,omitempty"`
+
+	// Attribution How the key was tied to its tenant: `registry` (a registered key), `map` (an operator's mapping), `project` (the key's project) or `unattributed`.
+	Attribution *string `json:"attribution,omitempty"`
+
+	// Env Its environment (`dev`, `uat`, `prod`), when known.
+	Env *string `json:"env,omitempty"`
+
+	// KeyAlias The key's alias (never its value).
+	KeyAlias string `json:"key_alias"`
+
+	// LastSeen Its last call in the month.
+	LastSeen *time.Time `json:"last_seen,omitempty"`
+
+	// ProjectId Its project (`id` on a project), when known.
+	ProjectId *string `json:"project_id,omitempty"`
+
+	// RatedEur EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing.
+	RatedEur *float64 `json:"rated_eur,omitempty"`
+
+	// Rows Its usage per tier and model.
+	Rows *[]UsageTierModelRow `json:"rows,omitempty"`
+
+	// Totals Its counts for the month.
+	Totals UsageCounts `json:"totals"`
+}
+
+// UsageTier One serving tier's month, with the rate in force on the last day shown.
+type UsageTier struct {
+	// CacheHits Calls answered from the gateway's cache.
+	CacheHits *int `json:"cache_hits,omitempty"`
+
+	// Calls Calls.
+	Calls *int `json:"calls,omitempty"`
+
+	// CompletionTokens Output tokens.
+	CompletionTokens *int `json:"completion_tokens,omitempty"`
+
+	// EurPer1mInput EUR per one million input (prompt) tokens. The rate on the last day shown; null without one.
+	EurPer1mInput *float64 `json:"eur_per_1m_input,omitempty"`
+
+	// EurPer1mOutput EUR per one million output (completion) tokens. The rate on the last day shown; null without one.
+	EurPer1mOutput *float64 `json:"eur_per_1m_output,omitempty"`
+
+	// Failures Calls that failed (refused or errored).
+	Failures *int `json:"failures,omitempty"`
+
+	// PromptTokens Input tokens.
+	PromptTokens *int `json:"prompt_tokens,omitempty"`
+
+	// RateBasis Which rate priced it: `plan` (the tenant's own rate), `list` (the rate card), `contract_included` (an active contract includes metered AI: 0 EUR), `none` (no rate: not priced) or `pending` (the rates could not be read just now; usage is still shown).
+	RateBasis *string `json:"rate_basis,omitempty"`
+
+	// RatedComplete Every token was priced; false when a tier had no rate (a floor).
+	RatedComplete *bool `json:"rated_complete,omitempty"`
+
+	// RatedEur EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing.
+	RatedEur *float64 `json:"rated_eur,omitempty"`
+
+	// ShadowUsd The AI gateway's own price in USD (its shadow price, used for budget enforcement on the gateway). Not the bill: the bill is `rated_eur`.
+	ShadowUsd *float64 `json:"shadow_usd,omitempty"`
+
+	// Tier The serving tier, e.g. `general`, `code`, `embed`.
+	Tier string `json:"tier"`
+
+	// TotalTokens Input and output tokens together.
+	TotalTokens *int `json:"total_tokens,omitempty"`
+}
+
+// UsageTierModelRow One key's usage of one tier and model in the month.
+type UsageTierModelRow struct {
+	// CacheHits Calls answered from the gateway's cache.
+	CacheHits *int `json:"cache_hits,omitempty"`
+
+	// Calls Calls.
+	Calls *int `json:"calls,omitempty"`
+
+	// CompletionTokens Output tokens.
+	CompletionTokens *int `json:"completion_tokens,omitempty"`
+
+	// Failures Calls that failed (refused or errored).
+	Failures *int `json:"failures,omitempty"`
+
+	// Model The model that served it.
+	Model string `json:"model"`
+
+	// PromptTokens Input tokens.
+	PromptTokens *int `json:"prompt_tokens,omitempty"`
+
+	// RateBasis Which rate priced it: `plan` (the tenant's own rate), `list` (the rate card), `contract_included` (an active contract includes metered AI: 0 EUR), `none` (no rate: not priced) or `pending` (the rates could not be read just now; usage is still shown).
+	RateBasis *string `json:"rate_basis,omitempty"`
+
+	// RatedComplete Every token was priced; false when a tier had no rate (a floor).
+	RatedComplete *bool `json:"rated_complete,omitempty"`
+
+	// RatedEur EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing.
+	RatedEur *float64 `json:"rated_eur,omitempty"`
+
+	// ShadowUsd The AI gateway's own price in USD (its shadow price, used for budget enforcement on the gateway). Not the bill: the bill is `rated_eur`.
+	ShadowUsd *float64 `json:"shadow_usd,omitempty"`
+
+	// Tier The serving tier, e.g. `general`, `code`, `embed`.
+	Tier string `json:"tier"`
+
+	// TotalTokens Input and output tokens together.
+	TotalTokens *int `json:"total_tokens,omitempty"`
 }
 
 // User A person on this platform, or a service account. Never carries a password
@@ -7199,6 +7788,12 @@ type AiGatewayTiersListParams struct {
 
 	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// AiGatewayUsageGetParams defines parameters for AiGatewayUsageGet.
+type AiGatewayUsageGetParams struct {
+	// Month The month, `YYYY-MM`, in the billing time zone; default the current month.
+	Month *string `form:"month,omitempty" json:"month,omitempty"`
 }
 
 // AiNodesListParams defines parameters for AiNodesList.
@@ -7611,6 +8206,18 @@ type TenantsCreateParams struct {
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
+// TenantAiUsageGetParams defines parameters for TenantAiUsageGet.
+type TenantAiUsageGetParams struct {
+	// Month The month, `YYYY-MM`, in the billing time zone; default the current month.
+	Month *string `form:"month,omitempty" json:"month,omitempty"`
+
+	// Format `json` (default), or `csv`: one row per day, key, tier and model.
+	Format *TenantAiUsageGetParamsFormat `form:"format,omitempty" json:"format,omitempty"`
+}
+
+// TenantAiUsageGetParamsFormat defines parameters for TenantAiUsageGet.
+type TenantAiUsageGetParamsFormat string
+
 // TenantMembershipsListParams defines parameters for TenantMembershipsList.
 type TenantMembershipsListParams struct {
 	// Limit Page size.
@@ -7707,6 +8314,9 @@ type AiGatewayKeysRotateJSONRequestBody = GatewayKeyRotation
 // AiGatewayTiersPutJSONRequestBody defines body for AiGatewayTiersPut for application/json ContentType.
 type AiGatewayTiersPutJSONRequestBody = ServingTierPut
 
+// AiRateCardPutJSONRequestBody defines body for AiRateCardPut for application/json ContentType.
+type AiRateCardPutJSONRequestBody = AiRateCardPut
+
 // BrandPutJSONRequestBody defines body for BrandPut for application/json ContentType.
 type BrandPutJSONRequestBody = BrandPut
 
@@ -7763,6 +8373,9 @@ type TenantsUpdateJSONRequestBody = TenantPatch
 
 // TenantsUpdateApplicationMergePatchPlusJSONRequestBody defines body for TenantsUpdate for application/merge-patch+json ContentType.
 type TenantsUpdateApplicationMergePatchPlusJSONRequestBody = TenantPatch
+
+// TenantAiRatePlanPutJSONRequestBody defines body for TenantAiRatePlanPut for application/json ContentType.
+type TenantAiRatePlanPutJSONRequestBody = TenantAiRatePlanPut
 
 // TenantMembershipsPutJSONRequestBody defines body for TenantMembershipsPut for application/json ContentType.
 type TenantMembershipsPutJSONRequestBody = MembershipPut
@@ -8985,6 +9598,13 @@ type ClientInterface interface {
 	// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
 	AiGatewayTiersPut(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// AiGatewayUsageGet Every tenant's AI usage
+	//
+	// Every tenant's AI gateway usage for a month, heaviest first, each rated at its own rate, and the unattributed bucket (keys no tenant could be found for, priced at the list rate for information and billed to nobody). EUR is rated when read: each day's tokens at the rate in force that day — the tenant's own rate (its plan), else the list rate (the rate card); an active contract that includes metered AI prices it at 0. A tier without a rate is never priced as 0: it is null, named in `unrated_tiers`, and every total is then a floor (`rated_complete` false).
+	//
+	// Corresponds with GET /ai/gateway/usage (the `AiGatewayUsageGet` operationId).
+	AiGatewayUsageGet(ctx context.Context, params *AiGatewayUsageGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// AiNodesList List AI nodes
 	//
 	// The AI fleet. Roster fields are always present; live fields are null when monitoring cannot be read (`monitoring_reachable: false`). Never 503.
@@ -8998,6 +9618,31 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /ai/nodes/{hostname} (the `AiNodesGet` operationId).
 	AiNodesGet(ctx context.Context, hostname string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiRateCardGet The AI rate card
+	//
+	// The platform's list rate per serving tier, EUR per one million input and output tokens: in force today (`current`), the next scheduled change (`upcoming`), and the whole history. Tiers the platform knows (from its pricebook or its usage) appear even without a rate, `current` null: their usage is not priced until one is set. A tenant with its own rate (`/tenants/{tenant_id}/ai-rate-plan`) pays that instead.
+	//
+	// Corresponds with GET /ai/rate-card (the `AiRateCardGet` operationId).
+	AiRateCardGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiRateCardPutWithBody Set a tier's list rate
+	//
+	// Sets the list rate of one serving tier from `valid_from` (default today): the rate in force that day is closed the day before. A later `valid_from` schedules the change; while one is scheduled, another later one edits it instead of stacking a second. The rate already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Rating is at read time: a rate starting in the past re-prices the usage since then. Recorded in the audit log as `ai_rate_card.set`. There is no delete: a list rate is replaced, never removed.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /ai/rate-card/{tier} (the `AiRateCardPut` operationId).
+	AiRateCardPutWithBody(ctx context.Context, tier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AiRateCardPut Set a tier's list rate
+	//
+	// Sets the list rate of one serving tier from `valid_from` (default today): the rate in force that day is closed the day before. A later `valid_from` schedules the change; while one is scheduled, another later one edits it instead of stacking a second. The rate already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Rating is at read time: a rate starting in the past re-prices the usage since then. Recorded in the audit log as `ai_rate_card.set`. There is no delete: a list rate is replaced, never removed.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /ai/rate-card/{tier} (the `AiRateCardPut` operationId).
+	AiRateCardPut(ctx context.Context, tier string, body AiRateCardPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// AuditEventsList List audit events
 	//
@@ -9658,6 +10303,47 @@ type ClientInterface interface {
 	// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
 	TenantsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, tenantId string, body TenantsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// TenantAiRatePlanDelete End a tenant's AI rates
+	//
+	// Ends the tenant's rate plan today: every tier goes back to the list rate. The history stays (a rate that applied is never deleted, so past usage keeps its price). Not destroy-gated: it changes a price, it removes nothing; it needs the write permission only. Recorded in the audit log as `ai_rate_plan.delete`.
+	//
+	// Corresponds with DELETE /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanDelete` operationId).
+	TenantAiRatePlanDelete(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantAiRatePlanGet A tenant's AI rates
+	//
+	// The tenant's own AI rates in force today (`rates`; empty: it pays the list rate), any scheduled change, the effective rate per tier with its basis next to the list rate, whether a contract includes metered AI, and the history.
+	//
+	// Corresponds with GET /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanGet` operationId).
+	TenantAiRatePlanGet(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantAiRatePlanPutWithBody Replace a tenant's AI rates
+	//
+	// Replaces the tenant's WHOLE rate plan from `valid_from` (default today): a tier in `rates` costs the tenant that rate; a tier LEFT OUT goes back to the list rate from that day; `{"rates": []}` ends the plan (as `DELETE` does). The plan already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Recorded in the audit log as `ai_rate_plan.set`.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanPut` operationId).
+	TenantAiRatePlanPutWithBody(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantAiRatePlanPut Replace a tenant's AI rates
+	//
+	// Replaces the tenant's WHOLE rate plan from `valid_from` (default today): a tier in `rates` costs the tenant that rate; a tier LEFT OUT goes back to the list rate from that day; `{"rates": []}` ends the plan (as `DELETE` does). The plan already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Recorded in the audit log as `ai_rate_plan.set`.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanPut` operationId).
+	TenantAiRatePlanPut(ctx context.Context, tenantId string, body TenantAiRatePlanPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TenantAiUsageGet A tenant's AI usage
+	//
+	// One tenant's AI gateway usage for a month, from the daily usage ledger, rated: totals, per key (and per tier and model under each key), per tier with the rate on the last day, per day, the month-end forecast and the monthly AI budget against the spend. This is the operator's view: each key's attribution and the gateway's own shadow price (`shadow_usd`) are included. EUR is rated when read: each day's tokens at the rate in force that day — the tenant's own rate (its plan), else the list rate (the rate card); an active contract that includes metered AI prices it at 0. A tier without a rate is never priced as 0: it is null, named in `unrated_tiers`, and every total is then a floor (`rated_complete` false). Days are billing days in the billing time zone (`tz`); today's day fills as the ledger rolls up (every 15 minutes).
+	//
+	// With `format=csv`: `text/csv`, one row per day, key, tier and model, header first (`month, day, key_alias, env, app, tier, model, calls, prompt_tokens, completion_tokens, total_tokens, failures, cache_hits, rated_eur, rate_basis, organization_id, project_id, attribution, shadow_usd`), as an attachment named `ai-usage-<tenant slug>-<month>.csv`. A text cell a spreadsheet would run as a formula starts with a quote.
+	//
+	// Corresponds with GET /tenants/{tenant_id}/ai-usage (the `TenantAiUsageGet` operationId).
+	TenantAiUsageGet(ctx context.Context, tenantId string, params *TenantAiUsageGetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// TenantMembershipsList A tenant's memberships
 	//
 	// The tenant's members and their roles, in `user_id` order.
@@ -9718,6 +10404,8 @@ type ClientInterface interface {
 	//
 	// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
 	//
+	// An `ai_budget_eur_month` limit saved with `hard_cap` is also enforced by the AI gateway: every live key of the tenant gets a spending cap (its share of the month's remaining budget), and saving again re-splits it; leaving `hard_cap` removes the caps. If the gateway cannot be reached the quotas are still replaced and the answer carries the warning `ai_budget_enforcement_pending` (no key was capped yet) or `ai_budget_enforcement_partial` (some keys were); save again to retry. Any other policy never touches the keys.
+	//
 	// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
 	//
 	// Takes any type of body and a specified content type.
@@ -9728,6 +10416,8 @@ type ClientInterface interface {
 	// TenantQuotasPut Replace a tenant's quotas
 	//
 	// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+	//
+	// An `ai_budget_eur_month` limit saved with `hard_cap` is also enforced by the AI gateway: every live key of the tenant gets a spending cap (its share of the month's remaining budget), and saving again re-splits it; leaving `hard_cap` removes the caps. If the gateway cannot be reached the quotas are still replaced and the answer carries the warning `ai_budget_enforcement_pending` (no key was capped yet) or `ai_budget_enforcement_partial` (some keys were); save again to retry. Any other policy never touches the keys.
 	//
 	// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
 	//
@@ -10458,6 +11148,23 @@ func (c *Client) AiGatewayTiersPut(ctx context.Context, key string, body AiGatew
 	return c.Client.Do(req)
 }
 
+// AiGatewayUsageGet Every tenant's AI usage
+//
+// Every tenant's AI gateway usage for a month, heaviest first, each rated at its own rate, and the unattributed bucket (keys no tenant could be found for, priced at the list rate for information and billed to nobody). EUR is rated when read: each day's tokens at the rate in force that day — the tenant's own rate (its plan), else the list rate (the rate card); an active contract that includes metered AI prices it at 0. A tier without a rate is never priced as 0: it is null, named in `unrated_tiers`, and every total is then a floor (`rated_complete` false).
+//
+// Corresponds with GET /ai/gateway/usage (the `AiGatewayUsageGet` operationId).
+func (c *Client) AiGatewayUsageGet(ctx context.Context, params *AiGatewayUsageGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiGatewayUsageGetRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // AiNodesList List AI nodes
 //
 // The AI fleet. Roster fields are always present; live fields are null when monitoring cannot be read (`monitoring_reachable: false`). Never 503.
@@ -10482,6 +11189,61 @@ func (c *Client) AiNodesList(ctx context.Context, params *AiNodesListParams, req
 // Corresponds with GET /ai/nodes/{hostname} (the `AiNodesGet` operationId).
 func (c *Client) AiNodesGet(ctx context.Context, hostname string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAiNodesGetRequest(c.Server, hostname)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiRateCardGet The AI rate card
+//
+// The platform's list rate per serving tier, EUR per one million input and output tokens: in force today (`current`), the next scheduled change (`upcoming`), and the whole history. Tiers the platform knows (from its pricebook or its usage) appear even without a rate, `current` null: their usage is not priced until one is set. A tenant with its own rate (`/tenants/{tenant_id}/ai-rate-plan`) pays that instead.
+//
+// Corresponds with GET /ai/rate-card (the `AiRateCardGet` operationId).
+func (c *Client) AiRateCardGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiRateCardGetRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiRateCardPutWithBody Set a tier's list rate
+//
+// Sets the list rate of one serving tier from `valid_from` (default today): the rate in force that day is closed the day before. A later `valid_from` schedules the change; while one is scheduled, another later one edits it instead of stacking a second. The rate already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Rating is at read time: a rate starting in the past re-prices the usage since then. Recorded in the audit log as `ai_rate_card.set`. There is no delete: a list rate is replaced, never removed.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /ai/rate-card/{tier} (the `AiRateCardPut` operationId).
+func (c *Client) AiRateCardPutWithBody(ctx context.Context, tier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiRateCardPutRequestWithBody(c.Server, tier, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AiRateCardPut Set a tier's list rate
+//
+// Sets the list rate of one serving tier from `valid_from` (default today): the rate in force that day is closed the day before. A later `valid_from` schedules the change; while one is scheduled, another later one edits it instead of stacking a second. The rate already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Rating is at read time: a rate starting in the past re-prices the usage since then. Recorded in the audit log as `ai_rate_card.set`. There is no delete: a list rate is replaced, never removed.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /ai/rate-card/{tier} (the `AiRateCardPut` operationId).
+func (c *Client) AiRateCardPut(ctx context.Context, tier string, body AiRateCardPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAiRateCardPutRequest(c.Server, tier, body)
 	if err != nil {
 		return nil, err
 	}
@@ -11811,6 +12573,97 @@ func (c *Client) TenantsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.
 	return c.Client.Do(req)
 }
 
+// TenantAiRatePlanDelete End a tenant's AI rates
+//
+// Ends the tenant's rate plan today: every tier goes back to the list rate. The history stays (a rate that applied is never deleted, so past usage keeps its price). Not destroy-gated: it changes a price, it removes nothing; it needs the write permission only. Recorded in the audit log as `ai_rate_plan.delete`.
+//
+// Corresponds with DELETE /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanDelete` operationId).
+func (c *Client) TenantAiRatePlanDelete(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantAiRatePlanDeleteRequest(c.Server, tenantId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantAiRatePlanGet A tenant's AI rates
+//
+// The tenant's own AI rates in force today (`rates`; empty: it pays the list rate), any scheduled change, the effective rate per tier with its basis next to the list rate, whether a contract includes metered AI, and the history.
+//
+// Corresponds with GET /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanGet` operationId).
+func (c *Client) TenantAiRatePlanGet(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantAiRatePlanGetRequest(c.Server, tenantId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantAiRatePlanPutWithBody Replace a tenant's AI rates
+//
+// Replaces the tenant's WHOLE rate plan from `valid_from` (default today): a tier in `rates` costs the tenant that rate; a tier LEFT OUT goes back to the list rate from that day; `{"rates": []}` ends the plan (as `DELETE` does). The plan already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Recorded in the audit log as `ai_rate_plan.set`.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanPut` operationId).
+func (c *Client) TenantAiRatePlanPutWithBody(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantAiRatePlanPutRequestWithBody(c.Server, tenantId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantAiRatePlanPut Replace a tenant's AI rates
+//
+// Replaces the tenant's WHOLE rate plan from `valid_from` (default today): a tier in `rates` costs the tenant that rate; a tier LEFT OUT goes back to the list rate from that day; `{"rates": []}` ends the plan (as `DELETE` does). The plan already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Recorded in the audit log as `ai_rate_plan.set`.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanPut` operationId).
+func (c *Client) TenantAiRatePlanPut(ctx context.Context, tenantId string, body TenantAiRatePlanPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantAiRatePlanPutRequest(c.Server, tenantId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// TenantAiUsageGet A tenant's AI usage
+//
+// One tenant's AI gateway usage for a month, from the daily usage ledger, rated: totals, per key (and per tier and model under each key), per tier with the rate on the last day, per day, the month-end forecast and the monthly AI budget against the spend. This is the operator's view: each key's attribution and the gateway's own shadow price (`shadow_usd`) are included. EUR is rated when read: each day's tokens at the rate in force that day — the tenant's own rate (its plan), else the list rate (the rate card); an active contract that includes metered AI prices it at 0. A tier without a rate is never priced as 0: it is null, named in `unrated_tiers`, and every total is then a floor (`rated_complete` false). Days are billing days in the billing time zone (`tz`); today's day fills as the ledger rolls up (every 15 minutes).
+//
+// With `format=csv`: `text/csv`, one row per day, key, tier and model, header first (`month, day, key_alias, env, app, tier, model, calls, prompt_tokens, completion_tokens, total_tokens, failures, cache_hits, rated_eur, rate_basis, organization_id, project_id, attribution, shadow_usd`), as an attachment named `ai-usage-<tenant slug>-<month>.csv`. A text cell a spreadsheet would run as a formula starts with a quote.
+//
+// Corresponds with GET /tenants/{tenant_id}/ai-usage (the `TenantAiUsageGet` operationId).
+func (c *Client) TenantAiUsageGet(ctx context.Context, tenantId string, params *TenantAiUsageGetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTenantAiUsageGetRequest(c.Server, tenantId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // TenantMembershipsList A tenant's memberships
 //
 // The tenant's members and their roles, in `user_id` order.
@@ -11941,6 +12794,8 @@ func (c *Client) TenantQuotasGet(ctx context.Context, tenantId string, reqEditor
 //
 // Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
 //
+// An `ai_budget_eur_month` limit saved with `hard_cap` is also enforced by the AI gateway: every live key of the tenant gets a spending cap (its share of the month's remaining budget), and saving again re-splits it; leaving `hard_cap` removes the caps. If the gateway cannot be reached the quotas are still replaced and the answer carries the warning `ai_budget_enforcement_pending` (no key was capped yet) or `ai_budget_enforcement_partial` (some keys were); save again to retry. Any other policy never touches the keys.
+//
 // Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
 //
 // Takes any type of body and a specified content type.
@@ -11961,6 +12816,8 @@ func (c *Client) TenantQuotasPutWithBody(ctx context.Context, tenantId string, c
 // TenantQuotasPut Replace a tenant's quotas
 //
 // Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+//
+// An `ai_budget_eur_month` limit saved with `hard_cap` is also enforced by the AI gateway: every live key of the tenant gets a spending cap (its share of the month's remaining budget), and saving again re-splits it; leaving `hard_cap` removes the caps. If the gateway cannot be reached the quotas are still replaced and the answer carries the warning `ai_budget_enforcement_pending` (no key was capped yet) or `ai_budget_enforcement_partial` (some keys were); save again to retry. Any other policy never touches the keys.
 //
 // Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
 //
@@ -13585,6 +14442,60 @@ func NewAiGatewayTiersPutRequestWithBody(server string, key string, contentType 
 	return req, nil
 }
 
+// NewAiGatewayUsageGetRequest constructs an http.Request for the AiGatewayUsageGet method
+func NewAiGatewayUsageGetRequest(server string, params *AiGatewayUsageGetParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/gateway/usage")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Month != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "month", *params.Month, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewAiNodesListRequest constructs an http.Request for the AiNodesList method
 func NewAiNodesListRequest(server string, params *AiNodesListParams) (*http.Request, error) {
 	var err error
@@ -13681,6 +14592,80 @@ func NewAiNodesGetRequest(server string, hostname string) (*http.Request, error)
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewAiRateCardGetRequest constructs an http.Request for the AiRateCardGet method
+func NewAiRateCardGetRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/rate-card")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAiRateCardPutRequest calls the generic AiRateCardPut builder with application/json body
+func NewAiRateCardPutRequest(server string, tier string, body AiRateCardPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAiRateCardPutRequestWithBody(server, tier, "application/json", bodyReader)
+}
+
+// NewAiRateCardPutRequestWithBody constructs an http.Request for the AiRateCardPut method, with any body, and a specified content type
+func NewAiRateCardPutRequestWithBody(server string, tier string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tier", tier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ai/rate-card/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -16209,6 +17194,194 @@ func NewTenantsUpdateRequestWithBody(server string, tenantId string, contentType
 	return req, nil
 }
 
+// NewTenantAiRatePlanDeleteRequest constructs an http.Request for the TenantAiRatePlanDelete method
+func NewTenantAiRatePlanDeleteRequest(server string, tenantId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/ai-rate-plan", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTenantAiRatePlanGetRequest constructs an http.Request for the TenantAiRatePlanGet method
+func NewTenantAiRatePlanGetRequest(server string, tenantId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/ai-rate-plan", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTenantAiRatePlanPutRequest calls the generic TenantAiRatePlanPut builder with application/json body
+func NewTenantAiRatePlanPutRequest(server string, tenantId string, body TenantAiRatePlanPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewTenantAiRatePlanPutRequestWithBody(server, tenantId, "application/json", bodyReader)
+}
+
+// NewTenantAiRatePlanPutRequestWithBody constructs an http.Request for the TenantAiRatePlanPut method, with any body, and a specified content type
+func NewTenantAiRatePlanPutRequestWithBody(server string, tenantId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/ai-rate-plan", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewTenantAiUsageGetRequest constructs an http.Request for the TenantAiUsageGet method
+func NewTenantAiUsageGetRequest(server string, tenantId string, params *TenantAiUsageGetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "tenant_id", tenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tenants/%s/ai-usage", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Month != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "month", *params.Month, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Format != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "format", *params.Format, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewTenantMembershipsListRequest constructs an http.Request for the TenantMembershipsList method
 func NewTenantMembershipsListRequest(server string, tenantId string, params *TenantMembershipsListParams) (*http.Request, error) {
 	var err error
@@ -17502,6 +18675,15 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PUT /ai/gateway/tiers/{key} (the `AiGatewayTiersPut` operationId).
 	AiGatewayTiersPutWithResponse(ctx context.Context, key string, body AiGatewayTiersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*AiGatewayTiersPutResponse, error)
 
+	// AiGatewayUsageGetWithResponse Every tenant's AI usage
+	//
+	// Every tenant's AI gateway usage for a month, heaviest first, each rated at its own rate, and the unattributed bucket (keys no tenant could be found for, priced at the list rate for information and billed to nobody). EUR is rated when read: each day's tokens at the rate in force that day — the tenant's own rate (its plan), else the list rate (the rate card); an active contract that includes metered AI prices it at 0. A tier without a rate is never priced as 0: it is null, named in `unrated_tiers`, and every total is then a floor (`rated_complete` false).
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/gateway/usage (the `AiGatewayUsageGet` operationId).
+	AiGatewayUsageGetWithResponse(ctx context.Context, params *AiGatewayUsageGetParams, reqEditors ...RequestEditorFn) (*AiGatewayUsageGetResponse, error)
+
 	// AiNodesListWithResponse List AI nodes
 	//
 	// The AI fleet. Roster fields are always present; live fields are null when monitoring cannot be read (`monitoring_reachable: false`). Never 503.
@@ -17519,6 +18701,33 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /ai/nodes/{hostname} (the `AiNodesGet` operationId).
 	AiNodesGetWithResponse(ctx context.Context, hostname string, reqEditors ...RequestEditorFn) (*AiNodesGetResponse, error)
+
+	// AiRateCardGetWithResponse The AI rate card
+	//
+	// The platform's list rate per serving tier, EUR per one million input and output tokens: in force today (`current`), the next scheduled change (`upcoming`), and the whole history. Tiers the platform knows (from its pricebook or its usage) appear even without a rate, `current` null: their usage is not priced until one is set. A tenant with its own rate (`/tenants/{tenant_id}/ai-rate-plan`) pays that instead.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /ai/rate-card (the `AiRateCardGet` operationId).
+	AiRateCardGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AiRateCardGetResponse, error)
+
+	// AiRateCardPutWithBodyWithResponse Set a tier's list rate
+	//
+	// Sets the list rate of one serving tier from `valid_from` (default today): the rate in force that day is closed the day before. A later `valid_from` schedules the change; while one is scheduled, another later one edits it instead of stacking a second. The rate already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Rating is at read time: a rate starting in the past re-prices the usage since then. Recorded in the audit log as `ai_rate_card.set`. There is no delete: a list rate is replaced, never removed.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /ai/rate-card/{tier} (the `AiRateCardPut` operationId).
+	AiRateCardPutWithBodyWithResponse(ctx context.Context, tier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiRateCardPutResponse, error)
+
+	// AiRateCardPutWithResponse Set a tier's list rate
+	//
+	// Sets the list rate of one serving tier from `valid_from` (default today): the rate in force that day is closed the day before. A later `valid_from` schedules the change; while one is scheduled, another later one edits it instead of stacking a second. The rate already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Rating is at read time: a rate starting in the past re-prices the usage since then. Recorded in the audit log as `ai_rate_card.set`. There is no delete: a list rate is replaced, never removed.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /ai/rate-card/{tier} (the `AiRateCardPut` operationId).
+	AiRateCardPutWithResponse(ctx context.Context, tier string, body AiRateCardPutJSONRequestBody, reqEditors ...RequestEditorFn) (*AiRateCardPutResponse, error)
 
 	// AuditEventsListWithResponse List audit events
 	//
@@ -18247,6 +19456,53 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /tenants/{tenant_id} (the `TenantsUpdate` operationId).
 	TenantsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, tenantId string, body TenantsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantsUpdateResponse, error)
 
+	// TenantAiRatePlanDeleteWithResponse End a tenant's AI rates
+	//
+	// Ends the tenant's rate plan today: every tier goes back to the list rate. The history stays (a rate that applied is never deleted, so past usage keeps its price). Not destroy-gated: it changes a price, it removes nothing; it needs the write permission only. Recorded in the audit log as `ai_rate_plan.delete`.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanDelete` operationId).
+	TenantAiRatePlanDeleteWithResponse(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*TenantAiRatePlanDeleteResponse, error)
+
+	// TenantAiRatePlanGetWithResponse A tenant's AI rates
+	//
+	// The tenant's own AI rates in force today (`rates`; empty: it pays the list rate), any scheduled change, the effective rate per tier with its basis next to the list rate, whether a contract includes metered AI, and the history.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanGet` operationId).
+	TenantAiRatePlanGetWithResponse(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*TenantAiRatePlanGetResponse, error)
+
+	// TenantAiRatePlanPutWithBodyWithResponse Replace a tenant's AI rates
+	//
+	// Replaces the tenant's WHOLE rate plan from `valid_from` (default today): a tier in `rates` costs the tenant that rate; a tier LEFT OUT goes back to the list rate from that day; `{"rates": []}` ends the plan (as `DELETE` does). The plan already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Recorded in the audit log as `ai_rate_plan.set`.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanPut` operationId).
+	TenantAiRatePlanPutWithBodyWithResponse(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TenantAiRatePlanPutResponse, error)
+
+	// TenantAiRatePlanPutWithResponse Replace a tenant's AI rates
+	//
+	// Replaces the tenant's WHOLE rate plan from `valid_from` (default today): a tier in `rates` costs the tenant that rate; a tier LEFT OUT goes back to the list rate from that day; `{"rates": []}` ends the plan (as `DELETE` does). The plan already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Recorded in the audit log as `ai_rate_plan.set`.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanPut` operationId).
+	TenantAiRatePlanPutWithResponse(ctx context.Context, tenantId string, body TenantAiRatePlanPutJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantAiRatePlanPutResponse, error)
+
+	// TenantAiUsageGetWithResponse A tenant's AI usage
+	//
+	// One tenant's AI gateway usage for a month, from the daily usage ledger, rated: totals, per key (and per tier and model under each key), per tier with the rate on the last day, per day, the month-end forecast and the monthly AI budget against the spend. This is the operator's view: each key's attribution and the gateway's own shadow price (`shadow_usd`) are included. EUR is rated when read: each day's tokens at the rate in force that day — the tenant's own rate (its plan), else the list rate (the rate card); an active contract that includes metered AI prices it at 0. A tier without a rate is never priced as 0: it is null, named in `unrated_tiers`, and every total is then a floor (`rated_complete` false). Days are billing days in the billing time zone (`tz`); today's day fills as the ledger rolls up (every 15 minutes).
+	//
+	// With `format=csv`: `text/csv`, one row per day, key, tier and model, header first (`month, day, key_alias, env, app, tier, model, calls, prompt_tokens, completion_tokens, total_tokens, failures, cache_hits, rated_eur, rate_basis, organization_id, project_id, attribution, shadow_usd`), as an attachment named `ai-usage-<tenant slug>-<month>.csv`. A text cell a spreadsheet would run as a formula starts with a quote.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /tenants/{tenant_id}/ai-usage (the `TenantAiUsageGet` operationId).
+	TenantAiUsageGetWithResponse(ctx context.Context, tenantId string, params *TenantAiUsageGetParams, reqEditors ...RequestEditorFn) (*TenantAiUsageGetResponse, error)
+
 	// TenantMembershipsListWithResponse A tenant's memberships
 	//
 	// The tenant's members and their roles, in `user_id` order.
@@ -18317,6 +19573,8 @@ type ClientWithResponsesInterface interface {
 	//
 	// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
 	//
+	// An `ai_budget_eur_month` limit saved with `hard_cap` is also enforced by the AI gateway: every live key of the tenant gets a spending cap (its share of the month's remaining budget), and saving again re-splits it; leaving `hard_cap` removes the caps. If the gateway cannot be reached the quotas are still replaced and the answer carries the warning `ai_budget_enforcement_pending` (no key was capped yet) or `ai_budget_enforcement_partial` (some keys were); save again to retry. Any other policy never touches the keys.
+	//
 	// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -18327,6 +19585,8 @@ type ClientWithResponsesInterface interface {
 	// TenantQuotasPutWithResponse Replace a tenant's quotas
 	//
 	// Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+	//
+	// An `ai_budget_eur_month` limit saved with `hard_cap` is also enforced by the AI gateway: every live key of the tenant gets a spending cap (its share of the month's remaining budget), and saving again re-splits it; leaving `hard_cap` removes the caps. If the gateway cannot be reached the quotas are still replaced and the answer carries the warning `ai_budget_enforcement_pending` (no key was capped yet) or `ai_budget_enforcement_partial` (some keys were); save again to retry. Any other policy never touches the keys.
 	//
 	// Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
 	//
@@ -22977,6 +24237,183 @@ func (r AiGatewayTiersPutResponse) ContentType() string {
 	return ""
 }
 
+// AiGatewayUsageGetResponse200Headers the declared response headers of an HTTP 200 response for AiGatewayUsageGet
+type AiGatewayUsageGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// AiGatewayUsageGetResponse401Headers the declared response headers of an HTTP 401 response for AiGatewayUsageGet
+type AiGatewayUsageGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// AiGatewayUsageGetResponse403Headers the declared response headers of an HTTP 403 response for AiGatewayUsageGet
+type AiGatewayUsageGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// AiGatewayUsageGetResponse422Headers the declared response headers of an HTTP 422 response for AiGatewayUsageGet
+type AiGatewayUsageGetResponse422Headers struct {
+	XRequestID *string
+}
+
+// AiGatewayUsageGetResponse429Headers the declared response headers of an HTTP 429 response for AiGatewayUsageGet
+type AiGatewayUsageGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// AiGatewayUsageGetResponse503Headers the declared response headers of an HTTP 503 response for AiGatewayUsageGet
+type AiGatewayUsageGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// AiGatewayUsageGetResponseDefaultHeaders the declared response headers of an HTTP default response for AiGatewayUsageGet
+type AiGatewayUsageGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type AiGatewayUsageGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *GatewayAiUsage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *AiGatewayUsageGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *AiGatewayUsageGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *AiGatewayUsageGetResponse403Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *AiGatewayUsageGetResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *AiGatewayUsageGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *AiGatewayUsageGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *AiGatewayUsageGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiGatewayUsageGetResponse) GetJSON200() *GatewayAiUsage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r AiGatewayUsageGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r AiGatewayUsageGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r AiGatewayUsageGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r AiGatewayUsageGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AiGatewayUsageGetResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r AiGatewayUsageGetResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r AiGatewayUsageGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r AiGatewayUsageGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r AiGatewayUsageGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r AiGatewayUsageGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiGatewayUsageGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiGatewayUsageGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiGatewayUsageGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiGatewayUsageGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiGatewayUsageGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiGatewayUsageGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // AiNodesListResponse200Headers the declared response headers of an HTTP 200 response for AiNodesList
 type AiNodesListResponse200Headers struct {
 	XRequestID *string
@@ -23304,6 +24741,360 @@ func (r AiNodesGetResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AiNodesGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// AiRateCardGetResponse200Headers the declared response headers of an HTTP 200 response for AiRateCardGet
+type AiRateCardGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// AiRateCardGetResponse401Headers the declared response headers of an HTTP 401 response for AiRateCardGet
+type AiRateCardGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// AiRateCardGetResponse403Headers the declared response headers of an HTTP 403 response for AiRateCardGet
+type AiRateCardGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// AiRateCardGetResponse429Headers the declared response headers of an HTTP 429 response for AiRateCardGet
+type AiRateCardGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// AiRateCardGetResponse503Headers the declared response headers of an HTTP 503 response for AiRateCardGet
+type AiRateCardGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// AiRateCardGetResponseDefaultHeaders the declared response headers of an HTTP default response for AiRateCardGet
+type AiRateCardGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type AiRateCardGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AiRateCard
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *AiRateCardGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *AiRateCardGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *AiRateCardGetResponse403Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *AiRateCardGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *AiRateCardGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *AiRateCardGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiRateCardGetResponse) GetJSON200() *AiRateCard {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r AiRateCardGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r AiRateCardGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r AiRateCardGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r AiRateCardGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r AiRateCardGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r AiRateCardGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r AiRateCardGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r AiRateCardGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiRateCardGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiRateCardGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiRateCardGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiRateCardGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiRateCardGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiRateCardGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// AiRateCardPutResponse200Headers the declared response headers of an HTTP 200 response for AiRateCardPut
+type AiRateCardPutResponse200Headers struct {
+	XRequestID *string
+}
+
+// AiRateCardPutResponse401Headers the declared response headers of an HTTP 401 response for AiRateCardPut
+type AiRateCardPutResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// AiRateCardPutResponse403Headers the declared response headers of an HTTP 403 response for AiRateCardPut
+type AiRateCardPutResponse403Headers struct {
+	XRequestID *string
+}
+
+// AiRateCardPutResponse409Headers the declared response headers of an HTTP 409 response for AiRateCardPut
+type AiRateCardPutResponse409Headers struct {
+	XRequestID *string
+}
+
+// AiRateCardPutResponse422Headers the declared response headers of an HTTP 422 response for AiRateCardPut
+type AiRateCardPutResponse422Headers struct {
+	XRequestID *string
+}
+
+// AiRateCardPutResponse429Headers the declared response headers of an HTTP 429 response for AiRateCardPut
+type AiRateCardPutResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// AiRateCardPutResponse503Headers the declared response headers of an HTTP 503 response for AiRateCardPut
+type AiRateCardPutResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// AiRateCardPutResponseDefaultHeaders the declared response headers of an HTTP default response for AiRateCardPut
+type AiRateCardPutResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type AiRateCardPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AiRateCardTierChanged
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *AiRateCardPutResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *AiRateCardPutResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *AiRateCardPutResponse403Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *AiRateCardPutResponse409Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *AiRateCardPutResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *AiRateCardPutResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *AiRateCardPutResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *AiRateCardPutResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AiRateCardPutResponse) GetJSON200() *AiRateCardTierChanged {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r AiRateCardPutResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r AiRateCardPutResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r AiRateCardPutResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r AiRateCardPutResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r AiRateCardPutResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r AiRateCardPutResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AiRateCardPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r AiRateCardPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r AiRateCardPutResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r AiRateCardPutResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r AiRateCardPutResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r AiRateCardPutResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r AiRateCardPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r AiRateCardPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r AiRateCardPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AiRateCardPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AiRateCardPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AiRateCardPutResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -32144,6 +33935,791 @@ func (r TenantsUpdateResponse) ContentType() string {
 	return ""
 }
 
+// TenantAiRatePlanDeleteResponse204Headers the declared response headers of an HTTP 204 response for TenantAiRatePlanDelete
+type TenantAiRatePlanDeleteResponse204Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanDeleteResponse401Headers the declared response headers of an HTTP 401 response for TenantAiRatePlanDelete
+type TenantAiRatePlanDeleteResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// TenantAiRatePlanDeleteResponse403Headers the declared response headers of an HTTP 403 response for TenantAiRatePlanDelete
+type TenantAiRatePlanDeleteResponse403Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanDeleteResponse404Headers the declared response headers of an HTTP 404 response for TenantAiRatePlanDelete
+type TenantAiRatePlanDeleteResponse404Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanDeleteResponse409Headers the declared response headers of an HTTP 409 response for TenantAiRatePlanDelete
+type TenantAiRatePlanDeleteResponse409Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanDeleteResponse429Headers the declared response headers of an HTTP 429 response for TenantAiRatePlanDelete
+type TenantAiRatePlanDeleteResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantAiRatePlanDeleteResponse503Headers the declared response headers of an HTTP 503 response for TenantAiRatePlanDelete
+type TenantAiRatePlanDeleteResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantAiRatePlanDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for TenantAiRatePlanDelete
+type TenantAiRatePlanDeleteResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type TenantAiRatePlanDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *TenantAiRatePlanDeleteResponse204Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *TenantAiRatePlanDeleteResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *TenantAiRatePlanDeleteResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *TenantAiRatePlanDeleteResponse404Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *TenantAiRatePlanDeleteResponse409Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *TenantAiRatePlanDeleteResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *TenantAiRatePlanDeleteResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *TenantAiRatePlanDeleteResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r TenantAiRatePlanDeleteResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r TenantAiRatePlanDeleteResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r TenantAiRatePlanDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r TenantAiRatePlanDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantAiRatePlanDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantAiRatePlanDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r TenantAiRatePlanDeleteResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r TenantAiRatePlanDeleteResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r TenantAiRatePlanDeleteResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r TenantAiRatePlanDeleteResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r TenantAiRatePlanDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r TenantAiRatePlanDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantAiRatePlanDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantAiRatePlanDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantAiRatePlanDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantAiRatePlanDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantAiRatePlanDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantAiRatePlanDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// TenantAiRatePlanGetResponse200Headers the declared response headers of an HTTP 200 response for TenantAiRatePlanGet
+type TenantAiRatePlanGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanGetResponse401Headers the declared response headers of an HTTP 401 response for TenantAiRatePlanGet
+type TenantAiRatePlanGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// TenantAiRatePlanGetResponse403Headers the declared response headers of an HTTP 403 response for TenantAiRatePlanGet
+type TenantAiRatePlanGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanGetResponse404Headers the declared response headers of an HTTP 404 response for TenantAiRatePlanGet
+type TenantAiRatePlanGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanGetResponse429Headers the declared response headers of an HTTP 429 response for TenantAiRatePlanGet
+type TenantAiRatePlanGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantAiRatePlanGetResponse503Headers the declared response headers of an HTTP 503 response for TenantAiRatePlanGet
+type TenantAiRatePlanGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantAiRatePlanGetResponseDefaultHeaders the declared response headers of an HTTP default response for TenantAiRatePlanGet
+type TenantAiRatePlanGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type TenantAiRatePlanGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TenantAiRatePlan
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *TenantAiRatePlanGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *TenantAiRatePlanGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *TenantAiRatePlanGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *TenantAiRatePlanGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *TenantAiRatePlanGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *TenantAiRatePlanGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *TenantAiRatePlanGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantAiRatePlanGetResponse) GetJSON200() *TenantAiRatePlan {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r TenantAiRatePlanGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r TenantAiRatePlanGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r TenantAiRatePlanGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r TenantAiRatePlanGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantAiRatePlanGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantAiRatePlanGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r TenantAiRatePlanGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r TenantAiRatePlanGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r TenantAiRatePlanGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r TenantAiRatePlanGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantAiRatePlanGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantAiRatePlanGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantAiRatePlanGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantAiRatePlanGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantAiRatePlanGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantAiRatePlanGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// TenantAiRatePlanPutResponse200Headers the declared response headers of an HTTP 200 response for TenantAiRatePlanPut
+type TenantAiRatePlanPutResponse200Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanPutResponse401Headers the declared response headers of an HTTP 401 response for TenantAiRatePlanPut
+type TenantAiRatePlanPutResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// TenantAiRatePlanPutResponse403Headers the declared response headers of an HTTP 403 response for TenantAiRatePlanPut
+type TenantAiRatePlanPutResponse403Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanPutResponse404Headers the declared response headers of an HTTP 404 response for TenantAiRatePlanPut
+type TenantAiRatePlanPutResponse404Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanPutResponse409Headers the declared response headers of an HTTP 409 response for TenantAiRatePlanPut
+type TenantAiRatePlanPutResponse409Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanPutResponse422Headers the declared response headers of an HTTP 422 response for TenantAiRatePlanPut
+type TenantAiRatePlanPutResponse422Headers struct {
+	XRequestID *string
+}
+
+// TenantAiRatePlanPutResponse429Headers the declared response headers of an HTTP 429 response for TenantAiRatePlanPut
+type TenantAiRatePlanPutResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantAiRatePlanPutResponse503Headers the declared response headers of an HTTP 503 response for TenantAiRatePlanPut
+type TenantAiRatePlanPutResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantAiRatePlanPutResponseDefaultHeaders the declared response headers of an HTTP default response for TenantAiRatePlanPut
+type TenantAiRatePlanPutResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type TenantAiRatePlanPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TenantAiRatePlan
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *TenantAiRatePlanPutResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *TenantAiRatePlanPutResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *TenantAiRatePlanPutResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *TenantAiRatePlanPutResponse404Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *TenantAiRatePlanPutResponse409Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *TenantAiRatePlanPutResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *TenantAiRatePlanPutResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *TenantAiRatePlanPutResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *TenantAiRatePlanPutResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantAiRatePlanPutResponse) GetJSON200() *TenantAiRatePlan {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r TenantAiRatePlanPutResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r TenantAiRatePlanPutResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r TenantAiRatePlanPutResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r TenantAiRatePlanPutResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantAiRatePlanPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantAiRatePlanPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r TenantAiRatePlanPutResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r TenantAiRatePlanPutResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r TenantAiRatePlanPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r TenantAiRatePlanPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r TenantAiRatePlanPutResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r TenantAiRatePlanPutResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r TenantAiRatePlanPutResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r TenantAiRatePlanPutResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantAiRatePlanPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantAiRatePlanPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantAiRatePlanPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantAiRatePlanPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantAiRatePlanPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantAiRatePlanPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// TenantAiUsageGetResponse200Headers the declared response headers of an HTTP 200 response for TenantAiUsageGet
+type TenantAiUsageGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// TenantAiUsageGetResponse401Headers the declared response headers of an HTTP 401 response for TenantAiUsageGet
+type TenantAiUsageGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// TenantAiUsageGetResponse403Headers the declared response headers of an HTTP 403 response for TenantAiUsageGet
+type TenantAiUsageGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// TenantAiUsageGetResponse404Headers the declared response headers of an HTTP 404 response for TenantAiUsageGet
+type TenantAiUsageGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// TenantAiUsageGetResponse422Headers the declared response headers of an HTTP 422 response for TenantAiUsageGet
+type TenantAiUsageGetResponse422Headers struct {
+	XRequestID *string
+}
+
+// TenantAiUsageGetResponse429Headers the declared response headers of an HTTP 429 response for TenantAiUsageGet
+type TenantAiUsageGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantAiUsageGetResponse503Headers the declared response headers of an HTTP 503 response for TenantAiUsageGet
+type TenantAiUsageGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// TenantAiUsageGetResponseDefaultHeaders the declared response headers of an HTTP default response for TenantAiUsageGet
+type TenantAiUsageGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type TenantAiUsageGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TenantAiUsage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *TenantAiUsageGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *TenantAiUsageGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *TenantAiUsageGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *TenantAiUsageGetResponse404Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *TenantAiUsageGetResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *TenantAiUsageGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *TenantAiUsageGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *TenantAiUsageGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r TenantAiUsageGetResponse) GetJSON200() *TenantAiUsage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r TenantAiUsageGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r TenantAiUsageGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r TenantAiUsageGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r TenantAiUsageGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r TenantAiUsageGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r TenantAiUsageGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r TenantAiUsageGetResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r TenantAiUsageGetResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r TenantAiUsageGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r TenantAiUsageGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r TenantAiUsageGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r TenantAiUsageGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r TenantAiUsageGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r TenantAiUsageGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r TenantAiUsageGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r TenantAiUsageGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TenantAiUsageGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r TenantAiUsageGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // TenantMembershipsListResponse200Headers the declared response headers of an HTTP 200 response for TenantMembershipsList
 type TenantMembershipsListResponse200Headers struct {
 	XRequestID *string
@@ -35820,6 +38396,21 @@ func (c *ClientWithResponses) AiGatewayTiersPutWithResponse(ctx context.Context,
 	return ParseAiGatewayTiersPutResponse(rsp)
 }
 
+// AiGatewayUsageGetWithResponse Every tenant's AI usage
+//
+// Every tenant's AI gateway usage for a month, heaviest first, each rated at its own rate, and the unattributed bucket (keys no tenant could be found for, priced at the list rate for information and billed to nobody). EUR is rated when read: each day's tokens at the rate in force that day — the tenant's own rate (its plan), else the list rate (the rate card); an active contract that includes metered AI prices it at 0. A tier without a rate is never priced as 0: it is null, named in `unrated_tiers`, and every total is then a floor (`rated_complete` false).
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/gateway/usage (the `AiGatewayUsageGet` operationId).
+func (c *ClientWithResponses) AiGatewayUsageGetWithResponse(ctx context.Context, params *AiGatewayUsageGetParams, reqEditors ...RequestEditorFn) (*AiGatewayUsageGetResponse, error) {
+	rsp, err := c.AiGatewayUsageGet(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiGatewayUsageGetResponse(rsp)
+}
+
 // AiNodesListWithResponse List AI nodes
 //
 // The AI fleet. Roster fields are always present; live fields are null when monitoring cannot be read (`monitoring_reachable: false`). Never 503.
@@ -35848,6 +38439,51 @@ func (c *ClientWithResponses) AiNodesGetWithResponse(ctx context.Context, hostna
 		return nil, err
 	}
 	return ParseAiNodesGetResponse(rsp)
+}
+
+// AiRateCardGetWithResponse The AI rate card
+//
+// The platform's list rate per serving tier, EUR per one million input and output tokens: in force today (`current`), the next scheduled change (`upcoming`), and the whole history. Tiers the platform knows (from its pricebook or its usage) appear even without a rate, `current` null: their usage is not priced until one is set. A tenant with its own rate (`/tenants/{tenant_id}/ai-rate-plan`) pays that instead.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /ai/rate-card (the `AiRateCardGet` operationId).
+func (c *ClientWithResponses) AiRateCardGetWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AiRateCardGetResponse, error) {
+	rsp, err := c.AiRateCardGet(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiRateCardGetResponse(rsp)
+}
+
+// AiRateCardPutWithBodyWithResponse Set a tier's list rate
+//
+// Sets the list rate of one serving tier from `valid_from` (default today): the rate in force that day is closed the day before. A later `valid_from` schedules the change; while one is scheduled, another later one edits it instead of stacking a second. The rate already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Rating is at read time: a rate starting in the past re-prices the usage since then. Recorded in the audit log as `ai_rate_card.set`. There is no delete: a list rate is replaced, never removed.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /ai/rate-card/{tier} (the `AiRateCardPut` operationId).
+func (c *ClientWithResponses) AiRateCardPutWithBodyWithResponse(ctx context.Context, tier string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AiRateCardPutResponse, error) {
+	rsp, err := c.AiRateCardPutWithBody(ctx, tier, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiRateCardPutResponse(rsp)
+}
+
+// AiRateCardPutWithResponse Set a tier's list rate
+//
+// Sets the list rate of one serving tier from `valid_from` (default today): the rate in force that day is closed the day before. A later `valid_from` schedules the change; while one is scheduled, another later one edits it instead of stacking a second. The rate already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Rating is at read time: a rate starting in the past re-prices the usage since then. Recorded in the audit log as `ai_rate_card.set`. There is no delete: a list rate is replaced, never removed.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /ai/rate-card/{tier} (the `AiRateCardPut` operationId).
+func (c *ClientWithResponses) AiRateCardPutWithResponse(ctx context.Context, tier string, body AiRateCardPutJSONRequestBody, reqEditors ...RequestEditorFn) (*AiRateCardPutResponse, error) {
+	rsp, err := c.AiRateCardPut(ctx, tier, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAiRateCardPutResponse(rsp)
 }
 
 // AuditEventsListWithResponse List audit events
@@ -36973,6 +39609,83 @@ func (c *ClientWithResponses) TenantsUpdateWithApplicationMergePatchPlusJSONBody
 	return ParseTenantsUpdateResponse(rsp)
 }
 
+// TenantAiRatePlanDeleteWithResponse End a tenant's AI rates
+//
+// Ends the tenant's rate plan today: every tier goes back to the list rate. The history stays (a rate that applied is never deleted, so past usage keeps its price). Not destroy-gated: it changes a price, it removes nothing; it needs the write permission only. Recorded in the audit log as `ai_rate_plan.delete`.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanDelete` operationId).
+func (c *ClientWithResponses) TenantAiRatePlanDeleteWithResponse(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*TenantAiRatePlanDeleteResponse, error) {
+	rsp, err := c.TenantAiRatePlanDelete(ctx, tenantId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantAiRatePlanDeleteResponse(rsp)
+}
+
+// TenantAiRatePlanGetWithResponse A tenant's AI rates
+//
+// The tenant's own AI rates in force today (`rates`; empty: it pays the list rate), any scheduled change, the effective rate per tier with its basis next to the list rate, whether a contract includes metered AI, and the history.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanGet` operationId).
+func (c *ClientWithResponses) TenantAiRatePlanGetWithResponse(ctx context.Context, tenantId string, reqEditors ...RequestEditorFn) (*TenantAiRatePlanGetResponse, error) {
+	rsp, err := c.TenantAiRatePlanGet(ctx, tenantId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantAiRatePlanGetResponse(rsp)
+}
+
+// TenantAiRatePlanPutWithBodyWithResponse Replace a tenant's AI rates
+//
+// Replaces the tenant's WHOLE rate plan from `valid_from` (default today): a tier in `rates` costs the tenant that rate; a tier LEFT OUT goes back to the list rate from that day; `{"rates": []}` ends the plan (as `DELETE` does). The plan already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Recorded in the audit log as `ai_rate_plan.set`.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanPut` operationId).
+func (c *ClientWithResponses) TenantAiRatePlanPutWithBodyWithResponse(ctx context.Context, tenantId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*TenantAiRatePlanPutResponse, error) {
+	rsp, err := c.TenantAiRatePlanPutWithBody(ctx, tenantId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantAiRatePlanPutResponse(rsp)
+}
+
+// TenantAiRatePlanPutWithResponse Replace a tenant's AI rates
+//
+// Replaces the tenant's WHOLE rate plan from `valid_from` (default today): a tier in `rates` costs the tenant that rate; a tier LEFT OUT goes back to the list rate from that day; `{"rates": []}` ends the plan (as `DELETE` does). The plan already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Recorded in the audit log as `ai_rate_plan.set`.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /tenants/{tenant_id}/ai-rate-plan (the `TenantAiRatePlanPut` operationId).
+func (c *ClientWithResponses) TenantAiRatePlanPutWithResponse(ctx context.Context, tenantId string, body TenantAiRatePlanPutJSONRequestBody, reqEditors ...RequestEditorFn) (*TenantAiRatePlanPutResponse, error) {
+	rsp, err := c.TenantAiRatePlanPut(ctx, tenantId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantAiRatePlanPutResponse(rsp)
+}
+
+// TenantAiUsageGetWithResponse A tenant's AI usage
+//
+// One tenant's AI gateway usage for a month, from the daily usage ledger, rated: totals, per key (and per tier and model under each key), per tier with the rate on the last day, per day, the month-end forecast and the monthly AI budget against the spend. This is the operator's view: each key's attribution and the gateway's own shadow price (`shadow_usd`) are included. EUR is rated when read: each day's tokens at the rate in force that day — the tenant's own rate (its plan), else the list rate (the rate card); an active contract that includes metered AI prices it at 0. A tier without a rate is never priced as 0: it is null, named in `unrated_tiers`, and every total is then a floor (`rated_complete` false). Days are billing days in the billing time zone (`tz`); today's day fills as the ledger rolls up (every 15 minutes).
+//
+// With `format=csv`: `text/csv`, one row per day, key, tier and model, header first (`month, day, key_alias, env, app, tier, model, calls, prompt_tokens, completion_tokens, total_tokens, failures, cache_hits, rated_eur, rate_basis, organization_id, project_id, attribution, shadow_usd`), as an attachment named `ai-usage-<tenant slug>-<month>.csv`. A text cell a spreadsheet would run as a formula starts with a quote.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /tenants/{tenant_id}/ai-usage (the `TenantAiUsageGet` operationId).
+func (c *ClientWithResponses) TenantAiUsageGetWithResponse(ctx context.Context, tenantId string, params *TenantAiUsageGetParams, reqEditors ...RequestEditorFn) (*TenantAiUsageGetResponse, error) {
+	rsp, err := c.TenantAiUsageGet(ctx, tenantId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTenantAiUsageGetResponse(rsp)
+}
+
 // TenantMembershipsListWithResponse A tenant's memberships
 //
 // The tenant's members and their roles, in `user_id` order.
@@ -37085,6 +39798,8 @@ func (c *ClientWithResponses) TenantQuotasGetWithResponse(ctx context.Context, t
 //
 // Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
 //
+// An `ai_budget_eur_month` limit saved with `hard_cap` is also enforced by the AI gateway: every live key of the tenant gets a spending cap (its share of the month's remaining budget), and saving again re-splits it; leaving `hard_cap` removes the caps. If the gateway cannot be reached the quotas are still replaced and the answer carries the warning `ai_budget_enforcement_pending` (no key was capped yet) or `ai_budget_enforcement_partial` (some keys were); save again to retry. Any other policy never touches the keys.
+//
 // Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -37101,6 +39816,8 @@ func (c *ClientWithResponses) TenantQuotasPutWithBodyWithResponse(ctx context.Co
 // TenantQuotasPutWithResponse Replace a tenant's quotas
 //
 // Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.
+//
+// An `ai_budget_eur_month` limit saved with `hard_cap` is also enforced by the AI gateway: every live key of the tenant gets a spending cap (its share of the month's remaining budget), and saving again re-splits it; leaving `hard_cap` removes the caps. If the gateway cannot be reached the quotas are still replaced and the answer carries the warning `ai_budget_enforcement_pending` (no key was capped yet) or `ai_budget_enforcement_partial` (some keys were); save again to retry. Any other policy never touches the keys.
 //
 // Within a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.
 //
@@ -42575,6 +45292,210 @@ func ParseAiGatewayTiersPutResponse(rsp *http.Response) (*AiGatewayTiersPutRespo
 	return response, nil
 }
 
+// ParseAiGatewayUsageGetResponse parses an HTTP response from a AiGatewayUsageGetWithResponse call
+func ParseAiGatewayUsageGetResponse(rsp *http.Response) (*AiGatewayUsageGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiGatewayUsageGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest GatewayAiUsage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers AiGatewayUsageGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers AiGatewayUsageGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers AiGatewayUsageGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 422:
+		var headers AiGatewayUsageGetResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers AiGatewayUsageGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers AiGatewayUsageGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers AiGatewayUsageGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseAiNodesListResponse parses an HTTP response from a AiNodesListWithResponse call
 func ParseAiNodesListResponse(rsp *http.Response) (*AiNodesListResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -42946,6 +45867,414 @@ func ParseAiNodesGetResponse(rsp *http.Response) (*AiNodesGetResponse, error) {
 		response.Headers503 = &headers
 	case true:
 		var headers AiNodesGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseAiRateCardGetResponse parses an HTTP response from a AiRateCardGetWithResponse call
+func ParseAiRateCardGetResponse(rsp *http.Response) (*AiRateCardGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiRateCardGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AiRateCard
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers AiRateCardGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers AiRateCardGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers AiRateCardGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 429:
+		var headers AiRateCardGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers AiRateCardGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers AiRateCardGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseAiRateCardPutResponse parses an HTTP response from a AiRateCardPutWithResponse call
+func ParseAiRateCardPutResponse(rsp *http.Response) (*AiRateCardPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AiRateCardPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AiRateCardTierChanged
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers AiRateCardPutResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers AiRateCardPutResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers AiRateCardPutResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 409:
+		var headers AiRateCardPutResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 422:
+		var headers AiRateCardPutResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers AiRateCardPutResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers AiRateCardPutResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers AiRateCardPutResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -53181,6 +56510,917 @@ func ParseTenantsUpdateResponse(rsp *http.Response) (*TenantsUpdateResponse, err
 		response.Headers503 = &headers
 	case true:
 		var headers TenantsUpdateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseTenantAiRatePlanDeleteResponse parses an HTTP response from a TenantAiRatePlanDeleteWithResponse call
+func ParseTenantAiRatePlanDeleteResponse(rsp *http.Response) (*TenantAiRatePlanDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantAiRatePlanDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers TenantAiRatePlanDeleteResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 401:
+		var headers TenantAiRatePlanDeleteResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers TenantAiRatePlanDeleteResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers TenantAiRatePlanDeleteResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 409:
+		var headers TenantAiRatePlanDeleteResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 429:
+		var headers TenantAiRatePlanDeleteResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers TenantAiRatePlanDeleteResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers TenantAiRatePlanDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseTenantAiRatePlanGetResponse parses an HTTP response from a TenantAiRatePlanGetWithResponse call
+func ParseTenantAiRatePlanGetResponse(rsp *http.Response) (*TenantAiRatePlanGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantAiRatePlanGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TenantAiRatePlan
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers TenantAiRatePlanGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers TenantAiRatePlanGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers TenantAiRatePlanGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers TenantAiRatePlanGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers TenantAiRatePlanGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers TenantAiRatePlanGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers TenantAiRatePlanGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseTenantAiRatePlanPutResponse parses an HTTP response from a TenantAiRatePlanPutWithResponse call
+func ParseTenantAiRatePlanPutResponse(rsp *http.Response) (*TenantAiRatePlanPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantAiRatePlanPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TenantAiRatePlan
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers TenantAiRatePlanPutResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers TenantAiRatePlanPutResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers TenantAiRatePlanPutResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers TenantAiRatePlanPutResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 409:
+		var headers TenantAiRatePlanPutResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 422:
+		var headers TenantAiRatePlanPutResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers TenantAiRatePlanPutResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers TenantAiRatePlanPutResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers TenantAiRatePlanPutResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseTenantAiUsageGetResponse parses an HTTP response from a TenantAiUsageGetWithResponse call
+func ParseTenantAiUsageGetResponse(rsp *http.Response) (*TenantAiUsageGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TenantAiUsageGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TenantAiUsage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	case rsp.StatusCode == 200:
+		// Content-type (text/csv) unsupported
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers TenantAiUsageGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers TenantAiUsageGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers TenantAiUsageGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers TenantAiUsageGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 422:
+		var headers TenantAiUsageGetResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers TenantAiUsageGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers TenantAiUsageGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers TenantAiUsageGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

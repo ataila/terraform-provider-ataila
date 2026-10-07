@@ -3,12 +3,12 @@
 page_title: "ataila_orders Data Source - ATAILA"
 subcategory: ""
 description: |-
-  A tenant's orders, newest first (all pages), each with its quota check, its decision and what delivering it produced. Read only: a tenant orders in the portal, and an operator approves, rejects or re-runs an order in the portal; there is no order resource. Needs a token holding orders-read-global (or orders-admin-global) and platform release 1.0.9999 or later.
+  A tenant's orders, newest first (all pages), each with its quota check, its decision and what delivering it produced. Read only: a tenant orders in the portal, and an operator approves, rejects or re-runs an order in the portal; there is no order resource. Needs a token holding orders-read-global (or orders-admin-global) and platform release 1.0.233 or later.
 ---
 
 # ataila_orders (Data Source)
 
-A tenant's orders, newest first (all pages), each with its quota check, its decision and what delivering it produced. **Read only**: a tenant orders in the portal, and an operator approves, rejects or re-runs an order in the portal; there is no order resource. Needs a token holding `orders-read-global` (or `orders-admin-global`) and platform release 1.0.9999 or later.
+A tenant's orders, newest first (all pages), each with its quota check, its decision and what delivering it produced. **Read only**: a tenant orders in the portal, and an operator approves, rejects or re-runs an order in the portal; there is no order resource. Needs a token holding `orders-read-global` (or `orders-admin-global`) and platform release 1.0.233 or later.
 
 ## Example Usage
 

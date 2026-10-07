@@ -43,6 +43,92 @@
       }
     },
     "schemas": {
+      "AiEffectiveRate": {
+        "description": "What one tier costs the tenant today, and why.",
+        "properties": {
+          "basis": {
+            "description": "`plan` (its own rate), `list`, `contract_included` (0 EUR) or `none` (not priced).",
+            "title": "Basis",
+            "type": "string"
+          },
+          "eur_per_1m_input": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR per one million input (prompt) tokens.",
+            "title": "Eur Per 1M Input"
+          },
+          "eur_per_1m_output": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR per one million output (completion) tokens.",
+            "title": "Eur Per 1M Output"
+          },
+          "list_eur_per_1m_input": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The list rate beside it, for comparison.",
+            "title": "List Eur Per 1M Input"
+          },
+          "list_eur_per_1m_output": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The list rate beside it, for comparison.",
+            "title": "List Eur Per 1M Output"
+          },
+          "tier": {
+            "description": "The serving tier, e.g. `general`, `code`, `embed`.",
+            "title": "Tier",
+            "type": "string"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Since when.",
+            "title": "Valid From"
+          }
+        },
+        "required": [
+          "tier",
+          "basis"
+        ],
+        "title": "AiEffectiveRate",
+        "type": "object"
+      },
       "AiGateway": {
         "description": "The platform's AI gateway: one OpenAI-compatible endpoint in front of\nevery served model, called with a virtual key.",
         "properties": {
@@ -1599,6 +1685,422 @@
         "title": "AiNodePage",
         "type": "object"
       },
+      "AiRate": {
+        "description": "One rate: a price per one million tokens for one tier, from `valid_from` until\n`valid_to` (open when null).",
+        "properties": {
+          "eur_per_1m_input": {
+            "description": "EUR per one million input (prompt) tokens.",
+            "format": "double",
+            "title": "Eur Per 1M Input",
+            "type": "number"
+          },
+          "eur_per_1m_output": {
+            "description": "EUR per one million output (completion) tokens.",
+            "format": "double",
+            "title": "Eur Per 1M Output",
+            "type": "number"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operator's note.",
+            "title": "Note"
+          },
+          "set_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it was set.",
+            "title": "Set At"
+          },
+          "set_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The user who set it (`id` on a user); null when that user no longer exists.",
+            "title": "Set By"
+          },
+          "tier": {
+            "description": "The serving tier, e.g. `general`, `code`, `embed`.",
+            "title": "Tier",
+            "type": "string"
+          },
+          "valid_from": {
+            "description": "The first billing day the rate applies.",
+            "format": "date",
+            "title": "Valid From",
+            "type": "string"
+          },
+          "valid_to": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The last billing day it applies; null while it is open.",
+            "title": "Valid To"
+          }
+        },
+        "required": [
+          "tier",
+          "eur_per_1m_input",
+          "eur_per_1m_output",
+          "valid_from"
+        ],
+        "title": "AiRate",
+        "type": "object"
+      },
+      "AiRateCard": {
+        "description": "The platform's list rate per serving tier (the rate card): what a tenant without\nits own rate pays. Tiers the platform knows appear even without a rate.",
+        "properties": {
+          "as_of": {
+            "description": "Today, in the billing time zone.",
+            "format": "date",
+            "title": "As Of",
+            "type": "string"
+          },
+          "currency": {
+            "default": "EUR",
+            "description": "Always `EUR`.",
+            "title": "Currency",
+            "type": "string"
+          },
+          "history": {
+            "description": "Every list rate ever set, newest first.",
+            "items": {
+              "$ref": "#/components/schemas/AiRate"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "tiers": {
+            "description": "Per tier, by name.",
+            "items": {
+              "$ref": "#/components/schemas/AiRateCardTier"
+            },
+            "title": "Tiers",
+            "type": "array"
+          },
+          "unit": {
+            "default": "1M tokens",
+            "description": "Always `1M tokens`.",
+            "title": "Unit",
+            "type": "string"
+          }
+        },
+        "required": [
+          "as_of"
+        ],
+        "title": "AiRateCard",
+        "type": "object"
+      },
+      "AiRateCardPut": {
+        "additionalProperties": false,
+        "description": "A tier's list rate from `valid_from`.",
+        "properties": {
+          "eur_per_1m_input": {
+            "description": "EUR per one million input (prompt) tokens. 0 to 1000000.",
+            "format": "double",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "Eur Per 1M Input",
+            "type": "number"
+          },
+          "eur_per_1m_output": {
+            "description": "EUR per one million output (completion) tokens. 0 to 1000000.",
+            "format": "double",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "Eur Per 1M Output",
+            "type": "number"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A note, up to 500 characters.",
+            "title": "Note"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The first billing day it applies; default today. From 2020-01-01 to three years ahead: an earlier day re-prices the usage since then (rating is at read time); a later one schedules the change, and a second scheduled change edits the first.",
+            "title": "Valid From"
+          }
+        },
+        "required": [
+          "eur_per_1m_input",
+          "eur_per_1m_output"
+        ],
+        "title": "AiRateCardPut",
+        "type": "object"
+      },
+      "AiRateCardTier": {
+        "description": "One serving tier's list rate.",
+        "properties": {
+          "current": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AiRate"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The list rate in force today; null when the tier has none (not priced)."
+          },
+          "seedable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Whether the platform's cloud-anchored seed can price this tier.",
+            "title": "Seedable"
+          },
+          "tier": {
+            "description": "The serving tier, e.g. `general`, `code`, `embed`.",
+            "title": "Tier",
+            "type": "string"
+          },
+          "upcoming": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AiRate"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The next scheduled change; null when none is scheduled."
+          }
+        },
+        "required": [
+          "tier"
+        ],
+        "title": "AiRateCardTier",
+        "type": "object"
+      },
+      "AiRateCardTierChanged": {
+        "description": "One tier's list rate after a `PUT`.",
+        "properties": {
+          "as_of": {
+            "description": "Today, in the billing time zone.",
+            "format": "date",
+            "title": "As Of",
+            "type": "string"
+          },
+          "changed": {
+            "description": "False when the same rate was already in force: nothing was changed or recorded.",
+            "title": "Changed",
+            "type": "boolean"
+          },
+          "current": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AiRate"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The list rate in force today; null when the tier has none (not priced)."
+          },
+          "history": {
+            "description": "This tier's list rates, newest first.",
+            "items": {
+              "$ref": "#/components/schemas/AiRate"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "seedable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Whether the platform's cloud-anchored seed can price this tier.",
+            "title": "Seedable"
+          },
+          "tier": {
+            "description": "The serving tier, e.g. `general`, `code`, `embed`.",
+            "title": "Tier",
+            "type": "string"
+          },
+          "upcoming": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AiRate"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The next scheduled change; null when none is scheduled."
+          },
+          "warnings": {
+            "description": "What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person.",
+            "items": {
+              "$ref": "#/components/schemas/ApiWarning"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tier",
+          "as_of",
+          "changed"
+        ],
+        "title": "AiRateCardTierChanged",
+        "type": "object"
+      },
+      "AiRatePlanContract": {
+        "description": "The tenant's contract that decides whether metered AI is included.",
+        "properties": {
+          "end_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its last day; null when open.",
+            "title": "End Date"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The contract's id.",
+            "title": "Id"
+          },
+          "start_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its first day.",
+            "title": "Start Date"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its status, e.g. `active`.",
+            "title": "Status"
+          }
+        },
+        "title": "AiRatePlanContract",
+        "type": "object"
+      },
+      "AiRatePlanRateIn": {
+        "additionalProperties": false,
+        "description": "One tier of the plan.",
+        "properties": {
+          "eur_per_1m_input": {
+            "description": "EUR per one million input (prompt) tokens. 0 to 1000000.",
+            "format": "double",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "Eur Per 1M Input",
+            "type": "number"
+          },
+          "eur_per_1m_output": {
+            "description": "EUR per one million output (completion) tokens. 0 to 1000000.",
+            "format": "double",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "Eur Per 1M Output",
+            "type": "number"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A note, up to 500 characters.",
+            "title": "Note"
+          },
+          "tier": {
+            "description": "The serving tier, e.g. `general`, `code`, `embed`. Letters, digits, `.`, `_` and `-`, 1-64 characters, starting with a letter or digit.",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tier",
+          "eur_per_1m_input",
+          "eur_per_1m_output"
+        ],
+        "title": "AiRatePlanRateIn",
+        "type": "object"
+      },
       "ApiWarning": {
         "description": "Something that did not go as planned, on a request that still succeeded\n— e.g. the customer was created but its GitLab group was not. A client must\nsurface these (the provider reports them as diagnostics).",
         "properties": {
@@ -2935,6 +3437,84 @@
         "title": "DgxClusterPage",
         "type": "object"
       },
+      "GatewayAiUsage": {
+        "description": "Every tenant's AI usage for a month, rated, heaviest first, and the unattributed\nbucket.",
+        "properties": {
+          "month": {
+            "description": "The month, `YYYY-MM`, in the billing time zone.",
+            "title": "Month",
+            "type": "string"
+          },
+          "rate_basis": {
+            "default": "pending",
+            "description": "`list` when every tenant's tiers were priced, `none` when some were not, `pending` when the rates could not be read.",
+            "title": "Rate Basis",
+            "type": "string"
+          },
+          "rated_complete": {
+            "default": false,
+            "description": "Every token was priced; false when a tier had no rate (a floor).",
+            "title": "Rated Complete",
+            "type": "boolean"
+          },
+          "rated_eur": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR of the tenants (the unattributed bucket is not billed); null when not priced.",
+            "title": "Rated Eur"
+          },
+          "tenants": {
+            "description": "Per tenant, heaviest first.",
+            "items": {
+              "$ref": "#/components/schemas/GatewayUsageTenant"
+            },
+            "title": "Tenants",
+            "type": "array"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/UsageCounts",
+            "description": "The platform's counts, every key included."
+          },
+          "tz": {
+            "description": "The billing time zone.",
+            "title": "Tz",
+            "type": "string"
+          },
+          "unattributed": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GatewayUsageTenant"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Keys no tenant could be found for; null when every key was attributed."
+          },
+          "unrated_tiers": {
+            "description": "Tiers some tenant used without a rate.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Unrated Tiers",
+            "type": "array"
+          }
+        },
+        "required": [
+          "month",
+          "tz",
+          "totals"
+        ],
+        "title": "GatewayAiUsage",
+        "type": "object"
+      },
       "GatewayKey": {
         "description": "An AI gateway virtual key: what one application of one tenant calls the\ngateway with, the tiers it may call and its limits. The key's value is\nnever returned after the request that made it (`secret`).",
         "properties": {
@@ -3517,6 +4097,176 @@
           }
         },
         "title": "GatewayKeyRotation",
+        "type": "object"
+      },
+      "GatewayUsageTenant": {
+        "description": "One tenant's month on the AI gateway (or the unattributed bucket).",
+        "properties": {
+          "attribution": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "description": "Usage rows per attribution method (`registry`, `map`, `project`, `unattributed`).",
+            "title": "Attribution",
+            "type": "object"
+          },
+          "cache_hits": {
+            "default": 0,
+            "description": "Calls answered from the gateway's cache.",
+            "title": "Cache Hits",
+            "type": "integer"
+          },
+          "calls": {
+            "default": 0,
+            "description": "Calls.",
+            "title": "Calls",
+            "type": "integer"
+          },
+          "completion_tokens": {
+            "default": 0,
+            "description": "Output tokens.",
+            "title": "Completion Tokens",
+            "type": "integer"
+          },
+          "customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tenant's customer.",
+            "title": "Customer Id"
+          },
+          "customer_name": {
+            "default": "",
+            "description": "The customer's name.",
+            "title": "Customer Name",
+            "type": "string"
+          },
+          "failures": {
+            "default": 0,
+            "description": "Calls that failed (refused or errored).",
+            "title": "Failures",
+            "type": "integer"
+          },
+          "key_aliases": {
+            "description": "Their aliases.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Key Aliases",
+            "type": "array"
+          },
+          "keys": {
+            "description": "Keys with usage this month.",
+            "title": "Keys",
+            "type": "integer"
+          },
+          "last_seen": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The last call in the month.",
+            "title": "Last Seen"
+          },
+          "prompt_tokens": {
+            "default": 0,
+            "description": "Input tokens.",
+            "title": "Prompt Tokens",
+            "type": "integer"
+          },
+          "rate_bases": {
+            "description": "Every basis that priced something.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Rate Bases",
+            "type": "array"
+          },
+          "rate_basis": {
+            "default": "pending",
+            "description": "Which rate priced it: `plan` (the tenant's own rate), `list` (the rate card), `contract_included` (an active contract includes metered AI: 0 EUR), `none` (no rate: not priced) or `pending` (the rates could not be read just now; usage is still shown).",
+            "title": "Rate Basis",
+            "type": "string"
+          },
+          "rated_complete": {
+            "default": false,
+            "description": "Every token was priced; false when a tier had no rate (a floor).",
+            "title": "Rated Complete",
+            "type": "boolean"
+          },
+          "rated_eur": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing. The unattributed bucket is priced at the list rate, for information: it is billed to nobody.",
+            "title": "Rated Eur"
+          },
+          "shadow_usd": {
+            "default": 0.0,
+            "description": "The AI gateway's own price in USD (its shadow price, used for budget enforcement on the gateway). Not the bill: the bill is `rated_eur`.",
+            "format": "double",
+            "title": "Shadow Usd",
+            "type": "number"
+          },
+          "tenant_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tenant; null for the unattributed bucket (keys no tenant could be found for).",
+            "title": "Tenant Id"
+          },
+          "tenant_name": {
+            "default": "",
+            "description": "The tenant's display name.",
+            "title": "Tenant Name",
+            "type": "string"
+          },
+          "tenant_slug": {
+            "default": "",
+            "description": "The tenant's slug.",
+            "title": "Tenant Slug",
+            "type": "string"
+          },
+          "total_tokens": {
+            "default": 0,
+            "description": "Input and output tokens together.",
+            "title": "Total Tokens",
+            "type": "integer"
+          },
+          "unrated_tiers": {
+            "description": "Tiers without a rate.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Unrated Tiers",
+            "type": "array"
+          }
+        },
+        "required": [
+          "keys"
+        ],
+        "title": "GatewayUsageTenant",
         "type": "object"
       },
       "GitLabGroupStatus": {
@@ -10564,6 +11314,291 @@
         "title": "Tenant",
         "type": "object"
       },
+      "TenantAiRatePlan": {
+        "description": "A tenant's own AI rates (its rate plan): per tier, a price instead of the list\nrate. A tier without one costs the list rate.",
+        "properties": {
+          "as_of": {
+            "description": "Today, in the billing time zone.",
+            "format": "date",
+            "title": "As Of",
+            "type": "string"
+          },
+          "changed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "After a `PUT`: false when the same plan was already in force (nothing changed or recorded). Null on a read.",
+            "title": "Changed"
+          },
+          "contract": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AiRatePlanContract"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "That contract; null when none."
+          },
+          "contract_included": {
+            "default": false,
+            "description": "True while an active contract includes metered AI: it is priced at 0 EUR.",
+            "title": "Contract Included",
+            "type": "boolean"
+          },
+          "currency": {
+            "default": "EUR",
+            "description": "Always `EUR`.",
+            "title": "Currency",
+            "type": "string"
+          },
+          "effective": {
+            "description": "What each tier costs the tenant today and why, the list rate beside it.",
+            "items": {
+              "$ref": "#/components/schemas/AiEffectiveRate"
+            },
+            "title": "Effective",
+            "type": "array"
+          },
+          "history": {
+            "description": "Every plan rate ever set, newest first.",
+            "items": {
+              "$ref": "#/components/schemas/AiRate"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "rates": {
+            "description": "The plan's rates in force today, by tier; empty when the tenant pays the list rate.",
+            "items": {
+              "$ref": "#/components/schemas/AiRate"
+            },
+            "title": "Rates",
+            "type": "array"
+          },
+          "tenant_id": {
+            "description": "The tenant (`id` on a tenant).",
+            "title": "Tenant Id",
+            "type": "string"
+          },
+          "tenant_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tenant's display name.",
+            "title": "Tenant Name"
+          },
+          "unit": {
+            "default": "1M tokens",
+            "description": "Always `1M tokens`.",
+            "title": "Unit",
+            "type": "string"
+          },
+          "upcoming": {
+            "description": "Scheduled changes of the plan.",
+            "items": {
+              "$ref": "#/components/schemas/AiRate"
+            },
+            "title": "Upcoming",
+            "type": "array"
+          },
+          "warnings": {
+            "description": "What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person. Always empty on a read.",
+            "items": {
+              "$ref": "#/components/schemas/ApiWarning"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tenant_id",
+          "as_of"
+        ],
+        "title": "TenantAiRatePlan",
+        "type": "object"
+      },
+      "TenantAiRatePlanPut": {
+        "additionalProperties": false,
+        "description": "The tenant's WHOLE plan. A tier in `rates` costs the tenant that rate from\n`valid_from`; a tier LEFT OUT goes back to the list rate from that day; `[]` ends the\nplan.",
+        "properties": {
+          "rates": {
+            "description": "One entry per tier, each tier at most once; `[]` = no plan.",
+            "items": {
+              "$ref": "#/components/schemas/AiRatePlanRateIn"
+            },
+            "maxItems": 200,
+            "title": "Rates",
+            "type": "array"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The first billing day the plan applies; default today. Same bounds as on the rate card.",
+            "title": "Valid From"
+          }
+        },
+        "required": [
+          "rates"
+        ],
+        "title": "TenantAiRatePlanPut",
+        "type": "object"
+      },
+      "TenantAiUsage": {
+        "description": "One tenant's AI usage for a month, rated, operator view: totals, per key (and per\ntier and model under each key), per tier, per day, the month-end forecast and the\nbudget.",
+        "properties": {
+          "budget": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UsageBudget"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The monthly AI budget against the spend; null when the tenant has no `ai_budget_eur_month` quota."
+          },
+          "by_day": {
+            "description": "Per billing day, from the first of the month to today (or the month's end).",
+            "items": {
+              "$ref": "#/components/schemas/UsageDay"
+            },
+            "title": "By Day",
+            "type": "array"
+          },
+          "by_key": {
+            "description": "Per key, heaviest first.",
+            "items": {
+              "$ref": "#/components/schemas/UsageKey"
+            },
+            "title": "By Key",
+            "type": "array"
+          },
+          "by_tier": {
+            "description": "Per serving tier, heaviest first.",
+            "items": {
+              "$ref": "#/components/schemas/UsageTier"
+            },
+            "title": "By Tier",
+            "type": "array"
+          },
+          "forecast": {
+            "$ref": "#/components/schemas/UsageForecast",
+            "description": "The month-end projection."
+          },
+          "month": {
+            "description": "The month, `YYYY-MM`, in the billing time zone.",
+            "title": "Month",
+            "type": "string"
+          },
+          "oldest_month": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tenant's oldest month with usage, `YYYY-MM`; null when none.",
+            "title": "Oldest Month"
+          },
+          "rate_bases": {
+            "description": "Every basis that priced something this month.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Rate Bases",
+            "type": "array"
+          },
+          "rate_basis": {
+            "default": "pending",
+            "description": "Which rate priced it: `plan` (the tenant's own rate), `list` (the rate card), `contract_included` (an active contract includes metered AI: 0 EUR), `none` (no rate: not priced) or `pending` (the rates could not be read just now; usage is still shown). For the month: `plan` when any day used the tenant's own rate.",
+            "title": "Rate Basis",
+            "type": "string"
+          },
+          "rated_complete": {
+            "default": false,
+            "description": "Every token was priced; false when a tier had no rate (a floor).",
+            "title": "Rated Complete",
+            "type": "boolean"
+          },
+          "rated_eur": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing.",
+            "title": "Rated Eur"
+          },
+          "tenant_id": {
+            "description": "The tenant (`id` on a tenant).",
+            "title": "Tenant Id",
+            "type": "string"
+          },
+          "tenant_name": {
+            "default": "",
+            "description": "The tenant's display name.",
+            "title": "Tenant Name",
+            "type": "string"
+          },
+          "tenant_slug": {
+            "default": "",
+            "description": "The tenant's slug.",
+            "title": "Tenant Slug",
+            "type": "string"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/UsageCounts",
+            "description": "The month's counts."
+          },
+          "tz": {
+            "description": "The billing time zone, e.g. `Europe/Budapest`.",
+            "title": "Tz",
+            "type": "string"
+          },
+          "unrated_tiers": {
+            "description": "Tiers used this month that have no rate: not priced, so `rated_eur` is a floor.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Unrated Tiers",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tenant_id",
+          "month",
+          "tz",
+          "totals",
+          "forecast"
+        ],
+        "title": "TenantAiUsage",
+        "type": "object"
+      },
       "TenantCreate": {
         "additionalProperties": false,
         "description": "A further tenant of an existing customer.",
@@ -11022,6 +12057,555 @@
           "quotas"
         ],
         "title": "TenantQuotasPut",
+        "type": "object"
+      },
+      "UsageBudget": {
+        "description": "The tenant's monthly AI budget (its `ai_budget_eur_month` quota) against the\nrated spend.",
+        "properties": {
+          "complete": {
+            "default": true,
+            "description": "False when `spent` is a floor (a tier had no rate).",
+            "title": "Complete",
+            "type": "boolean"
+          },
+          "enforced_on_gateway": {
+            "default": false,
+            "description": "True for `hard_cap`: the gateway stops the keys at the limit.",
+            "title": "Enforced On Gateway",
+            "type": "boolean"
+          },
+          "forecast": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Projected EUR at month end.",
+            "title": "Forecast"
+          },
+          "forecast_pct": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`forecast` as a percentage of `limit`.",
+            "title": "Forecast Pct"
+          },
+          "limit": {
+            "description": "The budget, EUR per month.",
+            "format": "double",
+            "title": "Limit",
+            "type": "number"
+          },
+          "pct": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`spent` as a percentage of `limit`.",
+            "title": "Pct"
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The quota's policy: `auto` and `approve_always` alert only; `hard_cap` stops the tenant's keys on the gateway at the limit.",
+            "title": "Policy"
+          },
+          "spent": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Rated EUR this month; null when not known.",
+            "title": "Spent"
+          },
+          "state": {
+            "description": "`ok`, `warn` (80 % or more), `reached` (100 % or more) or `unknown`.",
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "limit",
+          "state"
+        ],
+        "title": "UsageBudget",
+        "type": "object"
+      },
+      "UsageCounts": {
+        "description": "Call and token counts.",
+        "properties": {
+          "cache_hits": {
+            "default": 0,
+            "description": "Calls answered from the gateway's cache.",
+            "title": "Cache Hits",
+            "type": "integer"
+          },
+          "calls": {
+            "default": 0,
+            "description": "Calls.",
+            "title": "Calls",
+            "type": "integer"
+          },
+          "completion_tokens": {
+            "default": 0,
+            "description": "Output tokens.",
+            "title": "Completion Tokens",
+            "type": "integer"
+          },
+          "failures": {
+            "default": 0,
+            "description": "Calls that failed (refused or errored).",
+            "title": "Failures",
+            "type": "integer"
+          },
+          "prompt_tokens": {
+            "default": 0,
+            "description": "Input tokens.",
+            "title": "Prompt Tokens",
+            "type": "integer"
+          },
+          "shadow_usd": {
+            "default": 0.0,
+            "description": "The AI gateway's own price in USD (its shadow price, used for budget enforcement on the gateway). Not the bill: the bill is `rated_eur`.",
+            "format": "double",
+            "title": "Shadow Usd",
+            "type": "number"
+          },
+          "total_tokens": {
+            "default": 0,
+            "description": "Input and output tokens together.",
+            "title": "Total Tokens",
+            "type": "integer"
+          }
+        },
+        "title": "UsageCounts",
+        "type": "object"
+      },
+      "UsageDay": {
+        "description": "One billing day of the month, zero when nothing was used.",
+        "properties": {
+          "calls": {
+            "default": 0,
+            "description": "Calls.",
+            "title": "Calls",
+            "type": "integer"
+          },
+          "day": {
+            "description": "The billing day (in the billing time zone, `tz`).",
+            "format": "date",
+            "title": "Day",
+            "type": "string"
+          },
+          "rated_eur": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing.",
+            "title": "Rated Eur"
+          },
+          "shadow_usd": {
+            "default": 0.0,
+            "description": "The AI gateway's own price in USD (its shadow price, used for budget enforcement on the gateway). Not the bill: the bill is `rated_eur`.",
+            "format": "double",
+            "title": "Shadow Usd",
+            "type": "number"
+          },
+          "total_tokens": {
+            "default": 0,
+            "description": "Tokens.",
+            "title": "Total Tokens",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "day"
+        ],
+        "title": "UsageDay",
+        "type": "object"
+      },
+      "UsageForecast": {
+        "description": "The month-end projection: month to date divided by the elapsed days, times the\ndays in the month. A past month projects to its total.",
+        "properties": {
+          "calls": {
+            "description": "Projected calls.",
+            "title": "Calls",
+            "type": "integer"
+          },
+          "days_in_month": {
+            "description": "Days in the month.",
+            "title": "Days In Month",
+            "type": "integer"
+          },
+          "elapsed_days": {
+            "description": "Billing days elapsed, today included.",
+            "title": "Elapsed Days",
+            "type": "integer"
+          },
+          "rated_eur": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Projected EUR; null when not priced.",
+            "title": "Rated Eur"
+          },
+          "shadow_usd": {
+            "default": 0.0,
+            "description": "Projected shadow price in USD.",
+            "format": "double",
+            "title": "Shadow Usd",
+            "type": "number"
+          },
+          "total_tokens": {
+            "description": "Projected tokens.",
+            "title": "Total Tokens",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "elapsed_days",
+          "days_in_month",
+          "total_tokens",
+          "calls"
+        ],
+        "title": "UsageForecast",
+        "type": "object"
+      },
+      "UsageKey": {
+        "description": "One AI gateway key's month.",
+        "properties": {
+          "app": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its application, when known.",
+            "title": "App"
+          },
+          "attribution": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "How the key was tied to its tenant: `registry` (a registered key), `map` (an operator's mapping), `project` (the key's project) or `unattributed`.",
+            "title": "Attribution"
+          },
+          "env": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its environment (`dev`, `uat`, `prod`), when known.",
+            "title": "Env"
+          },
+          "key_alias": {
+            "description": "The key's alias (never its value).",
+            "title": "Key Alias",
+            "type": "string"
+          },
+          "last_seen": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its last call in the month.",
+            "title": "Last Seen"
+          },
+          "project_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its project (`id` on a project), when known.",
+            "title": "Project Id"
+          },
+          "rated_eur": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing.",
+            "title": "Rated Eur"
+          },
+          "rows": {
+            "description": "Its usage per tier and model.",
+            "items": {
+              "$ref": "#/components/schemas/UsageTierModelRow"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/UsageCounts",
+            "description": "Its counts for the month."
+          }
+        },
+        "required": [
+          "key_alias",
+          "totals"
+        ],
+        "title": "UsageKey",
+        "type": "object"
+      },
+      "UsageTier": {
+        "description": "One serving tier's month, with the rate in force on the last day shown.",
+        "properties": {
+          "cache_hits": {
+            "default": 0,
+            "description": "Calls answered from the gateway's cache.",
+            "title": "Cache Hits",
+            "type": "integer"
+          },
+          "calls": {
+            "default": 0,
+            "description": "Calls.",
+            "title": "Calls",
+            "type": "integer"
+          },
+          "completion_tokens": {
+            "default": 0,
+            "description": "Output tokens.",
+            "title": "Completion Tokens",
+            "type": "integer"
+          },
+          "eur_per_1m_input": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR per one million input (prompt) tokens. The rate on the last day shown; null without one.",
+            "title": "Eur Per 1M Input"
+          },
+          "eur_per_1m_output": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR per one million output (completion) tokens. The rate on the last day shown; null without one.",
+            "title": "Eur Per 1M Output"
+          },
+          "failures": {
+            "default": 0,
+            "description": "Calls that failed (refused or errored).",
+            "title": "Failures",
+            "type": "integer"
+          },
+          "prompt_tokens": {
+            "default": 0,
+            "description": "Input tokens.",
+            "title": "Prompt Tokens",
+            "type": "integer"
+          },
+          "rate_basis": {
+            "default": "pending",
+            "description": "Which rate priced it: `plan` (the tenant's own rate), `list` (the rate card), `contract_included` (an active contract includes metered AI: 0 EUR), `none` (no rate: not priced) or `pending` (the rates could not be read just now; usage is still shown).",
+            "title": "Rate Basis",
+            "type": "string"
+          },
+          "rated_complete": {
+            "default": false,
+            "description": "Every token was priced; false when a tier had no rate (a floor).",
+            "title": "Rated Complete",
+            "type": "boolean"
+          },
+          "rated_eur": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing.",
+            "title": "Rated Eur"
+          },
+          "shadow_usd": {
+            "default": 0.0,
+            "description": "The AI gateway's own price in USD (its shadow price, used for budget enforcement on the gateway). Not the bill: the bill is `rated_eur`.",
+            "format": "double",
+            "title": "Shadow Usd",
+            "type": "number"
+          },
+          "tier": {
+            "description": "The serving tier, e.g. `general`, `code`, `embed`.",
+            "title": "Tier",
+            "type": "string"
+          },
+          "total_tokens": {
+            "default": 0,
+            "description": "Input and output tokens together.",
+            "title": "Total Tokens",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "tier"
+        ],
+        "title": "UsageTier",
+        "type": "object"
+      },
+      "UsageTierModelRow": {
+        "description": "One key's usage of one tier and model in the month.",
+        "properties": {
+          "cache_hits": {
+            "default": 0,
+            "description": "Calls answered from the gateway's cache.",
+            "title": "Cache Hits",
+            "type": "integer"
+          },
+          "calls": {
+            "default": 0,
+            "description": "Calls.",
+            "title": "Calls",
+            "type": "integer"
+          },
+          "completion_tokens": {
+            "default": 0,
+            "description": "Output tokens.",
+            "title": "Completion Tokens",
+            "type": "integer"
+          },
+          "failures": {
+            "default": 0,
+            "description": "Calls that failed (refused or errored).",
+            "title": "Failures",
+            "type": "integer"
+          },
+          "model": {
+            "description": "The model that served it.",
+            "title": "Model",
+            "type": "string"
+          },
+          "prompt_tokens": {
+            "default": 0,
+            "description": "Input tokens.",
+            "title": "Prompt Tokens",
+            "type": "integer"
+          },
+          "rate_basis": {
+            "default": "pending",
+            "description": "Which rate priced it: `plan` (the tenant's own rate), `list` (the rate card), `contract_included` (an active contract includes metered AI: 0 EUR), `none` (no rate: not priced) or `pending` (the rates could not be read just now; usage is still shown).",
+            "title": "Rate Basis",
+            "type": "string"
+          },
+          "rated_complete": {
+            "default": false,
+            "description": "Every token was priced; false when a tier had no rate (a floor).",
+            "title": "Rated Complete",
+            "type": "boolean"
+          },
+          "rated_eur": {
+            "anyOf": [
+              {
+                "format": "double",
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "EUR at the tenant's rate on each day; null when nothing could be priced. When `rated_complete` is false it is a floor: the tiers without a rate add nothing.",
+            "title": "Rated Eur"
+          },
+          "shadow_usd": {
+            "default": 0.0,
+            "description": "The AI gateway's own price in USD (its shadow price, used for budget enforcement on the gateway). Not the bill: the bill is `rated_eur`.",
+            "format": "double",
+            "title": "Shadow Usd",
+            "type": "number"
+          },
+          "tier": {
+            "description": "The serving tier, e.g. `general`, `code`, `embed`.",
+            "title": "Tier",
+            "type": "string"
+          },
+          "total_tokens": {
+            "default": 0,
+            "description": "Input and output tokens together.",
+            "title": "Total Tokens",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "tier",
+          "model"
+        ],
+        "title": "UsageTierModelRow",
         "type": "object"
       },
       "User": {
@@ -16546,6 +18130,188 @@
         ]
       }
     },
+    "/ai/gateway/usage": {
+      "get": {
+        "description": "Every tenant's AI gateway usage for a month, heaviest first, each rated at its own rate, and the unattributed bucket (keys no tenant could be found for, priced at the list rate for information and billed to nobody). EUR is rated when read: each day's tokens at the rate in force that day — the tenant's own rate (its plan), else the list rate (the rate card); an active contract that includes metered AI prices it at 0. A tier without a rate is never priced as 0: it is null, named in `unrated_tiers`, and every total is then a floor (`rated_complete` false).",
+        "operationId": "ai_gateway_usage_get",
+        "parameters": [
+          {
+            "description": "The month, `YYYY-MM`, in the billing time zone; default the current month.",
+            "in": "query",
+            "name": "month",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^(\\d{4})-(0[1-9]|1[0-2])$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The month, `YYYY-MM`, in the billing time zone; default the current month.",
+              "title": "Month"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayAiUsage"
+                }
+              }
+            },
+            "description": "The platform's month, per tenant.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "`month` is not `YYYY-MM` (`validation_failed`), or not a month the billing calendar has (`invalid_month`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Every tenant's AI usage",
+        "tags": [
+          "ai-billing"
+        ]
+      }
+    },
     "/ai/nodes": {
       "get": {
         "description": "The AI fleet. Roster fields are always present; live fields are null when monitoring cannot be read (`monitoring_reachable: false`). Never 503.",
@@ -16892,6 +18658,352 @@
         "summary": "One AI node",
         "tags": [
           "ai-nodes"
+        ]
+      }
+    },
+    "/ai/rate-card": {
+      "get": {
+        "description": "The platform's list rate per serving tier, EUR per one million input and output tokens: in force today (`current`), the next scheduled change (`upcoming`), and the whole history. Tiers the platform knows (from its pricebook or its usage) appear even without a rate, `current` null: their usage is not priced until one is set. A tenant with its own rate (`/tenants/{tenant_id}/ai-rate-plan`) pays that instead.",
+        "operationId": "ai_rate_card_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiRateCard"
+                }
+              }
+            },
+            "description": "The rate card.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "The AI rate card",
+        "tags": [
+          "ai-billing"
+        ]
+      }
+    },
+    "/ai/rate-card/{tier}": {
+      "put": {
+        "description": "Sets the list rate of one serving tier from `valid_from` (default today): the rate in force that day is closed the day before. A later `valid_from` schedules the change; while one is scheduled, another later one edits it instead of stacking a second. The rate already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Rating is at read time: a rate starting in the past re-prices the usage since then. Recorded in the audit log as `ai_rate_card.set`. There is no delete: a list rate is replaced, never removed.",
+        "operationId": "ai_rate_card_put",
+        "parameters": [
+          {
+            "description": "The serving tier, e.g. `general`: letters, digits, `.`, `_` and `-`, 1-64 characters.",
+            "in": "path",
+            "name": "tier",
+            "required": true,
+            "schema": {
+              "description": "The serving tier, e.g. `general`: letters, digits, `.`, `_` and `-`, 1-64 characters.",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+              "title": "Tier",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiRateCardPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiRateCardTierChanged"
+                }
+              }
+            },
+            "description": "The tier's list rate after the request.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Another change to the same tier or plan landed at the same moment (`rate_changed_concurrently`); read again and retry.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The body is invalid (`validation_failed`: a negative rate, a rate above 1000000, a tier named twice, an unknown member), or `valid_from` is before 2020-01-01 or more than three years ahead (`invalid_valid_from`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Set a tier's list rate",
+        "tags": [
+          "ai-billing"
         ]
       }
     },
@@ -26680,6 +28792,822 @@
         ]
       }
     },
+    "/tenants/{tenant_id}/ai-rate-plan": {
+      "delete": {
+        "description": "Ends the tenant's rate plan today: every tier goes back to the list rate. The history stays (a rate that applied is never deleted, so past usage keeps its price). Not destroy-gated: it changes a price, it removes nothing; it needs the write permission only. Recorded in the audit log as `ai_rate_plan.delete`.",
+        "operationId": "tenant_ai_rate_plan_delete",
+        "parameters": [
+          {
+            "description": "The tenant's id (`id` on a tenant).",
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The tenant pays the list rate from today.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Another change to the same tier or plan landed at the same moment (`rate_changed_concurrently`); read again and retry.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "End a tenant's AI rates",
+        "tags": [
+          "ai-billing"
+        ]
+      },
+      "get": {
+        "description": "The tenant's own AI rates in force today (`rates`; empty: it pays the list rate), any scheduled change, the effective rate per tier with its basis next to the list rate, whether a contract includes metered AI, and the history.",
+        "operationId": "tenant_ai_rate_plan_get",
+        "parameters": [
+          {
+            "description": "The tenant's id (`id` on a tenant).",
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantAiRatePlan"
+                }
+              }
+            },
+            "description": "The tenant's rate plan.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A tenant's AI rates",
+        "tags": [
+          "ai-billing"
+        ]
+      },
+      "put": {
+        "description": "Replaces the tenant's WHOLE rate plan from `valid_from` (default today): a tier in `rates` costs the tenant that rate; a tier LEFT OUT goes back to the list rate from that day; `{\"rates\": []}` ends the plan (as `DELETE` does). The plan already in force again changes nothing (`changed` false, nothing recorded), so the request is idempotent. Recorded in the audit log as `ai_rate_plan.set`.",
+        "operationId": "tenant_ai_rate_plan_put",
+        "parameters": [
+          {
+            "description": "The tenant's id (`id` on a tenant).",
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantAiRatePlanPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantAiRatePlan"
+                }
+              }
+            },
+            "description": "The tenant's rate plan after the replacement.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Another change to the same tier or plan landed at the same moment (`rate_changed_concurrently`); read again and retry.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The body is invalid (`validation_failed`: a negative rate, a rate above 1000000, a tier named twice, an unknown member), or `valid_from` is before 2020-01-01 or more than three years ahead (`invalid_valid_from`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Replace a tenant's AI rates",
+        "tags": [
+          "ai-billing"
+        ]
+      }
+    },
+    "/tenants/{tenant_id}/ai-usage": {
+      "get": {
+        "description": "One tenant's AI gateway usage for a month, from the daily usage ledger, rated: totals, per key (and per tier and model under each key), per tier with the rate on the last day, per day, the month-end forecast and the monthly AI budget against the spend. This is the operator's view: each key's attribution and the gateway's own shadow price (`shadow_usd`) are included. EUR is rated when read: each day's tokens at the rate in force that day — the tenant's own rate (its plan), else the list rate (the rate card); an active contract that includes metered AI prices it at 0. A tier without a rate is never priced as 0: it is null, named in `unrated_tiers`, and every total is then a floor (`rated_complete` false). Days are billing days in the billing time zone (`tz`); today's day fills as the ledger rolls up (every 15 minutes).\n\nWith `format=csv`: `text/csv`, one row per day, key, tier and model, header first (`month, day, key_alias, env, app, tier, model, calls, prompt_tokens, completion_tokens, total_tokens, failures, cache_hits, rated_eur, rate_basis, organization_id, project_id, attribution, shadow_usd`), as an attachment named `ai-usage-<tenant slug>-<month>.csv`. A text cell a spreadsheet would run as a formula starts with a quote.",
+        "operationId": "tenant_ai_usage_get",
+        "parameters": [
+          {
+            "description": "The tenant's id (`id` on a tenant).",
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "description": "The tenant's id (`id` on a tenant).",
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The month, `YYYY-MM`, in the billing time zone; default the current month.",
+            "in": "query",
+            "name": "month",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^(\\d{4})-(0[1-9]|1[0-2])$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The month, `YYYY-MM`, in the billing time zone; default the current month.",
+              "title": "Month"
+            }
+          },
+          {
+            "description": "`json` (default), or `csv`: one row per day, key, tier and model.",
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "default": "json",
+              "description": "`json` (default), or `csv`: one row per day, key, tier and model.",
+              "enum": [
+                "json",
+                "csv"
+              ],
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantAiUsage"
+                }
+              },
+              "text/csv": {
+                "schema": {
+                  "description": "The month's usage rows as CSV (`format=csv`).",
+                  "type": "string"
+                }
+              }
+            },
+            "description": "The tenant's month, rated (JSON), or its rows as CSV.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such tenant (`tenant_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "`month` is not `YYYY-MM` (`validation_failed`), or not a month the billing calendar has (`invalid_month`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A tenant's AI usage",
+        "tags": [
+          "ai-billing"
+        ]
+      }
+    },
     "/tenants/{tenant_id}/memberships": {
       "get": {
         "description": "The tenant's members and their roles, in `user_id` order.",
@@ -27869,7 +30797,7 @@
         ]
       },
       "put": {
-        "description": "Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.\n\nWithin a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.",
+        "description": "Replaces the tenant's WHOLE quota set with the body, exactly as the portal's quotas page saves it: a dimension in the body gets that limit and policy, and a dimension LEFT OUT loses its limit — no limit, but every order touching it then goes to an approval card, never to automatic approval. `[]` removes every limit. A limit whose value, policy and note are unchanged keeps its `set_by` and `set_at`. Recorded in the audit log as `quota.set`, with the whole set before and after. A quota is never raised by approving an order; it changes only here and on the quotas page.\n\nAn `ai_budget_eur_month` limit saved with `hard_cap` is also enforced by the AI gateway: every live key of the tenant gets a spending cap (its share of the month's remaining budget), and saving again re-splits it; leaving `hard_cap` removes the caps. If the gateway cannot be reached the quotas are still replaced and the answer carries the warning `ai_budget_enforcement_pending` (no key was capped yet) or `ai_budget_enforcement_partial` (some keys were); save again to retry. Any other policy never touches the keys.\n\nWithin a limit, an order whose every dimension has room under `auto` is approved by itself; over a limit it goes to an operator's approval card (`hard_cap`: it is refused when placed); a dimension WITHOUT a limit sends every order touching it to a card. `allocated` counts what the tenant holds, `reserved` what approved orders not yet delivered hold.",
         "operationId": "tenant_quotas_put",
         "parameters": [
           {
@@ -30208,6 +33136,10 @@
     {
       "description": "Tenant quotas, the order catalogue and tenant orders (orders are read-only).",
       "name": "orders"
+    },
+    {
+      "description": "AI usage per tenant and month, rated; the AI rate card and tenant rate plans.",
+      "name": "ai-billing"
     },
     {
       "description": "Model Context Protocol: every GET operation as a read-only tool.",

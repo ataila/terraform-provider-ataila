@@ -5,7 +5,7 @@ description: |-
   A tenant's whole quota set: per dimension a limit and its policy, against which the platform decides every order the tenant places from the catalogue. Dimensions: vcpu, ram_gb, disk_gb, desktops, vms, ai_tpm (AI gateway tokens per minute: the sum of the tenant's key limits), ai_budget_eur_month (the tenant's monthly AI budget in EUR) and gpu (dedicated GPU cards; shown, never ordered).
   This resource owns the tenant's entire quota set. Every apply replaces the set on the platform with exactly the quota entries in the configuration (PUT /tenants/{id}/quotas): a dimension that has a limit on the platform but is not in quota loses its limit — no limit, and every order touching that dimension then goes to an operator's approval card (never to automatic approval). The plan shows such a dimension as removed from quota, and warns. Do not manage one tenant's quotas both here and on the portal's quotas page: the next apply puts back what the configuration says.
   Destroy removes every limit of the tenant (an empty set: every order goes to an approval card). It is not gated by allow_destroy: the platform treats it as a quota change, not a removal. To stop managing the set without changing it, remove the resource from the state instead (tofu state rm / terraform state rm, or a removed block with destroy = false).
-  Changing tenant_id manages another tenant's set: the old tenant's limits are removed, the new tenant's are set. Needs a token holding orders-admin-global (reading needs orders-read-global). Needs platform release 1.0.9999 or later: on an older platform the configuration is refused at plan time, before any request. A quota is never raised by approving an order; it changes here and on the quotas page only.
+  Changing tenant_id manages another tenant's set: the old tenant's limits are removed, the new tenant's are set. Needs a token holding orders-admin-global (reading needs orders-read-global). Needs platform release 1.0.233 or later: on an older platform the configuration is refused at plan time, before any request. A quota is never raised by approving an order; it changes here and on the quotas page only.
 ---
 
 # ataila_tenant_quota (Resource)
@@ -16,7 +16,7 @@ A tenant's **whole** quota set: per dimension a limit and its policy, against wh
 
 **Destroy removes every limit** of the tenant (an empty set: every order goes to an approval card). It is not gated by `allow_destroy`: the platform treats it as a quota change, not a removal. To stop managing the set without changing it, remove the resource from the state instead (`tofu state rm` / `terraform state rm`, or a `removed` block with `destroy = false`).
 
-Changing `tenant_id` manages another tenant's set: the old tenant's limits are removed, the new tenant's are set. Needs a token holding `orders-admin-global` (reading needs `orders-read-global`). Needs platform release 1.0.9999 or later: on an older platform the configuration is refused at plan time, before any request. A quota is never raised by approving an order; it changes here and on the quotas page only.
+Changing `tenant_id` manages another tenant's set: the old tenant's limits are removed, the new tenant's are set. Needs a token holding `orders-admin-global` (reading needs `orders-read-global`). Needs platform release 1.0.233 or later: on an older platform the configuration is refused at plan time, before any request. A quota is never raised by approving an order; it changes here and on the quotas page only.
 
 ## Example Usage
 

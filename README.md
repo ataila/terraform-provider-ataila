@@ -198,8 +198,10 @@ place, so switch once, not back and forth in parallel runs.
 
 Nothing changes in a configuration or a state, and `~> 1.0` already takes 1.2.0. 1.2.0 adds tenant quotas
 (`ataila_tenant_quota`, resource and data source), the order catalogue (`ataila_catalogue_items`) and a tenant's
-orders, read only (`ataila_orders`, `ataila_order`); they need platform release 1.0.9999 or later, and the provider
-refuses them, at plan time and before any request, only where they are used on an older platform.
+orders, read only (`ataila_orders`, `ataila_order`), which need platform release 1.0.233 or later; and rated AI
+usage (`ataila_ai_usage`, `ataila_ai_gateway_usage`), the AI rate card and tenant rate plans (`ataila_ai_rate_card`,
+`ataila_ai_rate_plan`, resources and data sources), which need 1.0.236 or later. The provider refuses each group, at
+plan time and before any request, only where it is used on an older platform.
 
 ### Upgrading from 1.0.x to 1.1.0
 
@@ -325,6 +327,8 @@ Without any network at all, leave the `direct` block out. The configuration keep
 | [`ataila_ai_model`](docs/resources/ai_model.md) | An AI model catalogue row (no weights) | Removes the row; refused while weights exist; not gated |
 | [`ataila_ai_model_node_cache`](docs/resources/ai_model_node_cache.md) | A cached copy of a model's weights on an AI node | Removes the node's copy |
 | [`ataila_tenant_quota`](docs/resources/tenant_quota.md) | A tenant's **whole** quota set: per dimension a limit and its policy | Removes every limit (orders then go to approval cards); not gated |
+| [`ataila_ai_rate_card`](docs/resources/ai_rate_card.md) | The list rate of one AI serving tier, EUR per 1M input and output tokens | Forgets only |
+| [`ataila_ai_rate_plan`](docs/resources/ai_rate_plan.md) | A tenant's **whole** AI rate plan: its own rate per tier instead of the list rate | Ends the plan (back to the list rate); not gated |
 
 **Destroy is off by default and needs two switches**: `allow_destroy = true` on the provider **and** a token
 minted with destroy allowed. With the provider switch off, destroying a customer or a tenant fails at plan
@@ -362,8 +366,20 @@ places of a limit; the state keeps the configuration's spelling. Orders are **re
 `ataila_order`): a tenant orders in the portal and an operator approves, rejects or re-runs there; there is no
 order resource. An order's free-form members (its spec, quota check, delivery facts, timeline details) and a
 catalogue item's form are JSON text (`*_json`) for `jsondecode()`. The token needs `orders-admin-global` to change
-quotas and `orders-read-global` to read; the platform needs release 1.0.9999 or later (refused at plan time
+quotas and `orders-read-global` to read; the platform needs release 1.0.233 or later (refused at plan time
 before it).
+
+**AI usage and rates.** `ataila_ai_usage` and `ataila_ai_gateway_usage` read a month of AI gateway usage from the
+platform's daily ledger, rated in EUR when read: each day at the rate in force that day, the tenant's own rate
+(`ataila_ai_rate_plan`) else the list rate (`ataila_ai_rate_card`). A tier without a rate is never priced as 0: it
+is null and named in `unrated_tiers`, and the totals are then a floor (`rated_complete` false). A rate change
+closes the rate in force the day before `valid_from` and starts the new one, so earlier usage keeps its price; a
+past `valid_from` re-prices the usage since then, a future one schedules the change; the same rate again changes
+nothing, so a second apply is a no-op. `ataila_ai_rate_plan` owns the tenant's **whole** plan like the quota
+resource owns its set: a tier left out goes back to the list rate (the plan warns), and destroy ends the plan. A
+list rate is never removed: destroying `ataila_ai_rate_card` only forgets it. Notes are owned too: leaving `note`
+out clears it. Changing rates needs `ai-gateway-admin-global` (the card) or `orders-admin-global` /
+`ai-gateway-admin-global` (a plan); the platform needs release 1.0.236 or later.
 
 **The licence and the brand are singletons** (import id `current`) that destroy only forgets. The licence
 bundle is compared by the digest of its document: the installed one is adopted without being sent again,
@@ -423,6 +439,8 @@ Import forms:
 | `ataila_ai_model` | the id, or `repo:<org/name>` |
 | `ataila_ai_model_node_cache` | `<model_id>/<node>` |
 | `ataila_tenant_quota` | the tenant's id |
+| `ataila_ai_rate_card` | the tier |
+| `ataila_ai_rate_plan` | the tenant's id |
 
 ```shell
 tofu import ataila_customer.example short_name:EXAMPLE        # OpenTofu
@@ -464,6 +482,10 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_catalogue_items`](docs/data-sources/catalogue_items.md) | What tenants can order: the enabled catalogue items, their forms and quota mapping |
 | [`ataila_orders`](docs/data-sources/orders.md) | A tenant's orders, newest first, optionally of one state (all pages) |
 | [`ataila_order`](docs/data-sources/order.md) | One order with its timeline; for an AI key order, the key it delivered (never its value) |
+| [`ataila_ai_usage`](docs/data-sources/ai_usage.md) | One tenant's AI usage for a month, rated: totals, per key, tier and day, forecast, budget |
+| [`ataila_ai_gateway_usage`](docs/data-sources/ai_gateway_usage.md) | Every tenant's AI usage for a month, rated, and the unattributed keys |
+| [`ataila_ai_rate_card`](docs/data-sources/ai_rate_card.md) | The AI list rate per serving tier: today's, the next scheduled one, the history |
+| [`ataila_ai_rate_plan`](docs/data-sources/ai_rate_plan.md) | A tenant's own AI rates and what each tier costs it today, and why |
 
 Further resources follow milestone by milestone; each ships with its documentation, examples and tests.
 

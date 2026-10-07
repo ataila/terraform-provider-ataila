@@ -3,12 +3,12 @@
 page_title: "ataila_order Data Source - ATAILA"
 subcategory: ""
 description: |-
-  One order, by id, with its timeline: who placed it, how the quota decided, who approved or rejected it and why, and each step of its delivery. Read only (approval stays in the portal). For an AI gateway key order, key_id names the key it delivered, never its value. Needs a token holding orders-read-global (or orders-admin-global) and platform release 1.0.9999 or later.
+  One order, by id, with its timeline: who placed it, how the quota decided, who approved or rejected it and why, and each step of its delivery. Read only (approval stays in the portal). For an AI gateway key order, key_id names the key it delivered, never its value. Needs a token holding orders-read-global (or orders-admin-global) and platform release 1.0.233 or later.
 ---
 
 # ataila_order (Data Source)
 
-One order, by id, with its timeline: who placed it, how the quota decided, who approved or rejected it and why, and each step of its delivery. **Read only** (approval stays in the portal). For an AI gateway key order, `key_id` names the key it delivered, never its value. Needs a token holding `orders-read-global` (or `orders-admin-global`) and platform release 1.0.9999 or later.
+One order, by id, with its timeline: who placed it, how the quota decided, who approved or rejected it and why, and each step of its delivery. **Read only** (approval stays in the portal). For an AI gateway key order, `key_id` names the key it delivered, never its value. Needs a token holding `orders-read-global` (or `orders-admin-global`) and platform release 1.0.233 or later.
 
 ## Example Usage
 

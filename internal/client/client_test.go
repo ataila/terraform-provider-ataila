@@ -199,24 +199,34 @@ func TestPlatformServes(t *testing.T) {
 	}
 }
 
-// Tenant quotas, the catalogue and the order reads came with one platform
-// release, ReleaseQuotasOrders: served from it on, refused just before it.
-func TestPlatformServesQuotasAndOrders(t *testing.T) {
-	parts := strings.Split(ReleaseQuotasOrders, ".")
-	n, err := strconv.Atoi(parts[len(parts)-1])
-	if err != nil || n == 0 || !semver.IsValid("v"+ReleaseQuotasOrders) {
-		t.Fatalf("ReleaseQuotasOrders %q is not a release with a patch number above 0", ReleaseQuotasOrders)
+// Each feature group came with one platform release: tenant quotas, the
+// catalogue and the order reads with ReleaseQuotasOrders; rated AI usage, the
+// rate card and rate plans with ReleaseAIBilling. Served from that release on,
+// refused just before it.
+func TestPlatformServesQuotasOrdersAndAIBilling(t *testing.T) {
+	for release, features := range map[string][]string{
+		ReleaseQuotasOrders: {FeatureTenantQuota, FeatureCatalogue, FeatureOrders},
+		ReleaseAIBilling:    {FeatureAIUsage, FeatureAIRates},
+	} {
+		parts := strings.Split(release, ".")
+		n, err := strconv.Atoi(parts[len(parts)-1])
+		if err != nil || n == 0 || !semver.IsValid("v"+release) {
+			t.Fatalf("release %q is not one with a patch number above 0", release)
+		}
+		parts[len(parts)-1] = strconv.Itoa(n - 1)
+		below := strings.Join(parts, ".")
+		for _, f := range features {
+			if FeatureMinimum(f) != release {
+				t.Errorf("%s came with %s, not %s", f, FeatureMinimum(f), release)
+			}
+			if !PlatformServes(release, f) || PlatformServes(below, f) || PlatformServes(MinimumPlatformVersion, f) {
+				t.Errorf("%s: served by %s and not by %s (nor %s) expected", f, release, below,
+					MinimumPlatformVersion)
+			}
+		}
 	}
-	parts[len(parts)-1] = strconv.Itoa(n - 1)
-	below := strings.Join(parts, ".")
-	for _, f := range []string{FeatureTenantQuota, FeatureCatalogue, FeatureOrders} {
-		if FeatureMinimum(f) != ReleaseQuotasOrders {
-			t.Errorf("%s came with %s, not %s", f, FeatureMinimum(f), ReleaseQuotasOrders)
-		}
-		if !PlatformServes(ReleaseQuotasOrders, f) || PlatformServes(below, f) || PlatformServes(MinimumPlatformVersion, f) {
-			t.Errorf("%s: served by %s and not by %s (nor %s) expected", f, ReleaseQuotasOrders, below,
-				MinimumPlatformVersion)
-		}
+	if semver.Compare("v"+ReleaseQuotasOrders, "v"+ReleaseAIBilling) >= 0 {
+		t.Errorf("the AI billing group (%s) came after the quotas group (%s)", ReleaseAIBilling, ReleaseQuotasOrders)
 	}
 }
 

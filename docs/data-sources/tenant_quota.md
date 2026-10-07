@@ -3,12 +3,12 @@
 page_title: "ataila_tenant_quota Data Source - ATAILA"
 subcategory: ""
 description: |-
-  A tenant's quota set: the limits the operator set, per dimension (vcpu, ram_gb, disk_gb, desktops, vms, ai_tpm (AI gateway tokens per minute: the sum of the tenant's key limits), ai_budget_eur_month (the tenant's monthly AI budget in EUR) and gpu (dedicated GPU cards; shown, never ordered)), and for every dimension what the tenant holds against them. Needs a token holding orders-read-global (or orders-admin-global) and platform release 1.0.9999 or later.
+  A tenant's quota set: the limits the operator set, per dimension (vcpu, ram_gb, disk_gb, desktops, vms, ai_tpm (AI gateway tokens per minute: the sum of the tenant's key limits), ai_budget_eur_month (the tenant's monthly AI budget in EUR) and gpu (dedicated GPU cards; shown, never ordered)), and for every dimension what the tenant holds against them. Needs a token holding orders-read-global (or orders-admin-global) and platform release 1.0.233 or later.
 ---
 
 # ataila_tenant_quota (Data Source)
 
-A tenant's quota set: the limits the operator set, per dimension (`vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute: the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) and `gpu` (dedicated GPU cards; shown, never ordered)), and for every dimension what the tenant holds against them. Needs a token holding `orders-read-global` (or `orders-admin-global`) and platform release 1.0.9999 or later.
+A tenant's quota set: the limits the operator set, per dimension (`vcpu`, `ram_gb`, `disk_gb`, `desktops`, `vms`, `ai_tpm` (AI gateway tokens per minute: the sum of the tenant's key limits), `ai_budget_eur_month` (the tenant's monthly AI budget in EUR) and `gpu` (dedicated GPU cards; shown, never ordered)), and for every dimension what the tenant holds against them. Needs a token holding `orders-read-global` (or `orders-admin-global`) and platform release 1.0.233 or later.
 
 ## Example Usage
 

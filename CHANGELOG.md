@@ -3,7 +3,9 @@
 All notable changes to this provider. Versions follow semantic versioning. 1.0.0 is the first public release;
 the 0.x releases before it were never published, and any of them could change what the one before did.
 
-## 1.2.0 (TBD) — contract of platform release 1.0.9999
+## Unreleased
+
+## 1.2.0 (2026-10-07) — contract of platform release 1.0.236
 
 A minor release: additions only, under the stability promise of 1.0.0. A configuration and a state of 1.1.0
 plan with no changes.
@@ -29,27 +31,50 @@ plan with no changes.
   no order resource. Each order carries its status, the quota check's `quota_result` and `quota_decision`, who
   approved or rejected it and why, `operation_id`, and for an AI gateway key order the delivered key's `key_id`
   and `key_alias` (never its value); its spec, quota check, overage and delivery facts are JSON text.
+- `ataila_ai_rate_card` resource: the list rate of one serving tier, `eur_per_1m_input` and `eur_per_1m_output`
+  (EUR per one million tokens, six decimal places kept, the configured spelling kept), `valid_from` (today when
+  left out; a past day re-prices the usage since then, a future day schedules the change), `note` (owned: left
+  out, it is cleared), through `PUT /ai/rate-card/{tier}`. The same rate again changes nothing on the platform, so
+  a second apply sends nothing and an apply after a portal change puts the rate back; `valid_to` reads when a
+  change is scheduled after it. Destroy forgets only (the platform never removes a list rate); import by tier.
+- `ataila_ai_rate_plan` resource: a tenant's **whole** rate plan, `rates` = map of tier to
+  `{eur_per_1m_input, eur_per_1m_output, note}`, optional `valid_from` (sent with each change, not read back),
+  through `PUT /tenants/{id}/ai-rate-plan`. A tier left out goes back to the list rate on the next apply, and the
+  plan warns, naming it; `effective` (what each tier costs the tenant today, its basis and the list rate beside it)
+  and `contract_included` read back. Destroy ends the plan (`DELETE`, not gated: a price change, nothing removed);
+  import by tenant id; `tenant_id` forces a new resource.
+- `ataila_ai_rate_card` and `ataila_ai_rate_plan` data sources: the whole card (per tier `current`, `upcoming`,
+  `seedable`; the history) and one tenant's plan (`rates`, `upcoming`, `effective`, `contract`, the history).
+- `ataila_ai_usage` data source (`tenant_id`, optional `month`, `YYYY-MM`, default the current month): one tenant's
+  month of AI gateway usage, rated — `totals`, `by_key` (with `rows` per tier and model and each key's
+  attribution), `by_tier` (with the rate), `by_day`, `forecast`, `budget` (the `ai_budget_eur_month` quota against
+  the spend), `rated_eur`, `rate_basis`, `rate_bases`, `unrated_tiers`, `rated_complete`; the gateway's own shadow
+  price as `shadow_usd`. `ataila_ai_gateway_usage` (optional `month`): every tenant's month, rated, and the
+  unattributed keys.
 
 ### Minimum platform, per feature
 
 - The provider still works with every platform from release 1.0.187 on. Tenant quotas, the catalogue and the
-  order reads need platform release 1.0.9999 or later (`client.ReleaseQuotasOrders`); a configuration that uses
-  one of them on an older platform is refused at plan time, before any request, naming both releases.
+  order reads need platform release 1.0.233 or later (`client.ReleaseQuotasOrders`); AI usage, the rate card and
+  rate plans need 1.0.236 or later (`client.ReleaseAIBilling`). A configuration that uses one of them on an older
+  platform is refused at plan time, before any request, naming both releases.
 
 ### Contract
 
-- `api/openapi-v1.json` is the platform's export of release 1.0.9999. Since 1.0.206 it adds the five operations
-  `tenant_quotas_get`, `tenant_quotas_put`, `catalogue_items_list`, `tenant_orders_list` and `orders_get` with
-  their schemas (`TenantQuotas`, `TenantQuota`, `TenantQuotaUsage`, `TenantQuotasPut`, `TenantQuotaIn`,
-  `CatalogueItem`, `CatalogueItemPage`, `Order`, `OrderPage`, `OrderDetail`, `OrderEvent`, `OrderQuotaCheck`,
-  `OrderQuotaDimension`), and from the platform releases in between `app_subdomain` on projects, the
-  `hostname_taken` refusal and documented codes; nothing is removed or changed (the platform's additive guard
-  checks every release against the contract published with 1.0.0).
+- `api/openapi-v1.json` is the platform's contract with release 1.0.236's operations (98). Since 1.0.206 it adds
+  the five quota, catalogue and order operations (`tenant_quotas_get`, `tenant_quotas_put`, `catalogue_items_list`,
+  `tenant_orders_list`, `orders_get`; platform 1.0.233) and the seven AI usage and rate operations
+  (`tenant_ai_usage_get`, `ai_gateway_usage_get`, `ai_rate_card_get`, `ai_rate_card_put`, `tenant_ai_rate_plan_get`,
+  `tenant_ai_rate_plan_put`, `tenant_ai_rate_plan_delete`; 1.0.236) with their schemas, and from the releases in
+  between `app_subdomain` on projects, the `hostname_taken` refusal and documented codes; nothing is removed or
+  changed (the platform's additive guard checks every release against the contract published with 1.0.0).
 
 ### Documentation
 
-- Pages and examples for the new resource and the four data sources, and `examples/sp-tenant/`: a service
-  provider's customer tenant from code — its quota set, an AI gateway key inside it, and its orders read back.
+- Pages and examples for the three new resources and the eight new data sources, and `examples/sp-tenant/`: a
+  service provider's customer tenant from code — its quota set, an AI gateway key inside it, its own AI rates, and
+  its orders and month's rated usage read back; its README shows how to run it with a provider built from a
+  checkout (a development override) before a release is published.
 - The README shows the company's logo at the top (`docs/images/ataila-logo.png`).
 - The documentation link points to the company's website, https://www.ataila.com/developers/terraform, in the
   README and on the registry's overview page.
@@ -70,8 +95,9 @@ plan with no changes.
 
 ### CI
 
-- The acceptance tests of the new resource and data sources are in the `tenancy` domain
-  (`scripts/ci/acc-domains.sh`: `Catalogue` and `Order` added).
+- The acceptance tests of the quota, catalogue and order objects are in the `tenancy` domain
+  (`scripts/ci/acc-domains.sh`: `Catalogue` and `Order` added); those of AI usage and rates
+  (`TestAccAI…`) in `ai-licence-brand`.
 - The leak guard allows `www.ataila.com`, the company's website. The names under the company's earlier website
   domain stay allowed for the released history only; no file names that domain any more.
 

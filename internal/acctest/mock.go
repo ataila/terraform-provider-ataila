@@ -94,6 +94,7 @@ type MockAPI struct {
 	releases   *releasesState
 	ai         *aiState
 	orders     *ordersState
+	aiBilling  *aiBillingState
 }
 
 type storedReply struct {
@@ -145,6 +146,7 @@ func NewMockAPI(t testing.TB) *MockAPI {
 		releases:   newReleasesState(),
 		ai:         newAIState(),
 		orders:     newOrdersState(),
+		aiBilling:  newAIBillingState(),
 	}
 	principal, _ := m.whoami["principal"].(map[string]any)
 	m.users = newUsersState(principal, m.whoami["scopes"].([]string))
@@ -492,6 +494,10 @@ func (m *MockAPI) route(c *call) reply {
 	// A tenant's quotas and orders, the catalogue and orders (orders.go), before
 	// the tenancy routes, which own the rest of /tenants.
 	if rep, handled := m.routeOrders(c); handled {
+		return rep
+	}
+	// AI usage and rates (ai_billing.go), before the tenancy and gateway routes.
+	if rep, handled := m.routeAIBilling(c); handled {
 		return rep
 	}
 	switch {
