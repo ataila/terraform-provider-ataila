@@ -200,7 +200,7 @@ Nothing changes in a configuration or a state, and `~> 1.0` already takes 1.2.0.
 (`ataila_tenant_quota`, resource and data source), the order catalogue (`ataila_catalogue_items`) and a tenant's
 orders, read only (`ataila_orders`, `ataila_order`), which need platform release 1.0.233 or later; and rated AI
 usage (`ataila_ai_usage`, `ataila_ai_gateway_usage`), the AI rate card and tenant rate plans (`ataila_ai_rate_card`,
-`ataila_ai_rate_plan`, resources and data sources), which need 1.0.236 or later. The provider refuses each group, at
+`ataila_ai_rate_plan`, resources and data sources), which need 1.0.237 or later. The provider refuses each group, at
 plan time and before any request, only where it is used on an older platform.
 
 ### Upgrading from 1.0.x to 1.1.0
@@ -379,7 +379,7 @@ nothing, so a second apply is a no-op. `ataila_ai_rate_plan` owns the tenant's *
 resource owns its set: a tier left out goes back to the list rate (the plan warns), and destroy ends the plan. A
 list rate is never removed: destroying `ataila_ai_rate_card` only forgets it. Notes are owned too: leaving `note`
 out clears it. Changing rates needs `ai-gateway-admin-global` (the card) or `orders-admin-global` /
-`ai-gateway-admin-global` (a plan); the platform needs release 1.0.236 or later.
+`ai-gateway-admin-global` (a plan); the platform needs release 1.0.237 or later.
 
 **The licence and the brand are singletons** (import id `current`) that destroy only forgets. The licence
 bundle is compared by the digest of its document: the installed one is adopted without being sent again,

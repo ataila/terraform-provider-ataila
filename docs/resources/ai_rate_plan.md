@@ -4,7 +4,7 @@ subcategory: ""
 description: |-
   A tenant's whole AI rate plan: its own price per serving tier instead of the list rate (ataila_ai_rate_card), EUR per one million input and output tokens.
   This resource owns the tenant's entire plan. Every apply replaces the plan on the platform with exactly the rates in the configuration (PUT /tenants/{id}/ai-rate-plan): a tier that has a rate in the tenant's plan but is not in rates goes back to the list rate from valid_from (today when left out). The plan shows such a tier as removed from rates, and warns. Earlier usage keeps the price of its day: rates are time-ranged, never rewritten. The same plan again changes nothing on the platform, so a second apply is a no-op.
-  Destroy ends the plan today (DELETE): every tier goes back to the list rate; the history stays. It is not gated by allow_destroy: it changes a price, it removes nothing. Changing tenant_id manages another tenant's plan (this one is ended). Needs a token holding orders-admin-global or ai-gateway-admin-global and platform release 1.0.236 or later (refused at plan time before it).
+  Destroy ends the plan today (DELETE): every tier goes back to the list rate; the history stays. It is not gated by allow_destroy: it changes a price, it removes nothing. Changing tenant_id manages another tenant's plan (this one is ended). Needs a token holding orders-admin-global or ai-gateway-admin-global and platform release 1.0.237 or later (refused at plan time before it).
 ---
 
 # ataila_ai_rate_plan (Resource)
@@ -13,7 +13,7 @@ A tenant's **whole** AI rate plan: its own price per serving tier instead of the
 
 **This resource owns the tenant's entire plan.** Every apply replaces the plan on the platform with exactly the `rates` in the configuration (`PUT /tenants/{id}/ai-rate-plan`): a tier that has a rate in the tenant's plan but is **not** in `rates` **goes back to the list rate** from `valid_from` (today when left out). The plan shows such a tier as removed from `rates`, and warns. Earlier usage keeps the price of its day: rates are time-ranged, never rewritten. The same plan again changes nothing on the platform, so a second apply is a no-op.
 
-**Destroy ends the plan today** (`DELETE`): every tier goes back to the list rate; the history stays. It is not gated by `allow_destroy`: it changes a price, it removes nothing. Changing `tenant_id` manages another tenant's plan (this one is ended). Needs a token holding `orders-admin-global` or `ai-gateway-admin-global` and platform release 1.0.236 or later (refused at plan time before it).
+**Destroy ends the plan today** (`DELETE`): every tier goes back to the list rate; the history stays. It is not gated by `allow_destroy`: it changes a price, it removes nothing. Changing `tenant_id` manages another tenant's plan (this one is ended). Needs a token holding `orders-admin-global` or `ai-gateway-admin-global` and platform release 1.0.237 or later (refused at plan time before it).
 
 ## Example Usage
 

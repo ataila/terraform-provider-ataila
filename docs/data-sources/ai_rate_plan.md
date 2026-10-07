@@ -3,12 +3,12 @@
 page_title: "ataila_ai_rate_plan Data Source - ATAILA"
 subcategory: ""
 description: |-
-  A tenant's AI rates: its own rates in force today (rates; empty when it pays the list rate), scheduled changes, the effective rate per tier with its basis next to the list rate, whether a contract includes metered AI, and the history. Needs a token holding orders-read-global or ai-gateway-read-global (or an admin key) and platform release 1.0.236 or later.
+  A tenant's AI rates: its own rates in force today (rates; empty when it pays the list rate), scheduled changes, the effective rate per tier with its basis next to the list rate, whether a contract includes metered AI, and the history. Needs a token holding orders-read-global or ai-gateway-read-global (or an admin key) and platform release 1.0.237 or later.
 ---
 
 # ataila_ai_rate_plan (Data Source)
 
-A tenant's AI rates: its own rates in force today (`rates`; empty when it pays the list rate), scheduled changes, the effective rate per tier with its basis next to the list rate, whether a contract includes metered AI, and the history. Needs a token holding `orders-read-global` or `ai-gateway-read-global` (or an admin key) and platform release 1.0.236 or later.
+A tenant's AI rates: its own rates in force today (`rates`; empty when it pays the list rate), scheduled changes, the effective rate per tier with its basis next to the list rate, whether a contract includes metered AI, and the history. Needs a token holding `orders-read-global` or `ai-gateway-read-global` (or an admin key) and platform release 1.0.237 or later.
 
 ## Example Usage
 

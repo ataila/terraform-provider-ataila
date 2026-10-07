@@ -3,12 +3,12 @@
 page_title: "ataila_ai_gateway_usage Data Source - ATAILA"
 subcategory: ""
 description: |-
-  Every tenant's AI gateway usage for a month, heaviest first, each rated at its own rate, and the unattributed bucket (keys no tenant could be found for, priced at the list rate for information and billed to nobody). Needs a token holding ai-gateway-read-global or orders-read-global (or an admin key) and platform release 1.0.236 or later.
+  Every tenant's AI gateway usage for a month, heaviest first, each rated at its own rate, and the unattributed bucket (keys no tenant could be found for, priced at the list rate for information and billed to nobody). Needs a token holding ai-gateway-read-global or orders-read-global (or an admin key) and platform release 1.0.237 or later.
 ---
 
 # ataila_ai_gateway_usage (Data Source)
 
-Every tenant's AI gateway usage for a month, heaviest first, each rated at its own rate, and the unattributed bucket (keys no tenant could be found for, priced at the list rate for information and billed to nobody). Needs a token holding `ai-gateway-read-global` or `orders-read-global` (or an admin key) and platform release 1.0.236 or later.
+Every tenant's AI gateway usage for a month, heaviest first, each rated at its own rate, and the unattributed bucket (keys no tenant could be found for, priced at the list rate for information and billed to nobody). Needs a token holding `ai-gateway-read-global` or `orders-read-global` (or an admin key) and platform release 1.0.237 or later.
 
 ## Example Usage
 

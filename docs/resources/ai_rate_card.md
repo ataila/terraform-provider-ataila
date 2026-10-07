@@ -4,7 +4,7 @@ subcategory: ""
 description: |-
   The list rate of one serving tier of the AI gateway: what a tenant without its own rate (ataila_ai_rate_plan) pays, EUR per one million input and output tokens. Usage is rated when read, each day at the rate in force that day; a tier without a rate is not priced at all (never 0).
   A change closes the rate in force the day before valid_from and starts the new one, so earlier usage keeps its price. Leave valid_from out for "from today"; a past day re-prices the usage since then; a future day schedules the change (the platform keeps one scheduled change per tier). The same rate again changes nothing on the platform, so a second apply is a no-op.
-  Destroying it only forgets it: a list rate is never removed (the platform has no delete); the tier keeps its last rate. Changing tier manages another tier. Needs a token holding ai-gateway-admin-global and platform release 1.0.236 or later (refused at plan time before it).
+  Destroying it only forgets it: a list rate is never removed (the platform has no delete); the tier keeps its last rate. Changing tier manages another tier. Needs a token holding ai-gateway-admin-global and platform release 1.0.237 or later (refused at plan time before it).
 ---
 
 # ataila_ai_rate_card (Resource)
@@ -13,7 +13,7 @@ The **list rate** of one serving tier of the AI gateway: what a tenant without i
 
 A change closes the rate in force the day before `valid_from` and starts the new one, so earlier usage keeps its price. Leave `valid_from` out for "from today"; a past day re-prices the usage since then; a future day schedules the change (the platform keeps one scheduled change per tier). The same rate again changes nothing on the platform, so a second apply is a no-op.
 
-**Destroying it only forgets it**: a list rate is never removed (the platform has no delete); the tier keeps its last rate. Changing `tier` manages another tier. Needs a token holding `ai-gateway-admin-global` and platform release 1.0.236 or later (refused at plan time before it).
+**Destroying it only forgets it**: a list rate is never removed (the platform has no delete); the tier keeps its last rate. Changing `tier` manages another tier. Needs a token holding `ai-gateway-admin-global` and platform release 1.0.237 or later (refused at plan time before it).
 
 ## Example Usage
 

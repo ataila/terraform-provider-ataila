@@ -58,7 +58,7 @@ const ReleaseQuotasOrders = "1.0.233"
 
 // ReleaseAIBilling is the platform release whose API serves rated AI usage,
 // the AI rate card and tenant rate plans (FeatureAIUsage, FeatureAIRates).
-const ReleaseAIBilling = "1.0.236"
+const ReleaseAIBilling = "1.0.237"
 
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{

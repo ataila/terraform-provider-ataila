@@ -5,7 +5,7 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ## Unreleased
 
-## 1.2.0 (2026-10-07) — contract of platform release 1.0.236
+## 1.2.0 (2026-10-07) — contract of platform release 1.0.237
 
 A minor release: additions only, under the stability promise of 1.0.0. A configuration and a state of 1.1.0
 plan with no changes.
@@ -56,16 +56,16 @@ plan with no changes.
 
 - The provider still works with every platform from release 1.0.187 on. Tenant quotas, the catalogue and the
   order reads need platform release 1.0.233 or later (`client.ReleaseQuotasOrders`); AI usage, the rate card and
-  rate plans need 1.0.236 or later (`client.ReleaseAIBilling`). A configuration that uses one of them on an older
+  rate plans need 1.0.237 or later (`client.ReleaseAIBilling`). A configuration that uses one of them on an older
   platform is refused at plan time, before any request, naming both releases.
 
 ### Contract
 
-- `api/openapi-v1.json` is the platform's contract with release 1.0.236's operations (98). Since 1.0.206 it adds
+- `api/openapi-v1.json` is the platform's contract with release 1.0.237's operations (98). Since 1.0.206 it adds
   the five quota, catalogue and order operations (`tenant_quotas_get`, `tenant_quotas_put`, `catalogue_items_list`,
   `tenant_orders_list`, `orders_get`; platform 1.0.233) and the seven AI usage and rate operations
   (`tenant_ai_usage_get`, `ai_gateway_usage_get`, `ai_rate_card_get`, `ai_rate_card_put`, `tenant_ai_rate_plan_get`,
-  `tenant_ai_rate_plan_put`, `tenant_ai_rate_plan_delete`; 1.0.236) with their schemas, and from the releases in
+  `tenant_ai_rate_plan_put`, `tenant_ai_rate_plan_delete`; 1.0.237) with their schemas, and from the releases in
   between `app_subdomain` on projects, the `hostname_taken` refusal and documented codes; nothing is removed or
   changed (the platform's additive guard checks every release against the contract published with 1.0.0).
 

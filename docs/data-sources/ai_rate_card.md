@@ -3,12 +3,12 @@
 page_title: "ataila_ai_rate_card Data Source - ATAILA"
 subcategory: ""
 description: |-
-  The platform's AI rate card: the list rate per serving tier, EUR per one million input and output tokens — in force today (current), the next scheduled change (upcoming) and the history. Tiers the platform knows appear even without a rate (current null: their usage is not priced). Needs a token holding ai-gateway-read-global (or ai-gateway-admin-global) and platform release 1.0.236 or later.
+  The platform's AI rate card: the list rate per serving tier, EUR per one million input and output tokens — in force today (current), the next scheduled change (upcoming) and the history. Tiers the platform knows appear even without a rate (current null: their usage is not priced). Needs a token holding ai-gateway-read-global (or ai-gateway-admin-global) and platform release 1.0.237 or later.
 ---
 
 # ataila_ai_rate_card (Data Source)
 
-The platform's AI rate card: the list rate per serving tier, EUR per one million input and output tokens — in force today (`current`), the next scheduled change (`upcoming`) and the history. Tiers the platform knows appear even without a rate (`current` null: their usage is not priced). Needs a token holding `ai-gateway-read-global` (or `ai-gateway-admin-global`) and platform release 1.0.236 or later.
+The platform's AI rate card: the list rate per serving tier, EUR per one million input and output tokens — in force today (`current`), the next scheduled change (`upcoming`) and the history. Tiers the platform knows appear even without a rate (`current` null: their usage is not priced). Needs a token holding `ai-gateway-read-global` (or `ai-gateway-admin-global`) and platform release 1.0.237 or later.
 
 ## Example Usage
 
