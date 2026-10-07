@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (c) 2026 ATAILA Kft.
+# Copyright (c) 2026 Macskásy Attila (ATAILA)
 # SPDX-License-Identifier: MPL-2.0
 #
 # One-way mirror of this repository to the public repository on GitHub, run by

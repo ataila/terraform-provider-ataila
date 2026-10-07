@@ -1,0 +1,17 @@
+terraform-provider-ataila
+Copyright (c) 2026 Macskásy Attila (ATAILA)
+
+This provider is published under the Mozilla Public License, version 2.0 (MPL-2.0). The full text of the
+licence is in the file LICENSE.
+
+Copyright holder
+
+The copyright holder is Macskásy Attila, sole proprietor trading as ATAILA. The planned limited company
+(ATAILA Kft.) does not exist yet, so until it does the copyright notices in this repository name the natural
+person. When the company exists, the rights will be assigned to it by contract, and the notices will then be
+changed to name it.
+
+Signing key
+
+The identity of the GPG key that signs the releases still names "ATAILA Kft. (Budapest)". That key will be
+re-issued together with the company.

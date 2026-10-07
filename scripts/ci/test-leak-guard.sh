@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (c) 2026 ATAILA Kft.
+# Copyright (c) 2026 Macskásy Attila (ATAILA)
 # SPDX-License-Identifier: MPL-2.0
 #
 # Tests scripts/leak-guard.sh on scratch repositories: every private key

@@ -128,10 +128,10 @@ lint:
     - go vet ./...
     - echo "== go.mod and go.sum are tidy"
     - go mod tidy -diff
-    - echo "== every copyright notice names ATAILA Kft. (the holder since 1.0.0)"
+    - echo "== every copyright notice names Macskásy Attila (ATAILA), the holder until the Kft exists"
     - |
-      if git grep -n -I 'Copyright (c)' -- ':!.gitlab-ci.yml' | grep -v 'Copyright (c) 2026 ATAILA Kft\.'; then
-        echo "The notices above name another holder: the copyright holder is ATAILA Kft."
+      if git grep -n -I 'Copyright (c)' -- ':!.gitlab-ci.yml' | grep -v 'Copyright (c) 2026 Macskásy Attila (ATAILA)'; then
+        echo "The notices above name another holder: the copyright holder is Macskásy Attila (ATAILA)."
         exit 1
       fi
     - echo "== every acceptance test is in exactly one CI domain, every domain in the matrix"

@@ -1,4 +1,4 @@
-// Copyright (c) 2026 ATAILA Kft.
+// Copyright (c) 2026 Macskásy Attila (ATAILA)
 // SPDX-License-Identifier: MPL-2.0
 
 // Command gendesc writes the contract's property descriptions as Go, so that

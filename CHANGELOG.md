@@ -5,6 +5,10 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ## Unreleased
 
+### Changed
+
+- Copyright holder is the natural person (Macskásy Attila, ATAILA) until the Kft exists; NOTICE added.
+
 ## 1.2.0 (2026-10-07) — contract of platform release 1.0.237
 
 A minor release: additions only, under the stability promise of 1.0.0. A configuration and a state of 1.1.0

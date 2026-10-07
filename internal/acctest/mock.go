@@ -1,4 +1,4 @@
-// Copyright (c) 2026 ATAILA Kft.
+// Copyright (c) 2026 Macskásy Attila (ATAILA)
 // SPDX-License-Identifier: MPL-2.0
 
 // Package acctest holds what the acceptance tests share: an in-process mock of
