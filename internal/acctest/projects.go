@@ -73,7 +73,9 @@ var k8sStages = []struct {
 // platform derives this from a manifest diff; the mock uses a fixed map.
 var staleByField = map[string][]string{
 	"long_name": {"gitlab:populate-repo"}, "description": {"gitlab:populate-repo"},
-	"frontend_variant": {"gitlab:populate-repo"}, "www_template": {"gitlab:populate-repo"},
+	// www_template picks what Stage gitlab:create-project clones into <slug>-www
+	// (platform catalogue AT-0; the clone never happened in gitlab:populate-repo).
+	"frontend_variant": {"gitlab:populate-repo"}, "www_template": {"gitlab:create-project"},
 	"enable_ai":         {"k8s:render-helm-values", "traefik:register-routes"},
 	"frontend_exposure": {"traefik:register-routes"}, "api_exposure": {"traefik:register-routes"},
 	"enable_object_storage": {"k8s:render-helm-values"}, "enable_cache": {"k8s:render-helm-values"},
