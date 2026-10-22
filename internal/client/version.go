@@ -75,6 +75,11 @@ const ReleaseTenantTokens = "1.0.372"
 // entitlements and grants (FeatureEntitlements).
 const ReleaseEntitlements = "1.0.392"
 
+// ReleaseCIExchange is the platform release that brought the GitLab CI token
+// exchange (POST /auth/ci-token), which `ci_jwt` / ATAILA_CI_JWT uses. An older
+// platform answers the exchange 404, and the provider names this release.
+const ReleaseCIExchange = "1.0.395"
+
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{
 	FeatureK8sQuota:     "1.0.203",

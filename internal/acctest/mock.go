@@ -96,6 +96,7 @@ type MockAPI struct {
 	orders       *ordersState
 	aiBilling    *aiBillingState
 	entitlements *entitlementsState
+	ci           *ciState
 }
 
 type storedReply struct {
@@ -127,6 +128,7 @@ type call struct {
 	path      string // below /api/v1, without the query
 	body      []byte
 	requestID string
+	ci        *ciToken // set when the bearer is an exchanged CI token (ci.go)
 }
 
 // NewMockAPI starts a mock that stops when the test ends.
@@ -149,6 +151,7 @@ func NewMockAPI(t testing.TB) *MockAPI {
 		orders:       newOrdersState(),
 		aiBilling:    newAIBillingState(),
 		entitlements: newEntitlementsState(),
+		ci:           newCIState(),
 	}
 	principal, _ := m.whoami["principal"].(map[string]any)
 	m.users = newUsersState(principal, m.whoami["scopes"].([]string))
@@ -354,8 +357,17 @@ func (m *MockAPI) serve(w http.ResponseWriter, r *http.Request) {
 		write(w, c.problem(http.StatusForbidden, refusal["code"].(string), refusal["remedy"].(string), refusal))
 		return
 	}
-	if r.Header.Get("Authorization") != "Bearer "+MockToken {
-		write(w, c.problem(http.StatusUnauthorized, "not_authenticated", "A valid API token is required.", nil))
+	// The CI token exchange takes no credential (ci.go); injected faults apply.
+	if c.path == "/auth/ci-token" {
+		if fault, hasFault := m.takeFault(c.path, r.Method); hasFault {
+			write(w, c.faultReply(fault))
+			return
+		}
+		write(w, m.ciExchange(c))
+		return
+	}
+	if rep, authenticated := m.authenticate(c); !authenticated {
+		write(w, rep)
 		return
 	}
 
@@ -473,6 +485,9 @@ func (m *MockAPI) route(c *call) reply {
 	case c.path == "/whoami":
 		if c.r.Method != http.MethodGet {
 			return c.methodNotAllowed()
+		}
+		if c.ci != nil {
+			return ok(http.StatusOK, m.ciWhoami(c.ci))
 		}
 		return ok(http.StatusOK, m.whoami)
 	case strings.HasPrefix(c.path, "/operations/"):

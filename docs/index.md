@@ -99,6 +99,54 @@ has the details, the bundle's check included.
 
 Problems and questions: support@ataila.com. Documentation: <https://www.ataila.com/developers/terraform>.
 
+## GitLab CI without a stored token
+
+A GitLab pipeline needs no API token in its CI variables (platform release 1.0.395 or later). The job asks
+GitLab for an ID token, and the provider exchanges it for a one-hour token of the service account an operator
+linked to the job's GitLab project. The operator makes the link in the portal (Service accounts, the account,
+GitLab CI links) and decides there what every exchanged token may do: its scopes (only what the account and the
+operator hold), whether it may destroy, and whether pipelines of unprotected branches and merge requests may
+exchange at all (by default they may not). The audit log records each exchange as `ci`, with the pipeline,
+job, ref and commit.
+
+The ID token's `aud` must be the platform's address, as the portal's GitLab CI links panel shows it. GitLab
+puts the ID token in a variable named after its entry, so naming the entry `ATAILA_CI_JWT` is all the
+provider needs:
+
+```yaml
+# .gitlab-ci.yml
+.ataila:
+  id_tokens:
+    ATAILA_CI_JWT:
+      aud: https://portal.example.com   # the platform's address
+  variables:
+    ATAILA_ENDPOINT: https://portal.example.com
+
+plan:opentofu:
+  extends: .ataila
+  image: { name: "ghcr.io/opentofu/opentofu:1.12", entrypoint: [""] }
+  script:
+    - tofu init
+    - tofu plan
+
+plan:terraform:
+  extends: .ataila
+  image: { name: "hashicorp/terraform:1.16", entrypoint: [""] }
+  script:
+    - terraform init
+    - terraform plan
+```
+
+- Leave `ATAILA_TOKEN` unset in such a job: an API token comes first, and the ID token is then not used.
+  `ci_jwt` in the provider block works too, and conflicts with `token`.
+- The exchanged token lives one hour. When an apply outlasts it, the provider exchanges the ID token again,
+  once, as long as GitLab's ID token is still valid.
+- A refused exchange stops the run before any other request, with what to do: the project is not linked,
+  the `aud` is not the platform's address, the pipeline runs on an unprotected ref, the GitLab is not one the
+  platform trusts (an administrator registers an island GitLab in the platform settings), or the ID token has
+  expired.
+- `data "ataila_whoami"` reports `auth_kind = "ci"` and the scopes in effect.
+
 ## Behaviour
 
 - On start the provider reads `GET /api/v1/meta` and refuses a platform whose API major version is not 1,
@@ -183,6 +231,7 @@ place, so switch once, not back and forth in parallel runs.
 - `allow_destroy` (Boolean) Allow this provider to destroy platform objects. Defaults to `false`. Destroying needs this flag **and** a token minted with destroy allowed; without both, a destroy is refused.
 - `ca_cert_file` (String) Path of a PEM file holding the certificate authority that signed the platform's certificate, trusted in addition to the system roots. Conflicts with `ca_cert_pem`. May also be set with `ATAILA_CA_CERT` (a path or PEM text).
 - `ca_cert_pem` (String) The same certificate authority as PEM text. Conflicts with `ca_cert_file`.
+- `ci_jwt` (String, Sensitive) A GitLab CI job's ID token, for a pipeline that holds no long-lived API token: the provider exchanges it for a one-hour token of the service account an operator linked to the job's GitLab project in the portal, and exchanges it again if an apply outlasts that hour. Ask GitLab for it in the job with `id_tokens:`, its `aud` set to the platform's address, and pass it through the `ATAILA_CI_JWT` environment variable (the ID token's name in the job). Needs platform release 1.0.395 or later. Conflicts with `token`. When neither is set in the provider block, `ATAILA_TOKEN` is used before `ATAILA_CI_JWT`.
 - `endpoint` (String) Base URL of the platform's portal, for example `https://portal.example.com`. The provider calls `<endpoint>/api/v1`; a trailing `/api/v1` is accepted. HTTPS is required except for a loopback address. May also be set with the `ATAILA_ENDPOINT` environment variable.
 - `request_timeout` (String) Timeout for one HTTP request, as a duration such as `30s` or `2m`. Each retry gets its own. Defaults to `60s`.
-- `token` (String, Sensitive) API token: a personal token (`ataila_pat_…`) or a service-account token (`ataila_sat_…`), minted in the portal. May also be set with the `ATAILA_TOKEN` environment variable, which keeps it out of configuration files.
+- `token` (String, Sensitive) API token: a personal token (`ataila_pat_…`) or a service-account token (`ataila_sat_…`), minted in the portal. May also be set with the `ATAILA_TOKEN` environment variable, which keeps it out of configuration files. Conflicts with `ci_jwt`.

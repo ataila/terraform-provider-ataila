@@ -29,7 +29,7 @@ output "token_expires_at" {
 
 ### Read-Only
 
-- `auth_kind` (String) How the caller authenticated: `pat` (personal token), `service_account` or `session`.
+- `auth_kind` (String) How the caller authenticated: `pat` (personal token), `service_account`, `ci` (a service-account token exchanged from a GitLab CI ID token, `ci_jwt`; platform 1.0.395 on) or `session`.
 - `expires_at` (String) When the credential expires (RFC 3339), when the platform reports it.
 - `principal` (Attributes) The calling principal. (see [below for nested schema](#nestedatt--principal))
 - `scope` (String) `tenant` for a tenant-scoped token, which reads its own tenant (`tenant_id`) and nothing else and writes nothing; `global` for every other credential. A platform older than 1.0.372 has no tenant-scoped tokens and always answers `global`.

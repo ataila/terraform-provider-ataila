@@ -281,7 +281,8 @@ Without any network at all, leave the `direct` block out. The configuration keep
 | Argument | Environment variable | Default | Meaning |
 |---|---|---|---|
 | `endpoint` | `ATAILA_ENDPOINT` | — | Base URL of the portal, for example `https://portal.example.com`. `/api/v1` is appended; a trailing `/api/v1` is accepted. HTTPS is required except for a loopback address. |
-| `token` | `ATAILA_TOKEN` | — | API token: personal (`ataila_pat_…`) or service account (`ataila_sat_…`). Sensitive. Prefer the environment variable. |
+| `token` | `ATAILA_TOKEN` | — | API token: personal (`ataila_pat_…`) or service account (`ataila_sat_…`). Sensitive. Prefer the environment variable. Conflicts with `ci_jwt`. |
+| `ci_jwt` | `ATAILA_CI_JWT` | — | A GitLab CI job's ID token, instead of a token (platform 1.0.395 on): the provider exchanges it for a one-hour token of the service account linked to the job's project, and again if an apply outlasts the hour. Sensitive. Without either in the provider block, `ATAILA_TOKEN` comes before `ATAILA_CI_JWT`. See [GitLab CI without a stored token](docs/index.md#gitlab-ci-without-a-stored-token). |
 | `ca_cert_file` | `ATAILA_CA_CERT` | — | PEM file of a private certificate authority, trusted in addition to the system roots. The environment variable takes a path or PEM text. |
 | `ca_cert_pem` | | — | The same certificate authority as PEM text. Conflicts with `ca_cert_file`. |
 | `allow_destroy` | | `false` | Allow destroying platform objects. A destroy needs this **and** a token minted with destroy allowed. |
@@ -293,7 +294,10 @@ Without any network at all, leave the `direct` block out. The configuration keep
   whose release (`platform_version`) is older than 1.0.187, the contract this release vendors. The API version
   alone cannot tell: every platform since 1.0.155 serves API 1.0.0, but before 1.0.176 the API named its members
   differently, and before 1.0.187 it did not declare the `Idempotency-Key` parameter and the `Location` header.
-- Sends `Authorization: Bearer <token>` and `User-Agent: terraform-provider-ataila/<version>`.
+- Sends `Authorization: Bearer <token>` and `User-Agent: terraform-provider-ataila/<version>`. Given a GitLab
+  CI ID token instead (`ci_jwt`), it first exchanges it at `POST /api/v1/auth/ci-token`, which carries no
+  `Authorization` header and no `Idempotency-Key`, and uses the one-hour `ataila_cit_…` token it gets; a request
+  answered 401 `token_expired` exchanges once more and is sent again.
 - Retries with backoff only on 429, 502, 503 and 504, honouring `Retry-After`. No other answer is retried.
 - Treats a licence refusal (403 whose `code` starts with `licence_`) as final and quotes the platform's remedy.
 - Turns every error, an RFC 9457 problem document, into a diagnostic with its title, detail, `code` and

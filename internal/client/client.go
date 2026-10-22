@@ -31,6 +31,10 @@ type Config struct {
 	Endpoint string
 	// Token is an API token (personal or service account).
 	Token string
+	// IDToken is a GitLab CI job's ID token, to be exchanged for a one-hour
+	// API token (API.ExchangeCIToken) before the first call, and again when
+	// that token expires. Exactly one of Token and IDToken is set.
+	IDToken string
 	// CACertPEM, when set, is trusted in addition to the system roots.
 	CACertPEM []byte
 	// RequestTimeout bounds one HTTP request. Zero means DefaultRequestTimeout.
@@ -57,6 +61,7 @@ type API struct {
 	raw          *ClientWithResponses
 	transport    *transport
 	listPageSize int
+	idToken      string
 }
 
 // UserAgent is the User-Agent this provider sends.
@@ -64,14 +69,19 @@ func UserAgent(version string) string {
 	return "terraform-provider-ataila/" + version
 }
 
-// New validates the configuration and builds an API. It does not call it.
+// New validates the configuration and builds an API. It does not call it:
+// with an IDToken, the caller exchanges it (ExchangeCIToken) first.
 func New(cfg Config) (*API, error) {
 	base, err := NormalizeEndpoint(cfg.Endpoint)
 	if err != nil {
 		return nil, err
 	}
-	if strings.TrimSpace(cfg.Token) == "" {
-		return nil, errors.New("an API token is required")
+	token, idToken := strings.TrimSpace(cfg.Token), strings.TrimSpace(cfg.IDToken)
+	switch {
+	case token == "" && idToken == "":
+		return nil, errors.New("an API token or a GitLab CI ID token is required")
+	case token != "" && idToken != "":
+		return nil, errors.New("set an API token or a GitLab CI ID token, not both")
 	}
 
 	timeout := cfg.RequestTimeout
@@ -91,7 +101,7 @@ func New(cfg Config) (*API, error) {
 
 	t := &transport{
 		hc:          hc,
-		token:       strings.TrimSpace(cfg.Token),
+		token:       token,
 		userAgent:   cfg.UserAgent,
 		maxRetries:  DefaultMaxRetries,
 		backoffBase: DefaultBackoffBase,
@@ -119,7 +129,14 @@ func New(cfg Config) (*API, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &API{baseURL: base, raw: raw, transport: t, listPageSize: cfg.PageSize}, nil
+	api := &API{baseURL: base, raw: raw, transport: t, listPageSize: cfg.PageSize, idToken: idToken}
+	if idToken != "" {
+		t.renew = func(ctx context.Context) error {
+			_, err := api.ExchangeCIToken(ctx)
+			return err
+		}
+	}
+	return api, nil
 }
 
 // BaseURL is the normalised API URL, ending in /api/v1.

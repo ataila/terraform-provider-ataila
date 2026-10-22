@@ -66,7 +66,7 @@ PATTERNS=(
   "private address 192.168/16||(^|[^0-9.])192\.168(\.[0-9]{1,3}){2}([^0-9]|$)"
   "company host name|-i|([a-z0-9-]+\.)+ataila\.[a-z]{2,63}"
   "Vault path||(^|[^A-Za-z0-9_.-])secret/[A-Za-z0-9_.-]+"
-  "platform API token||ataila_(pat|sat)_[A-Za-z0-9_]{20,}"
+  "platform API token||ataila_(pat|sat|cit)_[A-Za-z0-9_]{20,}"
   "GitLab token||glpat-[A-Za-z0-9_-]{20,}"
   "GitHub token||gh[pousr]_[A-Za-z0-9]{36,}|github_pat_[A-Za-z0-9_]{50,}"
   "Vault token||hv[sbr]\.[A-Za-z0-9_-]{20,}"
@@ -169,6 +169,7 @@ negatives=(
   "192.0.2.10"
   "v1.10.2"
   "ataila_pat_…"
+  "ataila_cit_…"
   "github_pat_…"
   "ghp_short"
   "-----BEGIN CERTIFICATE-----"
@@ -190,6 +191,16 @@ for i in "${!PATTERNS[@]}"; do
     if grep -qE $flags -- "$re" <<<"$neg"; then
       die "self-test: pattern '$name' matches the harmless '$neg'"
     fi
+  done
+done
+
+# Every lead of a platform API token the guard must catch: personal,
+# service-account, and the one-hour token a GitLab CI job exchanges for (cit).
+for lead in pat sat cit; do
+  for entry in "${PATTERNS[@]}"; do
+    [[ "$entry" == "platform API token|"* ]] || continue
+    grep -qE -- "${entry#*|*|}" <<<"ataila_""${lead}_abcd1234_0123456789abcdefghijklmnopqrstuvwxyzABCDEF" \
+      || die "self-test: the platform API token pattern does not match an ataila_${lead}_ token"
   done
 done
 

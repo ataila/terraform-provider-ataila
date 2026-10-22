@@ -25,11 +25,21 @@ the 0.x releases before it were never published, and any of them could change wh
   services) and `ataila_customer_entitlements`. Needs `entitlements-read-global` / `-admin-global`; a
   tenant-scoped token reads the catalogue and its own customer's entitlements. Import ids
   `<customer_id>/<service_key>` and `<user_id>/<customer_id>/<service_key>`.
+- GitLab CI workload identity (platform 1.0.395 on): provider argument `ci_jwt`, environment variable
+  `ATAILA_CI_JWT`, an alternative to `token` for a pipeline that holds no long-lived API token. The provider
+  exchanges the job's GitLab ID token (`id_tokens:`, its `aud` the platform's address) at
+  `POST /auth/ci-token` for a one-hour `ataila_cit_…` token of the service account an operator linked to the
+  job's GitLab project in the portal, with the link's scopes and destroy flag; when an apply outlasts the hour
+  it exchanges once more. `ci_jwt` conflicts with `token`; from the environment, `ATAILA_TOKEN` comes first.
+  Every refusal (project not linked, wrong `aud`, unprotected ref, untrusted GitLab, expired ID token) stops
+  the run at configure time with what to do; on an older platform the error names release 1.0.395.
+  `ataila_whoami` reports `auth_kind = "ci"`. The docs show the `.gitlab-ci.yml` snippet for both CLIs. The
+  leak guard also catches `ataila_cit_` tokens.
 
 ### Changed
 
 - Copyright holder is the natural person (Macskásy Attila, ATAILA) until the Kft exists; NOTICE added.
-- The vendored contract moves from platform 1.0.237 to 1.0.392 (`api/openapi-v1.json`, additive only). The
+- The vendored contract moves from platform 1.0.237 to 1.0.395 (`api/openapi-v1.json`, additive only). The
   two coding-job credential operations it now declares (`POST /projects/{id}/jobs/{job}/git-token`,
   `POST /scratch/jobs/{job}`) are never called by the provider: write-only, one-day credentials are not
   Terraform objects.

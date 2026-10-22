@@ -34,6 +34,7 @@ import (
 const (
 	EnvEndpoint = "ATAILA_ENDPOINT"
 	EnvToken    = "ATAILA_TOKEN"
+	EnvCIJWT    = "ATAILA_CI_JWT"
 	EnvCACert   = "ATAILA_CA_CERT"
 )
 
@@ -89,6 +90,7 @@ func (d *ProviderData) featureRefused(feature string, at path.Path, what string)
 type providerModel struct {
 	Endpoint       types.String `tfsdk:"endpoint"`
 	Token          types.String `tfsdk:"token"`
+	CIJWT          types.String `tfsdk:"ci_jwt"`
 	CACertFile     types.String `tfsdk:"ca_cert_file"`
 	CACertPEM      types.String `tfsdk:"ca_cert_pem"`
 	AllowDestroy   types.Bool   `tfsdk:"allow_destroy"`
@@ -114,7 +116,19 @@ func (p *ataProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *
 			"token": schema.StringAttribute{
 				MarkdownDescription: "API token: a personal token (`ataila_pat_…`) or a service-account token " +
 					"(`ataila_sat_…`), minted in the portal. May also be set with the `" + EnvToken +
-					"` environment variable, which keeps it out of configuration files.",
+					"` environment variable, which keeps it out of configuration files. Conflicts with `ci_jwt`.",
+				Optional:  true,
+				Sensitive: true,
+			},
+			"ci_jwt": schema.StringAttribute{
+				MarkdownDescription: "A GitLab CI job's ID token, for a pipeline that holds no long-lived API " +
+					"token: the provider exchanges it for a one-hour token of the service account an operator " +
+					"linked to the job's GitLab project in the portal, and exchanges it again if an apply outlasts " +
+					"that hour. Ask GitLab for it in the job with `id_tokens:`, its `aud` set to the platform's " +
+					"address, and pass it through the `" + EnvCIJWT + "` environment variable (the ID token's name " +
+					"in the job). Needs platform release " + client.ReleaseCIExchange + " or later. Conflicts with " +
+					"`token`. When neither is set in the provider block, `" + EnvToken + "` is used before `" +
+					EnvCIJWT + "`.",
 				Optional:  true,
 				Sensitive: true,
 			},
@@ -146,6 +160,7 @@ func (p *ataProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *
 func (p *ataProvider) ConfigValidators(_ context.Context) []provider.ConfigValidator {
 	return []provider.ConfigValidator{
 		providervalidator.Conflicting(path.MatchRoot("ca_cert_file"), path.MatchRoot("ca_cert_pem")),
+		providervalidator.Conflicting(path.MatchRoot("token"), path.MatchRoot("ci_jwt")),
 	}
 }
 
@@ -157,7 +172,7 @@ func (p *ataProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	}
 
 	for name, v := range map[string]types.String{
-		"endpoint": cfg.Endpoint, "token": cfg.Token, "ca_cert_file": cfg.CACertFile,
+		"endpoint": cfg.Endpoint, "token": cfg.Token, "ci_jwt": cfg.CIJWT, "ca_cert_file": cfg.CACertFile,
 		"ca_cert_pem": cfg.CACertPEM, "request_timeout": cfg.RequestTimeout,
 	} {
 		if v.IsUnknown() {
@@ -175,16 +190,17 @@ func (p *ataProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	}
 
 	endpoint := firstSet(cfg.Endpoint, EnvEndpoint)
-	token := firstSet(cfg.Token, EnvToken)
+	token, idToken := credentials(cfg)
 	if endpoint == "" {
 		resp.Diagnostics.AddAttributeError(path.Root("endpoint"), "Missing ATAILA API endpoint",
 			"Set endpoint in the provider block or the "+EnvEndpoint+" environment variable, "+
 				"for example https://portal.example.com.")
 	}
-	if token == "" {
+	if token == "" && idToken == "" {
 		resp.Diagnostics.AddAttributeError(path.Root("token"), "Missing ATAILA API token",
 			"Set token in the provider block or, better, the "+EnvToken+" environment variable. "+
-				"Mint a token in the portal under API tokens.")
+				"Mint a token in the portal under API tokens. In a GitLab CI job, pass the job's ID token "+
+				"in "+EnvCIJWT+" instead (ci_jwt).")
 	}
 
 	caPEM, caPath, err := caCert(cfg)
@@ -208,6 +224,7 @@ func (p *ataProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	api, err := client.New(client.Config{
 		Endpoint:       endpoint,
 		Token:          token,
+		IDToken:        idToken,
 		CACertPEM:      caPEM,
 		RequestTimeout: timeout,
 		UserAgent:      client.UserAgent(p.version),
@@ -215,6 +232,20 @@ func (p *ataProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ATAILA provider configuration", err.Error())
 		return
+	}
+	if api.UsesCIToken() {
+		ci, err := api.ExchangeCIToken(ctx)
+		if err != nil {
+			summary, detail := exchangeError(api.BaseURL(), endpoint, err)
+			resp.Diagnostics.AddAttributeError(path.Root("ci_jwt"), summary, detail)
+			return
+		}
+		tflog.Debug(ctx, "exchanged the GitLab CI ID token", map[string]interface{}{
+			"project_path":    ci.ProjectPath,
+			"service_account": ci.ServiceAccountName,
+			"token_id":        ci.TokenId,
+			"expires_at":      ci.ExpiresAt.String(),
+		})
 	}
 
 	meta, err := api.Meta(ctx)
@@ -318,6 +349,79 @@ func firstSet(v types.String, env string) string {
 		return s
 	}
 	return strings.TrimSpace(os.Getenv(env))
+}
+
+// credentials picks the one credential the provider uses, as `(token, "")` or
+// `("", GitLab CI ID token)`: the provider block first (token and ci_jwt
+// conflict there), then ATAILA_TOKEN, then ATAILA_CI_JWT. A job that holds both
+// variables therefore keeps using its token, as it did before ci_jwt existed.
+func credentials(cfg providerModel) (string, string) {
+	if s := strings.TrimSpace(cfg.Token.ValueString()); s != "" {
+		return s, ""
+	}
+	if s := strings.TrimSpace(cfg.CIJWT.ValueString()); s != "" {
+		return "", s
+	}
+	if s := strings.TrimSpace(os.Getenv(EnvToken)); s != "" {
+		return s, ""
+	}
+	return "", strings.TrimSpace(os.Getenv(EnvCIJWT))
+}
+
+// ciExchangeHints say what to do about each refusal of the CI token exchange;
+// the API's own detail follows.
+var ciExchangeHints = map[string]string{
+	"ci_token_invalid": "GitLab did not sign this ID token, or it is not one. Pass the job's ID token " +
+		"(`id_tokens:`), not CI_JOB_TOKEN or another variable.",
+	"ci_token_expired": "The ID token has expired. GitLab issues it when the job starts: run Terraform or " +
+		"OpenTofu in the job that requests it.",
+	"ci_audience_mismatch": "The ID token's `aud` must be this platform's address. Set `aud` in the job's " +
+		"`id_tokens:` entry to the address the portal's GitLab CI links panel shows.",
+	"ci_issuer_not_allowed": "This platform does not trust the GitLab that issued the ID token. An " +
+		"administrator adds an island GitLab to the trusted issuers in the platform settings.",
+	"ci_project_not_linked": "No service account is linked to this GitLab project. An operator links it in " +
+		"the portal: Service accounts, the account, GitLab CI links.",
+	"ci_ref_not_protected": "The link accepts pipelines of protected branches and tags only. Run on a " +
+		"protected ref, or have an operator change the link.",
+	"ci_service_account_disabled": "The service account linked to this project is disabled. An operator " +
+		"enables it in the portal.",
+	"ci_link_scopes_not_held": "The service account no longer holds any of the link's scopes. An operator " +
+		"restores its permissions or links the project again with scopes it holds.",
+	"ci_issuer_unavailable": "The platform cannot reach the GitLab that issued the ID token to fetch its " +
+		"signing keys. Try again shortly.",
+}
+
+// exchangeError explains a failed CI token exchange, the first call the
+// provider makes when it is given ci_jwt.
+func exchangeError(base, endpoint string, err error) (string, string) {
+	var apiErr *client.APIError
+	if !errors.As(err, &apiErr) {
+		return "Cannot reach the ATAILA API",
+			fmt.Sprintf("POST %s/auth/ci-token failed: %v\n\nCheck the endpoint, the network path and, for a "+
+				"private certificate authority, ca_cert_file or ca_cert_pem.", base, err)
+	}
+	switch {
+	case apiErr.IsLicenceRefusal():
+		return apiErr.Summary(), apiErr.Detail()
+	case apiErr.StatusCode == 404:
+		return "No GitLab CI token exchange at this endpoint",
+			fmt.Sprintf("POST %s/auth/ci-token answered 404. The exchange came with platform release %s: "+
+				"an older platform does not have it, and a platform whose public API is switched off answers "+
+				"404 everywhere. Upgrade the platform, or set %s instead of %s.\n\n%s",
+				base, client.ReleaseCIExchange, EnvToken, EnvCIJWT, apiErr.Detail())
+	}
+	if hint, ok := ciExchangeHints[apiErr.Code()]; ok {
+		if apiErr.Code() == "ci_audience_mismatch" {
+			hint += fmt.Sprintf(" The provider talks to %s.", strings.TrimRight(endpoint, "/"))
+		}
+		return "The ATAILA API refused the GitLab CI ID token", hint + "\n\n" + apiErr.Detail()
+	}
+	if client.Retryable(apiErr.StatusCode) {
+		return "The ATAILA API is unavailable",
+			"The API kept answering that it cannot serve right now, and the provider gave up retrying. " +
+				"Try again shortly.\n\n" + apiErr.Detail()
+	}
+	return apiErr.Summary(), apiErr.Detail()
 }
 
 // caCert resolves ca_cert_pem, then ca_cert_file, then ATAILA_CA_CERT.

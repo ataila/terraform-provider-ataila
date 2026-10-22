@@ -96,7 +96,8 @@ func (d *whoamiDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 			},
 			"auth_kind": schema.StringAttribute{
 				MarkdownDescription: "How the caller authenticated: `pat` (personal token), " +
-					"`service_account` or `session`.",
+					"`service_account`, `ci` (a service-account token exchanged from a GitLab CI ID token, " +
+					"`ci_jwt`; platform " + client.ReleaseCIExchange + " on) or `session`.",
 				Computed: true,
 			},
 			"scopes": schema.ListAttribute{

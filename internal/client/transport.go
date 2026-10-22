@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -49,11 +50,20 @@ func Retryable(status int) bool {
 // transport implements HttpRequestDoer for the generated client.
 type transport struct {
 	hc          *http.Client
-	token       string
 	userAgent   string
 	maxRetries  int
 	backoffBase time.Duration
 	backoffMax  time.Duration
+
+	// mu guards token, which a CI token renewal replaces while other requests
+	// are in flight.
+	mu    sync.Mutex
+	token string
+	// renew, when set, replaces an expired token (a CI token exchanged from a
+	// GitLab ID token, API.ExchangeCIToken); renewMu makes concurrent requests
+	// that all met the expiry renew it once.
+	renew   func(ctx context.Context) error
+	renewMu sync.Mutex
 
 	// Seams for tests. newKey makes the Idempotency-Keys API.idempotencyKey
 	// hands to the generated client.
@@ -61,8 +71,38 @@ type transport struct {
 	newKey func() string
 }
 
+// credentialFree marks a request context whose request must carry no
+// Authorization header: the CI token exchange, whose proof is in its body.
+type credentialFree struct{}
+
+func withoutCredential(ctx context.Context) context.Context {
+	return context.WithValue(ctx, credentialFree{}, true)
+}
+
+func (t *transport) currentToken() string {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	return t.token
+}
+
+func (t *transport) setToken(token string) {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	t.token = token
+}
+
+// renewFrom renews the token that `used` was, unless another request already
+// did; it reports whether a request should be sent again.
+func (t *transport) renewFrom(ctx context.Context, used string) bool {
+	t.renewMu.Lock()
+	defer t.renewMu.Unlock()
+	if t.currentToken() != used {
+		return true
+	}
+	return t.renew(ctx) == nil
+}
+
 func (t *transport) Do(req *http.Request) (*http.Response, error) {
-	req.Header.Set("Authorization", "Bearer "+t.token)
 	req.Header.Set("User-Agent", t.userAgent)
 	req.Header.Set("Accept", "application/json, "+ProblemContentType)
 	// The Idempotency-Key is the contract's own header parameter, set by the
@@ -70,7 +110,16 @@ func (t *transport) Do(req *http.Request) (*http.Response, error) {
 	// below sends this same request, and so the same key.
 
 	ctx := req.Context()
+	bare, _ := ctx.Value(credentialFree{}).(bool)
+	renewed := false
 	for attempt := 1; ; attempt++ {
+		used := ""
+		if bare {
+			req.Header.Del("Authorization")
+		} else {
+			used = t.currentToken()
+			req.Header.Set("Authorization", "Bearer "+used)
+		}
 		if attempt > 1 && req.Body != nil && req.Body != http.NoBody {
 			if req.GetBody == nil {
 				return nil, fmt.Errorf("%s %s: cannot retry, the request body is not replayable", req.Method, req.URL.Path)
@@ -94,6 +143,15 @@ func (t *transport) Do(req *http.Request) (*http.Response, error) {
 		_ = resp.Body.Close()
 		apiErr := newAPIError(resp, body, attempt)
 
+		// A CI token lives an hour; an apply may outlast it. Exchange the
+		// GitLab ID token again, once per request, and send the request anew.
+		if resp.StatusCode == http.StatusUnauthorized && apiErr.Code() == "token_expired" &&
+			!bare && !renewed && t.renew != nil {
+			renewed = true
+			if t.renewFrom(ctx, used) {
+				continue
+			}
+		}
 		if !Retryable(resp.StatusCode) || attempt > t.maxRetries || apiErr.IsFinalUnavailable() {
 			return nil, apiErr
 		}
