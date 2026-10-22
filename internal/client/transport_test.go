@@ -402,6 +402,19 @@ func TestIdempotencyKeyOnEveryDeclaringOperation(t *testing.T) {
 		}
 		delete(declared, name)
 	}
+	// Operations that declare the key and that the provider deliberately never
+	// calls: the write-only, one-day coding-job credentials (platform 1.0.31x;
+	// WAVE-2-PLAN C9 — an MCP act tool at most, never a Terraform object). Each
+	// must still be declared, so this list cannot outlive the contract.
+	for _, op := range []string{
+		"POST /projects/{project_id}/jobs/{job_id}/git-token",
+		"POST /scratch/jobs/{job_id}",
+	} {
+		if !declared[op] {
+			t.Errorf("%s is listed as never called but the contract no longer declares it", op)
+		}
+		delete(declared, op)
+	}
 	for op := range declared {
 		t.Errorf("the contract declares an Idempotency-Key on %s, which this test does not call", op)
 	}

@@ -45,7 +45,7 @@ output "shop_versions" {
 
 Read-Only:
 
-- `component` (String) `app-api` (the application and its API), `www` (the web site) or `database`.
+- `component` (String) `app-api` (the application and its API), `www` (the web site), `worker` (the background worker) or `database`.
 - `env` (String) The environment.
 - `last_reported_at` (String) When it reported it.
 - `last_reported_by` (String) An operator's e-mail or `pipeline:<id>`.

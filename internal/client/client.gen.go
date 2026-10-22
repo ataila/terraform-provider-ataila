@@ -42,10 +42,495 @@ func (e BrandLogoSize) Valid() bool {
 	}
 }
 
+// Defines values for BrandAppProfileDefaultLanguage.
+const (
+	BrandAppProfileDefaultLanguageEn BrandAppProfileDefaultLanguage = "en"
+	BrandAppProfileDefaultLanguageHu BrandAppProfileDefaultLanguage = "hu"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppProfileDefaultLanguage enum.
+func (e BrandAppProfileDefaultLanguage) Valid() bool {
+	switch e {
+	case BrandAppProfileDefaultLanguageEn:
+		return true
+	case BrandAppProfileDefaultLanguageHu:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppProfileFontPreset.
+const (
+	BrandAppProfileFontPresetInter      BrandAppProfileFontPreset = "inter"
+	BrandAppProfileFontPresetMontserrat BrandAppProfileFontPreset = "montserrat"
+	BrandAppProfileFontPresetSystem     BrandAppProfileFontPreset = "system"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppProfileFontPreset enum.
+func (e BrandAppProfileFontPreset) Valid() bool {
+	switch e {
+	case BrandAppProfileFontPresetInter:
+		return true
+	case BrandAppProfileFontPresetMontserrat:
+		return true
+	case BrandAppProfileFontPresetSystem:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppProfileHeaderLogoSize.
+const (
+	BrandAppProfileHeaderLogoSizeCompact BrandAppProfileHeaderLogoSize = "compact"
+	BrandAppProfileHeaderLogoSizeLarge   BrandAppProfileHeaderLogoSize = "large"
+	BrandAppProfileHeaderLogoSizeMedium  BrandAppProfileHeaderLogoSize = "medium"
+	BrandAppProfileHeaderLogoSizeRegular BrandAppProfileHeaderLogoSize = "regular"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppProfileHeaderLogoSize enum.
+func (e BrandAppProfileHeaderLogoSize) Valid() bool {
+	switch e {
+	case BrandAppProfileHeaderLogoSizeCompact:
+		return true
+	case BrandAppProfileHeaderLogoSizeLarge:
+		return true
+	case BrandAppProfileHeaderLogoSizeMedium:
+		return true
+	case BrandAppProfileHeaderLogoSizeRegular:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppPutDefaultLanguage.
+const (
+	BrandAppPutDefaultLanguageEn BrandAppPutDefaultLanguage = "en"
+	BrandAppPutDefaultLanguageHu BrandAppPutDefaultLanguage = "hu"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppPutDefaultLanguage enum.
+func (e BrandAppPutDefaultLanguage) Valid() bool {
+	switch e {
+	case BrandAppPutDefaultLanguageEn:
+		return true
+	case BrandAppPutDefaultLanguageHu:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppPutFontPreset.
+const (
+	BrandAppPutFontPresetInter      BrandAppPutFontPreset = "inter"
+	BrandAppPutFontPresetMontserrat BrandAppPutFontPreset = "montserrat"
+	BrandAppPutFontPresetSystem     BrandAppPutFontPreset = "system"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppPutFontPreset enum.
+func (e BrandAppPutFontPreset) Valid() bool {
+	switch e {
+	case BrandAppPutFontPresetInter:
+		return true
+	case BrandAppPutFontPresetMontserrat:
+		return true
+	case BrandAppPutFontPresetSystem:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppPutHeaderLogoSize.
+const (
+	BrandAppPutHeaderLogoSizeCompact BrandAppPutHeaderLogoSize = "compact"
+	BrandAppPutHeaderLogoSizeLarge   BrandAppPutHeaderLogoSize = "large"
+	BrandAppPutHeaderLogoSizeMedium  BrandAppPutHeaderLogoSize = "medium"
+	BrandAppPutHeaderLogoSizeRegular BrandAppPutHeaderLogoSize = "regular"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppPutHeaderLogoSize enum.
+func (e BrandAppPutHeaderLogoSize) Valid() bool {
+	switch e {
+	case BrandAppPutHeaderLogoSizeCompact:
+		return true
+	case BrandAppPutHeaderLogoSizeLarge:
+		return true
+	case BrandAppPutHeaderLogoSizeMedium:
+		return true
+	case BrandAppPutHeaderLogoSizeRegular:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceCoBrandLineEn.
+const (
+	BrandAppSourceCoBrandLineEnDefault BrandAppSourceCoBrandLineEn = "default"
+	BrandAppSourceCoBrandLineEnInstall BrandAppSourceCoBrandLineEn = "install"
+	BrandAppSourceCoBrandLineEnProfile BrandAppSourceCoBrandLineEn = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceCoBrandLineEn enum.
+func (e BrandAppSourceCoBrandLineEn) Valid() bool {
+	switch e {
+	case BrandAppSourceCoBrandLineEnDefault:
+		return true
+	case BrandAppSourceCoBrandLineEnInstall:
+		return true
+	case BrandAppSourceCoBrandLineEnProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceCoBrandLineHu.
+const (
+	BrandAppSourceCoBrandLineHuDefault BrandAppSourceCoBrandLineHu = "default"
+	BrandAppSourceCoBrandLineHuInstall BrandAppSourceCoBrandLineHu = "install"
+	BrandAppSourceCoBrandLineHuProfile BrandAppSourceCoBrandLineHu = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceCoBrandLineHu enum.
+func (e BrandAppSourceCoBrandLineHu) Valid() bool {
+	switch e {
+	case BrandAppSourceCoBrandLineHuDefault:
+		return true
+	case BrandAppSourceCoBrandLineHuInstall:
+		return true
+	case BrandAppSourceCoBrandLineHuProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceDefaultLanguage.
+const (
+	BrandAppSourceDefaultLanguageDefault BrandAppSourceDefaultLanguage = "default"
+	BrandAppSourceDefaultLanguageInstall BrandAppSourceDefaultLanguage = "install"
+	BrandAppSourceDefaultLanguageProfile BrandAppSourceDefaultLanguage = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceDefaultLanguage enum.
+func (e BrandAppSourceDefaultLanguage) Valid() bool {
+	switch e {
+	case BrandAppSourceDefaultLanguageDefault:
+		return true
+	case BrandAppSourceDefaultLanguageInstall:
+		return true
+	case BrandAppSourceDefaultLanguageProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceDisplayName.
+const (
+	BrandAppSourceDisplayNameDefault BrandAppSourceDisplayName = "default"
+	BrandAppSourceDisplayNameInstall BrandAppSourceDisplayName = "install"
+	BrandAppSourceDisplayNameProfile BrandAppSourceDisplayName = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceDisplayName enum.
+func (e BrandAppSourceDisplayName) Valid() bool {
+	switch e {
+	case BrandAppSourceDisplayNameDefault:
+		return true
+	case BrandAppSourceDisplayNameInstall:
+		return true
+	case BrandAppSourceDisplayNameProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceDisplayNameAccent.
+const (
+	BrandAppSourceDisplayNameAccentDefault BrandAppSourceDisplayNameAccent = "default"
+	BrandAppSourceDisplayNameAccentInstall BrandAppSourceDisplayNameAccent = "install"
+	BrandAppSourceDisplayNameAccentProfile BrandAppSourceDisplayNameAccent = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceDisplayNameAccent enum.
+func (e BrandAppSourceDisplayNameAccent) Valid() bool {
+	switch e {
+	case BrandAppSourceDisplayNameAccentDefault:
+		return true
+	case BrandAppSourceDisplayNameAccentInstall:
+		return true
+	case BrandAppSourceDisplayNameAccentProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceFaviconAssetId.
+const (
+	BrandAppSourceFaviconAssetIdDefault BrandAppSourceFaviconAssetId = "default"
+	BrandAppSourceFaviconAssetIdInstall BrandAppSourceFaviconAssetId = "install"
+	BrandAppSourceFaviconAssetIdProfile BrandAppSourceFaviconAssetId = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceFaviconAssetId enum.
+func (e BrandAppSourceFaviconAssetId) Valid() bool {
+	switch e {
+	case BrandAppSourceFaviconAssetIdDefault:
+		return true
+	case BrandAppSourceFaviconAssetIdInstall:
+		return true
+	case BrandAppSourceFaviconAssetIdProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceFontPreset.
+const (
+	BrandAppSourceFontPresetDefault BrandAppSourceFontPreset = "default"
+	BrandAppSourceFontPresetInstall BrandAppSourceFontPreset = "install"
+	BrandAppSourceFontPresetProfile BrandAppSourceFontPreset = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceFontPreset enum.
+func (e BrandAppSourceFontPreset) Valid() bool {
+	switch e {
+	case BrandAppSourceFontPresetDefault:
+		return true
+	case BrandAppSourceFontPresetInstall:
+		return true
+	case BrandAppSourceFontPresetProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceFooterLinks.
+const (
+	BrandAppSourceFooterLinksDefault BrandAppSourceFooterLinks = "default"
+	BrandAppSourceFooterLinksInstall BrandAppSourceFooterLinks = "install"
+	BrandAppSourceFooterLinksProfile BrandAppSourceFooterLinks = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceFooterLinks enum.
+func (e BrandAppSourceFooterLinks) Valid() bool {
+	switch e {
+	case BrandAppSourceFooterLinksDefault:
+		return true
+	case BrandAppSourceFooterLinksInstall:
+		return true
+	case BrandAppSourceFooterLinksProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceFooterTextEn.
+const (
+	BrandAppSourceFooterTextEnDefault BrandAppSourceFooterTextEn = "default"
+	BrandAppSourceFooterTextEnInstall BrandAppSourceFooterTextEn = "install"
+	BrandAppSourceFooterTextEnProfile BrandAppSourceFooterTextEn = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceFooterTextEn enum.
+func (e BrandAppSourceFooterTextEn) Valid() bool {
+	switch e {
+	case BrandAppSourceFooterTextEnDefault:
+		return true
+	case BrandAppSourceFooterTextEnInstall:
+		return true
+	case BrandAppSourceFooterTextEnProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceFooterTextHu.
+const (
+	BrandAppSourceFooterTextHuDefault BrandAppSourceFooterTextHu = "default"
+	BrandAppSourceFooterTextHuInstall BrandAppSourceFooterTextHu = "install"
+	BrandAppSourceFooterTextHuProfile BrandAppSourceFooterTextHu = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceFooterTextHu enum.
+func (e BrandAppSourceFooterTextHu) Valid() bool {
+	switch e {
+	case BrandAppSourceFooterTextHuDefault:
+		return true
+	case BrandAppSourceFooterTextHuInstall:
+		return true
+	case BrandAppSourceFooterTextHuProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceHeaderLogoAssetId.
+const (
+	BrandAppSourceHeaderLogoAssetIdDefault BrandAppSourceHeaderLogoAssetId = "default"
+	BrandAppSourceHeaderLogoAssetIdInstall BrandAppSourceHeaderLogoAssetId = "install"
+	BrandAppSourceHeaderLogoAssetIdProfile BrandAppSourceHeaderLogoAssetId = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceHeaderLogoAssetId enum.
+func (e BrandAppSourceHeaderLogoAssetId) Valid() bool {
+	switch e {
+	case BrandAppSourceHeaderLogoAssetIdDefault:
+		return true
+	case BrandAppSourceHeaderLogoAssetIdInstall:
+		return true
+	case BrandAppSourceHeaderLogoAssetIdProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceHeaderLogoSize.
+const (
+	BrandAppSourceHeaderLogoSizeDefault BrandAppSourceHeaderLogoSize = "default"
+	BrandAppSourceHeaderLogoSizeInstall BrandAppSourceHeaderLogoSize = "install"
+	BrandAppSourceHeaderLogoSizeProfile BrandAppSourceHeaderLogoSize = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceHeaderLogoSize enum.
+func (e BrandAppSourceHeaderLogoSize) Valid() bool {
+	switch e {
+	case BrandAppSourceHeaderLogoSizeDefault:
+		return true
+	case BrandAppSourceHeaderLogoSizeInstall:
+		return true
+	case BrandAppSourceHeaderLogoSizeProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceLegalImprintUrl.
+const (
+	BrandAppSourceLegalImprintUrlDefault BrandAppSourceLegalImprintUrl = "default"
+	BrandAppSourceLegalImprintUrlInstall BrandAppSourceLegalImprintUrl = "install"
+	BrandAppSourceLegalImprintUrlProfile BrandAppSourceLegalImprintUrl = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceLegalImprintUrl enum.
+func (e BrandAppSourceLegalImprintUrl) Valid() bool {
+	switch e {
+	case BrandAppSourceLegalImprintUrlDefault:
+		return true
+	case BrandAppSourceLegalImprintUrlInstall:
+		return true
+	case BrandAppSourceLegalImprintUrlProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceLegalPrivacyUrl.
+const (
+	BrandAppSourceLegalPrivacyUrlDefault BrandAppSourceLegalPrivacyUrl = "default"
+	BrandAppSourceLegalPrivacyUrlInstall BrandAppSourceLegalPrivacyUrl = "install"
+	BrandAppSourceLegalPrivacyUrlProfile BrandAppSourceLegalPrivacyUrl = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceLegalPrivacyUrl enum.
+func (e BrandAppSourceLegalPrivacyUrl) Valid() bool {
+	switch e {
+	case BrandAppSourceLegalPrivacyUrlDefault:
+		return true
+	case BrandAppSourceLegalPrivacyUrlInstall:
+		return true
+	case BrandAppSourceLegalPrivacyUrlProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceOgImageAssetId.
+const (
+	BrandAppSourceOgImageAssetIdDefault BrandAppSourceOgImageAssetId = "default"
+	BrandAppSourceOgImageAssetIdInstall BrandAppSourceOgImageAssetId = "install"
+	BrandAppSourceOgImageAssetIdProfile BrandAppSourceOgImageAssetId = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceOgImageAssetId enum.
+func (e BrandAppSourceOgImageAssetId) Valid() bool {
+	switch e {
+	case BrandAppSourceOgImageAssetIdDefault:
+		return true
+	case BrandAppSourceOgImageAssetIdInstall:
+		return true
+	case BrandAppSourceOgImageAssetIdProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourcePrimaryColor.
+const (
+	BrandAppSourcePrimaryColorDefault BrandAppSourcePrimaryColor = "default"
+	BrandAppSourcePrimaryColorInstall BrandAppSourcePrimaryColor = "install"
+	BrandAppSourcePrimaryColorProfile BrandAppSourcePrimaryColor = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourcePrimaryColor enum.
+func (e BrandAppSourcePrimaryColor) Valid() bool {
+	switch e {
+	case BrandAppSourcePrimaryColorDefault:
+		return true
+	case BrandAppSourcePrimaryColorInstall:
+		return true
+	case BrandAppSourcePrimaryColorProfile:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BrandAppSourceSecondaryColor.
+const (
+	BrandAppSourceSecondaryColorDefault BrandAppSourceSecondaryColor = "default"
+	BrandAppSourceSecondaryColorInstall BrandAppSourceSecondaryColor = "install"
+	BrandAppSourceSecondaryColorProfile BrandAppSourceSecondaryColor = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceSecondaryColor enum.
+func (e BrandAppSourceSecondaryColor) Valid() bool {
+	switch e {
+	case BrandAppSourceSecondaryColorDefault:
+		return true
+	case BrandAppSourceSecondaryColorInstall:
+		return true
+	case BrandAppSourceSecondaryColorProfile:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for BrandAssetKind.
 const (
-	BrandAssetKindFavicon BrandAssetKind = "favicon"
-	BrandAssetKindLogo    BrandAssetKind = "logo"
+	BrandAssetKindFavicon    BrandAssetKind = "favicon"
+	BrandAssetKindHeaderLogo BrandAssetKind = "header_logo"
+	BrandAssetKindLogo       BrandAssetKind = "logo"
+	BrandAssetKindOgImage    BrandAssetKind = "og_image"
 )
 
 // Valid indicates whether the value is a known member of the BrandAssetKind enum.
@@ -53,7 +538,11 @@ func (e BrandAssetKind) Valid() bool {
 	switch e {
 	case BrandAssetKindFavicon:
 		return true
+	case BrandAssetKindHeaderLogo:
+		return true
 	case BrandAssetKindLogo:
+		return true
+	case BrandAssetKindOgImage:
 		return true
 	default:
 		return false
@@ -62,8 +551,10 @@ func (e BrandAssetKind) Valid() bool {
 
 // Defines values for BrandAssetUploadKind.
 const (
-	BrandAssetUploadKindFavicon BrandAssetUploadKind = "favicon"
-	BrandAssetUploadKindLogo    BrandAssetUploadKind = "logo"
+	BrandAssetUploadKindFavicon    BrandAssetUploadKind = "favicon"
+	BrandAssetUploadKindHeaderLogo BrandAssetUploadKind = "header_logo"
+	BrandAssetUploadKindLogo       BrandAssetUploadKind = "logo"
+	BrandAssetUploadKindOgImage    BrandAssetUploadKind = "og_image"
 )
 
 // Valid indicates whether the value is a known member of the BrandAssetUploadKind enum.
@@ -71,7 +562,11 @@ func (e BrandAssetUploadKind) Valid() bool {
 	switch e {
 	case BrandAssetUploadKindFavicon:
 		return true
+	case BrandAssetUploadKindHeaderLogo:
+		return true
 	case BrandAssetUploadKindLogo:
+		return true
+	case BrandAssetUploadKindOgImage:
 		return true
 	default:
 		return false
@@ -1863,6 +2358,7 @@ func (e ProvisioningState) Valid() bool {
 // Defines values for ReleaseOperationComponent.
 const (
 	ReleaseOperationComponentAppApi ReleaseOperationComponent = "app-api"
+	ReleaseOperationComponentWorker ReleaseOperationComponent = "worker"
 	ReleaseOperationComponentWww    ReleaseOperationComponent = "www"
 )
 
@@ -1870,6 +2366,8 @@ const (
 func (e ReleaseOperationComponent) Valid() bool {
 	switch e {
 	case ReleaseOperationComponentAppApi:
+		return true
+	case ReleaseOperationComponentWorker:
 		return true
 	case ReleaseOperationComponentWww:
 		return true
@@ -2025,6 +2523,7 @@ func (e ReleaseOperationTargetEnv) Valid() bool {
 // Defines values for ReleasePromotionCreateComponent.
 const (
 	ReleasePromotionCreateComponentAppApi ReleasePromotionCreateComponent = "app-api"
+	ReleasePromotionCreateComponentWorker ReleasePromotionCreateComponent = "worker"
 	ReleasePromotionCreateComponentWww    ReleasePromotionCreateComponent = "www"
 )
 
@@ -2032,6 +2531,8 @@ const (
 func (e ReleasePromotionCreateComponent) Valid() bool {
 	switch e {
 	case ReleasePromotionCreateComponentAppApi:
+		return true
+	case ReleasePromotionCreateComponentWorker:
 		return true
 	case ReleasePromotionCreateComponentWww:
 		return true
@@ -2083,6 +2584,7 @@ func (e ReleaseStateDeploymentBackend) Valid() bool {
 const (
 	ReportedVersionComponentAppApi   ReportedVersionComponent = "app-api"
 	ReportedVersionComponentDatabase ReportedVersionComponent = "database"
+	ReportedVersionComponentWorker   ReportedVersionComponent = "worker"
 	ReportedVersionComponentWww      ReportedVersionComponent = "www"
 )
 
@@ -2092,6 +2594,8 @@ func (e ReportedVersionComponent) Valid() bool {
 	case ReportedVersionComponentAppApi:
 		return true
 	case ReportedVersionComponentDatabase:
+		return true
+	case ReportedVersionComponentWorker:
 		return true
 	case ReportedVersionComponentWww:
 		return true
@@ -2142,6 +2646,45 @@ func (e ReportedVersionSourceEnv) Valid() bool {
 	case ReportedVersionSourceEnvSandbox:
 		return true
 	case ReportedVersionSourceEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ResolvedAppBrandDefaultLanguage.
+const (
+	ResolvedAppBrandDefaultLanguageEn ResolvedAppBrandDefaultLanguage = "en"
+	ResolvedAppBrandDefaultLanguageHu ResolvedAppBrandDefaultLanguage = "hu"
+)
+
+// Valid indicates whether the value is a known member of the ResolvedAppBrandDefaultLanguage enum.
+func (e ResolvedAppBrandDefaultLanguage) Valid() bool {
+	switch e {
+	case ResolvedAppBrandDefaultLanguageEn:
+		return true
+	case ResolvedAppBrandDefaultLanguageHu:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ResolvedAppBrandFontPreset.
+const (
+	ResolvedAppBrandFontPresetInter      ResolvedAppBrandFontPreset = "inter"
+	ResolvedAppBrandFontPresetMontserrat ResolvedAppBrandFontPreset = "montserrat"
+	ResolvedAppBrandFontPresetSystem     ResolvedAppBrandFontPreset = "system"
+)
+
+// Valid indicates whether the value is a known member of the ResolvedAppBrandFontPreset enum.
+func (e ResolvedAppBrandFontPreset) Valid() bool {
+	switch e {
+	case ResolvedAppBrandFontPresetInter:
+		return true
+	case ResolvedAppBrandFontPresetMontserrat:
+		return true
+	case ResolvedAppBrandFontPresetSystem:
 		return true
 	default:
 		return false
@@ -2669,8 +3212,10 @@ func (e AuditEventsListParamsAuthKind) Valid() bool {
 
 // Defines values for BrandAssetsListParamsKind.
 const (
-	BrandAssetsListParamsKindFavicon BrandAssetsListParamsKind = "favicon"
-	BrandAssetsListParamsKindLogo    BrandAssetsListParamsKind = "logo"
+	BrandAssetsListParamsKindFavicon    BrandAssetsListParamsKind = "favicon"
+	BrandAssetsListParamsKindHeaderLogo BrandAssetsListParamsKind = "header_logo"
+	BrandAssetsListParamsKindLogo       BrandAssetsListParamsKind = "logo"
+	BrandAssetsListParamsKindOgImage    BrandAssetsListParamsKind = "og_image"
 )
 
 // Valid indicates whether the value is a known member of the BrandAssetsListParamsKind enum.
@@ -2678,7 +3223,11 @@ func (e BrandAssetsListParamsKind) Valid() bool {
 	switch e {
 	case BrandAssetsListParamsKindFavicon:
 		return true
+	case BrandAssetsListParamsKindHeaderLogo:
+		return true
 	case BrandAssetsListParamsKindLogo:
+		return true
+	case BrandAssetsListParamsKindOgImage:
 		return true
 	default:
 		return false
@@ -2687,8 +3236,10 @@ func (e BrandAssetsListParamsKind) Valid() bool {
 
 // Defines values for BrandAssetsCreateMultipartBodyKind.
 const (
-	BrandAssetsCreateMultipartBodyKindFavicon BrandAssetsCreateMultipartBodyKind = "favicon"
-	BrandAssetsCreateMultipartBodyKindLogo    BrandAssetsCreateMultipartBodyKind = "logo"
+	BrandAssetsCreateMultipartBodyKindFavicon    BrandAssetsCreateMultipartBodyKind = "favicon"
+	BrandAssetsCreateMultipartBodyKindHeaderLogo BrandAssetsCreateMultipartBodyKind = "header_logo"
+	BrandAssetsCreateMultipartBodyKindLogo       BrandAssetsCreateMultipartBodyKind = "logo"
+	BrandAssetsCreateMultipartBodyKindOgImage    BrandAssetsCreateMultipartBodyKind = "og_image"
 )
 
 // Valid indicates whether the value is a known member of the BrandAssetsCreateMultipartBodyKind enum.
@@ -2696,7 +3247,11 @@ func (e BrandAssetsCreateMultipartBodyKind) Valid() bool {
 	switch e {
 	case BrandAssetsCreateMultipartBodyKindFavicon:
 		return true
+	case BrandAssetsCreateMultipartBodyKindHeaderLogo:
+		return true
 	case BrandAssetsCreateMultipartBodyKindLogo:
+		return true
+	case BrandAssetsCreateMultipartBodyKindOgImage:
 		return true
 	default:
 		return false
@@ -2733,6 +3288,90 @@ const (
 func (e CustomersGetParamsInclude) Valid() bool {
 	switch e {
 	case GitlabStatus:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FeedbackListParamsStatus.
+const (
+	FeedbackListParamsStatusClosed     FeedbackListParamsStatus = "closed"
+	FeedbackListParamsStatusDelivered  FeedbackListParamsStatus = "delivered"
+	FeedbackListParamsStatusDuplicate  FeedbackListParamsStatus = "duplicate"
+	FeedbackListParamsStatusInProgress FeedbackListParamsStatus = "in_progress"
+	FeedbackListParamsStatusNew        FeedbackListParamsStatus = "new"
+	FeedbackListParamsStatusReady      FeedbackListParamsStatus = "ready"
+	FeedbackListParamsStatusRejected   FeedbackListParamsStatus = "rejected"
+	FeedbackListParamsStatusScheduled  FeedbackListParamsStatus = "scheduled"
+	FeedbackListParamsStatusTriaged    FeedbackListParamsStatus = "triaged"
+	FeedbackListParamsStatusWithdrawn  FeedbackListParamsStatus = "withdrawn"
+)
+
+// Valid indicates whether the value is a known member of the FeedbackListParamsStatus enum.
+func (e FeedbackListParamsStatus) Valid() bool {
+	switch e {
+	case FeedbackListParamsStatusClosed:
+		return true
+	case FeedbackListParamsStatusDelivered:
+		return true
+	case FeedbackListParamsStatusDuplicate:
+		return true
+	case FeedbackListParamsStatusInProgress:
+		return true
+	case FeedbackListParamsStatusNew:
+		return true
+	case FeedbackListParamsStatusReady:
+		return true
+	case FeedbackListParamsStatusRejected:
+		return true
+	case FeedbackListParamsStatusScheduled:
+		return true
+	case FeedbackListParamsStatusTriaged:
+		return true
+	case FeedbackListParamsStatusWithdrawn:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FeedbackListParamsKind.
+const (
+	BlockerBug FeedbackListParamsKind = "blocker_bug"
+	Change     FeedbackListParamsKind = "change"
+	NewFeature FeedbackListParamsKind = "new_feature"
+)
+
+// Valid indicates whether the value is a known member of the FeedbackListParamsKind enum.
+func (e FeedbackListParamsKind) Valid() bool {
+	switch e {
+	case BlockerBug:
+		return true
+	case Change:
+		return true
+	case NewFeature:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FeedbackListParamsSource.
+const (
+	Demo     FeedbackListParamsSource = "demo"
+	Internal FeedbackListParamsSource = "internal"
+	Island   FeedbackListParamsSource = "island"
+)
+
+// Valid indicates whether the value is a known member of the FeedbackListParamsSource enum.
+func (e FeedbackListParamsSource) Valid() bool {
+	switch e {
+	case Demo:
+		return true
+	case Internal:
+		return true
+	case Island:
 		return true
 	default:
 		return false
@@ -2937,6 +3576,7 @@ func (e ReleaseOperationsListParamsTargetEnv) Valid() bool {
 // Defines values for ReleaseOperationsListParamsComponent.
 const (
 	ReleaseOperationsListParamsComponentAppApi ReleaseOperationsListParamsComponent = "app-api"
+	ReleaseOperationsListParamsComponentWorker ReleaseOperationsListParamsComponent = "worker"
 	ReleaseOperationsListParamsComponentWww    ReleaseOperationsListParamsComponent = "www"
 )
 
@@ -2944,6 +3584,8 @@ const (
 func (e ReleaseOperationsListParamsComponent) Valid() bool {
 	switch e {
 	case ReleaseOperationsListParamsComponentAppApi:
+		return true
+	case ReleaseOperationsListParamsComponentWorker:
 		return true
 	case ReleaseOperationsListParamsComponentWww:
 		return true
@@ -3686,6 +4328,9 @@ type AuditEvent struct {
 	// SourceIp The client address as the portal saw it, when recorded.
 	SourceIp *string `json:"source_ip"`
 
+	// TenantId The tenant the event is attributed to, when its writer recorded one (today: the creation and revocation of tenant-scoped API tokens); null otherwise. A tenant-scoped token reads only its own tenant's events.
+	TenantId *string `json:"tenant_id"`
+
 	// TokenId The API token used, when `auth_kind` is `pat` or `service_account`.
 	TokenId *string `json:"token_id"`
 }
@@ -3743,6 +4388,341 @@ type Brand struct {
 // BrandLogoSize The sidebar logo size preset.
 type BrandLogoSize string
 
+// BrandAppAssets The resolved asset URLs. Each is `/api/brand/assets/<sha256>` (no file
+// extension) or `null`; an application fetches the bytes by that sha256.
+type BrandAppAssets struct {
+	// FaviconUrl The browser icon, or `null`.
+	FaviconUrl *string `json:"favicon_url"`
+
+	// HeaderLogoSize The header logo box.
+	HeaderLogoSize BrandAppLogoSize `json:"header_logo_size"`
+
+	// HeaderLogoUrl The header logo, or `null`: show the display name only.
+	HeaderLogoUrl *string `json:"header_logo_url"`
+
+	// OgImageUrl The social preview image, or `null`.
+	OgImageUrl *string `json:"og_image_url"`
+}
+
+// BrandAppFooter The resolved footer.
+type BrandAppFooter struct {
+	// CoBrandLine The optional partner line.
+	CoBrandLine BrandAppText `json:"co_brand_line"`
+
+	// Links Up to five footer links.
+	Links []FooterLink `json:"links"`
+
+	// Text The footer line.
+	Text BrandAppText `json:"text"`
+}
+
+// BrandAppLegal The legal links; `null` when not set.
+type BrandAppLegal struct {
+	// ImprintUrl The imprint (legal notice).
+	ImprintUrl *string `json:"imprint_url"`
+
+	// PrivacyUrl The privacy notice.
+	PrivacyUrl *string `json:"privacy_url"`
+}
+
+// BrandAppLogoSize The header logo box: the logo is fitted into it, never stretched.
+type BrandAppLogoSize struct {
+	// MaxHeight The largest height, in pixels.
+	MaxHeight int `json:"max_height"`
+
+	// MaxWidth The largest width, as a CSS length such as `88%`.
+	MaxWidth string `json:"max_width"`
+}
+
+// BrandAppProfile One application's stored brand profile: every writable field as stored
+// (`null` = Inherited), plus the read-only `app_slug`, `version` and
+// `updated_at`. `PUT /brand/apps/{app_slug}` replaces every writable field:
+// to change one, send all of them back as read here. What an application
+// actually renders is `GET /brand/apps/{app_slug}/resolved`.
+type BrandAppProfile struct {
+	// AppSlug Read-only. The application slug: lower-case letters, digits and hyphens, no dot.
+	AppSlug *string `json:"app_slug,omitempty"`
+
+	// CoBrandLineEn An optional partner line in the footer, in English. `null`: empty.
+	CoBrandLineEn *string `json:"co_brand_line_en"`
+
+	// CoBrandLineHu An optional partner line in the footer, in Hungarian. `null`: empty.
+	CoBrandLineHu *string `json:"co_brand_line_hu"`
+
+	// DefaultLanguage The language a first-time visitor sees: `en` or `hu`. `null`: `hu`.
+	DefaultLanguage *BrandAppProfileDefaultLanguage `json:"default_language"`
+
+	// DisplayName The application's name in its header. `null`: the application slug with a capital first letter (the installation's product name is never used).
+	DisplayName *string `json:"display_name"`
+
+	// DisplayNameAccent A part of `display_name` rendered in the primary colour; empty colours the whole name. Needs `display_name` in the same body. `null`: the installation's highlighted letters while the name is inherited, otherwise empty.
+	DisplayNameAccent *string `json:"display_name_accent"`
+
+	// FaviconAssetId A brand asset of kind `favicon`. `null`: the installation's favicon when one is uploaded, otherwise none.
+	FaviconAssetId *string `json:"favicon_asset_id"`
+
+	// FontPreset `inter`, `montserrat` or `system`; the fonts ship with the application. `null`: `inter`.
+	FontPreset *BrandAppProfileFontPreset `json:"font_preset"`
+
+	// FooterLinks Up to five footer links. `[]`: no links. `null`: the installation's footer links.
+	FooterLinks *[]FooterLink `json:"footer_links"`
+
+	// FooterTextEn The footer line in English. `null`: empty.
+	FooterTextEn *string `json:"footer_text_en"`
+
+	// FooterTextHu The footer line in Hungarian. `null`: empty.
+	FooterTextHu *string `json:"footer_text_hu"`
+
+	// HeaderLogoAssetId A brand asset of kind `header_logo` or `logo`. `null`: the installation's logo when one is uploaded, otherwise none (the header shows the name only).
+	HeaderLogoAssetId *string `json:"header_logo_asset_id"`
+
+	// HeaderLogoSize The header logo size preset: `compact`, `medium`, `regular` or `large`. `null`: the installation's logo size.
+	HeaderLogoSize *BrandAppProfileHeaderLogoSize `json:"header_logo_size"`
+
+	// LegalImprintUrl The imprint (legal notice); must start with `https://`. `null`: none.
+	LegalImprintUrl *string `json:"legal_imprint_url"`
+
+	// LegalPrivacyUrl The privacy notice; must start with `https://`. `null`: none.
+	LegalPrivacyUrl *string `json:"legal_privacy_url"`
+
+	// OgImageAssetId A brand asset of kind `og_image` (the social preview card, 1200 x 630). `null`: none.
+	OgImageAssetId *string `json:"og_image_asset_id"`
+
+	// PrimaryColor Six-digit hex colour; the ten `shades` and the text colour on it are derived from it. `null`: the installation's brand colour.
+	PrimaryColor *string `json:"primary_color"`
+
+	// SecondaryColor Six-digit hex highlight colour. `null`: `#ffcf00`.
+	SecondaryColor *string `json:"secondary_color"`
+
+	// UpdatedAt When the profile was last changed.
+	UpdatedAt time.Time `json:"updated_at"`
+
+	// Version Bumped by every change; send it back in `If-Match`.
+	Version int `json:"version"`
+}
+
+// BrandAppProfileDefaultLanguage defines model for BrandAppProfile.DefaultLanguage.
+type BrandAppProfileDefaultLanguage string
+
+// BrandAppProfileFontPreset defines model for BrandAppProfile.FontPreset.
+type BrandAppProfileFontPreset string
+
+// BrandAppProfileHeaderLogoSize defines model for BrandAppProfile.HeaderLogoSize.
+type BrandAppProfileHeaderLogoSize string
+
+// BrandAppProfilePage One page of application profiles, in `app_slug` order. `next_cursor` reads
+// the next page.
+type BrandAppProfilePage struct {
+	// Items This page's items, in the list's order.
+	Items []BrandAppProfileSummary `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// BrandAppProfileSummary One line of the application profile list.
+type BrandAppProfileSummary struct {
+	// AppSlug The application slug.
+	AppSlug string `json:"app_slug"`
+
+	// DisplayName The stored display name; `null` when it is inherited.
+	DisplayName *string `json:"display_name"`
+
+	// InheritsAll True when every field is `null`: the application looks exactly like the installation's brand with the defaults.
+	InheritsAll bool `json:"inherits_all"`
+
+	// UpdatedAt When the profile was last changed.
+	UpdatedAt time.Time `json:"updated_at"`
+
+	// Version The profile's version.
+	Version int `json:"version"`
+}
+
+// BrandAppPut FULL REPLACEMENT of one application's brand profile (the spec's
+// `AppProfileUpdate`; the Brand Center form and `/api/v1` send this same
+// model). Every member is required and may be `null`: `null` means
+// Inherited — the field takes the installation's brand or the built-in
+// default. A member that is left out is refused with 422 naming it, so
+// nothing is reset by omission. `footer_links: []` means "no links" and is
+// not the same as `null`. `attribution` and `first_party` cannot be sent:
+// the line under the name is computed from the installation and cannot be
+// changed. Colours are lower-cased before they are checked.
+type BrandAppPut struct {
+	// CoBrandLineEn An optional partner line in the footer, in English. `null`: empty.
+	CoBrandLineEn *string `json:"co_brand_line_en"`
+
+	// CoBrandLineHu An optional partner line in the footer, in Hungarian. `null`: empty.
+	CoBrandLineHu *string `json:"co_brand_line_hu"`
+
+	// DefaultLanguage The language a first-time visitor sees: `en` or `hu`. `null`: `hu`.
+	DefaultLanguage *BrandAppPutDefaultLanguage `json:"default_language"`
+
+	// DisplayName The application's name in its header. `null`: the application slug with a capital first letter (the installation's product name is never used).
+	DisplayName *string `json:"display_name"`
+
+	// DisplayNameAccent A part of `display_name` rendered in the primary colour; empty colours the whole name. Needs `display_name` in the same body. `null`: the installation's highlighted letters while the name is inherited, otherwise empty.
+	DisplayNameAccent *string `json:"display_name_accent"`
+
+	// FaviconAssetId A brand asset of kind `favicon`. `null`: the installation's favicon when one is uploaded, otherwise none.
+	FaviconAssetId *string `json:"favicon_asset_id"`
+
+	// FontPreset `inter`, `montserrat` or `system`; the fonts ship with the application. `null`: `inter`.
+	FontPreset *BrandAppPutFontPreset `json:"font_preset"`
+
+	// FooterLinks Up to five footer links. `[]`: no links. `null`: the installation's footer links.
+	FooterLinks *[]FooterLink `json:"footer_links"`
+
+	// FooterTextEn The footer line in English. `null`: empty.
+	FooterTextEn *string `json:"footer_text_en"`
+
+	// FooterTextHu The footer line in Hungarian. `null`: empty.
+	FooterTextHu *string `json:"footer_text_hu"`
+
+	// HeaderLogoAssetId A brand asset of kind `header_logo` or `logo`. `null`: the installation's logo when one is uploaded, otherwise none (the header shows the name only).
+	HeaderLogoAssetId *string `json:"header_logo_asset_id"`
+
+	// HeaderLogoSize The header logo size preset: `compact`, `medium`, `regular` or `large`. `null`: the installation's logo size.
+	HeaderLogoSize *BrandAppPutHeaderLogoSize `json:"header_logo_size"`
+
+	// LegalImprintUrl The imprint (legal notice); must start with `https://`. `null`: none.
+	LegalImprintUrl *string `json:"legal_imprint_url"`
+
+	// LegalPrivacyUrl The privacy notice; must start with `https://`. `null`: none.
+	LegalPrivacyUrl *string `json:"legal_privacy_url"`
+
+	// OgImageAssetId A brand asset of kind `og_image` (the social preview card, 1200 x 630). `null`: none.
+	OgImageAssetId *string `json:"og_image_asset_id"`
+
+	// PrimaryColor Six-digit hex colour; the ten `shades` and the text colour on it are derived from it. `null`: the installation's brand colour.
+	PrimaryColor *string `json:"primary_color"`
+
+	// SecondaryColor Six-digit hex highlight colour. `null`: `#ffcf00`.
+	SecondaryColor *string `json:"secondary_color"`
+}
+
+// BrandAppPutDefaultLanguage defines model for BrandAppPut.DefaultLanguage.
+type BrandAppPutDefaultLanguage string
+
+// BrandAppPutFontPreset defines model for BrandAppPut.FontPreset.
+type BrandAppPutFontPreset string
+
+// BrandAppPutHeaderLogoSize defines model for BrandAppPut.HeaderLogoSize.
+type BrandAppPutHeaderLogoSize string
+
+// BrandAppSource Where each writable field's resolved value came from: `profile` (set on the profile), `install` (inherited from this platform's brand) or `default` (the built-in default).
+type BrandAppSource struct {
+	// CoBrandLineEn Where `co_brand_line_en` came from.
+	CoBrandLineEn BrandAppSourceCoBrandLineEn `json:"co_brand_line_en"`
+
+	// CoBrandLineHu Where `co_brand_line_hu` came from.
+	CoBrandLineHu BrandAppSourceCoBrandLineHu `json:"co_brand_line_hu"`
+
+	// DefaultLanguage Where `default_language` came from.
+	DefaultLanguage BrandAppSourceDefaultLanguage `json:"default_language"`
+
+	// DisplayName Where `display_name` came from.
+	DisplayName BrandAppSourceDisplayName `json:"display_name"`
+
+	// DisplayNameAccent Where `display_name_accent` came from.
+	DisplayNameAccent BrandAppSourceDisplayNameAccent `json:"display_name_accent"`
+
+	// FaviconAssetId Where `favicon_asset_id` came from.
+	FaviconAssetId BrandAppSourceFaviconAssetId `json:"favicon_asset_id"`
+
+	// FontPreset Where `font_preset` came from.
+	FontPreset BrandAppSourceFontPreset `json:"font_preset"`
+
+	// FooterLinks Where `footer_links` came from.
+	FooterLinks BrandAppSourceFooterLinks `json:"footer_links"`
+
+	// FooterTextEn Where `footer_text_en` came from.
+	FooterTextEn BrandAppSourceFooterTextEn `json:"footer_text_en"`
+
+	// FooterTextHu Where `footer_text_hu` came from.
+	FooterTextHu BrandAppSourceFooterTextHu `json:"footer_text_hu"`
+
+	// HeaderLogoAssetId Where `header_logo_asset_id` came from.
+	HeaderLogoAssetId BrandAppSourceHeaderLogoAssetId `json:"header_logo_asset_id"`
+
+	// HeaderLogoSize Where `header_logo_size` came from.
+	HeaderLogoSize BrandAppSourceHeaderLogoSize `json:"header_logo_size"`
+
+	// LegalImprintUrl Where `legal_imprint_url` came from.
+	LegalImprintUrl BrandAppSourceLegalImprintUrl `json:"legal_imprint_url"`
+
+	// LegalPrivacyUrl Where `legal_privacy_url` came from.
+	LegalPrivacyUrl BrandAppSourceLegalPrivacyUrl `json:"legal_privacy_url"`
+
+	// OgImageAssetId Where `og_image_asset_id` came from.
+	OgImageAssetId BrandAppSourceOgImageAssetId `json:"og_image_asset_id"`
+
+	// PrimaryColor Where `primary_color` came from.
+	PrimaryColor BrandAppSourcePrimaryColor `json:"primary_color"`
+
+	// SecondaryColor Where `secondary_color` came from.
+	SecondaryColor BrandAppSourceSecondaryColor `json:"secondary_color"`
+}
+
+// BrandAppSourceCoBrandLineEn Where `co_brand_line_en` came from.
+type BrandAppSourceCoBrandLineEn string
+
+// BrandAppSourceCoBrandLineHu Where `co_brand_line_hu` came from.
+type BrandAppSourceCoBrandLineHu string
+
+// BrandAppSourceDefaultLanguage Where `default_language` came from.
+type BrandAppSourceDefaultLanguage string
+
+// BrandAppSourceDisplayName Where `display_name` came from.
+type BrandAppSourceDisplayName string
+
+// BrandAppSourceDisplayNameAccent Where `display_name_accent` came from.
+type BrandAppSourceDisplayNameAccent string
+
+// BrandAppSourceFaviconAssetId Where `favicon_asset_id` came from.
+type BrandAppSourceFaviconAssetId string
+
+// BrandAppSourceFontPreset Where `font_preset` came from.
+type BrandAppSourceFontPreset string
+
+// BrandAppSourceFooterLinks Where `footer_links` came from.
+type BrandAppSourceFooterLinks string
+
+// BrandAppSourceFooterTextEn Where `footer_text_en` came from.
+type BrandAppSourceFooterTextEn string
+
+// BrandAppSourceFooterTextHu Where `footer_text_hu` came from.
+type BrandAppSourceFooterTextHu string
+
+// BrandAppSourceHeaderLogoAssetId Where `header_logo_asset_id` came from.
+type BrandAppSourceHeaderLogoAssetId string
+
+// BrandAppSourceHeaderLogoSize Where `header_logo_size` came from.
+type BrandAppSourceHeaderLogoSize string
+
+// BrandAppSourceLegalImprintUrl Where `legal_imprint_url` came from.
+type BrandAppSourceLegalImprintUrl string
+
+// BrandAppSourceLegalPrivacyUrl Where `legal_privacy_url` came from.
+type BrandAppSourceLegalPrivacyUrl string
+
+// BrandAppSourceOgImageAssetId Where `og_image_asset_id` came from.
+type BrandAppSourceOgImageAssetId string
+
+// BrandAppSourcePrimaryColor Where `primary_color` came from.
+type BrandAppSourcePrimaryColor string
+
+// BrandAppSourceSecondaryColor Where `secondary_color` came from.
+type BrandAppSourceSecondaryColor string
+
+// BrandAppText One text in both languages; an empty string means nothing is shown.
+type BrandAppText struct {
+	// En English.
+	En string `json:"en"`
+
+	// Hu Hungarian.
+	Hu string `json:"hu"`
+}
+
 // BrandAsset An uploaded logo or favicon. An asset is addressed by its content: the
 // same file uploaded twice is one asset.
 type BrandAsset struct {
@@ -3755,13 +4735,13 @@ type BrandAsset struct {
 	// Height Height in pixels; null for an SVG.
 	Height *int `json:"height,omitempty"`
 
-	// Id The asset's id; `logo_asset_id` and `favicon_asset_id` name it.
+	// Id The asset's id; `logo_asset_id`, `favicon_asset_id` and an application profile's asset fields name it.
 	Id string `json:"id"`
 
-	// Kind What the asset is for: a `logo` or a `favicon`.
+	// Kind What the asset is for: `logo` or `favicon` (this platform's brand), `header_logo` or `og_image` (an application profile).
 	Kind BrandAssetKind `json:"kind"`
 
-	// Mime The file's type, read from its bytes: `image/png`, `image/webp` or `image/svg+xml` for a logo; `image/png`, `image/svg+xml` or `image/x-icon` for a favicon.
+	// Mime The file's type, read from its bytes: `image/png`, `image/webp` or `image/svg+xml` for a logo or a header logo; `image/png`, `image/svg+xml` or `image/x-icon` for a favicon; `image/png`, `image/webp` or `image/jpeg` for a preview image.
 	Mime string `json:"mime"`
 
 	// Sha256 The SHA-256 of the file's bytes, in lowercase hex.
@@ -3777,7 +4757,7 @@ type BrandAsset struct {
 	Width *int `json:"width,omitempty"`
 }
 
-// BrandAssetKind What the asset is for: a `logo` or a `favicon`.
+// BrandAssetKind What the asset is for: `logo` or `favicon` (this platform's brand), `header_logo` or `og_image` (an application profile).
 type BrandAssetKind string
 
 // BrandAssetPage One page of brand assets. `next_cursor` reads the next page.
@@ -3798,11 +4778,11 @@ type BrandAssetUpload struct {
 	// Filename The original file name, kept for display only: the asset is addressed by its content (`sha256`).
 	Filename *string `json:"filename,omitempty"`
 
-	// Kind What the asset is for: a `logo` or a `favicon`.
+	// Kind What the asset is for: `logo`, `favicon`, `header_logo` or `og_image`.
 	Kind BrandAssetUploadKind `json:"kind"`
 }
 
-// BrandAssetUploadKind What the asset is for: a `logo` or a `favicon`.
+// BrandAssetUploadKind What the asset is for: `logo`, `favicon`, `header_logo` or `og_image`.
 type BrandAssetUploadKind string
 
 // BrandPut FULL REPLACEMENT of the v1 fields, never a partial update: every member
@@ -3921,6 +4901,51 @@ type ClusterServe struct {
 
 	// ServedAt When serving started, if recorded (a value that is not a timestamp reads as null).
 	ServedAt *time.Time `json:"served_at,omitempty"`
+}
+
+// CodingJobRepository A repository a coding job may push to, with its one-day job token.
+type CodingJobRepository struct {
+	// BaseBranch The branch a job starts from and opens its merge request against. It is protected: the token cannot push it.
+	BaseBranch string `json:"base_branch"`
+
+	// ExpiresOn The last day the token works (GitLab expiry).
+	ExpiresOn openapi_types.Date `json:"expires_on"`
+
+	// Files Scratch only: files in the first commit.
+	Files *int `json:"files,omitempty"`
+
+	// GitlabProjectId The repository's id on the platform's GitLab.
+	GitlabProjectId string `json:"gitlab_project_id"`
+
+	// JobId The coding job's id: 4-40 characters, lowercase letters, digits and '-', starting and ending with a letter or digit (the runner's job id rule).
+	JobId string `json:"job_id"`
+
+	// Path The repository's path, e.g. `openattila/opencode`.
+	Path *string `json:"path"`
+
+	// RepoUrl The HTTPS clone URL (no credential in it).
+	RepoUrl *string `json:"repo_url"`
+
+	// Secret The job token: a GitLab project access token with `write_repository` at Developer level. Returned once, by the request that minted it, and never stored by the platform; null on an idempotent replay. Use it as the password of an HTTPS git push to a branch other than `base_branch`.
+	Secret *string `json:"secret,omitempty"`
+
+	// Target `scratch` (a repository made for this job in the scratch group) or `project` (the primary repository of an ACP project).
+	Target string `json:"target"`
+
+	// TemplateRef Scratch only: the template ref the first commit was made from.
+	TemplateRef *string `json:"template_ref,omitempty"`
+
+	// TokenId GitLab's id of the job token (for revocation).
+	TokenId string `json:"token_id"`
+
+	// TokenName The job token's name, `opencode-<job_id>`.
+	TokenName string `json:"token_name"`
+
+	// Warnings `secret_not_replayed` on an idempotent replay.
+	Warnings *[]ApiWarning `json:"warnings,omitempty"`
+
+	// WebUrl The repository's page on GitLab.
+	WebUrl *string `json:"web_url"`
 }
 
 // Customer A company on this platform. It owns tenants, and through them projects.
@@ -4141,6 +5166,267 @@ type DgxClusterPage struct {
 
 	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
 	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// FeedbackComment One message of the item's thread, oldest first.
+type FeedbackComment struct {
+	// AuthorName Who wrote it, as their name was known then.
+	AuthorName string `json:"author_name"`
+
+	// Body The message (Markdown).
+	Body string `json:"body"`
+
+	// CreatedAt When it was written.
+	CreatedAt time.Time `json:"created_at"`
+
+	// Internal True for a vendor-side internal note: never shown to the customer.
+	Internal bool `json:"internal"`
+
+	// Lang Its language: `en` or `hu`.
+	Lang string `json:"lang"`
+
+	// Side `customer` (the reporter's side) or `ataila` (the vendor's).
+	Side string `json:"side"`
+}
+
+// FeedbackContext What the reporter's installation was running, captured with the item.
+type FeedbackContext struct {
+	// Browser The reporter's browser.
+	Browser *string `json:"browser,omitempty"`
+
+	// Build The platform build, e.g. `1.0.258`.
+	Build *string `json:"build,omitempty"`
+
+	// Edition The installation's edition.
+	Edition *string `json:"edition,omitempty"`
+
+	// Locale The interface language, `en` or `hu`.
+	Locale *string `json:"locale,omitempty"`
+
+	// ReleaseId The installed release, e.g. `2026.10.3`.
+	ReleaseId *string `json:"release_id,omitempty"`
+
+	// ReleaseSeq The installed release's sequence number.
+	ReleaseSeq *int `json:"release_seq,omitempty"`
+
+	// Viewport The browser window size, e.g. `1920x1080`.
+	Viewport *string `json:"viewport,omitempty"`
+}
+
+// FeedbackItem One feedback item in full: the report, its context and its thread.
+type FeedbackItem struct {
+	// AcceptanceCriteria What is true once the work is done, one statement per line; null until written.
+	AcceptanceCriteria *string `json:"acceptance_criteria"`
+
+	// AutoCloseAt When a delivered item closes by itself unless the reporter reopens it.
+	AutoCloseAt *time.Time `json:"auto_close_at"`
+
+	// Body The report itself (Markdown), as the reporter wrote it.
+	Body string `json:"body"`
+
+	// Comments The thread, oldest first.
+	Comments []FeedbackComment `json:"comments"`
+
+	// ConfirmedAt When the reporter confirmed that it works.
+	ConfirmedAt *time.Time `json:"confirmed_at"`
+
+	// Context What the reporter's installation was running.
+	Context FeedbackContext `json:"context"`
+
+	// CreatedAt When it was filed.
+	CreatedAt time.Time `json:"created_at"`
+
+	// CustomerKey The customer the item belongs to (its stable key).
+	CustomerKey string `json:"customer_key"`
+
+	// CustomerLabel The customer's name.
+	CustomerLabel string `json:"customer_label"`
+
+	// DeliveredAt When it became `delivered`.
+	DeliveredAt *time.Time `json:"delivered_at"`
+
+	// DeliveredBuild The production build that carries the change (set when it becomes `ready`).
+	DeliveredBuild *string `json:"delivered_build"`
+
+	// DeliveredReleaseId That release's id, e.g. `2026.10.4`.
+	DeliveredReleaseId *string `json:"delivered_release_id"`
+
+	// DeliveredReleaseSeq The sequence number of the release that ships it; null until that release is published.
+	DeliveredReleaseSeq *int `json:"delivered_release_seq"`
+
+	// DuplicateOfNumber For a `duplicate`, the number of the item it duplicates; null otherwise.
+	DuplicateOfNumber *int `json:"duplicate_of_number"`
+
+	// ExpectedWeek The ISO week the work is planned for (`2026-W43`); null until scheduled.
+	ExpectedWeek *string `json:"expected_week"`
+
+	// Kind What it asks for: `blocker_bug`, `change` (a change request) or `new_feature`.
+	Kind string `json:"kind"`
+
+	// Lang The language of the report: `en` or `hu`.
+	Lang string `json:"lang"`
+
+	// Number The item's number, `#N`: its id here and in every commit that refers to it (`feedback #N`).
+	Number int `json:"number"`
+
+	// Page The screen it was filed from.
+	Page FeedbackPage `json:"page"`
+
+	// PlannedReleaseId The release it is planned for, if any.
+	PlannedReleaseId *string `json:"planned_release_id"`
+
+	// PublicTitle The title release notes print, when one was set at triage; null = the title.
+	PublicTitle *string `json:"public_title"`
+
+	// ReadyAt When it became `ready`.
+	ReadyAt *time.Time `json:"ready_at"`
+
+	// ReleasedAt When the release that ships it was published.
+	ReleasedAt *time.Time `json:"released_at"`
+
+	// Severity For a bug: `blocker`, `major` or `minor`; null for the other kinds.
+	Severity *string `json:"severity"`
+
+	// Source Where it was filed: `internal` (on this platform by its own staff), `island` (on a customer installation) or `demo` (on a demo installation: a lead signal).
+	Source string `json:"source"`
+
+	// Status Where the item is: `new`, `triaged`, `scheduled` (has an expected week), `in_progress`, `ready` (built into a production build of the platform, not yet installed where it was reported), `delivered` (the release that carries it is installed there), `closed`; or one of the terminal `rejected` (see `status_reason`), `duplicate` (see `duplicate_of_number`) and `withdrawn`.
+	Status string `json:"status"`
+
+	// StatusReason The reason given with a rejection or a withdrawal; null otherwise.
+	StatusReason *string `json:"status_reason"`
+
+	// SubmitterName Who filed it, as their name was known then.
+	SubmitterName *string `json:"submitter_name"`
+
+	// SummaryEn An English summary of an item reported in another language; null for an English report or until it is written.
+	SummaryEn *string `json:"summary_en"`
+
+	// TicketUrl A linked helpdesk ticket, if any.
+	TicketUrl *string `json:"ticket_url"`
+
+	// Title The title as the reporter wrote it.
+	Title string `json:"title"`
+
+	// UpdatedAt When it last changed.
+	UpdatedAt time.Time `json:"updated_at"`
+
+	// Votes Upvotes, every side together.
+	Votes int `json:"votes"`
+
+	// WeekHistory Every move of the expected week, oldest first; empty when it never moved.
+	WeekHistory []FeedbackWeekMove `json:"week_history"`
+}
+
+// FeedbackItemPage One page of feedback items, highest number first. `next_cursor` reads the next page.
+type FeedbackItemPage struct {
+	// Items This page's items, in the list's order.
+	Items []FeedbackSummary `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// FeedbackPage The screen the item was filed from.
+type FeedbackPage struct {
+	// Key The page's navigation key, e.g. `projects`.
+	Key *string `json:"key"`
+
+	// Route The page's path at the time, e.g. `/projects/12`.
+	Route *string `json:"route"`
+
+	// Title The page's title at the time.
+	Title *string `json:"title"`
+}
+
+// FeedbackSummary One feedback item as the backlog lists it.
+type FeedbackSummary struct {
+	// CreatedAt When it was filed.
+	CreatedAt time.Time `json:"created_at"`
+
+	// CustomerKey The customer the item belongs to (its stable key).
+	CustomerKey string `json:"customer_key"`
+
+	// CustomerLabel The customer's name.
+	CustomerLabel string `json:"customer_label"`
+
+	// DeliveredBuild The production build that carries the change (set when it becomes `ready`).
+	DeliveredBuild *string `json:"delivered_build"`
+
+	// DeliveredReleaseId That release's id, e.g. `2026.10.4`.
+	DeliveredReleaseId *string `json:"delivered_release_id"`
+
+	// DeliveredReleaseSeq The sequence number of the release that ships it; null until that release is published.
+	DeliveredReleaseSeq *int `json:"delivered_release_seq"`
+
+	// DuplicateOfNumber For a `duplicate`, the number of the item it duplicates; null otherwise.
+	DuplicateOfNumber *int `json:"duplicate_of_number"`
+
+	// ExpectedWeek The ISO week the work is planned for (`2026-W43`); null until scheduled.
+	ExpectedWeek *string `json:"expected_week"`
+
+	// Kind What it asks for: `blocker_bug`, `change` (a change request) or `new_feature`.
+	Kind string `json:"kind"`
+
+	// Lang The language of the report: `en` or `hu`.
+	Lang string `json:"lang"`
+
+	// Number The item's number, `#N`: its id here and in every commit that refers to it (`feedback #N`).
+	Number int `json:"number"`
+
+	// PlannedReleaseId The release it is planned for, if any.
+	PlannedReleaseId *string `json:"planned_release_id"`
+
+	// PublicTitle The title release notes print, when one was set at triage; null = the title.
+	PublicTitle *string `json:"public_title"`
+
+	// Severity For a bug: `blocker`, `major` or `minor`; null for the other kinds.
+	Severity *string `json:"severity"`
+
+	// Source Where it was filed: `internal` (on this platform by its own staff), `island` (on a customer installation) or `demo` (on a demo installation: a lead signal).
+	Source string `json:"source"`
+
+	// Status Where the item is: `new`, `triaged`, `scheduled` (has an expected week), `in_progress`, `ready` (built into a production build of the platform, not yet installed where it was reported), `delivered` (the release that carries it is installed there), `closed`; or one of the terminal `rejected` (see `status_reason`), `duplicate` (see `duplicate_of_number`) and `withdrawn`.
+	Status string `json:"status"`
+
+	// StatusReason The reason given with a rejection or a withdrawal; null otherwise.
+	StatusReason *string `json:"status_reason"`
+
+	// SummaryEn An English summary of an item reported in another language; null for an English report or until it is written.
+	SummaryEn *string `json:"summary_en"`
+
+	// Title The title as the reporter wrote it.
+	Title string `json:"title"`
+
+	// UpdatedAt When it last changed.
+	UpdatedAt time.Time `json:"updated_at"`
+
+	// Votes Upvotes, every side together.
+	Votes int `json:"votes"`
+}
+
+// FeedbackWeekMove One change of an already planned week. Every move is kept.
+type FeedbackWeekMove struct {
+	// At When it moved.
+	At *time.Time `json:"at"`
+
+	// PreviousWeek The ISO week it was planned for, `2026-W42`.
+	PreviousWeek *string `json:"previous_week"`
+
+	// Reason Why it moved, as the customer was told.
+	Reason *string `json:"reason"`
+
+	// Week The ISO week it moved to.
+	Week *string `json:"week"`
+}
+
+// FooterLink One footer link: the text shown and an `https://` address.
+type FooterLink struct {
+	// Label The link text.
+	Label string `json:"label"`
+
+	// Url Where the link goes; must start with `https://`.
+	Url string `json:"url"`
 }
 
 // GatewayAiUsage Every tenant's AI usage for a month, rated, heaviest first, and the unattributed
@@ -4445,6 +5731,15 @@ type GitLabRepository struct {
 
 	// Primary The project's main repository.
 	Primary bool `json:"primary"`
+
+	// SeedKey What the repository was seeded from: `template-app`, `template-www`, `template-blog`, or `imported` (an existing repository the project adopted). Read-only. `null` for a repository seeded before seeds were recorded.
+	SeedKey *string `json:"seed_key,omitempty"`
+
+	// SeedRef The ref it was seeded at: the seed's release tag (`v<version>`), or a commit sha on an installation whose seeds carry no tags. Pinned when the project is registered and never changed; known before the repository exists. Read-only.
+	SeedRef *string `json:"seed_ref,omitempty"`
+
+	// SeedSha The commit `seed_ref` resolved to when the repository was created (40 hex characters); `null` until then. Read-only.
+	SeedSha *string `json:"seed_sha,omitempty"`
 }
 
 // KubernetesNamespace A Kubernetes namespace of the project, one per environment (Kubernetes
@@ -5622,7 +6917,7 @@ type Project struct {
 	// FrontendExposure Who reaches the PROD front end: `PUBLIC` (the internet; default) or `INTERNAL_ONLY`.
 	FrontendExposure *ProjectFrontendExposure `json:"frontend_exposure,omitempty"`
 
-	// FrontendVariant The front-end framework the application is generated with: `react` (default), `angular`, `vue` or `nuxt4`.
+	// FrontendVariant Only `react` is generated; other values are accepted and ignored (deprecated).
 	FrontendVariant *ProjectFrontendVariant `json:"frontend_variant,omitempty"`
 
 	// GithubRepoUrl A GitHub repository URL, recorded in the project's manifest as its mirror.
@@ -5648,6 +6943,9 @@ type Project struct {
 
 	// K8sQuota Kubernetes backend only: the namespace quota of each environment (`dev`, `uat`, `prod`), the tier default with the project's overrides merged over it, GPU scheduling included. Null for a VM-backend project and for a project registered without a manifest. Changed per environment with `PATCH /projects/{id}/k8s-quota/{env}`. Keyed by environment.
 	K8sQuota *map[string]KubernetesQuota `json:"k8s_quota,omitempty"`
+
+	// K8sServiceOverrides Kubernetes backend only: per-environment workload settings, keyed by environment (`dev`, `uat`, `prod`), each `{"services": {<service>: {...}}, "nfsVolumes": [...]}`. Services are `web`, `api`, `www`, `ai` and the optional `worker`: setting `services.worker` adds a background worker Deployment to that environment (no address, no route; it gets the app's database and object-storage settings and needs the environment's `api`). Keys per service: `replicas`, `resources` (`requests`/`limits` of `cpu` and `memory`), `imageRepository` (a repository of the project's own registry namespace; the worker defaults to `worker`), `env`, `secretEnv`, `scratch`, and for the other services also `gpu`, `priorityClass`, `mounts`, `probes`, `headless`. A PATCH merges this object into the current one (RFC 7396: a member set to null is removed; lists are replaced); null clears every override. A value the platform would refuse is a 422 `manifest_refused` naming the environment, service and key. Null for a VM-backend project.
+	K8sServiceOverrides *map[string]interface{} `json:"k8s_service_overrides,omitempty"`
 
 	// LongName The project's display name, 2-60 characters. Double quotes, apostrophes, backslashes and control characters are refused: the name is written into the project's generated files.
 	LongName string `json:"long_name"`
@@ -5713,7 +7011,7 @@ type ProjectDeploymentBackend string
 // ProjectFrontendExposure Who reaches the PROD front end: `PUBLIC` (the internet; default) or `INTERNAL_ONLY`.
 type ProjectFrontendExposure string
 
-// ProjectFrontendVariant The front-end framework the application is generated with: `react` (default), `angular`, `vue` or `nuxt4`.
+// ProjectFrontendVariant Only `react` is generated; other values are accepted and ignored (deprecated).
 type ProjectFrontendVariant string
 
 // ProjectMssqlEdition The SQL Server edition PROD and UAT run, with `enable_mssql`: `express` (default; free), `standard` or `enterprise` (licensed through the platform operator).
@@ -5794,7 +7092,7 @@ type ProjectCreate struct {
 	// FrontendExposure Who reaches the PROD front end: `PUBLIC` (the internet; default) or `INTERNAL_ONLY`.
 	FrontendExposure *ProjectCreateFrontendExposure `json:"frontend_exposure,omitempty"`
 
-	// FrontendVariant The front-end framework the application is generated with: `react` (default), `angular`, `vue` or `nuxt4`.
+	// FrontendVariant Only `react` is generated; other values are accepted and ignored (deprecated).
 	FrontendVariant *ProjectCreateFrontendVariant `json:"frontend_variant,omitempty"`
 
 	// GithubRepoUrl A GitHub repository URL, recorded in the project's manifest as its mirror.
@@ -5864,7 +7162,7 @@ type ProjectCreateDeploymentBackend string
 // ProjectCreateFrontendExposure Who reaches the PROD front end: `PUBLIC` (the internet; default) or `INTERNAL_ONLY`.
 type ProjectCreateFrontendExposure string
 
-// ProjectCreateFrontendVariant The front-end framework the application is generated with: `react` (default), `angular`, `vue` or `nuxt4`.
+// ProjectCreateFrontendVariant Only `react` is generated; other values are accepted and ignored (deprecated).
 type ProjectCreateFrontendVariant string
 
 // ProjectCreateMssqlEdition The SQL Server edition PROD and UAT run, with `enable_mssql`: `express` (default; free), `standard` or `enterprise` (licensed through the platform operator).
@@ -6023,7 +7321,7 @@ type ProjectPatch struct {
 	// FrontendExposure Who reaches the PROD front end: `PUBLIC` (the internet; default) or `INTERNAL_ONLY`.
 	FrontendExposure *ProjectPatchFrontendExposure `json:"frontend_exposure,omitempty"`
 
-	// FrontendVariant The front-end framework the application is generated with: `react` (default), `angular`, `vue` or `nuxt4`.
+	// FrontendVariant Only `react` is generated; other values are accepted and ignored (deprecated).
 	FrontendVariant *ProjectPatchFrontendVariant `json:"frontend_variant,omitempty"`
 
 	// GithubRepoUrl A GitHub repository URL, recorded in the project's manifest as its mirror. null clears it.
@@ -6040,6 +7338,9 @@ type ProjectPatch struct {
 
 	// ImportExistingRepo The GitLab repository already holds code: provisioning does not seed it from the template.
 	ImportExistingRepo *bool `json:"import_existing_repo,omitempty"`
+
+	// K8sServiceOverrides Kubernetes backend only: per-environment workload settings, keyed by environment (`dev`, `uat`, `prod`), each `{"services": {<service>: {...}}, "nfsVolumes": [...]}`. Services are `web`, `api`, `www`, `ai` and the optional `worker`: setting `services.worker` adds a background worker Deployment to that environment (no address, no route; it gets the app's database and object-storage settings and needs the environment's `api`). Keys per service: `replicas`, `resources` (`requests`/`limits` of `cpu` and `memory`), `imageRepository` (a repository of the project's own registry namespace; the worker defaults to `worker`), `env`, `secretEnv`, `scratch`, and for the other services also `gpu`, `priorityClass`, `mounts`, `probes`, `headless`. A PATCH merges this object into the current one (RFC 7396: a member set to null is removed; lists are replaced); null clears every override. A value the platform would refuse is a 422 `manifest_refused` naming the environment, service and key. Null for a VM-backend project.
+	K8sServiceOverrides *map[string]interface{} `json:"k8s_service_overrides,omitempty"`
 
 	// LongName The project's display name, 2-60 characters. Double quotes, apostrophes, backslashes and control characters are refused: the name is written into the project's generated files.
 	LongName *string `json:"long_name,omitempty"`
@@ -6225,7 +7526,7 @@ type ProjectUpdated struct {
 	// FrontendExposure Who reaches the PROD front end: `PUBLIC` (the internet; default) or `INTERNAL_ONLY`.
 	FrontendExposure *ProjectUpdatedFrontendExposure `json:"frontend_exposure,omitempty"`
 
-	// FrontendVariant The front-end framework the application is generated with: `react` (default), `angular`, `vue` or `nuxt4`.
+	// FrontendVariant Only `react` is generated; other values are accepted and ignored (deprecated).
 	FrontendVariant *ProjectUpdatedFrontendVariant `json:"frontend_variant,omitempty"`
 
 	// GithubRepoUrl A GitHub repository URL, recorded in the project's manifest as its mirror.
@@ -6251,6 +7552,9 @@ type ProjectUpdated struct {
 
 	// K8sQuota Kubernetes backend only: the namespace quota of each environment (`dev`, `uat`, `prod`), the tier default with the project's overrides merged over it, GPU scheduling included. Null for a VM-backend project and for a project registered without a manifest. Changed per environment with `PATCH /projects/{id}/k8s-quota/{env}`. Keyed by environment.
 	K8sQuota *map[string]KubernetesQuota `json:"k8s_quota,omitempty"`
+
+	// K8sServiceOverrides Kubernetes backend only: per-environment workload settings, keyed by environment (`dev`, `uat`, `prod`), each `{"services": {<service>: {...}}, "nfsVolumes": [...]}`. Services are `web`, `api`, `www`, `ai` and the optional `worker`: setting `services.worker` adds a background worker Deployment to that environment (no address, no route; it gets the app's database and object-storage settings and needs the environment's `api`). Keys per service: `replicas`, `resources` (`requests`/`limits` of `cpu` and `memory`), `imageRepository` (a repository of the project's own registry namespace; the worker defaults to `worker`), `env`, `secretEnv`, `scratch`, and for the other services also `gpu`, `priorityClass`, `mounts`, `probes`, `headless`. A PATCH merges this object into the current one (RFC 7396: a member set to null is removed; lists are replaced); null clears every override. A value the platform would refuse is a 422 `manifest_refused` naming the environment, service and key. Null for a VM-backend project.
+	K8sServiceOverrides *map[string]interface{} `json:"k8s_service_overrides,omitempty"`
 
 	// LongName The project's display name, 2-60 characters. Double quotes, apostrophes, backslashes and control characters are refused: the name is written into the project's generated files.
 	LongName string `json:"long_name"`
@@ -6319,7 +7623,7 @@ type ProjectUpdatedDeploymentBackend string
 // ProjectUpdatedFrontendExposure Who reaches the PROD front end: `PUBLIC` (the internet; default) or `INTERNAL_ONLY`.
 type ProjectUpdatedFrontendExposure string
 
-// ProjectUpdatedFrontendVariant The front-end framework the application is generated with: `react` (default), `angular`, `vue` or `nuxt4`.
+// ProjectUpdatedFrontendVariant Only `react` is generated; other values are accepted and ignored (deprecated).
 type ProjectUpdatedFrontendVariant string
 
 // ProjectUpdatedMssqlEdition The SQL Server edition PROD and UAT run, with `enable_mssql`: `express` (default; free), `standard` or `enterprise` (licensed through the platform operator).
@@ -6421,7 +7725,7 @@ type ReleaseOperation struct {
 	// CompletedAt When it ended (`succeeded` or `failed`); null until then.
 	CompletedAt *time.Time `json:"completed_at,omitempty"`
 
-	// Component What is promoted: `app-api` or `www`; null for a data copy.
+	// Component What is promoted: `app-api`, `www` or `worker`; null for a data copy.
 	Component *ReleaseOperationComponent `json:"component,omitempty"`
 
 	// DecidedAt When it was approved or rejected; null when no person decided it.
@@ -6517,7 +7821,7 @@ type ReleaseOperationPage struct {
 // environment below LAST REPORTED running (`dev` for `uat`, `uat` for `prod`):
 // omit `version` to take it, or give it and it must be that version.
 type ReleasePromotionCreate struct {
-	// Component What to promote: `app-api` (the application and its API) or `www` (the web site).
+	// Component What to promote: `app-api` (the application and its API), `www` (the web site) or `worker` (the background worker of a Kubernetes project that declares one).
 	Component ReleasePromotionCreateComponent `json:"component"`
 
 	// TargetEnv Where to: `dev`, `uat` or `prod`. A `prod` promotion waits for a person to approve it in the portal.
@@ -6527,7 +7831,7 @@ type ReleasePromotionCreate struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// ReleasePromotionCreateComponent What to promote: `app-api` (the application and its API) or `www` (the web site).
+// ReleasePromotionCreateComponent What to promote: `app-api` (the application and its API), `www` (the web site) or `worker` (the background worker of a Kubernetes project that declares one).
 type ReleasePromotionCreateComponent string
 
 // ReleasePromotionCreateTargetEnv Where to: `dev`, `uat` or `prod`. A `prod` promotion waits for a person to approve it in the portal.
@@ -6570,7 +7874,7 @@ type ReleaseStateDeploymentBackend string
 // ReportedVersion What a release pipeline LAST REPORTED for one environment and component.
 // Not a live probe: the portal records it when a deploy reports success.
 type ReportedVersion struct {
-	// Component `app-api` (the application and its API), `www` (the web site) or `database`.
+	// Component `app-api` (the application and its API), `www` (the web site), `worker` (the background worker) or `database`.
 	Component ReportedVersionComponent `json:"component"`
 
 	// Env The environment.
@@ -6589,7 +7893,7 @@ type ReportedVersion struct {
 	SourceEnv *ReportedVersionSourceEnv `json:"source_env,omitempty"`
 }
 
-// ReportedVersionComponent `app-api` (the application and its API), `www` (the web site) or `database`.
+// ReportedVersionComponent `app-api` (the application and its API), `www` (the web site), `worker` (the background worker) or `database`.
 type ReportedVersionComponent string
 
 // ReportedVersionEnv The environment.
@@ -6597,6 +7901,79 @@ type ReportedVersionEnv string
 
 // ReportedVersionSourceEnv defines model for ReportedVersion.SourceEnv.
 type ReportedVersionSourceEnv string
+
+// ResolvedAppBrand What one application renders: its profile over this platform's brand over
+// the built-in defaults, with the derived values computed. Every member is
+// always present, and the answer is the same, byte for byte, wherever it is
+// read. `attribution` and `first_party` come from the installation and cannot
+// be set on a profile.
+type ResolvedAppBrand struct {
+	// AppSlug The application slug.
+	AppSlug string `json:"app_slug"`
+
+	// Assets The resolved asset URLs.
+	Assets BrandAppAssets `json:"assets"`
+
+	// Attribution Read-only. The line printed under the name, from this platform's installation; never settable.
+	Attribution string `json:"attribution"`
+
+	// DefaultLanguage The language a first-time visitor sees: `en` or `hu`.
+	DefaultLanguage ResolvedAppBrandDefaultLanguage `json:"default_language"`
+
+	// DisplayName The name in the header.
+	DisplayName string `json:"display_name"`
+
+	// DisplayNameAccent The part of the name rendered in the primary colour; empty colours the whole name.
+	DisplayNameAccent string `json:"display_name_accent"`
+
+	// DisplayNameSplit The name split around the accent: before, coloured, after. An accent that is empty or not part of the name colours the whole name.
+	DisplayNameSplit []string `json:"display_name_split"`
+
+	// Etag Opaque. Changes whenever anything in this answer changes; the `ETag` header carries it in quotes, for `If-None-Match`.
+	Etag string `json:"etag"`
+
+	// FirstParty Read-only. True only on the platform vendor's own installation; selects `attribution`.
+	FirstParty bool `json:"first_party"`
+
+	// FontPreset `inter`, `montserrat` or `system`.
+	FontPreset ResolvedAppBrandFontPreset `json:"font_preset"`
+
+	// FontStack The CSS font-family value for `font_preset`.
+	FontStack string `json:"font_stack"`
+
+	// Footer The footer: its line, links and partner line.
+	Footer BrandAppFooter `json:"footer"`
+
+	// InstallVersion The version of this platform's brand.
+	InstallVersion int `json:"install_version"`
+
+	// Legal The legal links.
+	Legal BrandAppLegal `json:"legal"`
+
+	// OnPrimary The text colour on the primary: `#ffffff`, or `#0f172a` when white does not reach 4.5:1 and the dark one contrasts more.
+	OnPrimary string `json:"on_primary"`
+
+	// PrimaryColor The primary colour, lower-case hex.
+	PrimaryColor string `json:"primary_color"`
+
+	// SecondaryColor The highlight colour, lower-case hex.
+	SecondaryColor string `json:"secondary_color"`
+
+	// Shades Ten shades of the primary: keys `50`, `100`, `200`, `300`, `400`, `500`, `600`, `700`, `800`, `900`; `600` is the primary itself.
+	Shades map[string]string `json:"shades"`
+
+	// Source Where each writable field came from.
+	Source BrandAppSource `json:"source"`
+
+	// Version The profile's version; 0 when the application has no profile and inherits everything.
+	Version int `json:"version"`
+}
+
+// ResolvedAppBrandDefaultLanguage The language a first-time visitor sees: `en` or `hu`.
+type ResolvedAppBrandDefaultLanguage string
+
+// ResolvedAppBrandFontPreset `inter`, `montserrat` or `system`.
+type ResolvedAppBrandFontPreset string
 
 // RoleGrant A role a person holds.
 type RoleGrant struct {
@@ -7615,8 +8992,14 @@ type Whoami struct {
 	// Principal The calling account.
 	Principal WhoamiPrincipal `json:"principal"`
 
+	// Scope `tenant` for a tenant-scoped token, which reads its own tenant (`tenant_id`) and nothing else, and writes nothing; `global` for every other credential. Other values may appear.
+	Scope *string `json:"scope,omitempty"`
+
 	// Scopes The permission keys in effect for this request, sorted. For a token, its scopes that its owner still holds; for a portal session, the account's roles.
 	Scopes []string `json:"scopes"`
+
+	// TenantId The tenant a tenant-scoped token is bound to; null for every other credential.
+	TenantId *string `json:"tenant_id,omitempty"`
 
 	// Token The token, when the credential is one; null for a portal session.
 	Token *WhoamiToken `json:"token,omitempty"`
@@ -7834,6 +9217,9 @@ type AuditEventsListParams struct {
 	// OccurredTo Events BEFORE this time (exclusive). RFC 3339; without an offset, UTC.
 	OccurredTo *time.Time `form:"occurred_to,omitempty" json:"occurred_to,omitempty"`
 
+	// TenantId Events attributed to this tenant (`tenant_id` on an event).
+	TenantId *openapi_types.UUID `form:"tenant_id,omitempty" json:"tenant_id,omitempty"`
+
 	// Limit Page size (at most 500).
 	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
 
@@ -7850,9 +9236,24 @@ type BrandPutParams struct {
 	IfMatch *string `json:"If-Match,omitempty"`
 }
 
+// BrandAppsListParams defines parameters for BrandAppsList.
+type BrandAppsListParams struct {
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// BrandAppsPutParams defines parameters for BrandAppsPut.
+type BrandAppsPutParams struct {
+	// IfMatch The `version` last read, as an entity tag (`"3"`); `*` matches any.
+	IfMatch *string `json:"If-Match,omitempty"`
+}
+
 // BrandAssetsListParams defines parameters for BrandAssetsList.
 type BrandAssetsListParams struct {
-	// Kind Only assets of this kind (`logo` or `favicon`); omit it for both.
+	// Kind Only assets of this kind (`logo`, `favicon`, `header_logo` or `og_image`); omit it for all.
 	Kind *BrandAssetsListParamsKind `form:"kind,omitempty" json:"kind,omitempty"`
 
 	// Sha256 Exact sha256 (lower-case hex) of the file.
@@ -7873,7 +9274,7 @@ type BrandAssetsCreateMultipartBody struct {
 	// File The file; at most 512 KB. Its type is read from the bytes, not from the part's content type.
 	File openapi_types.File `json:"file"`
 
-	// Kind What the asset is for: a `logo` or a `favicon`.
+	// Kind What the asset is for: `logo` or `favicon` (this platform's brand), `header_logo` or `og_image` (an application profile).
 	Kind BrandAssetsCreateMultipartBodyKind `json:"kind"`
 }
 
@@ -7930,6 +9331,39 @@ type CustomersGetParams struct {
 
 // CustomersGetParamsInclude defines parameters for CustomersGet.
 type CustomersGetParamsInclude string
+
+// FeedbackListParams defines parameters for FeedbackList.
+type FeedbackListParams struct {
+	// Status Only items in this status.
+	Status *FeedbackListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Kind Only items of this kind.
+	Kind *FeedbackListParamsKind `form:"kind,omitempty" json:"kind,omitempty"`
+
+	// Customer Only this customer's items (its key).
+	Customer *string `form:"customer,omitempty" json:"customer,omitempty"`
+
+	// Week Only items planned for this ISO week, e.g. `2026-W43`.
+	Week *string `form:"week,omitempty" json:"week,omitempty"`
+
+	// Source Only items from this source; without it, demo items are left out.
+	Source *FeedbackListParamsSource `form:"source,omitempty" json:"source,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// FeedbackListParamsStatus defines parameters for FeedbackList.
+type FeedbackListParamsStatus string
+
+// FeedbackListParamsKind defines parameters for FeedbackList.
+type FeedbackListParamsKind string
+
+// FeedbackListParamsSource defines parameters for FeedbackList.
+type FeedbackListParamsSource string
 
 // McpPostJSONBody defines parameters for McpPost.
 type McpPostJSONBody struct {
@@ -8131,6 +9565,12 @@ type ProjectsCreateParams struct {
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
+// CodingJobGitTokenCreateParams defines parameters for CodingJobGitTokenCreate.
+type CodingJobGitTokenCreateParams struct {
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
+}
+
 // ProjectK8sQuotaResetParamsEnv defines parameters for ProjectK8sQuotaReset.
 type ProjectK8sQuotaResetParamsEnv string
 
@@ -8181,6 +9621,12 @@ type ReleaseOperationsListParamsComponent string
 
 // ReleasePromotionsCreateParams defines parameters for ReleasePromotionsCreate.
 type ReleasePromotionsCreateParams struct {
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
+}
+
+// ScratchJobCreateParams defines parameters for ScratchJobCreate.
+type ScratchJobCreateParams struct {
 	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
@@ -8319,6 +9765,9 @@ type AiRateCardPutJSONRequestBody = AiRateCardPut
 
 // BrandPutJSONRequestBody defines body for BrandPut for application/json ContentType.
 type BrandPutJSONRequestBody = BrandPut
+
+// BrandAppsPutJSONRequestBody defines body for BrandAppsPut for application/json ContentType.
+type BrandAppsPutJSONRequestBody = BrandAppPut
 
 // BrandAssetsCreateJSONRequestBody defines body for BrandAssetsCreate for application/json ContentType.
 type BrandAssetsCreateJSONRequestBody = BrandAssetUpload
@@ -9648,7 +11097,9 @@ type ClientInterface interface {
 	//
 	// Every recorded change on this platform, newest first (`occurred_at`, then `id`, descending). Pages are cursor-based and stable while new events are written: pass `next_cursor` as `cursor` to get the next page; it is null on the last one. A cursor that is not one of this list's is a 400 `invalid_cursor`.
 	//
-	// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+	// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `tenant_id` (the events attributed to that tenant), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+	//
+	// A tenant-scoped token reads only the events attributed to its own tenant (today: the creation and revocation of that tenant's tokens); any other event, read by id, is a 404 `audit_event_not_found`.
 	//
 	// `before_state` and `after_state` are returned as the writer recorded them, except that every member whose name looks secret is null. For `entity_type` `licence` the `entity_id` is the licence serial, masked to its last group unless the caller holds `licence-admin-global`, as on `GET /licence`; the `entity_id` filter matches the stored id, never the masked one. Reading the log is not itself audited.
 	//
@@ -9687,6 +11138,54 @@ type ClientInterface interface {
 	// Corresponds with PUT /brand (the `BrandPut` operationId).
 	BrandPut(ctx context.Context, params *BrandPutParams, body BrandPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// BrandAppsList List application brand profiles
+	//
+	// The application profiles stored on this platform, in `app_slug` order. An
+	// application without a profile is not listed: it inherits everything, and its
+	// `GET /brand/apps/{app_slug}/resolved` still answers.
+	//
+	// Corresponds with GET /brand/apps (the `BrandAppsList` operationId).
+	BrandAppsList(ctx context.Context, params *BrandAppsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandAppsDelete Delete an application brand profile
+	//
+	// Removes the profile. The application then resolves to this platform's brand and the built-in defaults again (`version` 0); its uploaded assets are kept. Needs the admin permission; not destroy-gated.
+	//
+	// Corresponds with DELETE /brand/apps/{app_slug} (the `BrandAppsDelete` operationId).
+	BrandAppsDelete(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandAppsGet One application brand profile
+	//
+	// The stored profile: each writable field as set, `null` where it is inherited. The `ETag` response header carries `version` for `If-Match`. `PUT` is a FULL replacement: to change one field, send back every writable field of this answer.
+	//
+	// Corresponds with GET /brand/apps/{app_slug} (the `BrandAppsGet` operationId).
+	BrandAppsGet(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandAppsPutWithBody Create or replace an application brand profile
+	//
+	// Replaces every writable field: a FULL replacement, never a partial update. Every member is required and may be `null`, which means Inherited; a member left out is a 422 naming it. Creates the profile when the application has none (201). `header_logo_asset_id` takes an asset of kind `header_logo` or `logo`, `favicon_asset_id` one of kind `favicon`, `og_image_asset_id` one of kind `og_image`. With `If-Match: "<version>"` the replace happens only while the profile is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the profile as it is: `version` is not bumped and no audit row is written. This platform's own brand and its `version` are never changed by a profile.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /brand/apps/{app_slug} (the `BrandAppsPut` operationId).
+	BrandAppsPutWithBody(ctx context.Context, appSlug string, params *BrandAppsPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandAppsPut Create or replace an application brand profile
+	//
+	// Replaces every writable field: a FULL replacement, never a partial update. Every member is required and may be `null`, which means Inherited; a member left out is a 422 naming it. Creates the profile when the application has none (201). `header_logo_asset_id` takes an asset of kind `header_logo` or `logo`, `favicon_asset_id` one of kind `favicon`, `og_image_asset_id` one of kind `og_image`. With `If-Match: "<version>"` the replace happens only while the profile is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the profile as it is: `version` is not bumped and no audit row is written. This platform's own brand and its `version` are never changed by a profile.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /brand/apps/{app_slug} (the `BrandAppsPut` operationId).
+	BrandAppsPut(ctx context.Context, appSlug string, params *BrandAppsPutParams, body BrandAppsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BrandAppsResolved What one application renders
+	//
+	// The application's profile over this platform's brand over the built-in defaults, with the shades, the text colour on the primary, the font stack, the asset URLs and the attribution computed. Never 404 for a valid slug: an application without a profile resolves to the installation's brand and the defaults, at `version` 0. The `ETag` changes whenever anything in the answer changes, including an edit of this platform's brand; send it back as `If-None-Match` to get a 304. Asset URLs are `/api/brand/assets/<sha256>` or `null`.
+	//
+	// Corresponds with GET /brand/apps/{app_slug}/resolved (the `BrandAppsResolved` operationId).
+	BrandAppsResolved(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// BrandAssetsList List brand assets
 	//
 	// The brand assets uploaded to this platform, in `id` order, filtered by `kind` and by
@@ -9698,7 +11197,7 @@ type ClientInterface interface {
 
 	// BrandAssetsCreateWithBody Upload a brand asset
 	//
-	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo or a header logo (120-2000 px wide), PNG, SVG or ICO for a favicon, PNG, WebP or JPEG for a preview image (`og_image`: 1200 x 630, or at least 1200 px wide at 1.91:1), at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -9707,7 +11206,7 @@ type ClientInterface interface {
 
 	// BrandAssetsCreate Upload a brand asset
 	//
-	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo or a header logo (120-2000 px wide), PNG, SVG or ICO for a favicon, PNG, WebP or JPEG for a preview image (`og_image`: 1200 x 630, or at least 1200 px wide at 1.91:1), at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -9826,6 +11325,33 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 	CustomersUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FeedbackList List feedback items
+	//
+	// The feedback backlog of every customer: bug reports, change requests and feature requests, highest number (newest) first. Pages are cursor-based: pass `next_cursor` as `cursor` to get the next page; it is null on the last one.
+	//
+	// Filters combine with AND: `status`, `kind`, `customer` (a customer's key, exact), `week` (the expected ISO week, exact) and `source`. Without `source`, items filed on demo installations are left out, as on the portal's board; `source=demo` lists only those.
+	//
+	// Each item is the backlog row; `GET /feedback/{number}` adds the report, its context and the thread, and `GET /feedback/{number}/brief` the Markdown a coding session starts from.
+	//
+	// Corresponds with GET /feedback (the `FeedbackList` operationId).
+	FeedbackList(ctx context.Context, params *FeedbackListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FeedbackGet One feedback item
+	//
+	// One item by its number: the backlog row plus the report as written, the screen and the installation it came from, every move of its expected week and the whole thread, vendor-side internal notes included (`internal: true`).
+	//
+	// Corresponds with GET /feedback/{number} (the `FeedbackGet` operationId).
+	FeedbackGet(ctx context.Context, number string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FeedbackBrief The brief of a feedback item
+	//
+	// The brief a coding session starts from, as Markdown: what was reported (with an English summary of a report in another language), where (the page and its route), the environment, the whole thread with the vendor's internal notes, the attachments, the acceptance criteria, the delivery rules and the links. Written from a fixed template, polished by the platform's AI gateway when it answers in time; never held up by it.
+	//
+	// READING THE BRIEF IS RECORDED and starts the work: the item records the fetch, and an item that is `triaged` or `scheduled` moves to `in_progress`. A commit whose message names `feedback #N` moves it on to `ready` once a production build carries it.
+	//
+	// Corresponds with GET /feedback/{number}/brief (the `FeedbackBrief` operationId).
+	FeedbackBrief(ctx context.Context, number string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// LicenceGet This platform's licence
 	//
@@ -9961,7 +11487,7 @@ type ClientInterface interface {
 
 	// ProjectsCreateWithBody Register a project
 	//
-	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. Every repository the project will create from a seed is pinned now to that seed's release tag (`v<version>`), shown as `outputs.gitlab_repositories[].seed_ref`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -9970,7 +11496,7 @@ type ClientInterface interface {
 
 	// ProjectsCreate Register a project
 	//
-	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. Every repository the project will create from a seed is pinned now to that seed's release tag (`v<version>`), shown as `outputs.gitlab_repositories[].seed_ref`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -10026,6 +11552,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
 	ProjectsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CodingJobGitTokenDelete Revoke a coding job's git token
+	//
+	// Revokes every live job token this platform minted for the job on the project. Idempotent: nothing to revoke is still a 204.
+	//
+	// Corresponds with DELETE /projects/{project_id}/jobs/{job_id}/git-token (the `CodingJobGitTokenDelete` operationId).
+	CodingJobGitTokenDelete(ctx context.Context, projectId string, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CodingJobGitTokenCreate Mint a coding job's git token
+	//
+	// Mints a one-day GitLab project access token named `opencode-<job_id>` on the project's primary repository: scope `write_repository`, Developer level. It can push a branch other than the protected default branch and nothing else. Only projects of the customers allowed on this installation (ATAILA and OPENATTILA) qualify, never a platform project, and only when the default branch is protected with push = Maintainer. A live token of the same job is revoked first. The value is in this response only; revoke it at job end with DELETE (a nightly sweep revokes every job token older than 24 hours). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	//
+	// Corresponds with POST /projects/{project_id}/jobs/{job_id}/git-token (the `CodingJobGitTokenCreate` operationId).
+	CodingJobGitTokenCreate(ctx context.Context, projectId string, jobId string, params *CodingJobGitTokenCreateParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ProjectK8sQuotaReset Reset an environment's namespace quota
 	//
@@ -10218,10 +11758,33 @@ type ClientInterface interface {
 	// Corresponds with GET /release-operations/{release_operation_id} (the `ReleaseOperationsGet` operationId).
 	ReleaseOperationsGet(ctx context.Context, releaseOperationId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ScratchJobDelete Delete a coding job's scratch repository
+	//
+	// Deletes the job's scratch repository on GitLab, its branches, merge requests and tokens with it. Idempotent: a job without one is a 204.
+	//
+	// Corresponds with DELETE /scratch/jobs/{job_id} (the `ScratchJobDelete` operationId).
+	ScratchJobDelete(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ScratchJobCreate Create a coding job's scratch repository
+	//
+	// Creates the private repository `job-<job_id>` in the scratch group, with CI off, its first commit on `main` = the application template at the installation's pinned ref (placeholders filled with a fixed scratch map), `main` protected (push and merge = Maintainer), and a one-day job token as on the own-project route. Delete it with DELETE when the job's data goes. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	//
+	// Corresponds with POST /scratch/jobs/{job_id} (the `ScratchJobCreate` operationId).
+	ScratchJobCreate(ctx context.Context, jobId string, params *ScratchJobCreateParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ScratchJobGitTokenDelete Revoke a scratch job's git token
+	//
+	// Revokes the job's live scratch token(s). Idempotent: nothing to revoke is a 204.
+	//
+	// Corresponds with DELETE /scratch/jobs/{job_id}/git-token (the `ScratchJobGitTokenDelete` operationId).
+	ScratchJobGitTokenDelete(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// TenantsList List tenants
 	//
 	// The tenants of this platform, in `slug` order. The filters are exact and combine:
-	// `customer_id` (that customer's tenants), `slug`.
+	// `customer_id` (that customer's tenants), `slug`. A tenant-scoped token lists its own
+	// tenant only; a filter naming another tenant or customer is a 403
+	// `tenant_scope_violation`.
 	//
 	// Corresponds with GET /tenants (the `TenantsList` operationId).
 	TenantsList(ctx context.Context, params *TenantsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -10537,8 +12100,9 @@ type ClientInterface interface {
 	// Who is calling and what they may do right now. `scopes` are the EFFECTIVE
 	// permissions: for a token, its scopes that its owner still holds, so a scope the
 	// owner has lost is not there; `token.granted_scopes` is what the token was created
-	// with. `expires_at` is when the credential stops working. Needs a credential but no
-	// permission.
+	// with. A tenant-scoped token (`scope` `tenant`) keeps its scopes only while its owner
+	// is the tenant's owner or admin. `expires_at` is when the credential stops working.
+	// Needs a credential but no permission.
 	//
 	// Corresponds with GET /whoami (the `WhoamiGet` operationId).
 	WhoamiGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -11258,7 +12822,9 @@ func (c *Client) AiRateCardPut(ctx context.Context, tier string, body AiRateCard
 //
 // Every recorded change on this platform, newest first (`occurred_at`, then `id`, descending). Pages are cursor-based and stable while new events are written: pass `next_cursor` as `cursor` to get the next page; it is null on the last one. A cursor that is not one of this list's is a 400 `invalid_cursor`.
 //
-// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `tenant_id` (the events attributed to that tenant), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+//
+// A tenant-scoped token reads only the events attributed to its own tenant (today: the creation and revocation of that tenant's tokens); any other event, read by id, is a 404 `audit_event_not_found`.
 //
 // `before_state` and `after_state` are returned as the writer recorded them, except that every member whose name looks secret is null. For `entity_type` `licence` the `entity_id` is the licence serial, masked to its last group unless the caller holds `licence-admin-global`, as on `GET /licence`; the `entity_id` filter matches the stored id, never the masked one. Reading the log is not itself audited.
 //
@@ -11347,6 +12913,114 @@ func (c *Client) BrandPut(ctx context.Context, params *BrandPutParams, body Bran
 	return c.Client.Do(req)
 }
 
+// BrandAppsList List application brand profiles
+//
+// The application profiles stored on this platform, in `app_slug` order. An
+// application without a profile is not listed: it inherits everything, and its
+// `GET /brand/apps/{app_slug}/resolved` still answers.
+//
+// Corresponds with GET /brand/apps (the `BrandAppsList` operationId).
+func (c *Client) BrandAppsList(ctx context.Context, params *BrandAppsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandAppsListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandAppsDelete Delete an application brand profile
+//
+// Removes the profile. The application then resolves to this platform's brand and the built-in defaults again (`version` 0); its uploaded assets are kept. Needs the admin permission; not destroy-gated.
+//
+// Corresponds with DELETE /brand/apps/{app_slug} (the `BrandAppsDelete` operationId).
+func (c *Client) BrandAppsDelete(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandAppsDeleteRequest(c.Server, appSlug)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandAppsGet One application brand profile
+//
+// The stored profile: each writable field as set, `null` where it is inherited. The `ETag` response header carries `version` for `If-Match`. `PUT` is a FULL replacement: to change one field, send back every writable field of this answer.
+//
+// Corresponds with GET /brand/apps/{app_slug} (the `BrandAppsGet` operationId).
+func (c *Client) BrandAppsGet(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandAppsGetRequest(c.Server, appSlug)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandAppsPutWithBody Create or replace an application brand profile
+//
+// Replaces every writable field: a FULL replacement, never a partial update. Every member is required and may be `null`, which means Inherited; a member left out is a 422 naming it. Creates the profile when the application has none (201). `header_logo_asset_id` takes an asset of kind `header_logo` or `logo`, `favicon_asset_id` one of kind `favicon`, `og_image_asset_id` one of kind `og_image`. With `If-Match: "<version>"` the replace happens only while the profile is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the profile as it is: `version` is not bumped and no audit row is written. This platform's own brand and its `version` are never changed by a profile.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /brand/apps/{app_slug} (the `BrandAppsPut` operationId).
+func (c *Client) BrandAppsPutWithBody(ctx context.Context, appSlug string, params *BrandAppsPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandAppsPutRequestWithBody(c.Server, appSlug, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandAppsPut Create or replace an application brand profile
+//
+// Replaces every writable field: a FULL replacement, never a partial update. Every member is required and may be `null`, which means Inherited; a member left out is a 422 naming it. Creates the profile when the application has none (201). `header_logo_asset_id` takes an asset of kind `header_logo` or `logo`, `favicon_asset_id` one of kind `favicon`, `og_image_asset_id` one of kind `og_image`. With `If-Match: "<version>"` the replace happens only while the profile is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the profile as it is: `version` is not bumped and no audit row is written. This platform's own brand and its `version` are never changed by a profile.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /brand/apps/{app_slug} (the `BrandAppsPut` operationId).
+func (c *Client) BrandAppsPut(ctx context.Context, appSlug string, params *BrandAppsPutParams, body BrandAppsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandAppsPutRequest(c.Server, appSlug, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BrandAppsResolved What one application renders
+//
+// The application's profile over this platform's brand over the built-in defaults, with the shades, the text colour on the primary, the font stack, the asset URLs and the attribution computed. Never 404 for a valid slug: an application without a profile resolves to the installation's brand and the defaults, at `version` 0. The `ETag` changes whenever anything in the answer changes, including an edit of this platform's brand; send it back as `If-None-Match` to get a 304. Asset URLs are `/api/brand/assets/<sha256>` or `null`.
+//
+// Corresponds with GET /brand/apps/{app_slug}/resolved (the `BrandAppsResolved` operationId).
+func (c *Client) BrandAppsResolved(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBrandAppsResolvedRequest(c.Server, appSlug)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // BrandAssetsList List brand assets
 //
 // The brand assets uploaded to this platform, in `id` order, filtered by `kind` and by
@@ -11368,7 +13042,7 @@ func (c *Client) BrandAssetsList(ctx context.Context, params *BrandAssetsListPar
 
 // BrandAssetsCreateWithBody Upload a brand asset
 //
-// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo or a header logo (120-2000 px wide), PNG, SVG or ICO for a favicon, PNG, WebP or JPEG for a preview image (`og_image`: 1200 x 630, or at least 1200 px wide at 1.91:1), at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes any type of body and a specified content type.
 //
@@ -11387,7 +13061,7 @@ func (c *Client) BrandAssetsCreateWithBody(ctx context.Context, params *BrandAss
 
 // BrandAssetsCreate Upload a brand asset
 //
-// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo or a header logo (120-2000 px wide), PNG, SVG or ICO for a favicon, PNG, WebP or JPEG for a preview image (`og_image`: 1200 x 630, or at least 1200 px wide at 1.91:1), at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -11607,6 +13281,63 @@ func (c *Client) CustomersUpdate(ctx context.Context, customerId string, body Cu
 // Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 func (c *Client) CustomersUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCustomersUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, customerId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FeedbackList List feedback items
+//
+// The feedback backlog of every customer: bug reports, change requests and feature requests, highest number (newest) first. Pages are cursor-based: pass `next_cursor` as `cursor` to get the next page; it is null on the last one.
+//
+// Filters combine with AND: `status`, `kind`, `customer` (a customer's key, exact), `week` (the expected ISO week, exact) and `source`. Without `source`, items filed on demo installations are left out, as on the portal's board; `source=demo` lists only those.
+//
+// Each item is the backlog row; `GET /feedback/{number}` adds the report, its context and the thread, and `GET /feedback/{number}/brief` the Markdown a coding session starts from.
+//
+// Corresponds with GET /feedback (the `FeedbackList` operationId).
+func (c *Client) FeedbackList(ctx context.Context, params *FeedbackListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFeedbackListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FeedbackGet One feedback item
+//
+// One item by its number: the backlog row plus the report as written, the screen and the installation it came from, every move of its expected week and the whole thread, vendor-side internal notes included (`internal: true`).
+//
+// Corresponds with GET /feedback/{number} (the `FeedbackGet` operationId).
+func (c *Client) FeedbackGet(ctx context.Context, number string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFeedbackGetRequest(c.Server, number)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FeedbackBrief The brief of a feedback item
+//
+// The brief a coding session starts from, as Markdown: what was reported (with an English summary of a report in another language), where (the page and its route), the environment, the whole thread with the vendor's internal notes, the attachments, the acceptance criteria, the delivery rules and the links. Written from a fixed template, polished by the platform's AI gateway when it answers in time; never held up by it.
+//
+// READING THE BRIEF IS RECORDED and starts the work: the item records the fetch, and an item that is `triaged` or `scheduled` moves to `in_progress`. A commit whose message names `feedback #N` moves it on to `ready` once a production build carries it.
+//
+// Corresponds with GET /feedback/{number}/brief (the `FeedbackBrief` operationId).
+func (c *Client) FeedbackBrief(ctx context.Context, number string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFeedbackBriefRequest(c.Server, number)
 	if err != nil {
 		return nil, err
 	}
@@ -11881,7 +13612,7 @@ func (c *Client) ProjectsList(ctx context.Context, params *ProjectsListParams, r
 
 // ProjectsCreateWithBody Register a project
 //
-// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. Every repository the project will create from a seed is pinned now to that seed's release tag (`v<version>`), shown as `outputs.gitlab_repositories[].seed_ref`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes any type of body and a specified content type.
 //
@@ -11900,7 +13631,7 @@ func (c *Client) ProjectsCreateWithBody(ctx context.Context, params *ProjectsCre
 
 // ProjectsCreate Register a project
 //
-// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. Every repository the project will create from a seed is pinned now to that seed's release tag (`v<version>`), shown as `outputs.gitlab_repositories[].seed_ref`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -12007,6 +13738,40 @@ func (c *Client) ProjectsUpdate(ctx context.Context, projectId string, body Proj
 // Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
 func (c *Client) ProjectsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewProjectsUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CodingJobGitTokenDelete Revoke a coding job's git token
+//
+// Revokes every live job token this platform minted for the job on the project. Idempotent: nothing to revoke is still a 204.
+//
+// Corresponds with DELETE /projects/{project_id}/jobs/{job_id}/git-token (the `CodingJobGitTokenDelete` operationId).
+func (c *Client) CodingJobGitTokenDelete(ctx context.Context, projectId string, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCodingJobGitTokenDeleteRequest(c.Server, projectId, jobId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CodingJobGitTokenCreate Mint a coding job's git token
+//
+// Mints a one-day GitLab project access token named `opencode-<job_id>` on the project's primary repository: scope `write_repository`, Developer level. It can push a branch other than the protected default branch and nothing else. Only projects of the customers allowed on this installation (ATAILA and OPENATTILA) qualify, never a platform project, and only when the default branch is protected with push = Maintainer. A live token of the same job is revoked first. The value is in this response only; revoke it at job end with DELETE (a nightly sweep revokes every job token older than 24 hours). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+//
+// Corresponds with POST /projects/{project_id}/jobs/{job_id}/git-token (the `CodingJobGitTokenCreate` operationId).
+func (c *Client) CodingJobGitTokenCreate(ctx context.Context, projectId string, jobId string, params *CodingJobGitTokenCreateParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCodingJobGitTokenCreateRequest(c.Server, projectId, jobId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -12408,10 +14173,63 @@ func (c *Client) ReleaseOperationsGet(ctx context.Context, releaseOperationId st
 	return c.Client.Do(req)
 }
 
+// ScratchJobDelete Delete a coding job's scratch repository
+//
+// Deletes the job's scratch repository on GitLab, its branches, merge requests and tokens with it. Idempotent: a job without one is a 204.
+//
+// Corresponds with DELETE /scratch/jobs/{job_id} (the `ScratchJobDelete` operationId).
+func (c *Client) ScratchJobDelete(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewScratchJobDeleteRequest(c.Server, jobId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ScratchJobCreate Create a coding job's scratch repository
+//
+// Creates the private repository `job-<job_id>` in the scratch group, with CI off, its first commit on `main` = the application template at the installation's pinned ref (placeholders filled with a fixed scratch map), `main` protected (push and merge = Maintainer), and a one-day job token as on the own-project route. Delete it with DELETE when the job's data goes. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+//
+// Corresponds with POST /scratch/jobs/{job_id} (the `ScratchJobCreate` operationId).
+func (c *Client) ScratchJobCreate(ctx context.Context, jobId string, params *ScratchJobCreateParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewScratchJobCreateRequest(c.Server, jobId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ScratchJobGitTokenDelete Revoke a scratch job's git token
+//
+// Revokes the job's live scratch token(s). Idempotent: nothing to revoke is a 204.
+//
+// Corresponds with DELETE /scratch/jobs/{job_id}/git-token (the `ScratchJobGitTokenDelete` operationId).
+func (c *Client) ScratchJobGitTokenDelete(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewScratchJobGitTokenDeleteRequest(c.Server, jobId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // TenantsList List tenants
 //
 // The tenants of this platform, in `slug` order. The filters are exact and combine:
-// `customer_id` (that customer's tenants), `slug`.
+// `customer_id` (that customer's tenants), `slug`. A tenant-scoped token lists its own
+// tenant only; a filter naming another tenant or customer is a 403
+// `tenant_scope_violation`.
 //
 // Corresponds with GET /tenants (the `TenantsList` operationId).
 func (c *Client) TenantsList(ctx context.Context, params *TenantsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -13067,8 +14885,9 @@ func (c *Client) UserRolesPut(ctx context.Context, userId string, role string, r
 // Who is calling and what they may do right now. `scopes` are the EFFECTIVE
 // permissions: for a token, its scopes that its owner still holds, so a scope the
 // owner has lost is not there; `token.granted_scopes` is what the token was created
-// with. `expires_at` is when the credential stops working. Needs a credential but no
-// permission.
+// with. A tenant-scoped token (`scope` `tenant`) keeps its scopes only while its owner
+// is the tenant's owner or admin. `expires_at` is when the credential stops working.
+// Needs a credential but no permission.
 //
 // Corresponds with GET /whoami (the `WhoamiGet` operationId).
 func (c *Client) WhoamiGet(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -14806,6 +16625,18 @@ func NewAuditEventsListRequest(server string, params *AuditEventsListParams) (*h
 
 		}
 
+		if params.TenantId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tenant_id", *params.TenantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
@@ -14955,6 +16786,236 @@ func NewBrandPutRequestWithBody(server string, params *BrandPutParams, contentTy
 			req.Header.Set("If-Match", headerParam0)
 		}
 
+	}
+
+	return req, nil
+}
+
+// NewBrandAppsListRequest constructs an http.Request for the BrandAppsList method
+func NewBrandAppsListRequest(server string, params *BrandAppsListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/brand/apps")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewBrandAppsDeleteRequest constructs an http.Request for the BrandAppsDelete method
+func NewBrandAppsDeleteRequest(server string, appSlug string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_slug", appSlug, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/brand/apps/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewBrandAppsGetRequest constructs an http.Request for the BrandAppsGet method
+func NewBrandAppsGetRequest(server string, appSlug string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_slug", appSlug, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/brand/apps/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewBrandAppsPutRequest calls the generic BrandAppsPut builder with application/json body
+func NewBrandAppsPutRequest(server string, appSlug string, params *BrandAppsPutParams, body BrandAppsPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewBrandAppsPutRequestWithBody(server, appSlug, params, "application/json", bodyReader)
+}
+
+// NewBrandAppsPutRequestWithBody constructs an http.Request for the BrandAppsPut method, with any body, and a specified content type
+func NewBrandAppsPutRequestWithBody(server string, appSlug string, params *BrandAppsPutParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_slug", appSlug, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/brand/apps/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewBrandAppsResolvedRequest constructs an http.Request for the BrandAppsResolved method
+func NewBrandAppsResolvedRequest(server string, appSlug string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_slug", appSlug, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/brand/apps/%s/resolved", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
 	}
 
 	return req, nil
@@ -15511,6 +17572,200 @@ func NewCustomersUpdateRequestWithBody(server string, customerId string, content
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewFeedbackListRequest constructs an http.Request for the FeedbackList method
+func NewFeedbackListRequest(server string, params *FeedbackListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/feedback")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Kind != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "kind", *params.Kind, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Customer != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "customer", *params.Customer, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Week != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "week", *params.Week, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Source != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "source", *params.Source, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFeedbackGetRequest constructs an http.Request for the FeedbackGet method
+func NewFeedbackGetRequest(server string, number string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "number", number, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/feedback/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFeedbackBriefRequest constructs an http.Request for the FeedbackBrief method
+func NewFeedbackBriefRequest(server string, number string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "number", number, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/feedback/%s/brief", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -16167,6 +18422,103 @@ func NewProjectsUpdateRequestWithBody(server string, projectId string, contentTy
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCodingJobGitTokenDeleteRequest constructs an http.Request for the CodingJobGitTokenDelete method
+func NewCodingJobGitTokenDeleteRequest(server string, projectId string, jobId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "job_id", jobId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/jobs/%s/git-token", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCodingJobGitTokenCreateRequest constructs an http.Request for the CodingJobGitTokenCreate method
+func NewCodingJobGitTokenCreateRequest(server string, projectId string, jobId string, params *CodingJobGitTokenCreateParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "job_id", jobId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/jobs/%s/git-token", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IdempotencyKey != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Idempotency-Key", *params.IdempotencyKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Idempotency-Key", headerParam0)
+		}
+
+	}
 
 	return req, nil
 }
@@ -16916,6 +19268,123 @@ func NewReleaseOperationsGetRequest(server string, releaseOperationId string) (*
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewScratchJobDeleteRequest constructs an http.Request for the ScratchJobDelete method
+func NewScratchJobDeleteRequest(server string, jobId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "job_id", jobId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/scratch/jobs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewScratchJobCreateRequest constructs an http.Request for the ScratchJobCreate method
+func NewScratchJobCreateRequest(server string, jobId string, params *ScratchJobCreateParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "job_id", jobId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/scratch/jobs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IdempotencyKey != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Idempotency-Key", *params.IdempotencyKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Idempotency-Key", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewScratchJobGitTokenDeleteRequest constructs an http.Request for the ScratchJobGitTokenDelete method
+func NewScratchJobGitTokenDeleteRequest(server string, jobId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "job_id", jobId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/scratch/jobs/%s/git-token", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -18733,7 +21202,9 @@ type ClientWithResponsesInterface interface {
 	//
 	// Every recorded change on this platform, newest first (`occurred_at`, then `id`, descending). Pages are cursor-based and stable while new events are written: pass `next_cursor` as `cursor` to get the next page; it is null on the last one. A cursor that is not one of this list's is a 400 `invalid_cursor`.
 	//
-	// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+	// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `tenant_id` (the events attributed to that tenant), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+	//
+	// A tenant-scoped token reads only the events attributed to its own tenant (today: the creation and revocation of that tenant's tokens); any other event, read by id, is a 404 `audit_event_not_found`.
 	//
 	// `before_state` and `after_state` are returned as the writer recorded them, except that every member whose name looks secret is null. For `entity_type` `licence` the `entity_id` is the licence serial, masked to its last group unless the caller holds `licence-admin-global`, as on `GET /licence`; the `entity_id` filter matches the stored id, never the masked one. Reading the log is not itself audited.
 	//
@@ -18778,6 +21249,62 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PUT /brand (the `BrandPut` operationId).
 	BrandPutWithResponse(ctx context.Context, params *BrandPutParams, body BrandPutJSONRequestBody, reqEditors ...RequestEditorFn) (*BrandPutResponse, error)
 
+	// BrandAppsListWithResponse List application brand profiles
+	//
+	// The application profiles stored on this platform, in `app_slug` order. An
+	// application without a profile is not listed: it inherits everything, and its
+	// `GET /brand/apps/{app_slug}/resolved` still answers.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /brand/apps (the `BrandAppsList` operationId).
+	BrandAppsListWithResponse(ctx context.Context, params *BrandAppsListParams, reqEditors ...RequestEditorFn) (*BrandAppsListResponse, error)
+
+	// BrandAppsDeleteWithResponse Delete an application brand profile
+	//
+	// Removes the profile. The application then resolves to this platform's brand and the built-in defaults again (`version` 0); its uploaded assets are kept. Needs the admin permission; not destroy-gated.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /brand/apps/{app_slug} (the `BrandAppsDelete` operationId).
+	BrandAppsDeleteWithResponse(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*BrandAppsDeleteResponse, error)
+
+	// BrandAppsGetWithResponse One application brand profile
+	//
+	// The stored profile: each writable field as set, `null` where it is inherited. The `ETag` response header carries `version` for `If-Match`. `PUT` is a FULL replacement: to change one field, send back every writable field of this answer.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /brand/apps/{app_slug} (the `BrandAppsGet` operationId).
+	BrandAppsGetWithResponse(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*BrandAppsGetResponse, error)
+
+	// BrandAppsPutWithBodyWithResponse Create or replace an application brand profile
+	//
+	// Replaces every writable field: a FULL replacement, never a partial update. Every member is required and may be `null`, which means Inherited; a member left out is a 422 naming it. Creates the profile when the application has none (201). `header_logo_asset_id` takes an asset of kind `header_logo` or `logo`, `favicon_asset_id` one of kind `favicon`, `og_image_asset_id` one of kind `og_image`. With `If-Match: "<version>"` the replace happens only while the profile is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the profile as it is: `version` is not bumped and no audit row is written. This platform's own brand and its `version` are never changed by a profile.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /brand/apps/{app_slug} (the `BrandAppsPut` operationId).
+	BrandAppsPutWithBodyWithResponse(ctx context.Context, appSlug string, params *BrandAppsPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BrandAppsPutResponse, error)
+
+	// BrandAppsPutWithResponse Create or replace an application brand profile
+	//
+	// Replaces every writable field: a FULL replacement, never a partial update. Every member is required and may be `null`, which means Inherited; a member left out is a 422 naming it. Creates the profile when the application has none (201). `header_logo_asset_id` takes an asset of kind `header_logo` or `logo`, `favicon_asset_id` one of kind `favicon`, `og_image_asset_id` one of kind `og_image`. With `If-Match: "<version>"` the replace happens only while the profile is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the profile as it is: `version` is not bumped and no audit row is written. This platform's own brand and its `version` are never changed by a profile.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /brand/apps/{app_slug} (the `BrandAppsPut` operationId).
+	BrandAppsPutWithResponse(ctx context.Context, appSlug string, params *BrandAppsPutParams, body BrandAppsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*BrandAppsPutResponse, error)
+
+	// BrandAppsResolvedWithResponse What one application renders
+	//
+	// The application's profile over this platform's brand over the built-in defaults, with the shades, the text colour on the primary, the font stack, the asset URLs and the attribution computed. Never 404 for a valid slug: an application without a profile resolves to the installation's brand and the defaults, at `version` 0. The `ETag` changes whenever anything in the answer changes, including an edit of this platform's brand; send it back as `If-None-Match` to get a 304. Asset URLs are `/api/brand/assets/<sha256>` or `null`.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /brand/apps/{app_slug}/resolved (the `BrandAppsResolved` operationId).
+	BrandAppsResolvedWithResponse(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*BrandAppsResolvedResponse, error)
+
 	// BrandAssetsListWithResponse List brand assets
 	//
 	// The brand assets uploaded to this platform, in `id` order, filtered by `kind` and by
@@ -18791,7 +21318,7 @@ type ClientWithResponsesInterface interface {
 
 	// BrandAssetsCreateWithBodyWithResponse Upload a brand asset
 	//
-	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo or a header logo (120-2000 px wide), PNG, SVG or ICO for a favicon, PNG, WebP or JPEG for a preview image (`og_image`: 1200 x 630, or at least 1200 px wide at 1.91:1), at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -18800,7 +21327,7 @@ type ClientWithResponsesInterface interface {
 
 	// BrandAssetsCreateWithResponse Upload a brand asset
 	//
-	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo or a header logo (120-2000 px wide), PNG, SVG or ICO for a favicon, PNG, WebP or JPEG for a preview image (`og_image`: 1200 x 630, or at least 1200 px wide at 1.91:1), at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -18929,6 +21456,39 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 	CustomersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error)
+
+	// FeedbackListWithResponse List feedback items
+	//
+	// The feedback backlog of every customer: bug reports, change requests and feature requests, highest number (newest) first. Pages are cursor-based: pass `next_cursor` as `cursor` to get the next page; it is null on the last one.
+	//
+	// Filters combine with AND: `status`, `kind`, `customer` (a customer's key, exact), `week` (the expected ISO week, exact) and `source`. Without `source`, items filed on demo installations are left out, as on the portal's board; `source=demo` lists only those.
+	//
+	// Each item is the backlog row; `GET /feedback/{number}` adds the report, its context and the thread, and `GET /feedback/{number}/brief` the Markdown a coding session starts from.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /feedback (the `FeedbackList` operationId).
+	FeedbackListWithResponse(ctx context.Context, params *FeedbackListParams, reqEditors ...RequestEditorFn) (*FeedbackListResponse, error)
+
+	// FeedbackGetWithResponse One feedback item
+	//
+	// One item by its number: the backlog row plus the report as written, the screen and the installation it came from, every move of its expected week and the whole thread, vendor-side internal notes included (`internal: true`).
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /feedback/{number} (the `FeedbackGet` operationId).
+	FeedbackGetWithResponse(ctx context.Context, number string, reqEditors ...RequestEditorFn) (*FeedbackGetResponse, error)
+
+	// FeedbackBriefWithResponse The brief of a feedback item
+	//
+	// The brief a coding session starts from, as Markdown: what was reported (with an English summary of a report in another language), where (the page and its route), the environment, the whole thread with the vendor's internal notes, the attachments, the acceptance criteria, the delivery rules and the links. Written from a fixed template, polished by the platform's AI gateway when it answers in time; never held up by it.
+	//
+	// READING THE BRIEF IS RECORDED and starts the work: the item records the fetch, and an item that is `triaged` or `scheduled` moves to `in_progress`. A commit whose message names `feedback #N` moves it on to `ready` once a production build carries it.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /feedback/{number}/brief (the `FeedbackBrief` operationId).
+	FeedbackBriefWithResponse(ctx context.Context, number string, reqEditors ...RequestEditorFn) (*FeedbackBriefResponse, error)
 
 	// LicenceGetWithResponse This platform's licence
 	//
@@ -19082,7 +21642,7 @@ type ClientWithResponsesInterface interface {
 
 	// ProjectsCreateWithBodyWithResponse Register a project
 	//
-	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. Every repository the project will create from a seed is pinned now to that seed's release tag (`v<version>`), shown as `outputs.gitlab_repositories[].seed_ref`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -19091,7 +21651,7 @@ type ClientWithResponsesInterface interface {
 
 	// ProjectsCreateWithResponse Register a project
 	//
-	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. Every repository the project will create from a seed is pinned now to that seed's release tag (`v<version>`), shown as `outputs.gitlab_repositories[].seed_ref`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -19151,6 +21711,24 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
 	ProjectsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectsUpdateResponse, error)
+
+	// CodingJobGitTokenDeleteWithResponse Revoke a coding job's git token
+	//
+	// Revokes every live job token this platform minted for the job on the project. Idempotent: nothing to revoke is still a 204.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /projects/{project_id}/jobs/{job_id}/git-token (the `CodingJobGitTokenDelete` operationId).
+	CodingJobGitTokenDeleteWithResponse(ctx context.Context, projectId string, jobId string, reqEditors ...RequestEditorFn) (*CodingJobGitTokenDeleteResponse, error)
+
+	// CodingJobGitTokenCreateWithResponse Mint a coding job's git token
+	//
+	// Mints a one-day GitLab project access token named `opencode-<job_id>` on the project's primary repository: scope `write_repository`, Developer level. It can push a branch other than the protected default branch and nothing else. Only projects of the customers allowed on this installation (ATAILA and OPENATTILA) qualify, never a platform project, and only when the default branch is protected with push = Maintainer. A live token of the same job is revoked first. The value is in this response only; revoke it at job end with DELETE (a nightly sweep revokes every job token older than 24 hours). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/jobs/{job_id}/git-token (the `CodingJobGitTokenCreate` operationId).
+	CodingJobGitTokenCreateWithResponse(ctx context.Context, projectId string, jobId string, params *CodingJobGitTokenCreateParams, reqEditors ...RequestEditorFn) (*CodingJobGitTokenCreateResponse, error)
 
 	// ProjectK8sQuotaResetWithResponse Reset an environment's namespace quota
 	//
@@ -19365,10 +21943,39 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /release-operations/{release_operation_id} (the `ReleaseOperationsGet` operationId).
 	ReleaseOperationsGetWithResponse(ctx context.Context, releaseOperationId string, reqEditors ...RequestEditorFn) (*ReleaseOperationsGetResponse, error)
 
+	// ScratchJobDeleteWithResponse Delete a coding job's scratch repository
+	//
+	// Deletes the job's scratch repository on GitLab, its branches, merge requests and tokens with it. Idempotent: a job without one is a 204.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /scratch/jobs/{job_id} (the `ScratchJobDelete` operationId).
+	ScratchJobDeleteWithResponse(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*ScratchJobDeleteResponse, error)
+
+	// ScratchJobCreateWithResponse Create a coding job's scratch repository
+	//
+	// Creates the private repository `job-<job_id>` in the scratch group, with CI off, its first commit on `main` = the application template at the installation's pinned ref (placeholders filled with a fixed scratch map), `main` protected (push and merge = Maintainer), and a one-day job token as on the own-project route. Delete it with DELETE when the job's data goes. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /scratch/jobs/{job_id} (the `ScratchJobCreate` operationId).
+	ScratchJobCreateWithResponse(ctx context.Context, jobId string, params *ScratchJobCreateParams, reqEditors ...RequestEditorFn) (*ScratchJobCreateResponse, error)
+
+	// ScratchJobGitTokenDeleteWithResponse Revoke a scratch job's git token
+	//
+	// Revokes the job's live scratch token(s). Idempotent: nothing to revoke is a 204.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /scratch/jobs/{job_id}/git-token (the `ScratchJobGitTokenDelete` operationId).
+	ScratchJobGitTokenDeleteWithResponse(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*ScratchJobGitTokenDeleteResponse, error)
+
 	// TenantsListWithResponse List tenants
 	//
 	// The tenants of this platform, in `slug` order. The filters are exact and combine:
-	// `customer_id` (that customer's tenants), `slug`.
+	// `customer_id` (that customer's tenants), `slug`. A tenant-scoped token lists its own
+	// tenant only; a filter naming another tenant or customer is a 403
+	// `tenant_scope_violation`.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -19720,8 +22327,9 @@ type ClientWithResponsesInterface interface {
 	// Who is calling and what they may do right now. `scopes` are the EFFECTIVE
 	// permissions: for a token, its scopes that its owner still holds, so a scope the
 	// owner has lost is not there; `token.granted_scopes` is what the token was created
-	// with. `expires_at` is when the credential stops working. Needs a credential but no
-	// permission.
+	// with. A tenant-scoped token (`scope` `tenant`) keeps its scopes only while its owner
+	// is the tenant's owner or admin. `expires_at` is when the credential stops working.
+	// Needs a credential but no permission.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -25853,6 +28461,910 @@ func (r BrandPutResponse) ContentType() string {
 	return ""
 }
 
+// BrandAppsListResponse200Headers the declared response headers of an HTTP 200 response for BrandAppsList
+type BrandAppsListResponse200Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsListResponse401Headers the declared response headers of an HTTP 401 response for BrandAppsList
+type BrandAppsListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// BrandAppsListResponse403Headers the declared response headers of an HTTP 403 response for BrandAppsList
+type BrandAppsListResponse403Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsListResponse429Headers the declared response headers of an HTTP 429 response for BrandAppsList
+type BrandAppsListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// BrandAppsListResponse503Headers the declared response headers of an HTTP 503 response for BrandAppsList
+type BrandAppsListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// BrandAppsListResponseDefaultHeaders the declared response headers of an HTTP default response for BrandAppsList
+type BrandAppsListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type BrandAppsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BrandAppProfilePage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *BrandAppsListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *BrandAppsListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *BrandAppsListResponse403Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *BrandAppsListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *BrandAppsListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *BrandAppsListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r BrandAppsListResponse) GetJSON200() *BrandAppProfilePage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r BrandAppsListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r BrandAppsListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r BrandAppsListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r BrandAppsListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r BrandAppsListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r BrandAppsListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r BrandAppsListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r BrandAppsListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r BrandAppsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r BrandAppsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r BrandAppsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BrandAppsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BrandAppsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BrandAppsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// BrandAppsDeleteResponse204Headers the declared response headers of an HTTP 204 response for BrandAppsDelete
+type BrandAppsDeleteResponse204Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsDeleteResponse401Headers the declared response headers of an HTTP 401 response for BrandAppsDelete
+type BrandAppsDeleteResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// BrandAppsDeleteResponse403Headers the declared response headers of an HTTP 403 response for BrandAppsDelete
+type BrandAppsDeleteResponse403Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsDeleteResponse404Headers the declared response headers of an HTTP 404 response for BrandAppsDelete
+type BrandAppsDeleteResponse404Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsDeleteResponse429Headers the declared response headers of an HTTP 429 response for BrandAppsDelete
+type BrandAppsDeleteResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// BrandAppsDeleteResponse503Headers the declared response headers of an HTTP 503 response for BrandAppsDelete
+type BrandAppsDeleteResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// BrandAppsDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for BrandAppsDelete
+type BrandAppsDeleteResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type BrandAppsDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *BrandAppsDeleteResponse204Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *BrandAppsDeleteResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *BrandAppsDeleteResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *BrandAppsDeleteResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *BrandAppsDeleteResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *BrandAppsDeleteResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *BrandAppsDeleteResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r BrandAppsDeleteResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r BrandAppsDeleteResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r BrandAppsDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r BrandAppsDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r BrandAppsDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r BrandAppsDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r BrandAppsDeleteResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r BrandAppsDeleteResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r BrandAppsDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r BrandAppsDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r BrandAppsDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r BrandAppsDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r BrandAppsDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BrandAppsDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BrandAppsDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BrandAppsDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// BrandAppsGetResponse200Headers the declared response headers of an HTTP 200 response for BrandAppsGet
+type BrandAppsGetResponse200Headers struct {
+	ETag       *string
+	XRequestID *string
+}
+
+// BrandAppsGetResponse401Headers the declared response headers of an HTTP 401 response for BrandAppsGet
+type BrandAppsGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// BrandAppsGetResponse403Headers the declared response headers of an HTTP 403 response for BrandAppsGet
+type BrandAppsGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsGetResponse404Headers the declared response headers of an HTTP 404 response for BrandAppsGet
+type BrandAppsGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsGetResponse429Headers the declared response headers of an HTTP 429 response for BrandAppsGet
+type BrandAppsGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// BrandAppsGetResponse503Headers the declared response headers of an HTTP 503 response for BrandAppsGet
+type BrandAppsGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// BrandAppsGetResponseDefaultHeaders the declared response headers of an HTTP default response for BrandAppsGet
+type BrandAppsGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type BrandAppsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BrandAppProfile
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *BrandAppsGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *BrandAppsGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *BrandAppsGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *BrandAppsGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *BrandAppsGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *BrandAppsGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *BrandAppsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r BrandAppsGetResponse) GetJSON200() *BrandAppProfile {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r BrandAppsGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r BrandAppsGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r BrandAppsGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r BrandAppsGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r BrandAppsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r BrandAppsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r BrandAppsGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r BrandAppsGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r BrandAppsGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r BrandAppsGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r BrandAppsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r BrandAppsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r BrandAppsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BrandAppsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BrandAppsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BrandAppsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// BrandAppsPutResponse200Headers the declared response headers of an HTTP 200 response for BrandAppsPut
+type BrandAppsPutResponse200Headers struct {
+	ETag       *string
+	XRequestID *string
+}
+
+// BrandAppsPutResponse201Headers the declared response headers of an HTTP 201 response for BrandAppsPut
+type BrandAppsPutResponse201Headers struct {
+	ETag       *string
+	XRequestID *string
+}
+
+// BrandAppsPutResponse400Headers the declared response headers of an HTTP 400 response for BrandAppsPut
+type BrandAppsPutResponse400Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsPutResponse401Headers the declared response headers of an HTTP 401 response for BrandAppsPut
+type BrandAppsPutResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// BrandAppsPutResponse403Headers the declared response headers of an HTTP 403 response for BrandAppsPut
+type BrandAppsPutResponse403Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsPutResponse412Headers the declared response headers of an HTTP 412 response for BrandAppsPut
+type BrandAppsPutResponse412Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsPutResponse422Headers the declared response headers of an HTTP 422 response for BrandAppsPut
+type BrandAppsPutResponse422Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsPutResponse429Headers the declared response headers of an HTTP 429 response for BrandAppsPut
+type BrandAppsPutResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// BrandAppsPutResponse503Headers the declared response headers of an HTTP 503 response for BrandAppsPut
+type BrandAppsPutResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// BrandAppsPutResponseDefaultHeaders the declared response headers of an HTTP default response for BrandAppsPut
+type BrandAppsPutResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type BrandAppsPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BrandAppProfile
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *BrandAppProfile
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Problem
+	// ApplicationproblemJSON400 the response for an HTTP 400 `application/problem+json` response
+	ApplicationproblemJSON400 *Problem
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON412 the response for an HTTP 412 `application/json` response
+	JSON412 *Problem
+	// ApplicationproblemJSON412 the response for an HTTP 412 `application/problem+json` response
+	ApplicationproblemJSON412 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *BrandAppsPutResponse200Headers
+	// Headers201 the parsed response headers for an HTTP 201 response
+	Headers201 *BrandAppsPutResponse201Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *BrandAppsPutResponse400Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *BrandAppsPutResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *BrandAppsPutResponse403Headers
+	// Headers412 the parsed response headers for an HTTP 412 response
+	Headers412 *BrandAppsPutResponse412Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *BrandAppsPutResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *BrandAppsPutResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *BrandAppsPutResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *BrandAppsPutResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r BrandAppsPutResponse) GetJSON200() *BrandAppProfile {
+	return r.JSON200
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r BrandAppsPutResponse) GetJSON201() *BrandAppProfile {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r BrandAppsPutResponse) GetJSON400() *Problem {
+	return r.JSON400
+}
+
+// GetApplicationproblemJSON400 returns the response for an HTTP 400 `application/problem+json` response
+func (r BrandAppsPutResponse) GetApplicationproblemJSON400() *Problem {
+	return r.ApplicationproblemJSON400
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r BrandAppsPutResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r BrandAppsPutResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r BrandAppsPutResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r BrandAppsPutResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON412 returns the response for an HTTP 412 `application/json` response
+func (r BrandAppsPutResponse) GetJSON412() *Problem {
+	return r.JSON412
+}
+
+// GetApplicationproblemJSON412 returns the response for an HTTP 412 `application/problem+json` response
+func (r BrandAppsPutResponse) GetApplicationproblemJSON412() *Problem {
+	return r.ApplicationproblemJSON412
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r BrandAppsPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r BrandAppsPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r BrandAppsPutResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r BrandAppsPutResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r BrandAppsPutResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r BrandAppsPutResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r BrandAppsPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r BrandAppsPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r BrandAppsPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BrandAppsPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BrandAppsPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BrandAppsPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// BrandAppsResolvedResponse200Headers the declared response headers of an HTTP 200 response for BrandAppsResolved
+type BrandAppsResolvedResponse200Headers struct {
+	ETag       *string
+	XRequestID *string
+}
+
+// BrandAppsResolvedResponse304Headers the declared response headers of an HTTP 304 response for BrandAppsResolved
+type BrandAppsResolvedResponse304Headers struct {
+	ETag       *string
+	XRequestID *string
+}
+
+// BrandAppsResolvedResponse401Headers the declared response headers of an HTTP 401 response for BrandAppsResolved
+type BrandAppsResolvedResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// BrandAppsResolvedResponse403Headers the declared response headers of an HTTP 403 response for BrandAppsResolved
+type BrandAppsResolvedResponse403Headers struct {
+	XRequestID *string
+}
+
+// BrandAppsResolvedResponse429Headers the declared response headers of an HTTP 429 response for BrandAppsResolved
+type BrandAppsResolvedResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// BrandAppsResolvedResponse503Headers the declared response headers of an HTTP 503 response for BrandAppsResolved
+type BrandAppsResolvedResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// BrandAppsResolvedResponseDefaultHeaders the declared response headers of an HTTP default response for BrandAppsResolved
+type BrandAppsResolvedResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type BrandAppsResolvedResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ResolvedAppBrand
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *BrandAppsResolvedResponse200Headers
+	// Headers304 the parsed response headers for an HTTP 304 response
+	Headers304 *BrandAppsResolvedResponse304Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *BrandAppsResolvedResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *BrandAppsResolvedResponse403Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *BrandAppsResolvedResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *BrandAppsResolvedResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *BrandAppsResolvedResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r BrandAppsResolvedResponse) GetJSON200() *ResolvedAppBrand {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r BrandAppsResolvedResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r BrandAppsResolvedResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r BrandAppsResolvedResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r BrandAppsResolvedResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r BrandAppsResolvedResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r BrandAppsResolvedResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r BrandAppsResolvedResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r BrandAppsResolvedResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r BrandAppsResolvedResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r BrandAppsResolvedResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r BrandAppsResolvedResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BrandAppsResolvedResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BrandAppsResolvedResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BrandAppsResolvedResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // BrandAssetsListResponse200Headers the declared response headers of an HTTP 200 response for BrandAssetsList
 type BrandAssetsListResponse200Headers struct {
 	XRequestID *string
@@ -27513,6 +31025,530 @@ func (r CustomersUpdateResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r CustomersUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// FeedbackListResponse200Headers the declared response headers of an HTTP 200 response for FeedbackList
+type FeedbackListResponse200Headers struct {
+	XRequestID *string
+}
+
+// FeedbackListResponse401Headers the declared response headers of an HTTP 401 response for FeedbackList
+type FeedbackListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// FeedbackListResponse403Headers the declared response headers of an HTTP 403 response for FeedbackList
+type FeedbackListResponse403Headers struct {
+	XRequestID *string
+}
+
+// FeedbackListResponse404Headers the declared response headers of an HTTP 404 response for FeedbackList
+type FeedbackListResponse404Headers struct {
+	XRequestID *string
+}
+
+// FeedbackListResponse429Headers the declared response headers of an HTTP 429 response for FeedbackList
+type FeedbackListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// FeedbackListResponse503Headers the declared response headers of an HTTP 503 response for FeedbackList
+type FeedbackListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// FeedbackListResponseDefaultHeaders the declared response headers of an HTTP default response for FeedbackList
+type FeedbackListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type FeedbackListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *FeedbackItemPage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *FeedbackListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *FeedbackListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *FeedbackListResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *FeedbackListResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *FeedbackListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *FeedbackListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *FeedbackListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r FeedbackListResponse) GetJSON200() *FeedbackItemPage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r FeedbackListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r FeedbackListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r FeedbackListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r FeedbackListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r FeedbackListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r FeedbackListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r FeedbackListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r FeedbackListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r FeedbackListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r FeedbackListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r FeedbackListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r FeedbackListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r FeedbackListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FeedbackListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FeedbackListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FeedbackListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// FeedbackGetResponse200Headers the declared response headers of an HTTP 200 response for FeedbackGet
+type FeedbackGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// FeedbackGetResponse401Headers the declared response headers of an HTTP 401 response for FeedbackGet
+type FeedbackGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// FeedbackGetResponse403Headers the declared response headers of an HTTP 403 response for FeedbackGet
+type FeedbackGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// FeedbackGetResponse404Headers the declared response headers of an HTTP 404 response for FeedbackGet
+type FeedbackGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// FeedbackGetResponse429Headers the declared response headers of an HTTP 429 response for FeedbackGet
+type FeedbackGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// FeedbackGetResponse503Headers the declared response headers of an HTTP 503 response for FeedbackGet
+type FeedbackGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// FeedbackGetResponseDefaultHeaders the declared response headers of an HTTP default response for FeedbackGet
+type FeedbackGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type FeedbackGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *FeedbackItem
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *FeedbackGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *FeedbackGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *FeedbackGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *FeedbackGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *FeedbackGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *FeedbackGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *FeedbackGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r FeedbackGetResponse) GetJSON200() *FeedbackItem {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r FeedbackGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r FeedbackGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r FeedbackGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r FeedbackGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r FeedbackGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r FeedbackGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r FeedbackGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r FeedbackGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r FeedbackGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r FeedbackGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r FeedbackGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r FeedbackGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r FeedbackGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FeedbackGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FeedbackGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FeedbackGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// FeedbackBriefResponse200Headers the declared response headers of an HTTP 200 response for FeedbackBrief
+type FeedbackBriefResponse200Headers struct {
+	XRequestID *string
+}
+
+// FeedbackBriefResponse401Headers the declared response headers of an HTTP 401 response for FeedbackBrief
+type FeedbackBriefResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// FeedbackBriefResponse403Headers the declared response headers of an HTTP 403 response for FeedbackBrief
+type FeedbackBriefResponse403Headers struct {
+	XRequestID *string
+}
+
+// FeedbackBriefResponse404Headers the declared response headers of an HTTP 404 response for FeedbackBrief
+type FeedbackBriefResponse404Headers struct {
+	XRequestID *string
+}
+
+// FeedbackBriefResponse429Headers the declared response headers of an HTTP 429 response for FeedbackBrief
+type FeedbackBriefResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// FeedbackBriefResponse503Headers the declared response headers of an HTTP 503 response for FeedbackBrief
+type FeedbackBriefResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// FeedbackBriefResponseDefaultHeaders the declared response headers of an HTTP default response for FeedbackBrief
+type FeedbackBriefResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type FeedbackBriefResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *FeedbackBriefResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *FeedbackBriefResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *FeedbackBriefResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *FeedbackBriefResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *FeedbackBriefResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *FeedbackBriefResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *FeedbackBriefResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r FeedbackBriefResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r FeedbackBriefResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r FeedbackBriefResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r FeedbackBriefResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r FeedbackBriefResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r FeedbackBriefResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r FeedbackBriefResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r FeedbackBriefResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r FeedbackBriefResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r FeedbackBriefResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r FeedbackBriefResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r FeedbackBriefResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r FeedbackBriefResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FeedbackBriefResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FeedbackBriefResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FeedbackBriefResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -30097,6 +34133,459 @@ func (r ProjectsUpdateResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ProjectsUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CodingJobGitTokenDeleteResponse204Headers the declared response headers of an HTTP 204 response for CodingJobGitTokenDelete
+type CodingJobGitTokenDeleteResponse204Headers struct {
+	XRequestID *string
+}
+
+// CodingJobGitTokenDeleteResponse401Headers the declared response headers of an HTTP 401 response for CodingJobGitTokenDelete
+type CodingJobGitTokenDeleteResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// CodingJobGitTokenDeleteResponse403Headers the declared response headers of an HTTP 403 response for CodingJobGitTokenDelete
+type CodingJobGitTokenDeleteResponse403Headers struct {
+	XRequestID *string
+}
+
+// CodingJobGitTokenDeleteResponse404Headers the declared response headers of an HTTP 404 response for CodingJobGitTokenDelete
+type CodingJobGitTokenDeleteResponse404Headers struct {
+	XRequestID *string
+}
+
+// CodingJobGitTokenDeleteResponse422Headers the declared response headers of an HTTP 422 response for CodingJobGitTokenDelete
+type CodingJobGitTokenDeleteResponse422Headers struct {
+	XRequestID *string
+}
+
+// CodingJobGitTokenDeleteResponse429Headers the declared response headers of an HTTP 429 response for CodingJobGitTokenDelete
+type CodingJobGitTokenDeleteResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CodingJobGitTokenDeleteResponse502Headers the declared response headers of an HTTP 502 response for CodingJobGitTokenDelete
+type CodingJobGitTokenDeleteResponse502Headers struct {
+	XRequestID *string
+}
+
+// CodingJobGitTokenDeleteResponse503Headers the declared response headers of an HTTP 503 response for CodingJobGitTokenDelete
+type CodingJobGitTokenDeleteResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CodingJobGitTokenDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for CodingJobGitTokenDelete
+type CodingJobGitTokenDeleteResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type CodingJobGitTokenDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *CodingJobGitTokenDeleteResponse204Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *CodingJobGitTokenDeleteResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *CodingJobGitTokenDeleteResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *CodingJobGitTokenDeleteResponse404Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *CodingJobGitTokenDeleteResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *CodingJobGitTokenDeleteResponse429Headers
+	// Headers502 the parsed response headers for an HTTP 502 response
+	Headers502 *CodingJobGitTokenDeleteResponse502Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *CodingJobGitTokenDeleteResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CodingJobGitTokenDeleteResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r CodingJobGitTokenDeleteResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r CodingJobGitTokenDeleteResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r CodingJobGitTokenDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CodingJobGitTokenDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r CodingJobGitTokenDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r CodingJobGitTokenDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r CodingJobGitTokenDeleteResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r CodingJobGitTokenDeleteResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r CodingJobGitTokenDeleteResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r CodingJobGitTokenDeleteResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r CodingJobGitTokenDeleteResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r CodingJobGitTokenDeleteResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r CodingJobGitTokenDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r CodingJobGitTokenDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CodingJobGitTokenDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CodingJobGitTokenDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CodingJobGitTokenDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CodingJobGitTokenDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CodingJobGitTokenDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CodingJobGitTokenDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CodingJobGitTokenCreateResponse201Headers the declared response headers of an HTTP 201 response for CodingJobGitTokenCreate
+type CodingJobGitTokenCreateResponse201Headers struct {
+	IdempotentReplayed *string
+	XRequestID         *string
+}
+
+// CodingJobGitTokenCreateResponse401Headers the declared response headers of an HTTP 401 response for CodingJobGitTokenCreate
+type CodingJobGitTokenCreateResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// CodingJobGitTokenCreateResponse403Headers the declared response headers of an HTTP 403 response for CodingJobGitTokenCreate
+type CodingJobGitTokenCreateResponse403Headers struct {
+	XRequestID *string
+}
+
+// CodingJobGitTokenCreateResponse404Headers the declared response headers of an HTTP 404 response for CodingJobGitTokenCreate
+type CodingJobGitTokenCreateResponse404Headers struct {
+	XRequestID *string
+}
+
+// CodingJobGitTokenCreateResponse409Headers the declared response headers of an HTTP 409 response for CodingJobGitTokenCreate
+type CodingJobGitTokenCreateResponse409Headers struct {
+	XRequestID *string
+}
+
+// CodingJobGitTokenCreateResponse422Headers the declared response headers of an HTTP 422 response for CodingJobGitTokenCreate
+type CodingJobGitTokenCreateResponse422Headers struct {
+	XRequestID *string
+}
+
+// CodingJobGitTokenCreateResponse429Headers the declared response headers of an HTTP 429 response for CodingJobGitTokenCreate
+type CodingJobGitTokenCreateResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CodingJobGitTokenCreateResponse502Headers the declared response headers of an HTTP 502 response for CodingJobGitTokenCreate
+type CodingJobGitTokenCreateResponse502Headers struct {
+	XRequestID *string
+}
+
+// CodingJobGitTokenCreateResponse503Headers the declared response headers of an HTTP 503 response for CodingJobGitTokenCreate
+type CodingJobGitTokenCreateResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CodingJobGitTokenCreateResponseDefaultHeaders the declared response headers of an HTTP default response for CodingJobGitTokenCreate
+type CodingJobGitTokenCreateResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type CodingJobGitTokenCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *CodingJobRepository
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers201 the parsed response headers for an HTTP 201 response
+	Headers201 *CodingJobGitTokenCreateResponse201Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *CodingJobGitTokenCreateResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *CodingJobGitTokenCreateResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *CodingJobGitTokenCreateResponse404Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *CodingJobGitTokenCreateResponse409Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *CodingJobGitTokenCreateResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *CodingJobGitTokenCreateResponse429Headers
+	// Headers502 the parsed response headers for an HTTP 502 response
+	Headers502 *CodingJobGitTokenCreateResponse502Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *CodingJobGitTokenCreateResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CodingJobGitTokenCreateResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CodingJobGitTokenCreateResponse) GetJSON201() *CodingJobRepository {
+	return r.JSON201
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r CodingJobGitTokenCreateResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r CodingJobGitTokenCreateResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r CodingJobGitTokenCreateResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CodingJobGitTokenCreateResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r CodingJobGitTokenCreateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r CodingJobGitTokenCreateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r CodingJobGitTokenCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r CodingJobGitTokenCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r CodingJobGitTokenCreateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r CodingJobGitTokenCreateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r CodingJobGitTokenCreateResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r CodingJobGitTokenCreateResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r CodingJobGitTokenCreateResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r CodingJobGitTokenCreateResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r CodingJobGitTokenCreateResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r CodingJobGitTokenCreateResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CodingJobGitTokenCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CodingJobGitTokenCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CodingJobGitTokenCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CodingJobGitTokenCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CodingJobGitTokenCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CodingJobGitTokenCreateResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -33008,6 +37497,608 @@ func (r ReleaseOperationsGetResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ReleaseOperationsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ScratchJobDeleteResponse204Headers the declared response headers of an HTTP 204 response for ScratchJobDelete
+type ScratchJobDeleteResponse204Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobDeleteResponse401Headers the declared response headers of an HTTP 401 response for ScratchJobDelete
+type ScratchJobDeleteResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ScratchJobDeleteResponse403Headers the declared response headers of an HTTP 403 response for ScratchJobDelete
+type ScratchJobDeleteResponse403Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobDeleteResponse422Headers the declared response headers of an HTTP 422 response for ScratchJobDelete
+type ScratchJobDeleteResponse422Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobDeleteResponse429Headers the declared response headers of an HTTP 429 response for ScratchJobDelete
+type ScratchJobDeleteResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ScratchJobDeleteResponse502Headers the declared response headers of an HTTP 502 response for ScratchJobDelete
+type ScratchJobDeleteResponse502Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobDeleteResponse503Headers the declared response headers of an HTTP 503 response for ScratchJobDelete
+type ScratchJobDeleteResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ScratchJobDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for ScratchJobDelete
+type ScratchJobDeleteResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ScratchJobDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *ScratchJobDeleteResponse204Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ScratchJobDeleteResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ScratchJobDeleteResponse403Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *ScratchJobDeleteResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ScratchJobDeleteResponse429Headers
+	// Headers502 the parsed response headers for an HTTP 502 response
+	Headers502 *ScratchJobDeleteResponse502Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ScratchJobDeleteResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ScratchJobDeleteResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ScratchJobDeleteResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ScratchJobDeleteResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ScratchJobDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ScratchJobDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ScratchJobDeleteResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ScratchJobDeleteResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ScratchJobDeleteResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ScratchJobDeleteResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r ScratchJobDeleteResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r ScratchJobDeleteResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ScratchJobDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ScratchJobDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ScratchJobDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ScratchJobDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ScratchJobDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ScratchJobDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ScratchJobDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ScratchJobDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ScratchJobCreateResponse201Headers the declared response headers of an HTTP 201 response for ScratchJobCreate
+type ScratchJobCreateResponse201Headers struct {
+	IdempotentReplayed *string
+	XRequestID         *string
+}
+
+// ScratchJobCreateResponse401Headers the declared response headers of an HTTP 401 response for ScratchJobCreate
+type ScratchJobCreateResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ScratchJobCreateResponse403Headers the declared response headers of an HTTP 403 response for ScratchJobCreate
+type ScratchJobCreateResponse403Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobCreateResponse409Headers the declared response headers of an HTTP 409 response for ScratchJobCreate
+type ScratchJobCreateResponse409Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobCreateResponse422Headers the declared response headers of an HTTP 422 response for ScratchJobCreate
+type ScratchJobCreateResponse422Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobCreateResponse429Headers the declared response headers of an HTTP 429 response for ScratchJobCreate
+type ScratchJobCreateResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ScratchJobCreateResponse502Headers the declared response headers of an HTTP 502 response for ScratchJobCreate
+type ScratchJobCreateResponse502Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobCreateResponse503Headers the declared response headers of an HTTP 503 response for ScratchJobCreate
+type ScratchJobCreateResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ScratchJobCreateResponseDefaultHeaders the declared response headers of an HTTP default response for ScratchJobCreate
+type ScratchJobCreateResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ScratchJobCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *CodingJobRepository
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers201 the parsed response headers for an HTTP 201 response
+	Headers201 *ScratchJobCreateResponse201Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ScratchJobCreateResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ScratchJobCreateResponse403Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *ScratchJobCreateResponse409Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *ScratchJobCreateResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ScratchJobCreateResponse429Headers
+	// Headers502 the parsed response headers for an HTTP 502 response
+	Headers502 *ScratchJobCreateResponse502Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ScratchJobCreateResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ScratchJobCreateResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r ScratchJobCreateResponse) GetJSON201() *CodingJobRepository {
+	return r.JSON201
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ScratchJobCreateResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ScratchJobCreateResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ScratchJobCreateResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ScratchJobCreateResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ScratchJobCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ScratchJobCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ScratchJobCreateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ScratchJobCreateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ScratchJobCreateResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ScratchJobCreateResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r ScratchJobCreateResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r ScratchJobCreateResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ScratchJobCreateResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ScratchJobCreateResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ScratchJobCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ScratchJobCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ScratchJobCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ScratchJobCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ScratchJobCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ScratchJobCreateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ScratchJobGitTokenDeleteResponse204Headers the declared response headers of an HTTP 204 response for ScratchJobGitTokenDelete
+type ScratchJobGitTokenDeleteResponse204Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobGitTokenDeleteResponse401Headers the declared response headers of an HTTP 401 response for ScratchJobGitTokenDelete
+type ScratchJobGitTokenDeleteResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ScratchJobGitTokenDeleteResponse403Headers the declared response headers of an HTTP 403 response for ScratchJobGitTokenDelete
+type ScratchJobGitTokenDeleteResponse403Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobGitTokenDeleteResponse422Headers the declared response headers of an HTTP 422 response for ScratchJobGitTokenDelete
+type ScratchJobGitTokenDeleteResponse422Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobGitTokenDeleteResponse429Headers the declared response headers of an HTTP 429 response for ScratchJobGitTokenDelete
+type ScratchJobGitTokenDeleteResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ScratchJobGitTokenDeleteResponse502Headers the declared response headers of an HTTP 502 response for ScratchJobGitTokenDelete
+type ScratchJobGitTokenDeleteResponse502Headers struct {
+	XRequestID *string
+}
+
+// ScratchJobGitTokenDeleteResponse503Headers the declared response headers of an HTTP 503 response for ScratchJobGitTokenDelete
+type ScratchJobGitTokenDeleteResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ScratchJobGitTokenDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for ScratchJobGitTokenDelete
+type ScratchJobGitTokenDeleteResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ScratchJobGitTokenDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON502 the response for an HTTP 502 `application/json` response
+	JSON502 *Problem
+	// ApplicationproblemJSON502 the response for an HTTP 502 `application/problem+json` response
+	ApplicationproblemJSON502 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *ScratchJobGitTokenDeleteResponse204Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ScratchJobGitTokenDeleteResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ScratchJobGitTokenDeleteResponse403Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *ScratchJobGitTokenDeleteResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ScratchJobGitTokenDeleteResponse429Headers
+	// Headers502 the parsed response headers for an HTTP 502 response
+	Headers502 *ScratchJobGitTokenDeleteResponse502Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ScratchJobGitTokenDeleteResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ScratchJobGitTokenDeleteResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ScratchJobGitTokenDeleteResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ScratchJobGitTokenDeleteResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ScratchJobGitTokenDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ScratchJobGitTokenDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ScratchJobGitTokenDeleteResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ScratchJobGitTokenDeleteResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ScratchJobGitTokenDeleteResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ScratchJobGitTokenDeleteResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON502 returns the response for an HTTP 502 `application/json` response
+func (r ScratchJobGitTokenDeleteResponse) GetJSON502() *Problem {
+	return r.JSON502
+}
+
+// GetApplicationproblemJSON502 returns the response for an HTTP 502 `application/problem+json` response
+func (r ScratchJobGitTokenDeleteResponse) GetApplicationproblemJSON502() *Problem {
+	return r.ApplicationproblemJSON502
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ScratchJobGitTokenDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ScratchJobGitTokenDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ScratchJobGitTokenDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ScratchJobGitTokenDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ScratchJobGitTokenDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ScratchJobGitTokenDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ScratchJobGitTokenDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ScratchJobGitTokenDeleteResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -38490,7 +43581,9 @@ func (c *ClientWithResponses) AiRateCardPutWithResponse(ctx context.Context, tie
 //
 // Every recorded change on this platform, newest first (`occurred_at`, then `id`, descending). Pages are cursor-based and stable while new events are written: pass `next_cursor` as `cursor` to get the next page; it is null on the last one. A cursor that is not one of this list's is a 400 `invalid_cursor`.
 //
-// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+// Filters combine with AND, and every one is exact unless stated: `actor` (an e-mail address or other actor string, compared lower-cased; or a user id, which matches the events recorded under that person's CURRENT address — events recorded under an earlier address need that address), `auth_kind`, `token_id`, `request_id`, `entity_type`, `entity_id`, `action` (exact, or a PREFIX when it ends in `*`: `user.*` matches `user.create` and `user.role_grant`; `*` alone matches every action), `tenant_id` (the events attributed to that tenant), `occurred_from` (inclusive) and `occurred_to` (EXCLUSIVE). A range whose end is not after its start is simply empty.
+//
+// A tenant-scoped token reads only the events attributed to its own tenant (today: the creation and revocation of that tenant's tokens); any other event, read by id, is a 404 `audit_event_not_found`.
 //
 // `before_state` and `after_state` are returned as the writer recorded them, except that every member whose name looks secret is null. For `entity_type` `licence` the `entity_id` is the licence serial, masked to its last group unless the caller holds `licence-admin-global`, as on `GET /licence`; the `entity_id` filter matches the stored id, never the masked one. Reading the log is not itself audited.
 //
@@ -38565,6 +43658,98 @@ func (c *ClientWithResponses) BrandPutWithResponse(ctx context.Context, params *
 	return ParseBrandPutResponse(rsp)
 }
 
+// BrandAppsListWithResponse List application brand profiles
+//
+// The application profiles stored on this platform, in `app_slug` order. An
+// application without a profile is not listed: it inherits everything, and its
+// `GET /brand/apps/{app_slug}/resolved` still answers.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /brand/apps (the `BrandAppsList` operationId).
+func (c *ClientWithResponses) BrandAppsListWithResponse(ctx context.Context, params *BrandAppsListParams, reqEditors ...RequestEditorFn) (*BrandAppsListResponse, error) {
+	rsp, err := c.BrandAppsList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandAppsListResponse(rsp)
+}
+
+// BrandAppsDeleteWithResponse Delete an application brand profile
+//
+// Removes the profile. The application then resolves to this platform's brand and the built-in defaults again (`version` 0); its uploaded assets are kept. Needs the admin permission; not destroy-gated.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /brand/apps/{app_slug} (the `BrandAppsDelete` operationId).
+func (c *ClientWithResponses) BrandAppsDeleteWithResponse(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*BrandAppsDeleteResponse, error) {
+	rsp, err := c.BrandAppsDelete(ctx, appSlug, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandAppsDeleteResponse(rsp)
+}
+
+// BrandAppsGetWithResponse One application brand profile
+//
+// The stored profile: each writable field as set, `null` where it is inherited. The `ETag` response header carries `version` for `If-Match`. `PUT` is a FULL replacement: to change one field, send back every writable field of this answer.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /brand/apps/{app_slug} (the `BrandAppsGet` operationId).
+func (c *ClientWithResponses) BrandAppsGetWithResponse(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*BrandAppsGetResponse, error) {
+	rsp, err := c.BrandAppsGet(ctx, appSlug, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandAppsGetResponse(rsp)
+}
+
+// BrandAppsPutWithBodyWithResponse Create or replace an application brand profile
+//
+// Replaces every writable field: a FULL replacement, never a partial update. Every member is required and may be `null`, which means Inherited; a member left out is a 422 naming it. Creates the profile when the application has none (201). `header_logo_asset_id` takes an asset of kind `header_logo` or `logo`, `favicon_asset_id` one of kind `favicon`, `og_image_asset_id` one of kind `og_image`. With `If-Match: "<version>"` the replace happens only while the profile is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the profile as it is: `version` is not bumped and no audit row is written. This platform's own brand and its `version` are never changed by a profile.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /brand/apps/{app_slug} (the `BrandAppsPut` operationId).
+func (c *ClientWithResponses) BrandAppsPutWithBodyWithResponse(ctx context.Context, appSlug string, params *BrandAppsPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BrandAppsPutResponse, error) {
+	rsp, err := c.BrandAppsPutWithBody(ctx, appSlug, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandAppsPutResponse(rsp)
+}
+
+// BrandAppsPutWithResponse Create or replace an application brand profile
+//
+// Replaces every writable field: a FULL replacement, never a partial update. Every member is required and may be `null`, which means Inherited; a member left out is a 422 naming it. Creates the profile when the application has none (201). `header_logo_asset_id` takes an asset of kind `header_logo` or `logo`, `favicon_asset_id` one of kind `favicon`, `og_image_asset_id` one of kind `og_image`. With `If-Match: "<version>"` the replace happens only while the profile is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the profile as it is: `version` is not bumped and no audit row is written. This platform's own brand and its `version` are never changed by a profile.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /brand/apps/{app_slug} (the `BrandAppsPut` operationId).
+func (c *ClientWithResponses) BrandAppsPutWithResponse(ctx context.Context, appSlug string, params *BrandAppsPutParams, body BrandAppsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*BrandAppsPutResponse, error) {
+	rsp, err := c.BrandAppsPut(ctx, appSlug, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandAppsPutResponse(rsp)
+}
+
+// BrandAppsResolvedWithResponse What one application renders
+//
+// The application's profile over this platform's brand over the built-in defaults, with the shades, the text colour on the primary, the font stack, the asset URLs and the attribution computed. Never 404 for a valid slug: an application without a profile resolves to the installation's brand and the defaults, at `version` 0. The `ETag` changes whenever anything in the answer changes, including an edit of this platform's brand; send it back as `If-None-Match` to get a 304. Asset URLs are `/api/brand/assets/<sha256>` or `null`.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /brand/apps/{app_slug}/resolved (the `BrandAppsResolved` operationId).
+func (c *ClientWithResponses) BrandAppsResolvedWithResponse(ctx context.Context, appSlug string, reqEditors ...RequestEditorFn) (*BrandAppsResolvedResponse, error) {
+	rsp, err := c.BrandAppsResolved(ctx, appSlug, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBrandAppsResolvedResponse(rsp)
+}
+
 // BrandAssetsListWithResponse List brand assets
 //
 // The brand assets uploaded to this platform, in `id` order, filtered by `kind` and by
@@ -38584,7 +43769,7 @@ func (c *ClientWithResponses) BrandAssetsListWithResponse(ctx context.Context, p
 
 // BrandAssetsCreateWithBodyWithResponse Upload a brand asset
 //
-// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo or a header logo (120-2000 px wide), PNG, SVG or ICO for a favicon, PNG, WebP or JPEG for a preview image (`og_image`: 1200 x 630, or at least 1200 px wide at 1.91:1), at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -38599,7 +43784,7 @@ func (c *ClientWithResponses) BrandAssetsCreateWithBodyWithResponse(ctx context.
 
 // BrandAssetsCreateWithResponse Upload a brand asset
 //
-// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo (120-2000 px wide), PNG, SVG or ICO for a favicon, at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Accepts `multipart/form-data` with `file` and `kind` (as the portal's Brand Center sends) or `application/json` with `kind` and `content_base64`; both are validated the same way: PNG, WebP or SVG for a logo or a header logo (120-2000 px wide), PNG, SVG or ICO for a favicon, PNG, WebP or JPEG for a preview image (`og_image`: 1200 x 630, or at least 1200 px wide at 1.91:1), at most 512 KB, SVG without active content. Assets are content-addressed: uploading bytes that are already stored as the same kind returns that asset with 200 and writes nothing; the same bytes as the other kind are a 409. Everything uploaded is readable WITHOUT signing in at `url` (the sign-in page shows it), so upload nothing that is not public. There is no delete. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -38793,6 +43978,57 @@ func (c *ClientWithResponses) CustomersUpdateWithApplicationMergePatchPlusJSONBo
 		return nil, err
 	}
 	return ParseCustomersUpdateResponse(rsp)
+}
+
+// FeedbackListWithResponse List feedback items
+//
+// The feedback backlog of every customer: bug reports, change requests and feature requests, highest number (newest) first. Pages are cursor-based: pass `next_cursor` as `cursor` to get the next page; it is null on the last one.
+//
+// Filters combine with AND: `status`, `kind`, `customer` (a customer's key, exact), `week` (the expected ISO week, exact) and `source`. Without `source`, items filed on demo installations are left out, as on the portal's board; `source=demo` lists only those.
+//
+// Each item is the backlog row; `GET /feedback/{number}` adds the report, its context and the thread, and `GET /feedback/{number}/brief` the Markdown a coding session starts from.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /feedback (the `FeedbackList` operationId).
+func (c *ClientWithResponses) FeedbackListWithResponse(ctx context.Context, params *FeedbackListParams, reqEditors ...RequestEditorFn) (*FeedbackListResponse, error) {
+	rsp, err := c.FeedbackList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFeedbackListResponse(rsp)
+}
+
+// FeedbackGetWithResponse One feedback item
+//
+// One item by its number: the backlog row plus the report as written, the screen and the installation it came from, every move of its expected week and the whole thread, vendor-side internal notes included (`internal: true`).
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /feedback/{number} (the `FeedbackGet` operationId).
+func (c *ClientWithResponses) FeedbackGetWithResponse(ctx context.Context, number string, reqEditors ...RequestEditorFn) (*FeedbackGetResponse, error) {
+	rsp, err := c.FeedbackGet(ctx, number, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFeedbackGetResponse(rsp)
+}
+
+// FeedbackBriefWithResponse The brief of a feedback item
+//
+// The brief a coding session starts from, as Markdown: what was reported (with an English summary of a report in another language), where (the page and its route), the environment, the whole thread with the vendor's internal notes, the attachments, the acceptance criteria, the delivery rules and the links. Written from a fixed template, polished by the platform's AI gateway when it answers in time; never held up by it.
+//
+// READING THE BRIEF IS RECORDED and starts the work: the item records the fetch, and an item that is `triaged` or `scheduled` moves to `in_progress`. A commit whose message names `feedback #N` moves it on to `ready` once a production build carries it.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /feedback/{number}/brief (the `FeedbackBrief` operationId).
+func (c *ClientWithResponses) FeedbackBriefWithResponse(ctx context.Context, number string, reqEditors ...RequestEditorFn) (*FeedbackBriefResponse, error) {
+	rsp, err := c.FeedbackBrief(ctx, number, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFeedbackBriefResponse(rsp)
 }
 
 // LicenceGetWithResponse This platform's licence
@@ -39025,7 +44261,7 @@ func (c *ClientWithResponses) ProjectsListWithResponse(ctx context.Context, para
 
 // ProjectsCreateWithBodyWithResponse Register a project
 //
-// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. Every repository the project will create from a seed is pinned now to that seed's release tag (`v<version>`), shown as `outputs.gitlab_repositories[].seed_ref`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -39040,7 +44276,7 @@ func (c *ClientWithResponses) ProjectsCreateWithBodyWithResponse(ctx context.Con
 
 // ProjectsCreateWithResponse Register a project
 //
-// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+// Registers the project and compiles its manifest. Provisions NOTHING: start that with `POST /projects/{id}/provisioning`. Every repository the project will create from a seed is pinned now to that seed's release tag (`v<version>`), shown as `outputs.gitlab_repositories[].seed_ref`. `project_index` is allocated when omitted. A token that creates a project is recorded as `registered_by`. The unique keys are checked first (409), then the hostnames the project would be served under (422 `hostname_taken`); only then is an index allocated and the project written. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -39135,6 +44371,36 @@ func (c *ClientWithResponses) ProjectsUpdateWithApplicationMergePatchPlusJSONBod
 		return nil, err
 	}
 	return ParseProjectsUpdateResponse(rsp)
+}
+
+// CodingJobGitTokenDeleteWithResponse Revoke a coding job's git token
+//
+// Revokes every live job token this platform minted for the job on the project. Idempotent: nothing to revoke is still a 204.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /projects/{project_id}/jobs/{job_id}/git-token (the `CodingJobGitTokenDelete` operationId).
+func (c *ClientWithResponses) CodingJobGitTokenDeleteWithResponse(ctx context.Context, projectId string, jobId string, reqEditors ...RequestEditorFn) (*CodingJobGitTokenDeleteResponse, error) {
+	rsp, err := c.CodingJobGitTokenDelete(ctx, projectId, jobId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCodingJobGitTokenDeleteResponse(rsp)
+}
+
+// CodingJobGitTokenCreateWithResponse Mint a coding job's git token
+//
+// Mints a one-day GitLab project access token named `opencode-<job_id>` on the project's primary repository: scope `write_repository`, Developer level. It can push a branch other than the protected default branch and nothing else. Only projects of the customers allowed on this installation (ATAILA and OPENATTILA) qualify, never a platform project, and only when the default branch is protected with push = Maintainer. A live token of the same job is revoked first. The value is in this response only; revoke it at job end with DELETE (a nightly sweep revokes every job token older than 24 hours). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/jobs/{job_id}/git-token (the `CodingJobGitTokenCreate` operationId).
+func (c *ClientWithResponses) CodingJobGitTokenCreateWithResponse(ctx context.Context, projectId string, jobId string, params *CodingJobGitTokenCreateParams, reqEditors ...RequestEditorFn) (*CodingJobGitTokenCreateResponse, error) {
+	rsp, err := c.CodingJobGitTokenCreate(ctx, projectId, jobId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCodingJobGitTokenCreateResponse(rsp)
 }
 
 // ProjectK8sQuotaResetWithResponse Reset an environment's namespace quota
@@ -39470,10 +44736,57 @@ func (c *ClientWithResponses) ReleaseOperationsGetWithResponse(ctx context.Conte
 	return ParseReleaseOperationsGetResponse(rsp)
 }
 
+// ScratchJobDeleteWithResponse Delete a coding job's scratch repository
+//
+// Deletes the job's scratch repository on GitLab, its branches, merge requests and tokens with it. Idempotent: a job without one is a 204.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /scratch/jobs/{job_id} (the `ScratchJobDelete` operationId).
+func (c *ClientWithResponses) ScratchJobDeleteWithResponse(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*ScratchJobDeleteResponse, error) {
+	rsp, err := c.ScratchJobDelete(ctx, jobId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseScratchJobDeleteResponse(rsp)
+}
+
+// ScratchJobCreateWithResponse Create a coding job's scratch repository
+//
+// Creates the private repository `job-<job_id>` in the scratch group, with CI off, its first commit on `main` = the application template at the installation's pinned ref (placeholders filled with a fixed scratch map), `main` protected (push and merge = Maintainer), and a one-day job token as on the own-project route. Delete it with DELETE when the job's data goes. Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /scratch/jobs/{job_id} (the `ScratchJobCreate` operationId).
+func (c *ClientWithResponses) ScratchJobCreateWithResponse(ctx context.Context, jobId string, params *ScratchJobCreateParams, reqEditors ...RequestEditorFn) (*ScratchJobCreateResponse, error) {
+	rsp, err := c.ScratchJobCreate(ctx, jobId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseScratchJobCreateResponse(rsp)
+}
+
+// ScratchJobGitTokenDeleteWithResponse Revoke a scratch job's git token
+//
+// Revokes the job's live scratch token(s). Idempotent: nothing to revoke is a 204.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /scratch/jobs/{job_id}/git-token (the `ScratchJobGitTokenDelete` operationId).
+func (c *ClientWithResponses) ScratchJobGitTokenDeleteWithResponse(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*ScratchJobGitTokenDeleteResponse, error) {
+	rsp, err := c.ScratchJobGitTokenDelete(ctx, jobId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseScratchJobGitTokenDeleteResponse(rsp)
+}
+
 // TenantsListWithResponse List tenants
 //
 // The tenants of this platform, in `slug` order. The filters are exact and combine:
-// `customer_id` (that customer's tenants), `slug`.
+// `customer_id` (that customer's tenants), `slug`. A tenant-scoped token lists its own
+// tenant only; a filter naming another tenant or customer is a 403
+// `tenant_scope_violation`.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -40029,8 +45342,9 @@ func (c *ClientWithResponses) UserRolesPutWithResponse(ctx context.Context, user
 // Who is calling and what they may do right now. `scopes` are the EFFECTIVE
 // permissions: for a token, its scopes that its owner still holds, so a scope the
 // owner has lost is not there; `token.granted_scopes` is what the token was created
-// with. `expires_at` is when the credential stops working. Needs a credential but no
-// permission.
+// with. A tenant-scoped token (`scope` `tenant`) keeps its scopes only while its owner
+// is the tenant's owner or admin. `expires_at` is when the credential stops working.
+// Needs a credential but no permission.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -47166,6 +52480,1087 @@ func ParseBrandPutResponse(rsp *http.Response) (*BrandPutResponse, error) {
 	return response, nil
 }
 
+// ParseBrandAppsListResponse parses an HTTP response from a BrandAppsListWithResponse call
+func ParseBrandAppsListResponse(rsp *http.Response) (*BrandAppsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BrandAppsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BrandAppProfilePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers BrandAppsListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers BrandAppsListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers BrandAppsListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 429:
+		var headers BrandAppsListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers BrandAppsListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers BrandAppsListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseBrandAppsDeleteResponse parses an HTTP response from a BrandAppsDeleteWithResponse call
+func ParseBrandAppsDeleteResponse(rsp *http.Response) (*BrandAppsDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BrandAppsDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers BrandAppsDeleteResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 401:
+		var headers BrandAppsDeleteResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers BrandAppsDeleteResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers BrandAppsDeleteResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers BrandAppsDeleteResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers BrandAppsDeleteResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers BrandAppsDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseBrandAppsGetResponse parses an HTTP response from a BrandAppsGetWithResponse call
+func ParseBrandAppsGetResponse(rsp *http.Response) (*BrandAppsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BrandAppsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BrandAppProfile
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers BrandAppsGetResponse200Headers
+		if values := rsp.Header.Values("ETag"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "ETag", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.ETag = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers BrandAppsGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers BrandAppsGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers BrandAppsGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers BrandAppsGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers BrandAppsGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers BrandAppsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseBrandAppsPutResponse parses an HTTP response from a BrandAppsPutWithResponse call
+func ParseBrandAppsPutResponse(rsp *http.Response) (*BrandAppsPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BrandAppsPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BrandAppProfile
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest BrandAppProfile
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 412:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON412 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 412:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON412 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers BrandAppsPutResponse200Headers
+		if values := rsp.Header.Values("ETag"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "ETag", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.ETag = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 201:
+		var headers BrandAppsPutResponse201Headers
+		if values := rsp.Header.Values("ETag"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "ETag", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.ETag = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers201 = &headers
+	case rsp.StatusCode == 400:
+		var headers BrandAppsPutResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case rsp.StatusCode == 401:
+		var headers BrandAppsPutResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers BrandAppsPutResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 412:
+		var headers BrandAppsPutResponse412Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers412 = &headers
+	case rsp.StatusCode == 422:
+		var headers BrandAppsPutResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers BrandAppsPutResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers BrandAppsPutResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers BrandAppsPutResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseBrandAppsResolvedResponse parses an HTTP response from a BrandAppsResolvedWithResponse call
+func ParseBrandAppsResolvedResponse(rsp *http.Response) (*BrandAppsResolvedResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BrandAppsResolvedResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ResolvedAppBrand
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.StatusCode == 304:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers BrandAppsResolvedResponse200Headers
+		if values := rsp.Header.Values("ETag"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "ETag", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.ETag = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 304:
+		var headers BrandAppsResolvedResponse304Headers
+		if values := rsp.Header.Values("ETag"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "ETag", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.ETag = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers304 = &headers
+	case rsp.StatusCode == 401:
+		var headers BrandAppsResolvedResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers BrandAppsResolvedResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 429:
+		var headers BrandAppsResolvedResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers BrandAppsResolvedResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers BrandAppsResolvedResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseBrandAssetsListResponse parses an HTTP response from a BrandAssetsListWithResponse call
 func ParseBrandAssetsListResponse(rsp *http.Response) (*BrandAssetsListResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -49095,6 +55490,611 @@ func ParseCustomersUpdateResponse(rsp *http.Response) (*CustomersUpdateResponse,
 		response.Headers503 = &headers
 	case true:
 		var headers CustomersUpdateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseFeedbackListResponse parses an HTTP response from a FeedbackListWithResponse call
+func ParseFeedbackListResponse(rsp *http.Response) (*FeedbackListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FeedbackListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest FeedbackItemPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers FeedbackListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers FeedbackListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers FeedbackListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers FeedbackListResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers FeedbackListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers FeedbackListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers FeedbackListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseFeedbackGetResponse parses an HTTP response from a FeedbackGetWithResponse call
+func ParseFeedbackGetResponse(rsp *http.Response) (*FeedbackGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FeedbackGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest FeedbackItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers FeedbackGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers FeedbackGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers FeedbackGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers FeedbackGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers FeedbackGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers FeedbackGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers FeedbackGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseFeedbackBriefResponse parses an HTTP response from a FeedbackBriefWithResponse call
+func ParseFeedbackBriefResponse(rsp *http.Response) (*FeedbackBriefResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FeedbackBriefResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers FeedbackBriefResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers FeedbackBriefResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers FeedbackBriefResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers FeedbackBriefResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers FeedbackBriefResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers FeedbackBriefResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers FeedbackBriefResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -52054,6 +59054,537 @@ func ParseProjectsUpdateResponse(rsp *http.Response) (*ProjectsUpdateResponse, e
 		response.Headers503 = &headers
 	case true:
 		var headers ProjectsUpdateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCodingJobGitTokenDeleteResponse parses an HTTP response from a CodingJobGitTokenDeleteWithResponse call
+func ParseCodingJobGitTokenDeleteResponse(rsp *http.Response) (*CodingJobGitTokenDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CodingJobGitTokenDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers CodingJobGitTokenDeleteResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 401:
+		var headers CodingJobGitTokenDeleteResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers CodingJobGitTokenDeleteResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers CodingJobGitTokenDeleteResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 422:
+		var headers CodingJobGitTokenDeleteResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers CodingJobGitTokenDeleteResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 502:
+		var headers CodingJobGitTokenDeleteResponse502Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers502 = &headers
+	case rsp.StatusCode == 503:
+		var headers CodingJobGitTokenDeleteResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers CodingJobGitTokenDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCodingJobGitTokenCreateResponse parses an HTTP response from a CodingJobGitTokenCreateWithResponse call
+func ParseCodingJobGitTokenCreateResponse(rsp *http.Response) (*CodingJobGitTokenCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CodingJobGitTokenCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CodingJobRepository
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 201:
+		var headers CodingJobGitTokenCreateResponse201Headers
+		if values := rsp.Header.Values("Idempotent-Replayed"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Idempotent-Replayed", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.IdempotentReplayed = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers201 = &headers
+	case rsp.StatusCode == 401:
+		var headers CodingJobGitTokenCreateResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers CodingJobGitTokenCreateResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers CodingJobGitTokenCreateResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 409:
+		var headers CodingJobGitTokenCreateResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 422:
+		var headers CodingJobGitTokenCreateResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers CodingJobGitTokenCreateResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 502:
+		var headers CodingJobGitTokenCreateResponse502Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers502 = &headers
+	case rsp.StatusCode == 503:
+		var headers CodingJobGitTokenCreateResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers CodingJobGitTokenCreateResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
@@ -55439,6 +62970,713 @@ func ParseReleaseOperationsGetResponse(rsp *http.Response) (*ReleaseOperationsGe
 		response.Headers503 = &headers
 	case true:
 		var headers ReleaseOperationsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseScratchJobDeleteResponse parses an HTTP response from a ScratchJobDeleteWithResponse call
+func ParseScratchJobDeleteResponse(rsp *http.Response) (*ScratchJobDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ScratchJobDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers ScratchJobDeleteResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 401:
+		var headers ScratchJobDeleteResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ScratchJobDeleteResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 422:
+		var headers ScratchJobDeleteResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers ScratchJobDeleteResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 502:
+		var headers ScratchJobDeleteResponse502Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers502 = &headers
+	case rsp.StatusCode == 503:
+		var headers ScratchJobDeleteResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ScratchJobDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseScratchJobCreateResponse parses an HTTP response from a ScratchJobCreateWithResponse call
+func ParseScratchJobCreateResponse(rsp *http.Response) (*ScratchJobCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ScratchJobCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CodingJobRepository
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 201:
+		var headers ScratchJobCreateResponse201Headers
+		if values := rsp.Header.Values("Idempotent-Replayed"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Idempotent-Replayed", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.IdempotentReplayed = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers201 = &headers
+	case rsp.StatusCode == 401:
+		var headers ScratchJobCreateResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ScratchJobCreateResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 409:
+		var headers ScratchJobCreateResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 422:
+		var headers ScratchJobCreateResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers ScratchJobCreateResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 502:
+		var headers ScratchJobCreateResponse502Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers502 = &headers
+	case rsp.StatusCode == 503:
+		var headers ScratchJobCreateResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ScratchJobCreateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseScratchJobGitTokenDeleteResponse parses an HTTP response from a ScratchJobGitTokenDeleteWithResponse call
+func ParseScratchJobGitTokenDeleteResponse(rsp *http.Response) (*ScratchJobGitTokenDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ScratchJobGitTokenDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 502:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON502 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers ScratchJobGitTokenDeleteResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 401:
+		var headers ScratchJobGitTokenDeleteResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ScratchJobGitTokenDeleteResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 422:
+		var headers ScratchJobGitTokenDeleteResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers ScratchJobGitTokenDeleteResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 502:
+		var headers ScratchJobGitTokenDeleteResponse502Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers502 = &headers
+	case rsp.StatusCode == 503:
+		var headers ScratchJobGitTokenDeleteResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ScratchJobGitTokenDeleteResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
