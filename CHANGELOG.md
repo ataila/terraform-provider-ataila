@@ -35,11 +35,32 @@ the 0.x releases before it were never published, and any of them could change wh
   the run at configure time with what to do; on an older platform the error names release 1.0.395.
   `ataila_whoami` reports `auth_kind = "ci"`. The docs show the `.gitlab-ci.yml` snippet for both CLIs. The
   leak guard also catches `ataila_cit_` tokens.
+- `ataila_service_account` (platform 1.0.397 on; refused at plan time on an older platform, naming the release):
+  an automation identity, **identity only** — `name`, `owner_customer_id`, `roles` (a set; omit it to leave the
+  roles to the portal), `is_active`; read back `email`, `owner_customer_name` and `ci_links`, the GitLab projects
+  linked to it in the portal (read-only). It never issues a token: a token is minted in the portal or exchanged
+  from a GitLab CI ID token (`ci_jwt`). The platform's role rules apply (a token hands out only what it carries,
+  never on its own account, never `admin` or a privileged role). Destroy deactivates the account — its tokens
+  stop at once, the account keeps its name — and is destroy-class; `is_active = true` re-activates. Import by id
+  or `name:<name>`. Data source `ataila_service_account` by `id` or `name`, with `active_tokens` and each link's
+  `live_tokens`. Needs `service-accounts-read-global` / `-admin-global`.
+- Feedback & Roadmap backlog reads (platform 1.0.260 on): data sources `ataila_feedback_items` (filters `status`,
+  `kind`, `customer`, `week`, `source`) and `ataila_feedback_item` (one item in full, with its thread, page,
+  context and week moves). They answer on the platform that issues releases, to a token holding
+  `feedback-admin-global`; elsewhere the error says where the backlog is. The provider never reads an item's
+  brief, which would move the item to `in_progress`.
 
 ### Changed
 
+- The OpenTofu registry lists the provider (since 2026-10-03): the README and the docs drop the temporary
+  filesystem-mirror install for OpenTofu; the signature check of a mirrored archive moves to "Installing without
+  internet access". "Switching between OpenTofu and Terraform" is re-measured (provider 1.2.0 from both
+  registries, OpenTofu 1.12.6, Terraform 1.16.4): `terraform init` on an OpenTofu state now succeeds and installs
+  OpenTofu's address too, so without `replace-provider` the state's resources run through an unconfigured second
+  provider; the step stays required. `TestCrossCLIState` now proves `tofu show` / `tofu show -json` on a state
+  naming Terraform's address (refused) and after OpenTofu's address is recorded (works).
 - Copyright holder is the natural person (Macskásy Attila, ATAILA) until the Kft exists; NOTICE added.
-- The vendored contract moves from platform 1.0.237 to 1.0.395 (`api/openapi-v1.json`, additive only). The
+- The vendored contract moves from platform 1.0.237 to 1.0.397 (`api/openapi-v1.json`, additive only). The
   two coding-job credential operations it now declares (`POST /projects/{id}/jobs/{job}/git-token`,
   `POST /scratch/jobs/{job}`) are never called by the provider: write-only, one-day credentials are not
   Terraform objects.

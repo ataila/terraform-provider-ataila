@@ -147,6 +147,10 @@ func destroyRefused(resourceType, object, ident string) diag.Diagnostic {
 		"service grant": "For a service grant, destroy means revoke: the person loses the service within " +
 			"the platform's reconcile interval. The row stays for the record, and creating the grant again " +
 			"revives it.",
+		"service account": "For a service account, destroy means deactivate: every token of it stops at " +
+			"once; the account, its roles, tokens and GitLab CI links stay, and it keeps its name, so the same " +
+			"name cannot be created again (import it and set is_active = true instead). Setting is_active = " +
+			"false is a deactivation too, behind the same switches.",
 	}[object]
 	return diag.NewErrorDiagnostic(
 		fmt.Sprintf("Destroying %s %s is not allowed", article(object), object),

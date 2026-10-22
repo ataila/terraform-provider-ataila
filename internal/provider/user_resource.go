@@ -476,9 +476,9 @@ func (r *userResource) ImportState(ctx context.Context, req resource.ImportState
 	}
 	if u.Kind == client.UserKindService {
 		resp.Diagnostics.AddError("Cannot import a service account",
-			fmt.Sprintf("%s is a service account. Service accounts are managed on the portal's service accounts "+
-				"page; every change to one through the API is refused. Read it with the ataila_user data source.",
-				u.Name))
+			fmt.Sprintf("%s is a service account: manage it with ataila_service_account (platform %s or later; "+
+				"import %s), not ataila_user, which refuses every change to one.",
+				u.Name, client.ReleaseServiceAccounts, u.Id))
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), u.Id)...)

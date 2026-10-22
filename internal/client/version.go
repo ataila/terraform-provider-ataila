@@ -54,6 +54,13 @@ const (
 	// /users/{id}/service-grants/{customer}/{key}): ataila_service_entitlement,
 	// ataila_service_grant, ataila_services, ataila_customer_entitlements.
 	FeatureEntitlements = "entitlements"
+	// FeatureServiceAccounts are service accounts as objects (GET, POST,
+	// PATCH and DELETE /service-accounts): ataila_service_account, resource
+	// and data source.
+	FeatureServiceAccounts = "service_accounts"
+	// FeatureFeedback is the Feedback & Roadmap backlog, read only (GET
+	// /feedback, GET /feedback/{n}): ataila_feedback_items, ataila_feedback_item.
+	FeatureFeedback = "feedback"
 )
 
 // ReleaseQuotasOrders is the platform release whose API serves tenant
@@ -80,15 +87,25 @@ const ReleaseEntitlements = "1.0.392"
 // platform answers the exchange 404, and the provider names this release.
 const ReleaseCIExchange = "1.0.395"
 
+// ReleaseServiceAccounts is the platform release whose API serves service
+// accounts (FeatureServiceAccounts).
+const ReleaseServiceAccounts = "1.0.397"
+
+// ReleaseFeedback is the platform release whose API serves the feedback
+// backlog reads (FeatureFeedback).
+const ReleaseFeedback = "1.0.260"
+
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{
-	FeatureK8sQuota:     "1.0.203",
-	FeatureTenantQuota:  ReleaseQuotasOrders,
-	FeatureCatalogue:    ReleaseQuotasOrders,
-	FeatureOrders:       ReleaseQuotasOrders,
-	FeatureAIUsage:      ReleaseAIBilling,
-	FeatureAIRates:      ReleaseAIBilling,
-	FeatureEntitlements: ReleaseEntitlements,
+	FeatureFeedback:        ReleaseFeedback,
+	FeatureServiceAccounts: ReleaseServiceAccounts,
+	FeatureK8sQuota:        "1.0.203",
+	FeatureTenantQuota:     ReleaseQuotasOrders,
+	FeatureCatalogue:       ReleaseQuotasOrders,
+	FeatureOrders:          ReleaseQuotasOrders,
+	FeatureAIUsage:         ReleaseAIBilling,
+	FeatureAIRates:         ReleaseAIBilling,
+	FeatureEntitlements:    ReleaseEntitlements,
 }
 
 // FeatureMinimum is the oldest platform release that serves a feature.

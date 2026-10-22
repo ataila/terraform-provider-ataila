@@ -65,6 +65,8 @@ type mockPerson struct {
 	ssoSync                        string
 	provStatus                     *string
 	createdAt, updatedAt           string
+	// owner is a service account's owner customer (service_accounts.go).
+	owner *int
 }
 
 type mockPermission struct {
@@ -421,7 +423,7 @@ func (m *MockAPI) loadPerson(c *call, raw string) (*mockPerson, *reply) {
 func refuseService(c *call, p *mockPerson) *reply {
 	if p.kind == "service" {
 		r := c.problem(http.StatusConflict, "service_account_managed_elsewhere",
-			"Service accounts are managed on the portal's API tokens and service accounts pages, not here.", nil)
+			"Service accounts are managed at /service-accounts (and their tokens in the portal), not here.", nil)
 		return &r
 	}
 	return nil

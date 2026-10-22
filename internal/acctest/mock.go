@@ -97,6 +97,8 @@ type MockAPI struct {
 	aiBilling    *aiBillingState
 	entitlements *entitlementsState
 	ci           *ciState
+	saLinks      map[string][]map[string]any // service account id -> its CI links (service_accounts.go)
+	feedback     *feedbackState
 }
 
 type storedReply struct {
@@ -520,6 +522,14 @@ func (m *MockAPI) route(c *call) reply {
 	}
 	// AI usage and rates (ai_billing.go), before the tenancy and gateway routes.
 	if rep, handled := m.routeAIBilling(c); handled {
+		return rep
+	}
+	// Service accounts (service_accounts.go), over the same people as /users.
+	if rep, handled := m.routeServiceAccounts(c); handled {
+		return rep
+	}
+	// The feedback backlog (feedback.go), read only.
+	if rep, handled := m.routeFeedback(c); handled {
 		return rep
 	}
 	switch {

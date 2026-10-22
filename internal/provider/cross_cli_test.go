@@ -36,6 +36,10 @@ const (
 //   - Terraform does NOT read a state OpenTofu wrote: the state names
 //     registry.opentofu.org/ataila/ataila, which Terraform does not know.
 //     After `terraform state replace-provider` it reads it without a diff.
+//   - `tofu show` (and `tofu show -json`) on a state that names Terraform's
+//     address fails, though `tofu plan` works: show loads the schema of the
+//     address the state names. It works once `tofu apply` or OpenTofu's own
+//     replace-provider has recorded OpenTofu's address.
 //
 // Each order ends with the second CLI changing something and the first one
 // reading that back without a diff. The README section "Switching between
@@ -89,6 +93,24 @@ func TestCrossCLIState(t *testing.T) {
 	replaceForTerraform := func(tf *cli) {
 		tf.must("state", "replace-provider", "-auto-approve", tofuAddr, terraformAddr)
 	}
+	// tofuShowRefuses: `tofu show` needs the schema of the address the state
+	// names, Terraform's, which OpenTofu does not have (README).
+	tofuShowRefuses := func(t *testing.T, tofu *cli) {
+		t.Helper()
+		for _, args := range [][]string{{"show", "-no-color"}, {"show", "-json"}} {
+			out, code := tofu.run(args...)
+			if code == 0 || !strings.Contains(out, terraformAddr) {
+				t.Fatalf("tofu %s on a Terraform state: exit %d, want a failure naming %s:\n%s",
+					strings.Join(args, " "), code, terraformAddr, out)
+			}
+		}
+		out, _ := tofu.run("show", "-no-color")
+		t.Logf("tofu show refuses as documented: %s", errorBlock(out))
+	}
+	tofuShows := func(tofu *cli) {
+		tofu.must("show", "-no-color")
+		tofu.must("show", "-json")
+	}
 
 	t.Run("terraform-first", func(t *testing.T) {
 		p, write := setup(t)
@@ -96,12 +118,14 @@ func TestCrossCLIState(t *testing.T) {
 		p.terraform.apply()
 		expectProviders(t, p.terraform.dir, terraformAddr, "terraform apply")
 
-		// OpenTofu reads Terraform's state unaided.
+		// OpenTofu plans on Terraform's state unaided; `tofu show` does not.
 		p.tofu.noDiff("OpenTofu reading the state Terraform wrote")
+		tofuShowRefuses(t, p.tofu)
 
 		write("Changed by OpenTofu.")
 		p.tofu.apply()
 		expectProviders(t, p.tofu.dir, tofuAddr, "tofu apply")
+		tofuShows(p.tofu)
 
 		// Back to Terraform: refused until the address is mapped.
 		terraformRefuses(t, p.terraform)
@@ -125,11 +149,13 @@ func TestCrossCLIState(t *testing.T) {
 		write("Changed by Terraform.")
 		p.terraform.apply()
 
-		// OpenTofu reads it back unaided; its optional replace-provider works too.
+		// OpenTofu plans on it unaided; `tofu show` needs its own replace-provider.
 		p.tofu.noDiff("OpenTofu reading the state Terraform wrote")
+		tofuShowRefuses(t, p.tofu)
 		p.tofu.must("state", "replace-provider", "-auto-approve", terraformAddr, tofuAddr)
 		expectProviders(t, p.tofu.dir, tofuAddr, "tofu state replace-provider")
 		p.tofu.noDiff("OpenTofu after its own replace-provider")
+		tofuShows(p.tofu)
 		p.tofu.must("destroy", "-input=false", "-no-color", "-auto-approve")
 	})
 }

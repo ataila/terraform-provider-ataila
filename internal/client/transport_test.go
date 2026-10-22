@@ -384,6 +384,12 @@ func TestIdempotencyKeyOnEveryDeclaringOperation(t *testing.T) {
 		"PUT /tenants/{tenant_id}/memberships/{user_id} (no key)": func() {
 			_, _, _ = api.PutMembership(ctx, "1", "1", "member")
 		},
+		"POST /service-accounts": func() {
+			_, _ = api.CreateServiceAccount(ctx, ServiceAccountCreate{Name: "ci-terraform"})
+		},
+		"PATCH /service-accounts/{service_account_id} (no key)": func() {
+			_, _ = api.UpdateServiceAccount(ctx, "1", Patch{"name": "ci-x"})
+		},
 	}
 	for name, call := range calls {
 		before := s.count()

@@ -313,6 +313,9 @@ func (p *ataProvider) DataSources(_ context.Context) []func() datasource.DataSou
 		NewAIRatePlanDataSource,
 		NewServicesDataSource,
 		NewCustomerEntitlementsDataSource,
+		NewServiceAccountDataSource,
+		NewFeedbackItemsDataSource,
+		NewFeedbackItemDataSource,
 	}
 }
 
@@ -340,6 +343,7 @@ func (p *ataProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewAIRatePlanResource,
 		NewServiceEntitlementResource,
 		NewServiceGrantResource,
+		NewServiceAccountResource,
 	}
 }
 
