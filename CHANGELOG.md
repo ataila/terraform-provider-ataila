@@ -5,9 +5,21 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ## Unreleased
 
+### Added
+
+- `ataila_whoami` gains `scope` and `tenant_id` (platform 1.0.372 on): `scope` is `tenant` for a
+  tenant-scoped token — minted in the portal by a tenant's owner or admin, it reads that one tenant and
+  nothing else, writes nothing, and works only while its owner is still the tenant's owner or admin — and
+  `global` for every other credential; `tenant_id` names the tenant (null otherwise). A platform older than
+  1.0.372 has no tenant-scoped tokens: `scope` is `global` there and nothing is refused.
+
 ### Changed
 
 - Copyright holder is the natural person (Macskásy Attila, ATAILA) until the Kft exists; NOTICE added.
+- The vendored contract moves from platform 1.0.237 to 1.0.372 (`api/openapi-v1.json`, additive only). The
+  two coding-job credential operations it now declares (`POST /projects/{id}/jobs/{job}/git-token`,
+  `POST /scratch/jobs/{job}`) are never called by the provider: write-only, one-day credentials are not
+  Terraform objects.
 
 ## 1.2.0 (2026-10-07) — contract of platform release 1.0.237
 

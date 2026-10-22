@@ -60,6 +60,12 @@ const ReleaseQuotasOrders = "1.0.233"
 // the AI rate card and tenant rate plans (FeatureAIUsage, FeatureAIRates).
 const ReleaseAIBilling = "1.0.237"
 
+// ReleaseTenantTokens is the platform release that brought tenant-scoped API
+// tokens: `scope` and `tenant_id` on GET /whoami. Nothing is refused on an
+// older platform — it simply has no tenant tokens, and ataila_whoami reports
+// `global` there — so this names the release in the documentation only.
+const ReleaseTenantTokens = "1.0.372"
+
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{
 	FeatureK8sQuota:    "1.0.203",

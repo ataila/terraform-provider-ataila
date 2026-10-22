@@ -10,6 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	"github.com/ataila/terraform-provider-ataila/internal/client"
 )
 
 var _ datasource.DataSourceWithConfigure = (*whoamiDataSource)(nil)
@@ -27,6 +29,8 @@ type whoamiModel struct {
 	Scopes    types.List   `tfsdk:"scopes"`
 	ExpiresAt types.String `tfsdk:"expires_at"`
 	Token     types.Object `tfsdk:"token"`
+	Scope     types.String `tfsdk:"scope"`
+	TenantID  types.String `tfsdk:"tenant_id"`
 }
 
 type principalModel struct {
@@ -132,6 +136,18 @@ func (d *whoamiDataSource) Schema(_ context.Context, _ datasource.SchemaRequest,
 					},
 				},
 			},
+			"scope": schema.StringAttribute{
+				MarkdownDescription: "`tenant` for a tenant-scoped token, which reads its own tenant " +
+					"(`tenant_id`) and nothing else and writes nothing; `global` for every other " +
+					"credential. A platform older than " + client.ReleaseTenantTokens + " has no " +
+					"tenant-scoped tokens and always answers `global`.",
+				Computed: true,
+			},
+			"tenant_id": schema.StringAttribute{
+				MarkdownDescription: "The tenant a tenant-scoped token is bound to; null for every other " +
+					"credential. Use it as the `tenant_id` of the tenant's data sources.",
+				Computed: true,
+			},
 		},
 	}
 }
@@ -172,12 +188,25 @@ func (d *whoamiDataSource) Read(ctx context.Context, _ datasource.ReadRequest, r
 		resp.Diagnostics.Append(diags...)
 	}
 
+	// A platform before ReleaseTenantTokens sends neither member: every
+	// credential it knows is global.
+	scope := "global"
+	if who.Scope != nil && *who.Scope != "" {
+		scope = *who.Scope
+	}
+	tenantID := types.StringNull()
+	if who.TenantId != nil && *who.TenantId != "" {
+		tenantID = types.StringValue(*who.TenantId)
+	}
+
 	state := whoamiModel{
 		Principal: principal,
 		AuthKind:  types.StringValue(who.AuthKind),
 		Scopes:    stringList(ctx, who.Scopes, &resp.Diagnostics),
 		ExpiresAt: timestampString(who.ExpiresAt),
 		Token:     token,
+		Scope:     types.StringValue(scope),
+		TenantID:  tenantID,
 	}
 	if resp.Diagnostics.HasError() {
 		return

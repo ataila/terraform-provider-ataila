@@ -37,6 +37,43 @@ func TestAccWhoamiDataSource(t *testing.T) {
 				resource.TestCheckResourceAttr("data.ataila_whoami.me", "token.prefix", "mocktokn"),
 				resource.TestCheckResourceAttr("data.ataila_whoami.me", "token.granted_scopes.#", "18"),
 				resource.TestCheckResourceAttr("data.ataila_whoami.me", "token.allow_destroy", "false"),
+				// The mock answers like a platform before tenant tokens: no
+				// `scope`, no `tenant_id`. That is a global credential.
+				resource.TestCheckResourceAttr("data.ataila_whoami.me", "scope", "global"),
+				resource.TestCheckNoResourceAttr("data.ataila_whoami.me", "tenant_id"),
+			),
+		}},
+	})
+}
+
+// A tenant-scoped token (platform 1.0.372 on) names its tenant, so a
+// configuration can feed it to the tenant's data sources.
+func TestAccWhoamiDataSource_TenantToken(t *testing.T) {
+	const tenant = "6a1f3c2e-9d84-4b7a-8e15-2c3d4e5f6a70"
+	m := acctest.NewMockAPI(t)
+	m.UseEnv(t)
+	m.SetWhoami(map[string]any{
+		"principal": map[string]any{"id": "u-7", "email": "owner@example.com", "name": "Tenant Owner", "kind": "human"},
+		"auth_kind": "pat",
+		"scopes":    []string{"projects-read-global", "tenancy-read-global"},
+		"scope":     "tenant",
+		"tenant_id": tenant,
+		"token": map[string]any{
+			"id": "t-7", "name": "tenant-tf", "prefix": "tenanttk",
+			"granted_scopes": []string{"projects-read-global", "tenancy-read-global"},
+			"allow_destroy":  false,
+		},
+	})
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: protoV6,
+		Steps: []resource.TestStep{{
+			Config: whoamiConfig,
+			Check: resource.ComposeAggregateTestCheckFunc(
+				resource.TestCheckResourceAttr("data.ataila_whoami.me", "scope", "tenant"),
+				resource.TestCheckResourceAttr("data.ataila_whoami.me", "tenant_id", tenant),
+				resource.TestCheckResourceAttr("data.ataila_whoami.me", "auth_kind", "pat"),
+				resource.TestCheckResourceAttr("data.ataila_whoami.me", "scopes.#", "2"),
+				resource.TestCheckResourceAttr("data.ataila_whoami.me", "token.allow_destroy", "false"),
 			),
 		}},
 	})

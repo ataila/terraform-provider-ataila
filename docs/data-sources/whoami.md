@@ -32,7 +32,9 @@ output "token_expires_at" {
 - `auth_kind` (String) How the caller authenticated: `pat` (personal token), `service_account` or `session`.
 - `expires_at` (String) When the credential expires (RFC 3339), when the platform reports it.
 - `principal` (Attributes) The calling principal. (see [below for nested schema](#nestedatt--principal))
+- `scope` (String) `tenant` for a tenant-scoped token, which reads its own tenant (`tenant_id`) and nothing else and writes nothing; `global` for every other credential. A platform older than 1.0.372 has no tenant-scoped tokens and always answers `global`.
 - `scopes` (List of String) Effective permission keys: for a token, the scopes it was minted with that the principal still holds right now.
+- `tenant_id` (String) The tenant a tenant-scoped token is bound to; null for every other credential. Use it as the `tenant_id` of the tenant's data sources.
 - `token` (Attributes) The API token in use; null for a portal session. (see [below for nested schema](#nestedatt--token))
 
 <a id="nestedatt--principal"></a>
