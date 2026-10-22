@@ -2747,6 +2747,19 @@
             "description": "A brand asset of kind `og_image` (the social preview card, 1200 x 630). `null`: none.",
             "title": "Og Image Asset Id"
           },
+          "on_primary_color": {
+            "anyOf": [
+              {
+                "pattern": "^#[0-9a-f]{6}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Six-digit hex text colour on the primary (button text), used as given in place of the computed one; no contrast minimum is enforced. `null`: computed from the primary: `#ffffff` when white reaches 4.5:1, otherwise whichever of `#ffffff` and `#0f172a` contrasts more.",
+            "title": "On Primary Color"
+          },
           "primary_color": {
             "anyOf": [
               {
@@ -2757,7 +2770,7 @@
                 "type": "null"
               }
             ],
-            "description": "Six-digit hex colour; the ten `shades` and the text colour on it are derived from it. `null`: the installation's brand colour.",
+            "description": "Six-digit hex colour; the ten `shades` and, unless `on_primary_color` is set, the text colour on it are derived from it. `null`: the installation's brand colour.",
             "title": "Primary Color"
           },
           "secondary_color": {
@@ -2789,6 +2802,7 @@
           "display_name",
           "display_name_accent",
           "primary_color",
+          "on_primary_color",
           "secondary_color",
           "font_preset",
           "header_logo_asset_id",
@@ -3101,6 +3115,19 @@
             "description": "A brand asset of kind `og_image` (the social preview card, 1200 x 630). `null`: none.",
             "title": "Og Image Asset Id"
           },
+          "on_primary_color": {
+            "anyOf": [
+              {
+                "pattern": "^#[0-9a-f]{6}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Six-digit hex text colour on the primary (button text), used as given in place of the computed one; no contrast minimum is enforced. `null`: computed from the primary: `#ffffff` when white reaches 4.5:1, otherwise whichever of `#ffffff` and `#0f172a` contrasts more.",
+            "title": "On Primary Color"
+          },
           "primary_color": {
             "anyOf": [
               {
@@ -3111,7 +3138,7 @@
                 "type": "null"
               }
             ],
-            "description": "Six-digit hex colour; the ten `shades` and the text colour on it are derived from it. `null`: the installation's brand colour.",
+            "description": "Six-digit hex colour; the ten `shades` and, unless `on_primary_color` is set, the text colour on it are derived from it. `null`: the installation's brand colour.",
             "title": "Primary Color"
           },
           "secondary_color": {
@@ -3132,6 +3159,7 @@
           "display_name",
           "display_name_accent",
           "primary_color",
+          "on_primary_color",
           "secondary_color",
           "font_preset",
           "header_logo_asset_id",
@@ -3303,6 +3331,16 @@
             "title": "Og Image Asset Id",
             "type": "string"
           },
+          "on_primary_color": {
+            "description": "Where `on_primary_color` came from.",
+            "enum": [
+              "profile",
+              "install",
+              "default"
+            ],
+            "title": "On Primary Color",
+            "type": "string"
+          },
           "primary_color": {
             "description": "Where `primary_color` came from.",
             "enum": [
@@ -3328,6 +3366,7 @@
           "display_name",
           "display_name_accent",
           "primary_color",
+          "on_primary_color",
           "secondary_color",
           "font_preset",
           "header_logo_asset_id",
@@ -12809,7 +12848,7 @@
             "description": "The legal links."
           },
           "on_primary": {
-            "description": "The text colour on the primary: `#ffffff`, or `#0f172a` when white does not reach 4.5:1 and the dark one contrasts more.",
+            "description": "The text colour on the primary: the profile's `on_primary_color` when it is set; otherwise `#ffffff`, or `#0f172a` when white does not reach 4.5:1 and the dark one contrasts more.",
             "title": "On Primary",
             "type": "string"
           },
@@ -13038,6 +13077,312 @@
           "sort_order"
         ],
         "title": "Service",
+        "type": "object"
+      },
+      "ServiceAccount": {
+        "description": "A non-human account for automation. It cannot sign in; it acts only through API\ntokens, which are minted in the portal or exchanged from a GitLab CI ID token, never\nthrough this resource.",
+        "properties": {
+          "active_tokens": {
+            "description": "How many of its tokens are live now (never a token itself).",
+            "title": "Active Tokens",
+            "type": "integer"
+          },
+          "ci_links": {
+            "description": "The GitLab projects linked to the account, by issuer and path. Read-only.",
+            "items": {
+              "$ref": "#/components/schemas/ServiceAccountCiLink"
+            },
+            "title": "Ci Links",
+            "type": "array"
+          },
+          "created_at": {
+            "description": "When the account was created.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "email": {
+            "description": "The account's synthetic e-mail address, which receives no mail.",
+            "title": "Email",
+            "type": "string"
+          },
+          "id": {
+            "description": "The account's user id (`principal.id` in `GET /whoami` for its tokens).",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_active": {
+            "description": "False when the account is deactivated: every token of it stops working at once.",
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "name": {
+            "description": "3-48 characters: lowercase letters, digits and `-`, starting with a letter. Unique among service accounts; it also names the account's synthetic e-mail address.",
+            "title": "Name",
+            "type": "string"
+          },
+          "owner_customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The customer this automation identity belongs to (`id` on a customer); null for the platform operator's own.",
+            "title": "Owner Customer Id"
+          },
+          "owner_customer_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The owner customer's short name; null without an owner.",
+            "title": "Owner Customer Name"
+          },
+          "roles": {
+            "description": "The permission keys the account holds, the whole set. Its tokens carry at most these. Never `admin` or a privileged role; a key newly added must be grantable and held by the caller (for a token: within its own scopes).",
+            "items": {
+              "type": "string"
+            },
+            "title": "Roles",
+            "type": "array"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it last changed.",
+            "title": "Updated At"
+          },
+          "warnings": {
+            "description": "What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person.",
+            "items": {
+              "$ref": "#/components/schemas/ApiWarning"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+          "is_active",
+          "owner_customer_id",
+          "owner_customer_name",
+          "roles",
+          "active_tokens",
+          "ci_links",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "ServiceAccount",
+        "type": "object"
+      },
+      "ServiceAccountCiLink": {
+        "description": "A GitLab project whose pipelines may exchange their ID token for a one-hour token of\nthe account (`POST /auth/ci-token`). Read-only here: an operator makes and removes links\nin the portal.",
+        "properties": {
+          "allow_destroy": {
+            "description": "Exchanged tokens may archive, delete, deactivate and retire.",
+            "title": "Allow Destroy",
+            "type": "boolean"
+          },
+          "created_at": {
+            "description": "When the link was made.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "description": "The link's id.",
+            "title": "Id",
+            "type": "string"
+          },
+          "issuer": {
+            "description": "The GitLab whose ID tokens the link accepts (its address).",
+            "title": "Issuer",
+            "type": "string"
+          },
+          "live_tokens": {
+            "description": "Tokens exchanged through this link that still work.",
+            "title": "Live Tokens",
+            "type": "integer"
+          },
+          "project_path": {
+            "description": "The GitLab project, as its ID tokens name it (`group/project`).",
+            "title": "Project Path",
+            "type": "string"
+          },
+          "protected_refs_only": {
+            "description": "Only pipelines of protected branches and tags may exchange.",
+            "title": "Protected Refs Only",
+            "type": "boolean"
+          },
+          "scopes": {
+            "description": "The scopes every exchanged token gets, less any the account no longer holds.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Scopes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "issuer",
+          "project_path",
+          "scopes",
+          "allow_destroy",
+          "protected_refs_only",
+          "live_tokens",
+          "created_at"
+        ],
+        "title": "ServiceAccountCiLink",
+        "type": "object"
+      },
+      "ServiceAccountCreate": {
+        "additionalProperties": false,
+        "description": "A new service account. It starts active, with no token.",
+        "properties": {
+          "name": {
+            "description": "3-48 characters: lowercase letters, digits and `-`, starting with a letter. Unique among service accounts; it also names the account's synthetic e-mail address.",
+            "maxLength": 48,
+            "minLength": 3,
+            "title": "Name",
+            "type": "string"
+          },
+          "owner_customer_id": {
+            "anyOf": [
+              {
+                "pattern": "^[1-9][0-9]{0,8}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The customer this automation identity belongs to (`id` on a customer); null for the platform operator's own.",
+            "title": "Owner Customer Id"
+          },
+          "roles": {
+            "description": "The permission keys the account holds, the whole set. Its tokens carry at most these. Never `admin` or a privileged role; a key newly added must be grantable and held by the caller (for a token: within its own scopes).",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 64,
+            "title": "Roles",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "ServiceAccountCreate",
+        "type": "object"
+      },
+      "ServiceAccountPage": {
+        "description": "One page of service accounts. `next_cursor` reads the next page.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/ServiceAccount"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ServiceAccountPage",
+        "type": "object"
+      },
+      "ServiceAccountPatch": {
+        "additionalProperties": false,
+        "description": "JSON Merge Patch (RFC 7396): a member that is omitted keeps its\ncurrent value; a member sent as `null` clears the field when the field is\nnullable (the schema marks it so), and `null` for any other field is a\n422. Only `owner_customer_id` is nullable (no owner).",
+        "properties": {
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`false` deactivates exactly like `DELETE` (the same destroy gate); `true` re-activates, and the account's tokens work again.",
+            "title": "Is Active"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "maxLength": 48,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "3-48 characters: lowercase letters, digits and `-`, starting with a letter. Unique among service accounts; it also names the account's synthetic e-mail address.",
+            "title": "Name"
+          },
+          "owner_customer_id": {
+            "anyOf": [
+              {
+                "pattern": "^[1-9][0-9]{0,8}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The customer this automation identity belongs to (`id` on a customer); null for the platform operator's own. `null` removes the owner.",
+            "title": "Owner Customer Id"
+          },
+          "roles": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 64,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The permission keys the account holds, the whole set. Its tokens carry at most these. Never `admin` or a privileged role; a key newly added must be grantable and held by the caller (for a token: within its own scopes). Sending the set replaces it.",
+            "title": "Roles"
+          }
+        },
+        "title": "ServiceAccountPatch",
         "type": "object"
       },
       "ServiceGrant": {
@@ -34760,6 +35105,1030 @@
         ]
       }
     },
+    "/service-accounts": {
+      "get": {
+        "description": "The service accounts in `name` order, each with its roles, live token count and\nGitLab CI links. Never a token.",
+        "operationId": "service_accounts_list",
+        "parameters": [
+          {
+            "description": "Only the accounts this customer owns.",
+            "in": "query",
+            "name": "owner_customer_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^[1-9][0-9]{0,8}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only the accounts this customer owns.",
+              "title": "Owner Customer Id"
+            }
+          },
+          {
+            "description": "`true` for active accounts only, `false` for deactivated ones; omit it for both.",
+            "in": "query",
+            "name": "is_active",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`true` for active accounts only, `false` for deactivated ones; omit it for both.",
+              "title": "Is Active"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceAccountPage"
+                }
+              }
+            },
+            "description": "One page of service accounts.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List service accounts",
+        "tags": [
+          "service-accounts"
+        ]
+      },
+      "post": {
+        "description": "Creates an active account with no token. A token for it is minted in the portal or exchanged from a GitLab CI ID token (`POST /auth/ci-token`) once an operator links a GitLab project to it in the portal; nothing here issues one. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Should the roles be refused after the account was made (a concurrent change), the account is kept with no role and the answer says so (`roles_not_set`). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.",
+        "operationId": "service_accounts_create",
+        "parameters": [
+          {
+            "description": "Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 1,
+              "pattern": "^[!-~]+$",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceAccountCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceAccount"
+                }
+              }
+            },
+            "description": "The service account was created.",
+            "headers": {
+              "Idempotent-Replayed": {
+                "$ref": "#/components/headers/Idempotent-Replayed"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A key is not grantable (`role_not_grantable`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A role rule refused it (`role_not_allowed_for_service_account`, `role_not_manageable_by_token`, `role_not_held_by_token`, `role_not_held`). Also: the caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The name is taken (`service_account_name_taken`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The name breaks the rule (`service_account_name_invalid`), `owner_customer_id` names no customer (`customer_not_found`), a role is not in the catalogue (`unknown_role`), or the body is invalid.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create a service account",
+        "tags": [
+          "service-accounts"
+        ]
+      }
+    },
+    "/service-accounts/{service_account_id}": {
+      "delete": {
+        "description": "Answers 204 with no body, like every v1 `DELETE`. Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{\"is_active\": true}` brings it back as it was. Deactivating an inactive account changes nothing.",
+        "operationId": "service_accounts_delete",
+        "parameters": [
+          {
+            "description": "The service account's id (`id` on a service account).",
+            "in": "path",
+            "name": "service_account_id",
+            "required": true,
+            "schema": {
+              "description": "The service account's id (`id` on a service account).",
+              "title": "Service Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The service account is deactivated.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A token created without `allow_destroy` (`destroy_not_allowed`). Also: the caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such service account (`service_account_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Deactivate a service account",
+        "tags": [
+          "service-accounts"
+        ]
+      },
+      "get": {
+        "description": "One service account, deactivated ones included, with its GitLab CI links.",
+        "operationId": "service_accounts_get",
+        "parameters": [
+          {
+            "description": "The service account's id (`id` on a service account).",
+            "in": "path",
+            "name": "service_account_id",
+            "required": true,
+            "schema": {
+              "description": "The service account's id (`id` on a service account).",
+              "title": "Service Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceAccount"
+                }
+              }
+            },
+            "description": "The service account.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such service account (`service_account_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Get a service account",
+        "tags": [
+          "service-accounts"
+        ]
+      },
+      "patch": {
+        "description": "Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{\"is_active\": true}` brings it back as it was.\n\nThe body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).",
+        "operationId": "service_accounts_update",
+        "parameters": [
+          {
+            "description": "The service account's id (`id` on a service account).",
+            "in": "path",
+            "name": "service_account_id",
+            "required": true,
+            "schema": {
+              "description": "The service account's id (`id` on a service account).",
+              "title": "Service Account Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceAccountPatch"
+              }
+            },
+            "application/merge-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceAccountPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceAccount"
+                }
+              }
+            },
+            "description": "The service account after the change.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A key is not grantable (`role_not_grantable`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "`is_active: false` with a token created without `allow_destroy` (`destroy_not_allowed`), or a role rule refused it (`role_not_allowed_for_service_account`, `role_not_manageable_by_token`, `role_not_held_by_token`, `token_cannot_change_own_roles`, `role_not_held`). Also: the caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such service account (`service_account_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The name is taken (`service_account_name_taken`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The name breaks the rule (`service_account_name_invalid`), `owner_customer_id` names no customer (`customer_not_found`), a role is not in the catalogue (`unknown_role`), or the body is invalid.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Change a service account",
+        "tags": [
+          "service-accounts"
+        ]
+      }
+    },
     "/services": {
       "get": {
         "description": "The services a customer can be entitled to, in display order (`sort_order`, then\n`key`).",
@@ -41138,6 +42507,10 @@
     {
       "description": "Exchange a GitLab CI job's ID token for a one-hour API token.",
       "name": "auth"
+    },
+    {
+      "description": "Automation identities: name, owner customer and roles. Never a token.",
+      "name": "service-accounts"
     },
     {
       "description": "Model Context Protocol: every GET operation as a read-only tool.",

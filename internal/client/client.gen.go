@@ -483,6 +483,27 @@ func (e BrandAppSourceOgImageAssetId) Valid() bool {
 	}
 }
 
+// Defines values for BrandAppSourceOnPrimaryColor.
+const (
+	BrandAppSourceOnPrimaryColorDefault BrandAppSourceOnPrimaryColor = "default"
+	BrandAppSourceOnPrimaryColorInstall BrandAppSourceOnPrimaryColor = "install"
+	BrandAppSourceOnPrimaryColorProfile BrandAppSourceOnPrimaryColor = "profile"
+)
+
+// Valid indicates whether the value is a known member of the BrandAppSourceOnPrimaryColor enum.
+func (e BrandAppSourceOnPrimaryColor) Valid() bool {
+	switch e {
+	case BrandAppSourceOnPrimaryColorDefault:
+		return true
+	case BrandAppSourceOnPrimaryColorInstall:
+		return true
+	case BrandAppSourceOnPrimaryColorProfile:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for BrandAppSourcePrimaryColor.
 const (
 	BrandAppSourcePrimaryColorDefault BrandAppSourcePrimaryColor = "default"
@@ -4623,7 +4644,10 @@ type BrandAppProfile struct {
 	// OgImageAssetId A brand asset of kind `og_image` (the social preview card, 1200 x 630). `null`: none.
 	OgImageAssetId *string `json:"og_image_asset_id"`
 
-	// PrimaryColor Six-digit hex colour; the ten `shades` and the text colour on it are derived from it. `null`: the installation's brand colour.
+	// OnPrimaryColor Six-digit hex text colour on the primary (button text), used as given in place of the computed one; no contrast minimum is enforced. `null`: computed from the primary: `#ffffff` when white reaches 4.5:1, otherwise whichever of `#ffffff` and `#0f172a` contrasts more.
+	OnPrimaryColor *string `json:"on_primary_color"`
+
+	// PrimaryColor Six-digit hex colour; the ten `shades` and, unless `on_primary_color` is set, the text colour on it are derived from it. `null`: the installation's brand colour.
 	PrimaryColor *string `json:"primary_color"`
 
 	// SecondaryColor Six-digit hex highlight colour. `null`: `#ffcf00`.
@@ -4728,7 +4752,10 @@ type BrandAppPut struct {
 	// OgImageAssetId A brand asset of kind `og_image` (the social preview card, 1200 x 630). `null`: none.
 	OgImageAssetId *string `json:"og_image_asset_id"`
 
-	// PrimaryColor Six-digit hex colour; the ten `shades` and the text colour on it are derived from it. `null`: the installation's brand colour.
+	// OnPrimaryColor Six-digit hex text colour on the primary (button text), used as given in place of the computed one; no contrast minimum is enforced. `null`: computed from the primary: `#ffffff` when white reaches 4.5:1, otherwise whichever of `#ffffff` and `#0f172a` contrasts more.
+	OnPrimaryColor *string `json:"on_primary_color"`
+
+	// PrimaryColor Six-digit hex colour; the ten `shades` and, unless `on_primary_color` is set, the text colour on it are derived from it. `null`: the installation's brand colour.
 	PrimaryColor *string `json:"primary_color"`
 
 	// SecondaryColor Six-digit hex highlight colour. `null`: `#ffcf00`.
@@ -4791,6 +4818,9 @@ type BrandAppSource struct {
 	// OgImageAssetId Where `og_image_asset_id` came from.
 	OgImageAssetId BrandAppSourceOgImageAssetId `json:"og_image_asset_id"`
 
+	// OnPrimaryColor Where `on_primary_color` came from.
+	OnPrimaryColor BrandAppSourceOnPrimaryColor `json:"on_primary_color"`
+
 	// PrimaryColor Where `primary_color` came from.
 	PrimaryColor BrandAppSourcePrimaryColor `json:"primary_color"`
 
@@ -4842,6 +4872,9 @@ type BrandAppSourceLegalPrivacyUrl string
 
 // BrandAppSourceOgImageAssetId Where `og_image_asset_id` came from.
 type BrandAppSourceOgImageAssetId string
+
+// BrandAppSourceOnPrimaryColor Where `on_primary_color` came from.
+type BrandAppSourceOnPrimaryColor string
 
 // BrandAppSourcePrimaryColor Where `primary_color` came from.
 type BrandAppSourcePrimaryColor string
@@ -8240,7 +8273,7 @@ type ResolvedAppBrand struct {
 	// Legal The legal links.
 	Legal BrandAppLegal `json:"legal"`
 
-	// OnPrimary The text colour on the primary: `#ffffff`, or `#0f172a` when white does not reach 4.5:1 and the dark one contrasts more.
+	// OnPrimary The text colour on the primary: the profile's `on_primary_color` when it is set; otherwise `#ffffff`, or `#0f172a` when white does not reach 4.5:1 and the dark one contrasts more.
 	OnPrimary string `json:"on_primary"`
 
 	// PrimaryColor The primary colour, lower-case hex.
@@ -8330,6 +8363,115 @@ type Service struct {
 
 	// Url Where the service is used: the shared instance, or for a `dedicated` service the reference instance.
 	Url *string `json:"url"`
+}
+
+// ServiceAccount A non-human account for automation. It cannot sign in; it acts only through API
+// tokens, which are minted in the portal or exchanged from a GitLab CI ID token, never
+// through this resource.
+type ServiceAccount struct {
+	// ActiveTokens How many of its tokens are live now (never a token itself).
+	ActiveTokens int `json:"active_tokens"`
+
+	// CiLinks The GitLab projects linked to the account, by issuer and path. Read-only.
+	CiLinks []ServiceAccountCiLink `json:"ci_links"`
+
+	// CreatedAt When the account was created.
+	CreatedAt time.Time `json:"created_at"`
+
+	// Email The account's synthetic e-mail address, which receives no mail.
+	Email string `json:"email"`
+
+	// Id The account's user id (`principal.id` in `GET /whoami` for its tokens).
+	Id string `json:"id"`
+
+	// IsActive False when the account is deactivated: every token of it stops working at once.
+	IsActive bool `json:"is_active"`
+
+	// Name 3-48 characters: lowercase letters, digits and `-`, starting with a letter. Unique among service accounts; it also names the account's synthetic e-mail address.
+	Name string `json:"name"`
+
+	// OwnerCustomerId The customer this automation identity belongs to (`id` on a customer); null for the platform operator's own.
+	OwnerCustomerId *string `json:"owner_customer_id"`
+
+	// OwnerCustomerName The owner customer's short name; null without an owner.
+	OwnerCustomerName *string `json:"owner_customer_name"`
+
+	// Roles The permission keys the account holds, the whole set. Its tokens carry at most these. Never `admin` or a privileged role; a key newly added must be grantable and held by the caller (for a token: within its own scopes).
+	Roles []string `json:"roles"`
+
+	// UpdatedAt When it last changed.
+	UpdatedAt *time.Time `json:"updated_at"`
+
+	// Warnings What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person.
+	Warnings *[]ApiWarning `json:"warnings,omitempty"`
+}
+
+// ServiceAccountCiLink A GitLab project whose pipelines may exchange their ID token for a one-hour token of
+// the account (`POST /auth/ci-token`). Read-only here: an operator makes and removes links
+// in the portal.
+type ServiceAccountCiLink struct {
+	// AllowDestroy Exchanged tokens may archive, delete, deactivate and retire.
+	AllowDestroy bool `json:"allow_destroy"`
+
+	// CreatedAt When the link was made.
+	CreatedAt time.Time `json:"created_at"`
+
+	// Id The link's id.
+	Id string `json:"id"`
+
+	// Issuer The GitLab whose ID tokens the link accepts (its address).
+	Issuer string `json:"issuer"`
+
+	// LiveTokens Tokens exchanged through this link that still work.
+	LiveTokens int `json:"live_tokens"`
+
+	// ProjectPath The GitLab project, as its ID tokens name it (`group/project`).
+	ProjectPath string `json:"project_path"`
+
+	// ProtectedRefsOnly Only pipelines of protected branches and tags may exchange.
+	ProtectedRefsOnly bool `json:"protected_refs_only"`
+
+	// Scopes The scopes every exchanged token gets, less any the account no longer holds.
+	Scopes []string `json:"scopes"`
+}
+
+// ServiceAccountCreate A new service account. It starts active, with no token.
+type ServiceAccountCreate struct {
+	// Name 3-48 characters: lowercase letters, digits and `-`, starting with a letter. Unique among service accounts; it also names the account's synthetic e-mail address.
+	Name string `json:"name"`
+
+	// OwnerCustomerId The customer this automation identity belongs to (`id` on a customer); null for the platform operator's own.
+	OwnerCustomerId *string `json:"owner_customer_id,omitempty"`
+
+	// Roles The permission keys the account holds, the whole set. Its tokens carry at most these. Never `admin` or a privileged role; a key newly added must be grantable and held by the caller (for a token: within its own scopes).
+	Roles *[]string `json:"roles,omitempty"`
+}
+
+// ServiceAccountPage One page of service accounts. `next_cursor` reads the next page.
+type ServiceAccountPage struct {
+	// Items This page's items, in the list's order.
+	Items []ServiceAccount `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// ServiceAccountPatch JSON Merge Patch (RFC 7396): a member that is omitted keeps its
+// current value; a member sent as `null` clears the field when the field is
+// nullable (the schema marks it so), and `null` for any other field is a
+// 422. Only `owner_customer_id` is nullable (no owner).
+type ServiceAccountPatch struct {
+	// IsActive `false` deactivates exactly like `DELETE` (the same destroy gate); `true` re-activates, and the account's tokens work again.
+	IsActive *bool `json:"is_active,omitempty"`
+
+	// Name 3-48 characters: lowercase letters, digits and `-`, starting with a letter. Unique among service accounts; it also names the account's synthetic e-mail address.
+	Name *string `json:"name,omitempty"`
+
+	// OwnerCustomerId The customer this automation identity belongs to (`id` on a customer); null for the platform operator's own. `null` removes the owner.
+	OwnerCustomerId *string `json:"owner_customer_id,omitempty"`
+
+	// Roles The permission keys the account holds, the whole set. Its tokens carry at most these. Never `admin` or a privileged role; a key newly added must be grantable and held by the caller (for a token: within its own scopes). Sending the set replaces it.
+	Roles *[]string `json:"roles,omitempty"`
 }
 
 // ServiceGrant A person's grant of a service under one customer. In force only while the
@@ -10085,6 +10227,27 @@ type ScratchJobCreateParams struct {
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
+// ServiceAccountsListParams defines parameters for ServiceAccountsList.
+type ServiceAccountsListParams struct {
+	// OwnerCustomerId Only the accounts this customer owns.
+	OwnerCustomerId *string `form:"owner_customer_id,omitempty" json:"owner_customer_id,omitempty"`
+
+	// IsActive `true` for active accounts only, `false` for deactivated ones; omit it for both.
+	IsActive *bool `form:"is_active,omitempty" json:"is_active,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// ServiceAccountsCreateParams defines parameters for ServiceAccountsCreate.
+type ServiceAccountsCreateParams struct {
+	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
+	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
+}
+
 // ServicesListParams defines parameters for ServicesList.
 type ServicesListParams struct {
 	// IncludeInactive Also list retired services (`active` false); omit it for the offered ones only.
@@ -10297,6 +10460,15 @@ type ProdLockPutJSONRequestBody = ProdLockPut
 
 // ReleasePromotionsCreateJSONRequestBody defines body for ReleasePromotionsCreate for application/json ContentType.
 type ReleasePromotionsCreateJSONRequestBody = ReleasePromotionCreate
+
+// ServiceAccountsCreateJSONRequestBody defines body for ServiceAccountsCreate for application/json ContentType.
+type ServiceAccountsCreateJSONRequestBody = ServiceAccountCreate
+
+// ServiceAccountsUpdateJSONRequestBody defines body for ServiceAccountsUpdate for application/json ContentType.
+type ServiceAccountsUpdateJSONRequestBody = ServiceAccountPatch
+
+// ServiceAccountsUpdateApplicationMergePatchPlusJSONRequestBody defines body for ServiceAccountsUpdate for application/merge-patch+json ContentType.
+type ServiceAccountsUpdateApplicationMergePatchPlusJSONRequestBody = ServiceAccountPatch
 
 // TenantsCreateJSONRequestBody defines body for TenantsCreate for application/json ContentType.
 type TenantsCreateJSONRequestBody = TenantCreate
@@ -12349,6 +12521,79 @@ type ClientInterface interface {
 	//
 	// Corresponds with DELETE /scratch/jobs/{job_id}/git-token (the `ScratchJobGitTokenDelete` operationId).
 	ScratchJobGitTokenDelete(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ServiceAccountsList List service accounts
+	//
+	// The service accounts in `name` order, each with its roles, live token count and
+	// GitLab CI links. Never a token.
+	//
+	// Corresponds with GET /service-accounts (the `ServiceAccountsList` operationId).
+	ServiceAccountsList(ctx context.Context, params *ServiceAccountsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ServiceAccountsCreateWithBody Create a service account
+	//
+	// Creates an active account with no token. A token for it is minted in the portal or exchanged from a GitLab CI ID token (`POST /auth/ci-token`) once an operator links a GitLab project to it in the portal; nothing here issues one. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Should the roles be refused after the account was made (a concurrent change), the account is kept with no role and the answer says so (`roles_not_set`). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /service-accounts (the `ServiceAccountsCreate` operationId).
+	ServiceAccountsCreateWithBody(ctx context.Context, params *ServiceAccountsCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ServiceAccountsCreate Create a service account
+	//
+	// Creates an active account with no token. A token for it is minted in the portal or exchanged from a GitLab CI ID token (`POST /auth/ci-token`) once an operator links a GitLab project to it in the portal; nothing here issues one. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Should the roles be refused after the account was made (a concurrent change), the account is kept with no role and the answer says so (`roles_not_set`). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /service-accounts (the `ServiceAccountsCreate` operationId).
+	ServiceAccountsCreate(ctx context.Context, params *ServiceAccountsCreateParams, body ServiceAccountsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ServiceAccountsDelete Deactivate a service account
+	//
+	// Answers 204 with no body, like every v1 `DELETE`. Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was. Deactivating an inactive account changes nothing.
+	//
+	// Corresponds with DELETE /service-accounts/{service_account_id} (the `ServiceAccountsDelete` operationId).
+	ServiceAccountsDelete(ctx context.Context, serviceAccountId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ServiceAccountsGet Get a service account
+	//
+	// One service account, deactivated ones included, with its GitLab CI links.
+	//
+	// Corresponds with GET /service-accounts/{service_account_id} (the `ServiceAccountsGet` operationId).
+	ServiceAccountsGet(ctx context.Context, serviceAccountId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ServiceAccountsUpdateWithBody Change a service account
+	//
+	// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+	ServiceAccountsUpdateWithBody(ctx context.Context, serviceAccountId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ServiceAccountsUpdate Change a service account
+	//
+	// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+	ServiceAccountsUpdate(ctx context.Context, serviceAccountId string, body ServiceAccountsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ServiceAccountsUpdateWithApplicationMergePatchPlusJSONBody Change a service account
+	//
+	// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type.
+	//
+	// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+	ServiceAccountsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, serviceAccountId string, body ServiceAccountsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ServicesList List services
 	//
@@ -15010,6 +15255,159 @@ func (c *Client) ScratchJobCreate(ctx context.Context, jobId string, params *Scr
 // Corresponds with DELETE /scratch/jobs/{job_id}/git-token (the `ScratchJobGitTokenDelete` operationId).
 func (c *Client) ScratchJobGitTokenDelete(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewScratchJobGitTokenDeleteRequest(c.Server, jobId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ServiceAccountsList List service accounts
+//
+// The service accounts in `name` order, each with its roles, live token count and
+// GitLab CI links. Never a token.
+//
+// Corresponds with GET /service-accounts (the `ServiceAccountsList` operationId).
+func (c *Client) ServiceAccountsList(ctx context.Context, params *ServiceAccountsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServiceAccountsListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ServiceAccountsCreateWithBody Create a service account
+//
+// Creates an active account with no token. A token for it is minted in the portal or exchanged from a GitLab CI ID token (`POST /auth/ci-token`) once an operator links a GitLab project to it in the portal; nothing here issues one. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Should the roles be refused after the account was made (a concurrent change), the account is kept with no role and the answer says so (`roles_not_set`). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /service-accounts (the `ServiceAccountsCreate` operationId).
+func (c *Client) ServiceAccountsCreateWithBody(ctx context.Context, params *ServiceAccountsCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServiceAccountsCreateRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ServiceAccountsCreate Create a service account
+//
+// Creates an active account with no token. A token for it is minted in the portal or exchanged from a GitLab CI ID token (`POST /auth/ci-token`) once an operator links a GitLab project to it in the portal; nothing here issues one. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Should the roles be refused after the account was made (a concurrent change), the account is kept with no role and the answer says so (`roles_not_set`). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /service-accounts (the `ServiceAccountsCreate` operationId).
+func (c *Client) ServiceAccountsCreate(ctx context.Context, params *ServiceAccountsCreateParams, body ServiceAccountsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServiceAccountsCreateRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ServiceAccountsDelete Deactivate a service account
+//
+// Answers 204 with no body, like every v1 `DELETE`. Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was. Deactivating an inactive account changes nothing.
+//
+// Corresponds with DELETE /service-accounts/{service_account_id} (the `ServiceAccountsDelete` operationId).
+func (c *Client) ServiceAccountsDelete(ctx context.Context, serviceAccountId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServiceAccountsDeleteRequest(c.Server, serviceAccountId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ServiceAccountsGet Get a service account
+//
+// One service account, deactivated ones included, with its GitLab CI links.
+//
+// Corresponds with GET /service-accounts/{service_account_id} (the `ServiceAccountsGet` operationId).
+func (c *Client) ServiceAccountsGet(ctx context.Context, serviceAccountId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServiceAccountsGetRequest(c.Server, serviceAccountId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ServiceAccountsUpdateWithBody Change a service account
+//
+// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+func (c *Client) ServiceAccountsUpdateWithBody(ctx context.Context, serviceAccountId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServiceAccountsUpdateRequestWithBody(c.Server, serviceAccountId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ServiceAccountsUpdate Change a service account
+//
+// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+func (c *Client) ServiceAccountsUpdate(ctx context.Context, serviceAccountId string, body ServiceAccountsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServiceAccountsUpdateRequest(c.Server, serviceAccountId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ServiceAccountsUpdateWithApplicationMergePatchPlusJSONBody Change a service account
+//
+// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type.
+//
+// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+func (c *Client) ServiceAccountsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, serviceAccountId string, body ServiceAccountsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServiceAccountsUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, serviceAccountId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -20643,6 +21041,277 @@ func NewScratchJobGitTokenDeleteRequest(server string, jobId string) (*http.Requ
 	return req, nil
 }
 
+// NewServiceAccountsListRequest constructs an http.Request for the ServiceAccountsList method
+func NewServiceAccountsListRequest(server string, params *ServiceAccountsListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/service-accounts")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.OwnerCustomerId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "owner_customer_id", *params.OwnerCustomerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.IsActive != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "is_active", *params.IsActive, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewServiceAccountsCreateRequest calls the generic ServiceAccountsCreate builder with application/json body
+func NewServiceAccountsCreateRequest(server string, params *ServiceAccountsCreateParams, body ServiceAccountsCreateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewServiceAccountsCreateRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewServiceAccountsCreateRequestWithBody constructs an http.Request for the ServiceAccountsCreate method, with any body, and a specified content type
+func NewServiceAccountsCreateRequestWithBody(server string, params *ServiceAccountsCreateParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/service-accounts")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IdempotencyKey != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Idempotency-Key", *params.IdempotencyKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Idempotency-Key", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewServiceAccountsDeleteRequest constructs an http.Request for the ServiceAccountsDelete method
+func NewServiceAccountsDeleteRequest(server string, serviceAccountId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "service_account_id", serviceAccountId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/service-accounts/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewServiceAccountsGetRequest constructs an http.Request for the ServiceAccountsGet method
+func NewServiceAccountsGetRequest(server string, serviceAccountId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "service_account_id", serviceAccountId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/service-accounts/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewServiceAccountsUpdateRequest calls the generic ServiceAccountsUpdate builder with application/json body
+func NewServiceAccountsUpdateRequest(server string, serviceAccountId string, body ServiceAccountsUpdateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewServiceAccountsUpdateRequestWithBody(server, serviceAccountId, "application/json", bodyReader)
+}
+
+// NewServiceAccountsUpdateRequestWithApplicationMergePatchPlusJSONBody calls the generic ServiceAccountsUpdate builder with application/merge-patch+json body
+func NewServiceAccountsUpdateRequestWithApplicationMergePatchPlusJSONBody(server string, serviceAccountId string, body ServiceAccountsUpdateApplicationMergePatchPlusJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewServiceAccountsUpdateRequestWithBody(server, serviceAccountId, "application/merge-patch+json", bodyReader)
+}
+
+// NewServiceAccountsUpdateRequestWithBody constructs an http.Request for the ServiceAccountsUpdate method, with any body, and a specified content type
+func NewServiceAccountsUpdateRequestWithBody(server string, serviceAccountId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "service_account_id", serviceAccountId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/service-accounts/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewServicesListRequest constructs an http.Request for the ServicesList method
 func NewServicesListRequest(server string, params *ServicesListParams) (*http.Request, error) {
 	var err error
@@ -23632,6 +24301,85 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with DELETE /scratch/jobs/{job_id}/git-token (the `ScratchJobGitTokenDelete` operationId).
 	ScratchJobGitTokenDeleteWithResponse(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*ScratchJobGitTokenDeleteResponse, error)
+
+	// ServiceAccountsListWithResponse List service accounts
+	//
+	// The service accounts in `name` order, each with its roles, live token count and
+	// GitLab CI links. Never a token.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /service-accounts (the `ServiceAccountsList` operationId).
+	ServiceAccountsListWithResponse(ctx context.Context, params *ServiceAccountsListParams, reqEditors ...RequestEditorFn) (*ServiceAccountsListResponse, error)
+
+	// ServiceAccountsCreateWithBodyWithResponse Create a service account
+	//
+	// Creates an active account with no token. A token for it is minted in the portal or exchanged from a GitLab CI ID token (`POST /auth/ci-token`) once an operator links a GitLab project to it in the portal; nothing here issues one. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Should the roles be refused after the account was made (a concurrent change), the account is kept with no role and the answer says so (`roles_not_set`). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /service-accounts (the `ServiceAccountsCreate` operationId).
+	ServiceAccountsCreateWithBodyWithResponse(ctx context.Context, params *ServiceAccountsCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ServiceAccountsCreateResponse, error)
+
+	// ServiceAccountsCreateWithResponse Create a service account
+	//
+	// Creates an active account with no token. A token for it is minted in the portal or exchanged from a GitLab CI ID token (`POST /auth/ci-token`) once an operator links a GitLab project to it in the portal; nothing here issues one. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Should the roles be refused after the account was made (a concurrent change), the account is kept with no role and the answer says so (`roles_not_set`). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /service-accounts (the `ServiceAccountsCreate` operationId).
+	ServiceAccountsCreateWithResponse(ctx context.Context, params *ServiceAccountsCreateParams, body ServiceAccountsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*ServiceAccountsCreateResponse, error)
+
+	// ServiceAccountsDeleteWithResponse Deactivate a service account
+	//
+	// Answers 204 with no body, like every v1 `DELETE`. Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was. Deactivating an inactive account changes nothing.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /service-accounts/{service_account_id} (the `ServiceAccountsDelete` operationId).
+	ServiceAccountsDeleteWithResponse(ctx context.Context, serviceAccountId string, reqEditors ...RequestEditorFn) (*ServiceAccountsDeleteResponse, error)
+
+	// ServiceAccountsGetWithResponse Get a service account
+	//
+	// One service account, deactivated ones included, with its GitLab CI links.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /service-accounts/{service_account_id} (the `ServiceAccountsGet` operationId).
+	ServiceAccountsGetWithResponse(ctx context.Context, serviceAccountId string, reqEditors ...RequestEditorFn) (*ServiceAccountsGetResponse, error)
+
+	// ServiceAccountsUpdateWithBodyWithResponse Change a service account
+	//
+	// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+	ServiceAccountsUpdateWithBodyWithResponse(ctx context.Context, serviceAccountId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ServiceAccountsUpdateResponse, error)
+
+	// ServiceAccountsUpdateWithResponse Change a service account
+	//
+	// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+	ServiceAccountsUpdateWithResponse(ctx context.Context, serviceAccountId string, body ServiceAccountsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*ServiceAccountsUpdateResponse, error)
+
+	// ServiceAccountsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a service account
+	//
+	// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+	//
+	// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+	//
+	// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+	ServiceAccountsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, serviceAccountId string, body ServiceAccountsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*ServiceAccountsUpdateResponse, error)
 
 	// ServicesListWithResponse List services
 	//
@@ -40906,6 +41654,969 @@ func (r ScratchJobGitTokenDeleteResponse) ContentType() string {
 	return ""
 }
 
+// ServiceAccountsListResponse200Headers the declared response headers of an HTTP 200 response for ServiceAccountsList
+type ServiceAccountsListResponse200Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsListResponse401Headers the declared response headers of an HTTP 401 response for ServiceAccountsList
+type ServiceAccountsListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ServiceAccountsListResponse403Headers the declared response headers of an HTTP 403 response for ServiceAccountsList
+type ServiceAccountsListResponse403Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsListResponse429Headers the declared response headers of an HTTP 429 response for ServiceAccountsList
+type ServiceAccountsListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServiceAccountsListResponse503Headers the declared response headers of an HTTP 503 response for ServiceAccountsList
+type ServiceAccountsListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServiceAccountsListResponseDefaultHeaders the declared response headers of an HTTP default response for ServiceAccountsList
+type ServiceAccountsListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ServiceAccountsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServiceAccountPage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ServiceAccountsListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ServiceAccountsListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ServiceAccountsListResponse403Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ServiceAccountsListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ServiceAccountsListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ServiceAccountsListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ServiceAccountsListResponse) GetJSON200() *ServiceAccountPage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ServiceAccountsListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ServiceAccountsListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ServiceAccountsListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ServiceAccountsListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ServiceAccountsListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ServiceAccountsListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ServiceAccountsListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ServiceAccountsListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ServiceAccountsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ServiceAccountsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ServiceAccountsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ServiceAccountsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ServiceAccountsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ServiceAccountsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ServiceAccountsCreateResponse201Headers the declared response headers of an HTTP 201 response for ServiceAccountsCreate
+type ServiceAccountsCreateResponse201Headers struct {
+	IdempotentReplayed *string
+	XRequestID         *string
+}
+
+// ServiceAccountsCreateResponse400Headers the declared response headers of an HTTP 400 response for ServiceAccountsCreate
+type ServiceAccountsCreateResponse400Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsCreateResponse401Headers the declared response headers of an HTTP 401 response for ServiceAccountsCreate
+type ServiceAccountsCreateResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ServiceAccountsCreateResponse403Headers the declared response headers of an HTTP 403 response for ServiceAccountsCreate
+type ServiceAccountsCreateResponse403Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsCreateResponse409Headers the declared response headers of an HTTP 409 response for ServiceAccountsCreate
+type ServiceAccountsCreateResponse409Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsCreateResponse422Headers the declared response headers of an HTTP 422 response for ServiceAccountsCreate
+type ServiceAccountsCreateResponse422Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsCreateResponse429Headers the declared response headers of an HTTP 429 response for ServiceAccountsCreate
+type ServiceAccountsCreateResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServiceAccountsCreateResponse503Headers the declared response headers of an HTTP 503 response for ServiceAccountsCreate
+type ServiceAccountsCreateResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServiceAccountsCreateResponseDefaultHeaders the declared response headers of an HTTP default response for ServiceAccountsCreate
+type ServiceAccountsCreateResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ServiceAccountsCreateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *ServiceAccount
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Problem
+	// ApplicationproblemJSON400 the response for an HTTP 400 `application/problem+json` response
+	ApplicationproblemJSON400 *Problem
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers201 the parsed response headers for an HTTP 201 response
+	Headers201 *ServiceAccountsCreateResponse201Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ServiceAccountsCreateResponse400Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ServiceAccountsCreateResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ServiceAccountsCreateResponse403Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *ServiceAccountsCreateResponse409Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *ServiceAccountsCreateResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ServiceAccountsCreateResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ServiceAccountsCreateResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ServiceAccountsCreateResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r ServiceAccountsCreateResponse) GetJSON201() *ServiceAccount {
+	return r.JSON201
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ServiceAccountsCreateResponse) GetJSON400() *Problem {
+	return r.JSON400
+}
+
+// GetApplicationproblemJSON400 returns the response for an HTTP 400 `application/problem+json` response
+func (r ServiceAccountsCreateResponse) GetApplicationproblemJSON400() *Problem {
+	return r.ApplicationproblemJSON400
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ServiceAccountsCreateResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ServiceAccountsCreateResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ServiceAccountsCreateResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ServiceAccountsCreateResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ServiceAccountsCreateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ServiceAccountsCreateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ServiceAccountsCreateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ServiceAccountsCreateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ServiceAccountsCreateResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ServiceAccountsCreateResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ServiceAccountsCreateResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ServiceAccountsCreateResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ServiceAccountsCreateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ServiceAccountsCreateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ServiceAccountsCreateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ServiceAccountsCreateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ServiceAccountsCreateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ServiceAccountsCreateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ServiceAccountsDeleteResponse204Headers the declared response headers of an HTTP 204 response for ServiceAccountsDelete
+type ServiceAccountsDeleteResponse204Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsDeleteResponse401Headers the declared response headers of an HTTP 401 response for ServiceAccountsDelete
+type ServiceAccountsDeleteResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ServiceAccountsDeleteResponse403Headers the declared response headers of an HTTP 403 response for ServiceAccountsDelete
+type ServiceAccountsDeleteResponse403Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsDeleteResponse404Headers the declared response headers of an HTTP 404 response for ServiceAccountsDelete
+type ServiceAccountsDeleteResponse404Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsDeleteResponse429Headers the declared response headers of an HTTP 429 response for ServiceAccountsDelete
+type ServiceAccountsDeleteResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServiceAccountsDeleteResponse503Headers the declared response headers of an HTTP 503 response for ServiceAccountsDelete
+type ServiceAccountsDeleteResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServiceAccountsDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for ServiceAccountsDelete
+type ServiceAccountsDeleteResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ServiceAccountsDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *ServiceAccountsDeleteResponse204Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ServiceAccountsDeleteResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ServiceAccountsDeleteResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ServiceAccountsDeleteResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ServiceAccountsDeleteResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ServiceAccountsDeleteResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ServiceAccountsDeleteResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ServiceAccountsDeleteResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ServiceAccountsDeleteResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ServiceAccountsDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ServiceAccountsDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ServiceAccountsDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ServiceAccountsDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ServiceAccountsDeleteResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ServiceAccountsDeleteResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ServiceAccountsDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ServiceAccountsDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ServiceAccountsDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ServiceAccountsDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ServiceAccountsDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ServiceAccountsDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ServiceAccountsDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ServiceAccountsDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ServiceAccountsGetResponse200Headers the declared response headers of an HTTP 200 response for ServiceAccountsGet
+type ServiceAccountsGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsGetResponse401Headers the declared response headers of an HTTP 401 response for ServiceAccountsGet
+type ServiceAccountsGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ServiceAccountsGetResponse403Headers the declared response headers of an HTTP 403 response for ServiceAccountsGet
+type ServiceAccountsGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsGetResponse404Headers the declared response headers of an HTTP 404 response for ServiceAccountsGet
+type ServiceAccountsGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsGetResponse429Headers the declared response headers of an HTTP 429 response for ServiceAccountsGet
+type ServiceAccountsGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServiceAccountsGetResponse503Headers the declared response headers of an HTTP 503 response for ServiceAccountsGet
+type ServiceAccountsGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServiceAccountsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ServiceAccountsGet
+type ServiceAccountsGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ServiceAccountsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServiceAccount
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ServiceAccountsGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ServiceAccountsGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ServiceAccountsGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ServiceAccountsGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ServiceAccountsGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ServiceAccountsGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ServiceAccountsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ServiceAccountsGetResponse) GetJSON200() *ServiceAccount {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ServiceAccountsGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ServiceAccountsGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ServiceAccountsGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ServiceAccountsGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ServiceAccountsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ServiceAccountsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ServiceAccountsGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ServiceAccountsGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ServiceAccountsGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ServiceAccountsGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ServiceAccountsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ServiceAccountsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ServiceAccountsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ServiceAccountsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ServiceAccountsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ServiceAccountsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ServiceAccountsUpdateResponse200Headers the declared response headers of an HTTP 200 response for ServiceAccountsUpdate
+type ServiceAccountsUpdateResponse200Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsUpdateResponse400Headers the declared response headers of an HTTP 400 response for ServiceAccountsUpdate
+type ServiceAccountsUpdateResponse400Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsUpdateResponse401Headers the declared response headers of an HTTP 401 response for ServiceAccountsUpdate
+type ServiceAccountsUpdateResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ServiceAccountsUpdateResponse403Headers the declared response headers of an HTTP 403 response for ServiceAccountsUpdate
+type ServiceAccountsUpdateResponse403Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsUpdateResponse404Headers the declared response headers of an HTTP 404 response for ServiceAccountsUpdate
+type ServiceAccountsUpdateResponse404Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsUpdateResponse409Headers the declared response headers of an HTTP 409 response for ServiceAccountsUpdate
+type ServiceAccountsUpdateResponse409Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsUpdateResponse422Headers the declared response headers of an HTTP 422 response for ServiceAccountsUpdate
+type ServiceAccountsUpdateResponse422Headers struct {
+	XRequestID *string
+}
+
+// ServiceAccountsUpdateResponse429Headers the declared response headers of an HTTP 429 response for ServiceAccountsUpdate
+type ServiceAccountsUpdateResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServiceAccountsUpdateResponse503Headers the declared response headers of an HTTP 503 response for ServiceAccountsUpdate
+type ServiceAccountsUpdateResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServiceAccountsUpdateResponseDefaultHeaders the declared response headers of an HTTP default response for ServiceAccountsUpdate
+type ServiceAccountsUpdateResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ServiceAccountsUpdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServiceAccount
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Problem
+	// ApplicationproblemJSON400 the response for an HTTP 400 `application/problem+json` response
+	ApplicationproblemJSON400 *Problem
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ServiceAccountsUpdateResponse200Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ServiceAccountsUpdateResponse400Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ServiceAccountsUpdateResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ServiceAccountsUpdateResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ServiceAccountsUpdateResponse404Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *ServiceAccountsUpdateResponse409Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *ServiceAccountsUpdateResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ServiceAccountsUpdateResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ServiceAccountsUpdateResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ServiceAccountsUpdateResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ServiceAccountsUpdateResponse) GetJSON200() *ServiceAccount {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ServiceAccountsUpdateResponse) GetJSON400() *Problem {
+	return r.JSON400
+}
+
+// GetApplicationproblemJSON400 returns the response for an HTTP 400 `application/problem+json` response
+func (r ServiceAccountsUpdateResponse) GetApplicationproblemJSON400() *Problem {
+	return r.ApplicationproblemJSON400
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ServiceAccountsUpdateResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ServiceAccountsUpdateResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ServiceAccountsUpdateResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ServiceAccountsUpdateResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ServiceAccountsUpdateResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ServiceAccountsUpdateResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ServiceAccountsUpdateResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ServiceAccountsUpdateResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ServiceAccountsUpdateResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ServiceAccountsUpdateResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ServiceAccountsUpdateResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ServiceAccountsUpdateResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ServiceAccountsUpdateResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ServiceAccountsUpdateResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ServiceAccountsUpdateResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ServiceAccountsUpdateResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ServiceAccountsUpdateResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ServiceAccountsUpdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ServiceAccountsUpdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ServiceAccountsUpdateResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ServicesListResponse200Headers the declared response headers of an HTTP 200 response for ServicesList
 type ServicesListResponse200Headers struct {
 	XRequestID *string
@@ -48612,6 +50323,133 @@ func (c *ClientWithResponses) ScratchJobGitTokenDeleteWithResponse(ctx context.C
 		return nil, err
 	}
 	return ParseScratchJobGitTokenDeleteResponse(rsp)
+}
+
+// ServiceAccountsListWithResponse List service accounts
+//
+// The service accounts in `name` order, each with its roles, live token count and
+// GitLab CI links. Never a token.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /service-accounts (the `ServiceAccountsList` operationId).
+func (c *ClientWithResponses) ServiceAccountsListWithResponse(ctx context.Context, params *ServiceAccountsListParams, reqEditors ...RequestEditorFn) (*ServiceAccountsListResponse, error) {
+	rsp, err := c.ServiceAccountsList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseServiceAccountsListResponse(rsp)
+}
+
+// ServiceAccountsCreateWithBodyWithResponse Create a service account
+//
+// Creates an active account with no token. A token for it is minted in the portal or exchanged from a GitLab CI ID token (`POST /auth/ci-token`) once an operator links a GitLab project to it in the portal; nothing here issues one. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Should the roles be refused after the account was made (a concurrent change), the account is kept with no role and the answer says so (`roles_not_set`). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /service-accounts (the `ServiceAccountsCreate` operationId).
+func (c *ClientWithResponses) ServiceAccountsCreateWithBodyWithResponse(ctx context.Context, params *ServiceAccountsCreateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ServiceAccountsCreateResponse, error) {
+	rsp, err := c.ServiceAccountsCreateWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseServiceAccountsCreateResponse(rsp)
+}
+
+// ServiceAccountsCreateWithResponse Create a service account
+//
+// Creates an active account with no token. A token for it is minted in the portal or exchanged from a GitLab CI ID token (`POST /auth/ci-token`) once an operator links a GitLab project to it in the portal; nothing here issues one. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Should the roles be refused after the account was made (a concurrent change), the account is kept with no role and the answer says so (`roles_not_set`). Send an `Idempotency-Key` to make a retry safe: a retry with the same key and request gets the first answer and changes nothing.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /service-accounts (the `ServiceAccountsCreate` operationId).
+func (c *ClientWithResponses) ServiceAccountsCreateWithResponse(ctx context.Context, params *ServiceAccountsCreateParams, body ServiceAccountsCreateJSONRequestBody, reqEditors ...RequestEditorFn) (*ServiceAccountsCreateResponse, error) {
+	rsp, err := c.ServiceAccountsCreate(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseServiceAccountsCreateResponse(rsp)
+}
+
+// ServiceAccountsDeleteWithResponse Deactivate a service account
+//
+// Answers 204 with no body, like every v1 `DELETE`. Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was. Deactivating an inactive account changes nothing.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /service-accounts/{service_account_id} (the `ServiceAccountsDelete` operationId).
+func (c *ClientWithResponses) ServiceAccountsDeleteWithResponse(ctx context.Context, serviceAccountId string, reqEditors ...RequestEditorFn) (*ServiceAccountsDeleteResponse, error) {
+	rsp, err := c.ServiceAccountsDelete(ctx, serviceAccountId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseServiceAccountsDeleteResponse(rsp)
+}
+
+// ServiceAccountsGetWithResponse Get a service account
+//
+// One service account, deactivated ones included, with its GitLab CI links.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /service-accounts/{service_account_id} (the `ServiceAccountsGet` operationId).
+func (c *ClientWithResponses) ServiceAccountsGetWithResponse(ctx context.Context, serviceAccountId string, reqEditors ...RequestEditorFn) (*ServiceAccountsGetResponse, error) {
+	rsp, err := c.ServiceAccountsGet(ctx, serviceAccountId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseServiceAccountsGetResponse(rsp)
+}
+
+// ServiceAccountsUpdateWithBodyWithResponse Change a service account
+//
+// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+func (c *ClientWithResponses) ServiceAccountsUpdateWithBodyWithResponse(ctx context.Context, serviceAccountId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ServiceAccountsUpdateResponse, error) {
+	rsp, err := c.ServiceAccountsUpdateWithBody(ctx, serviceAccountId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseServiceAccountsUpdateResponse(rsp)
+}
+
+// ServiceAccountsUpdateWithResponse Change a service account
+//
+// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+func (c *ClientWithResponses) ServiceAccountsUpdateWithResponse(ctx context.Context, serviceAccountId string, body ServiceAccountsUpdateJSONRequestBody, reqEditors ...RequestEditorFn) (*ServiceAccountsUpdateResponse, error) {
+	rsp, err := c.ServiceAccountsUpdate(ctx, serviceAccountId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseServiceAccountsUpdateResponse(rsp)
+}
+
+// ServiceAccountsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse Change a service account
+//
+// Only the members in the body change. `roles` replaces the whole set. `is_active: false` is a deactivation, with the same destroy gate as `DELETE`; `is_active: true` re-activates. Role rules (the same as the portal's and the users' role grants): never `admin` or a privileged role (`role_not_allowed_for_service_account`); a key newly added must be in the catalogue (`unknown_role`) and grantable (`role_not_grantable`); a token adds or removes only keys within its own scopes (`role_not_held_by_token`), never a token management key (`role_not_manageable_by_token`) and never on its own account (`token_cannot_change_own_roles`); a portal session adds only keys it holds itself (`role_not_held`). Deactivation never deletes: `is_active` becomes false and every token of the account stops on its next request. Its roles, tokens and GitLab CI links are kept, so `PATCH` `{"is_active": true}` brings it back as it was.
+//
+// The body is a JSON Merge Patch (RFC 7396), sent as `application/merge-patch+json` or `application/json`: a member that is omitted is left unchanged, and a member set to `null` clears that field where clearing is allowed (the schema marks those fields nullable; `null` for any other field is a 422).
+//
+// Takes a body of the `application/merge-patch+json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /service-accounts/{service_account_id} (the `ServiceAccountsUpdate` operationId).
+func (c *ClientWithResponses) ServiceAccountsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, serviceAccountId string, body ServiceAccountsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*ServiceAccountsUpdateResponse, error) {
+	rsp, err := c.ServiceAccountsUpdateWithApplicationMergePatchPlusJSONBody(ctx, serviceAccountId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseServiceAccountsUpdateResponse(rsp)
 }
 
 // ServicesListWithResponse List services
@@ -68852,6 +70690,1125 @@ func ParseScratchJobGitTokenDeleteResponse(rsp *http.Response) (*ScratchJobGitTo
 		response.Headers503 = &headers
 	case true:
 		var headers ScratchJobGitTokenDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseServiceAccountsListResponse parses an HTTP response from a ServiceAccountsListWithResponse call
+func ParseServiceAccountsListResponse(rsp *http.Response) (*ServiceAccountsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ServiceAccountsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServiceAccountPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ServiceAccountsListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers ServiceAccountsListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ServiceAccountsListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 429:
+		var headers ServiceAccountsListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ServiceAccountsListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ServiceAccountsListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseServiceAccountsCreateResponse parses an HTTP response from a ServiceAccountsCreateWithResponse call
+func ParseServiceAccountsCreateResponse(rsp *http.Response) (*ServiceAccountsCreateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ServiceAccountsCreateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest ServiceAccount
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 201:
+		var headers ServiceAccountsCreateResponse201Headers
+		if values := rsp.Header.Values("Idempotent-Replayed"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Idempotent-Replayed", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.IdempotentReplayed = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers201 = &headers
+	case rsp.StatusCode == 400:
+		var headers ServiceAccountsCreateResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case rsp.StatusCode == 401:
+		var headers ServiceAccountsCreateResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ServiceAccountsCreateResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 409:
+		var headers ServiceAccountsCreateResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 422:
+		var headers ServiceAccountsCreateResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers ServiceAccountsCreateResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ServiceAccountsCreateResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ServiceAccountsCreateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseServiceAccountsDeleteResponse parses an HTTP response from a ServiceAccountsDeleteWithResponse call
+func ParseServiceAccountsDeleteResponse(rsp *http.Response) (*ServiceAccountsDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ServiceAccountsDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers ServiceAccountsDeleteResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 401:
+		var headers ServiceAccountsDeleteResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ServiceAccountsDeleteResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ServiceAccountsDeleteResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers ServiceAccountsDeleteResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ServiceAccountsDeleteResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ServiceAccountsDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseServiceAccountsGetResponse parses an HTTP response from a ServiceAccountsGetWithResponse call
+func ParseServiceAccountsGetResponse(rsp *http.Response) (*ServiceAccountsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ServiceAccountsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServiceAccount
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ServiceAccountsGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers ServiceAccountsGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ServiceAccountsGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ServiceAccountsGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers ServiceAccountsGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ServiceAccountsGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ServiceAccountsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseServiceAccountsUpdateResponse parses an HTTP response from a ServiceAccountsUpdateWithResponse call
+func ParseServiceAccountsUpdateResponse(rsp *http.Response) (*ServiceAccountsUpdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ServiceAccountsUpdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServiceAccount
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ServiceAccountsUpdateResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 400:
+		var headers ServiceAccountsUpdateResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case rsp.StatusCode == 401:
+		var headers ServiceAccountsUpdateResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ServiceAccountsUpdateResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ServiceAccountsUpdateResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 409:
+		var headers ServiceAccountsUpdateResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 422:
+		var headers ServiceAccountsUpdateResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers ServiceAccountsUpdateResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ServiceAccountsUpdateResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ServiceAccountsUpdateResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
