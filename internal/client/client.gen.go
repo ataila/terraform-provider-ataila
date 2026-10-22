@@ -3323,6 +3323,7 @@ func (e AiGatewayKeysListParamsOrigin) Valid() bool {
 
 // Defines values for AuditEventsListParamsAuthKind.
 const (
+	AuditEventsListParamsAuthKindCi             AuditEventsListParamsAuthKind = "ci"
 	AuditEventsListParamsAuthKindPat            AuditEventsListParamsAuthKind = "pat"
 	AuditEventsListParamsAuthKindServiceAccount AuditEventsListParamsAuthKind = "service_account"
 	AuditEventsListParamsAuthKindSession        AuditEventsListParamsAuthKind = "session"
@@ -3331,6 +3332,8 @@ const (
 // Valid indicates whether the value is a known member of the AuditEventsListParamsAuthKind enum.
 func (e AuditEventsListParamsAuthKind) Valid() bool {
 	switch e {
+	case AuditEventsListParamsAuthKindCi:
+		return true
 	case AuditEventsListParamsAuthKindPat:
 		return true
 	case AuditEventsListParamsAuthKindServiceAccount:
@@ -4436,7 +4439,7 @@ type AuditEvent struct {
 	// AfterState The entity after the change as the writer recorded it: usually an object, null on a delete. Every member whose NAME looks secret (it contains `secret`, `password`, `token`, `hash`, `pepper`, `credential`, `api_key` and the like, at any depth) is always null here, whatever it held.
 	AfterState interface{} `json:"after_state,omitempty"`
 
-	// AuthKind `session`, `pat` (personal API token) or `service_account`. Null when the writer did not record it: every row older than the public API, and today most portal pages and automated writers (only `/api/v1`, API-token management and platform settings record it).
+	// AuthKind `session`, `pat` (personal API token), `service_account` or `ci` (a token exchanged from a GitLab CI ID token, and the exchange itself). Null when the writer did not record it: every row older than the public API, and today most portal pages and automated writers (only `/api/v1`, API-token management and platform settings record it).
 	AuthKind *string `json:"auth_kind"`
 
 	// BeforeState The entity before the change as the writer recorded it: usually an object, null on a create. Every member whose NAME looks secret (it contains `secret`, `password`, `token`, `hash`, `pepper`, `credential`, `api_key` and the like, at any depth) is always null here, whatever it held.
@@ -5006,6 +5009,39 @@ type CatalogueItemPage struct {
 
 	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
 	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// CiToken A one-hour API token for the pipeline's service account.
+type CiToken struct {
+	// AllowDestroy The token may archive, delete, deactivate and retire, as the operator's link allows.
+	AllowDestroy bool `json:"allow_destroy"`
+
+	// ExpiresAt When the token stops working: one hour after the exchange.
+	ExpiresAt time.Time `json:"expires_at"`
+
+	// ProjectPath The GitLab project whose pipeline exchanged it, as its ID token names it.
+	ProjectPath string `json:"project_path"`
+
+	// Scopes The permission keys the token carries: the operator's link's, less any the service account no longer holds. `GET /whoami` shows what is in effect.
+	Scopes []string `json:"scopes"`
+
+	// ServiceAccountId The service account the token acts as.
+	ServiceAccountId string `json:"service_account_id"`
+
+	// ServiceAccountName That service account's name.
+	ServiceAccountName string `json:"service_account_name"`
+
+	// Token SENSITIVE. The API token (`ataila_cit_…`), returned only here: send it as `Authorization: Bearer <token>`. It expires at `expires_at` and is never renewed; exchange a fresh ID token for the next run.
+	Token string `json:"token"`
+
+	// TokenId The token's id, as the audit log records it.
+	TokenId string `json:"token_id"`
+}
+
+// CiTokenRequest A GitLab CI job's ID token, offered for a one-hour API token.
+type CiTokenRequest struct {
+	// IdToken The job's ID token as GitLab issued it (`id_tokens:` in the job; its `aud` must be this platform's address). SENSITIVE: a signed credential, valid for minutes.
+	IdToken string `json:"id_token"`
 }
 
 // ClusterMember A node of a DGX cluster.
@@ -9380,7 +9416,7 @@ type UserPatchLocale string
 
 // Whoami Who is calling, how, and what they may do right now.
 type Whoami struct {
-	// AuthKind How the caller authenticated: `session` (signed in to the portal), `pat` (a personal API token) or `service_account` (a service-account token). Other values may appear.
+	// AuthKind How the caller authenticated: `session` (signed in to the portal), `pat` (a personal API token), `service_account` (a service-account token) or `ci` (a service-account token exchanged from a GitLab CI ID token at `POST /auth/ci-token`). Other values may appear.
 	AuthKind string `json:"auth_kind"`
 
 	// ExpiresAt When the credential stops working: the token's expiry, or the session's.
@@ -10204,6 +10240,9 @@ type AiGatewayTiersPutJSONRequestBody = ServingTierPut
 
 // AiRateCardPutJSONRequestBody defines body for AiRateCardPut for application/json ContentType.
 type AiRateCardPutJSONRequestBody = AiRateCardPut
+
+// CiTokenExchangeJSONRequestBody defines body for CiTokenExchange for application/json ContentType.
+type CiTokenExchangeJSONRequestBody = CiTokenRequest
 
 // BrandPutJSONRequestBody defines body for BrandPut for application/json ContentType.
 type BrandPutJSONRequestBody = BrandPut
@@ -11560,6 +11599,24 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /audit-events/{event_id} (the `AuditEventsGet` operationId).
 	AuditEventsGet(ctx context.Context, eventId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CiTokenExchangeWithBody Exchange a GitLab CI ID token
+	//
+	// Exchanges a GitLab CI job's ID token for a one-hour API token (`ataila_cit_…`) of the service account an operator linked to that GitLab project in the portal. Needs no `Authorization`: the ID token is the proof. In the job, `id_tokens: { ATAILA_CI_JWT: { aud: "https://portal.example.com" } }` asks GitLab for one; its `aud` must be this platform's address. The token's scopes and destroy flag are the link's; it cannot be renewed (exchange a fresh ID token) and is deleted with the link. Every exchange is audited with `auth_kind` `ci`, the pipeline, job, ref and commit. Not idempotency-keyed: the answer is a secret, so a retry simply exchanges again.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /auth/ci-token (the `CiTokenExchange` operationId).
+	CiTokenExchangeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CiTokenExchange Exchange a GitLab CI ID token
+	//
+	// Exchanges a GitLab CI job's ID token for a one-hour API token (`ataila_cit_…`) of the service account an operator linked to that GitLab project in the portal. Needs no `Authorization`: the ID token is the proof. In the job, `id_tokens: { ATAILA_CI_JWT: { aud: "https://portal.example.com" } }` asks GitLab for one; its `aud` must be this platform's address. The token's scopes and destroy flag are the link's; it cannot be renewed (exchange a fresh ID token) and is deleted with the link. Every exchange is audited with `auth_kind` `ci`, the pipeline, job, ref and commit. Not idempotency-keyed: the answer is a secret, so a retry simply exchanges again.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /auth/ci-token (the `CiTokenExchange` operationId).
+	CiTokenExchange(ctx context.Context, body CiTokenExchangeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// BrandGet This platform's brand
 	//
@@ -13423,6 +13480,44 @@ func (c *Client) AuditEventsList(ctx context.Context, params *AuditEventsListPar
 // Corresponds with GET /audit-events/{event_id} (the `AuditEventsGet` operationId).
 func (c *Client) AuditEventsGet(ctx context.Context, eventId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAuditEventsGetRequest(c.Server, eventId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CiTokenExchangeWithBody Exchange a GitLab CI ID token
+//
+// Exchanges a GitLab CI job's ID token for a one-hour API token (`ataila_cit_…`) of the service account an operator linked to that GitLab project in the portal. Needs no `Authorization`: the ID token is the proof. In the job, `id_tokens: { ATAILA_CI_JWT: { aud: "https://portal.example.com" } }` asks GitLab for one; its `aud` must be this platform's address. The token's scopes and destroy flag are the link's; it cannot be renewed (exchange a fresh ID token) and is deleted with the link. Every exchange is audited with `auth_kind` `ci`, the pipeline, job, ref and commit. Not idempotency-keyed: the answer is a secret, so a retry simply exchanges again.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /auth/ci-token (the `CiTokenExchange` operationId).
+func (c *Client) CiTokenExchangeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCiTokenExchangeRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CiTokenExchange Exchange a GitLab CI ID token
+//
+// Exchanges a GitLab CI job's ID token for a one-hour API token (`ataila_cit_…`) of the service account an operator linked to that GitLab project in the portal. Needs no `Authorization`: the ID token is the proof. In the job, `id_tokens: { ATAILA_CI_JWT: { aud: "https://portal.example.com" } }` asks GitLab for one; its `aud` must be this platform's address. The token's scopes and destroy flag are the link's; it cannot be renewed (exchange a fresh ID token) and is deleted with the link. Every exchange is audited with `auth_kind` `ci`, the pipeline, job, ref and commit. Not idempotency-keyed: the answer is a secret, so a retry simply exchanges again.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /auth/ci-token (the `CiTokenExchange` operationId).
+func (c *Client) CiTokenExchange(ctx context.Context, body CiTokenExchangeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCiTokenExchangeRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -17527,6 +17622,46 @@ func NewAuditEventsGetRequest(server string, eventId string) (*http.Request, err
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewCiTokenExchangeRequest calls the generic CiTokenExchange builder with application/json body
+func NewCiTokenExchangeRequest(server string, body CiTokenExchangeJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCiTokenExchangeRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCiTokenExchangeRequestWithBody constructs an http.Request for the CiTokenExchange method, with any body, and a specified content type
+func NewCiTokenExchangeRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/auth/ci-token")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -22657,6 +22792,24 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /audit-events/{event_id} (the `AuditEventsGet` operationId).
 	AuditEventsGetWithResponse(ctx context.Context, eventId string, reqEditors ...RequestEditorFn) (*AuditEventsGetResponse, error)
+
+	// CiTokenExchangeWithBodyWithResponse Exchange a GitLab CI ID token
+	//
+	// Exchanges a GitLab CI job's ID token for a one-hour API token (`ataila_cit_…`) of the service account an operator linked to that GitLab project in the portal. Needs no `Authorization`: the ID token is the proof. In the job, `id_tokens: { ATAILA_CI_JWT: { aud: "https://portal.example.com" } }` asks GitLab for one; its `aud` must be this platform's address. The token's scopes and destroy flag are the link's; it cannot be renewed (exchange a fresh ID token) and is deleted with the link. Every exchange is audited with `auth_kind` `ci`, the pipeline, job, ref and commit. Not idempotency-keyed: the answer is a secret, so a retry simply exchanges again.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /auth/ci-token (the `CiTokenExchange` operationId).
+	CiTokenExchangeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CiTokenExchangeResponse, error)
+
+	// CiTokenExchangeWithResponse Exchange a GitLab CI ID token
+	//
+	// Exchanges a GitLab CI job's ID token for a one-hour API token (`ataila_cit_…`) of the service account an operator linked to that GitLab project in the portal. Needs no `Authorization`: the ID token is the proof. In the job, `id_tokens: { ATAILA_CI_JWT: { aud: "https://portal.example.com" } }` asks GitLab for one; its `aud` must be this platform's address. The token's scopes and destroy flag are the link's; it cannot be renewed (exchange a fresh ID token) and is deleted with the link. Every exchange is audited with `auth_kind` `ci`, the pipeline, job, ref and commit. Not idempotency-keyed: the answer is a secret, so a retry simply exchanges again.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /auth/ci-token (the `CiTokenExchange` operationId).
+	CiTokenExchangeWithResponse(ctx context.Context, body CiTokenExchangeJSONRequestBody, reqEditors ...RequestEditorFn) (*CiTokenExchangeResponse, error)
 
 	// BrandGetWithResponse This platform's brand
 	//
@@ -29615,6 +29768,162 @@ func (r AuditEventsGetResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AuditEventsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CiTokenExchangeResponse201Headers the declared response headers of an HTTP 201 response for CiTokenExchange
+type CiTokenExchangeResponse201Headers struct {
+	XRequestID *string
+}
+
+// CiTokenExchangeResponse401Headers the declared response headers of an HTTP 401 response for CiTokenExchange
+type CiTokenExchangeResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// CiTokenExchangeResponse403Headers the declared response headers of an HTTP 403 response for CiTokenExchange
+type CiTokenExchangeResponse403Headers struct {
+	XRequestID *string
+}
+
+// CiTokenExchangeResponse429Headers the declared response headers of an HTTP 429 response for CiTokenExchange
+type CiTokenExchangeResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CiTokenExchangeResponse503Headers the declared response headers of an HTTP 503 response for CiTokenExchange
+type CiTokenExchangeResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CiTokenExchangeResponseDefaultHeaders the declared response headers of an HTTP default response for CiTokenExchange
+type CiTokenExchangeResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type CiTokenExchangeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *CiToken
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers201 the parsed response headers for an HTTP 201 response
+	Headers201 *CiTokenExchangeResponse201Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *CiTokenExchangeResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *CiTokenExchangeResponse403Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *CiTokenExchangeResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *CiTokenExchangeResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CiTokenExchangeResponseDefaultHeaders
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CiTokenExchangeResponse) GetJSON201() *CiToken {
+	return r.JSON201
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r CiTokenExchangeResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r CiTokenExchangeResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r CiTokenExchangeResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CiTokenExchangeResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r CiTokenExchangeResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r CiTokenExchangeResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r CiTokenExchangeResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r CiTokenExchangeResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CiTokenExchangeResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CiTokenExchangeResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CiTokenExchangeResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CiTokenExchangeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CiTokenExchangeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CiTokenExchangeResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -46997,6 +47306,36 @@ func (c *ClientWithResponses) AuditEventsGetWithResponse(ctx context.Context, ev
 	return ParseAuditEventsGetResponse(rsp)
 }
 
+// CiTokenExchangeWithBodyWithResponse Exchange a GitLab CI ID token
+//
+// Exchanges a GitLab CI job's ID token for a one-hour API token (`ataila_cit_…`) of the service account an operator linked to that GitLab project in the portal. Needs no `Authorization`: the ID token is the proof. In the job, `id_tokens: { ATAILA_CI_JWT: { aud: "https://portal.example.com" } }` asks GitLab for one; its `aud` must be this platform's address. The token's scopes and destroy flag are the link's; it cannot be renewed (exchange a fresh ID token) and is deleted with the link. Every exchange is audited with `auth_kind` `ci`, the pipeline, job, ref and commit. Not idempotency-keyed: the answer is a secret, so a retry simply exchanges again.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /auth/ci-token (the `CiTokenExchange` operationId).
+func (c *ClientWithResponses) CiTokenExchangeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CiTokenExchangeResponse, error) {
+	rsp, err := c.CiTokenExchangeWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCiTokenExchangeResponse(rsp)
+}
+
+// CiTokenExchangeWithResponse Exchange a GitLab CI ID token
+//
+// Exchanges a GitLab CI job's ID token for a one-hour API token (`ataila_cit_…`) of the service account an operator linked to that GitLab project in the portal. Needs no `Authorization`: the ID token is the proof. In the job, `id_tokens: { ATAILA_CI_JWT: { aud: "https://portal.example.com" } }` asks GitLab for one; its `aud` must be this platform's address. The token's scopes and destroy flag are the link's; it cannot be renewed (exchange a fresh ID token) and is deleted with the link. Every exchange is audited with `auth_kind` `ci`, the pipeline, job, ref and commit. Not idempotency-keyed: the answer is a secret, so a retry simply exchanges again.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /auth/ci-token (the `CiTokenExchange` operationId).
+func (c *ClientWithResponses) CiTokenExchangeWithResponse(ctx context.Context, body CiTokenExchangeJSONRequestBody, reqEditors ...RequestEditorFn) (*CiTokenExchangeResponse, error) {
+	rsp, err := c.CiTokenExchange(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCiTokenExchangeResponse(rsp)
+}
+
 // BrandGetWithResponse This platform's brand
 //
 // The one brand of this platform. `attribution` and `first_party` are read-only and computed. The `ETag` response header carries `version` for `If-Match`. `PUT /brand` is a FULL replacement: to change one field, send back every writable field of this answer, the unchanged ones included. A field left out is refused (422 naming it), and `null` for an asset id clears that asset.
@@ -55572,6 +55911,186 @@ func ParseAuditEventsGetResponse(rsp *http.Response) (*AuditEventsGetResponse, e
 		response.Headers503 = &headers
 	case true:
 		var headers AuditEventsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCiTokenExchangeResponse parses an HTTP response from a CiTokenExchangeWithResponse call
+func ParseCiTokenExchangeResponse(rsp *http.Response) (*CiTokenExchangeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CiTokenExchangeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CiToken
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 201:
+		var headers CiTokenExchangeResponse201Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers201 = &headers
+	case rsp.StatusCode == 401:
+		var headers CiTokenExchangeResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers CiTokenExchangeResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 429:
+		var headers CiTokenExchangeResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers CiTokenExchangeResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers CiTokenExchangeResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
