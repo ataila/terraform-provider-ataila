@@ -4427,6 +4427,362 @@
         "title": "CustomerPatch",
         "type": "object"
       },
+      "CustomerService": {
+        "description": "A service a customer holds (an entitlement), with its seat use.",
+        "properties": {
+          "approved": {
+            "description": "An operator approved the entitlement in the portal (needed only for a service that `requires_approval`).",
+            "title": "Approved",
+            "type": "boolean"
+          },
+          "approved_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it was approved; null when not.",
+            "title": "Approved At"
+          },
+          "created_at": {
+            "description": "When the customer first held the service.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "customer_id": {
+            "description": "The customer's id.",
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "dedicated_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The customer's own instance of a `dedicated` service; null until it exists.",
+            "title": "Dedicated Url"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Free text.",
+            "title": "Notes"
+          },
+          "seats": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "How many people may hold a grant under it at once; null means no limit.",
+            "title": "Seats"
+          },
+          "seats_used": {
+            "description": "How many people hold an unrevoked grant under it.",
+            "title": "Seats Used",
+            "type": "integer"
+          },
+          "service_key": {
+            "description": "The service's key (`key` on a service).",
+            "title": "Service Key",
+            "type": "string"
+          },
+          "service_name": {
+            "description": "The service's display name.",
+            "title": "Service Name",
+            "type": "string"
+          },
+          "state": {
+            "description": "`enabled` (in force), `pending_approval` (asked for, waiting for an operator's approval in the portal: no grant under it is in force) or `disabled` (withdrawn: no grant under it is in force).",
+            "enum": [
+              "enabled",
+              "pending_approval",
+              "disabled"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "When the entitlement last changed.",
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Where the customer uses the service: `dedicated_url` when set, else the service's own `url`.",
+            "title": "Url"
+          }
+        },
+        "required": [
+          "customer_id",
+          "service_key",
+          "service_name",
+          "state",
+          "seats",
+          "seats_used",
+          "dedicated_url",
+          "url",
+          "approved",
+          "approved_at",
+          "notes",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "CustomerService",
+        "type": "object"
+      },
+      "CustomerServicePage": {
+        "description": "One page of a customer's entitlements, in the catalogue's display order.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/CustomerService"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "CustomerServicePage",
+        "type": "object"
+      },
+      "CustomerServicePut": {
+        "additionalProperties": false,
+        "description": "What a customer holds of one service. A full replacement: a member left\nout is reset to its default. There is no approval member: the API never\napproves, and an unknown member is a 422.",
+        "properties": {
+          "dedicated_url": {
+            "anyOf": [
+              {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The customer's own instance of a `dedicated` service.",
+            "title": "Dedicated Url"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Free text.",
+            "title": "Notes"
+          },
+          "seats": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 100000.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "How many people may hold a grant under it at once; null or omitted means no limit. A limit below the grants already held refuses no existing grant, only new ones.",
+            "title": "Seats"
+          },
+          "state": {
+            "default": "enabled",
+            "description": "`enabled` asks for the service to be in force; for a service that `requires_approval` and is not approved yet, the entitlement is stored as `pending_approval` instead, with the warning `approval_required`. `disabled` withdraws it without revoking the grants under it (the DELETE revokes them).",
+            "enum": [
+              "enabled",
+              "disabled"
+            ],
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "title": "CustomerServicePut",
+        "type": "object"
+      },
+      "CustomerServiceWritten": {
+        "description": "An entitlement after a write.",
+        "properties": {
+          "approved": {
+            "description": "An operator approved the entitlement in the portal (needed only for a service that `requires_approval`).",
+            "title": "Approved",
+            "type": "boolean"
+          },
+          "approved_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it was approved; null when not.",
+            "title": "Approved At"
+          },
+          "created_at": {
+            "description": "When the customer first held the service.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "customer_id": {
+            "description": "The customer's id.",
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "dedicated_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The customer's own instance of a `dedicated` service; null until it exists.",
+            "title": "Dedicated Url"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Free text.",
+            "title": "Notes"
+          },
+          "seats": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "How many people may hold a grant under it at once; null means no limit.",
+            "title": "Seats"
+          },
+          "seats_used": {
+            "description": "How many people hold an unrevoked grant under it.",
+            "title": "Seats Used",
+            "type": "integer"
+          },
+          "service_key": {
+            "description": "The service's key (`key` on a service).",
+            "title": "Service Key",
+            "type": "string"
+          },
+          "service_name": {
+            "description": "The service's display name.",
+            "title": "Service Name",
+            "type": "string"
+          },
+          "state": {
+            "description": "`enabled` (in force), `pending_approval` (asked for, waiting for an operator's approval in the portal: no grant under it is in force) or `disabled` (withdrawn: no grant under it is in force).",
+            "enum": [
+              "enabled",
+              "pending_approval",
+              "disabled"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "When the entitlement last changed.",
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Where the customer uses the service: `dedicated_url` when set, else the service's own `url`.",
+            "title": "Url"
+          },
+          "warnings": {
+            "description": "What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person.",
+            "items": {
+              "$ref": "#/components/schemas/ApiWarning"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "customer_id",
+          "service_key",
+          "service_name",
+          "state",
+          "seats",
+          "seats_used",
+          "dedicated_url",
+          "url",
+          "approved",
+          "approved_at",
+          "notes",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "CustomerServiceWritten",
+        "type": "object"
+      },
       "DgxCluster": {
         "description": "DGX nodes joined into one serving pool, as recorded. A DGX in no cluster\nserves on its own.",
         "properties": {
@@ -12526,6 +12882,420 @@
           "path"
         ],
         "title": "SecretPath",
+        "type": "object"
+      },
+      "Service": {
+        "description": "A service a customer can be entitled to: one row of the service catalogue.",
+        "properties": {
+          "active": {
+            "description": "The service is offered. A retired service keeps its entitlements and grants, and none of them is in force.",
+            "title": "Active",
+            "type": "boolean"
+          },
+          "category": {
+            "description": "`shared` (one instance serves every customer) or `dedicated` (each customer gets its own instance, at its entitlement's `dedicated_url`). Other values may appear.",
+            "title": "Category",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What the service is, for a person.",
+            "title": "Description"
+          },
+          "enforcement": {
+            "description": "How the platform makes a grant real: `claim` (checked when the person signs in), `role` (an application role), `projection` (a membership written into the service itself, removed again when the grant is revoked), `manual` (an operator applies it) or `network` (network access). Other values may appear.",
+            "title": "Enforcement",
+            "type": "string"
+          },
+          "key": {
+            "description": "The service's key: lowercase letters, digits and '-', starting with a letter. Entitlements and grants name the service by it.",
+            "title": "Key",
+            "type": "string"
+          },
+          "name": {
+            "description": "The service's display name.",
+            "title": "Name",
+            "type": "string"
+          },
+          "requires_approval": {
+            "description": "Enabling the service for a customer needs an operator's approval in the portal. Until it is approved the entitlement is `pending_approval`, and the API never approves it.",
+            "title": "Requires Approval",
+            "type": "boolean"
+          },
+          "sort_order": {
+            "description": "Display order; lower first.",
+            "title": "Sort Order",
+            "type": "integer"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Where the service is used: the shared instance, or for a `dedicated` service the reference instance.",
+            "title": "Url"
+          }
+        },
+        "required": [
+          "key",
+          "name",
+          "description",
+          "category",
+          "enforcement",
+          "url",
+          "requires_approval",
+          "active",
+          "sort_order"
+        ],
+        "title": "Service",
+        "type": "object"
+      },
+      "ServiceGrant": {
+        "description": "A person's grant of a service under one customer. In force only while the\ncustomer's entitlement is `enabled`, the service is active and the grant is not\nrevoked (`effective`).",
+        "properties": {
+          "blocked_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why a grant is not in force: `grant_revoked`, `service_retired`, `customer_pending_approval` or `customer_disabled`; null when it is in force. Other values may appear.",
+            "title": "Blocked By"
+          },
+          "customer_id": {
+            "description": "The customer the grant is held under.",
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "effective": {
+            "description": "The grant is in force right now.",
+            "title": "Effective",
+            "type": "boolean"
+          },
+          "grant_level": {
+            "description": "What the person may do in the service: `login`, `user`, `admin` or `audit`.",
+            "enum": [
+              "login",
+              "user",
+              "admin",
+              "audit"
+            ],
+            "title": "Grant Level",
+            "type": "string"
+          },
+          "granted_at": {
+            "description": "When it was granted.",
+            "format": "date-time",
+            "title": "Granted At",
+            "type": "string"
+          },
+          "granted_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Who granted it (a user id), when recorded.",
+            "title": "Granted By"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Free text.",
+            "title": "Notes"
+          },
+          "revoked_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it was revoked; null while it is not.",
+            "title": "Revoked At"
+          },
+          "service_key": {
+            "description": "The service's key.",
+            "title": "Service Key",
+            "type": "string"
+          },
+          "user_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The person's e-mail address.",
+            "title": "User Email"
+          },
+          "user_id": {
+            "description": "The person's id.",
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "user_email",
+          "customer_id",
+          "service_key",
+          "grant_level",
+          "effective",
+          "blocked_by",
+          "granted_by",
+          "granted_at",
+          "revoked_at",
+          "notes"
+        ],
+        "title": "ServiceGrant",
+        "type": "object"
+      },
+      "ServiceGrantPage": {
+        "description": "One page of service grants.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/ServiceGrant"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ServiceGrantPage",
+        "type": "object"
+      },
+      "ServiceGrantPut": {
+        "additionalProperties": false,
+        "description": "A person's grant of one service under one customer. A full replacement.",
+        "properties": {
+          "grant_level": {
+            "default": "user",
+            "description": "What the person may do in the service: `login`, `user` (the default), `admin` or `audit`.",
+            "enum": [
+              "login",
+              "user",
+              "admin",
+              "audit"
+            ],
+            "title": "Grant Level",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Free text.",
+            "title": "Notes"
+          }
+        },
+        "title": "ServiceGrantPut",
+        "type": "object"
+      },
+      "ServiceGrantWritten": {
+        "description": "A grant after a write.",
+        "properties": {
+          "blocked_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why a grant is not in force: `grant_revoked`, `service_retired`, `customer_pending_approval` or `customer_disabled`; null when it is in force. Other values may appear.",
+            "title": "Blocked By"
+          },
+          "customer_id": {
+            "description": "The customer the grant is held under.",
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "effective": {
+            "description": "The grant is in force right now.",
+            "title": "Effective",
+            "type": "boolean"
+          },
+          "grant_level": {
+            "description": "What the person may do in the service: `login`, `user`, `admin` or `audit`.",
+            "enum": [
+              "login",
+              "user",
+              "admin",
+              "audit"
+            ],
+            "title": "Grant Level",
+            "type": "string"
+          },
+          "granted_at": {
+            "description": "When it was granted.",
+            "format": "date-time",
+            "title": "Granted At",
+            "type": "string"
+          },
+          "granted_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Who granted it (a user id), when recorded.",
+            "title": "Granted By"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Free text.",
+            "title": "Notes"
+          },
+          "revoked_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it was revoked; null while it is not.",
+            "title": "Revoked At"
+          },
+          "service_key": {
+            "description": "The service's key.",
+            "title": "Service Key",
+            "type": "string"
+          },
+          "user_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The person's e-mail address.",
+            "title": "User Email"
+          },
+          "user_id": {
+            "description": "The person's id.",
+            "title": "User Id",
+            "type": "string"
+          },
+          "warnings": {
+            "description": "What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person.",
+            "items": {
+              "$ref": "#/components/schemas/ApiWarning"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "user_id",
+          "user_email",
+          "customer_id",
+          "service_key",
+          "grant_level",
+          "effective",
+          "blocked_by",
+          "granted_by",
+          "granted_at",
+          "revoked_at",
+          "notes"
+        ],
+        "title": "ServiceGrantWritten",
+        "type": "object"
+      },
+      "ServicePage": {
+        "description": "One page of the service catalogue, in display order.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ServicePage",
         "type": "object"
       },
       "ServingTier": {
@@ -25031,6 +25801,1024 @@
         ]
       }
     },
+    "/customers/{customer_id}/service-grants": {
+      "get": {
+        "description": "Who holds which service under the customer, in `user_id` then `service_key`\norder, each with whether it is in force and, when not, why.",
+        "operationId": "customer_service_grants_list",
+        "parameters": [
+          {
+            "description": "The customer's id (`id` on a customer).",
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Customer Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Also list revoked grants; omit it for the unrevoked ones only.",
+            "in": "query",
+            "name": "include_revoked",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "Also list revoked grants; omit it for the unrevoked ones only.",
+              "title": "Include Revoked",
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceGrantPage"
+                }
+              }
+            },
+            "description": "One page of grants.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such customer (`customer_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "The service grants under a customer",
+        "tags": [
+          "entitlements"
+        ]
+      }
+    },
+    "/customers/{customer_id}/services": {
+      "get": {
+        "description": "Every service the customer holds, in any state, with its seat use, in the\ncatalogue's display order. A tenant-scoped token reads its own customer's only.",
+        "operationId": "customer_services_list",
+        "parameters": [
+          {
+            "description": "The customer's id (`id` on a customer).",
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Customer Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerServicePage"
+                }
+              }
+            },
+            "description": "One page of the customer's entitlements.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such customer (`customer_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A customer's services",
+        "tags": [
+          "entitlements"
+        ]
+      }
+    },
+    "/customers/{customer_id}/services/{service_key}": {
+      "delete": {
+        "description": "Withdraws the service from the customer: the entitlement is disabled and every grant under it is revoked, so enabling it again later gives nobody access back. The rows are kept for the record (a later `PUT` re-enables the entitlement, with no grants). People lose access in the service within the platform's reconcile interval. Destroy-class: a token needs `allow_destroy`.",
+        "operationId": "customer_services_delete",
+        "parameters": [
+          {
+            "description": "The service's key (`key` on a service).",
+            "in": "path",
+            "name": "service_key",
+            "required": true,
+            "schema": {
+              "description": "The service's key (`key` on a service).",
+              "title": "Service Key",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The customer's id (`id` on a customer).",
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Customer Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The service was withdrawn.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A token created without `allow_destroy` (`destroy_not_allowed`). Also: the caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such customer (`customer_not_found`) or service (`service_not_found`), or the customer does not hold it (`entitlement_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Withdraw a customer's service",
+        "tags": [
+          "entitlements"
+        ]
+      },
+      "get": {
+        "description": "What the customer holds of one service, in any state.",
+        "operationId": "customer_services_get",
+        "parameters": [
+          {
+            "description": "The service's key (`key` on a service).",
+            "in": "path",
+            "name": "service_key",
+            "required": true,
+            "schema": {
+              "description": "The service's key (`key` on a service).",
+              "title": "Service Key",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The customer's id (`id` on a customer).",
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Customer Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerService"
+                }
+              }
+            },
+            "description": "The entitlement.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such customer (`customer_not_found`) or service (`service_not_found`), or the customer does not hold it (`entitlement_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One of a customer's services",
+        "tags": [
+          "entitlements"
+        ]
+      },
+      "put": {
+        "description": "Sets what the customer holds of one service: 201 when it did not hold it, 200\notherwise. A full replacement of `state`, `seats`, `dedicated_url` and `notes`.\n\nNever approves. For a service that `requires_approval`, `enabled` without an\noperator's approval is stored `pending_approval` and answered with the warning\n`approval_required`: no grant under it is in force until an operator approves it in\nthe portal. An approval already given is kept.\n\nDisabling with a PUT keeps the grants under it (none of them is in force while it is\ndisabled, and enabling it again brings them back); `DELETE` revokes them.",
+        "operationId": "customer_services_put",
+        "parameters": [
+          {
+            "description": "The service's key (`key` on a service).",
+            "in": "path",
+            "name": "service_key",
+            "required": true,
+            "schema": {
+              "description": "The service's key (`key` on a service).",
+              "title": "Service Key",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The customer's id (`id` on a customer).",
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Customer Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerServicePut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerServiceWritten"
+                }
+              }
+            },
+            "description": "The entitlement was changed.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerServiceWritten"
+                }
+              }
+            },
+            "description": "The customer now holds the service.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such customer (`customer_not_found`) or service (`service_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform refused the change (`entitlement_refused`); `detail` says why.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Set a customer's service",
+        "tags": [
+          "entitlements"
+        ]
+      }
+    },
     "/feedback": {
       "get": {
         "description": "The feedback backlog of every customer: bug reports, change requests and feature requests, highest number (newest) first. Pages are cursor-based: pass `next_cursor` as `cursor` to get the next page; it is null on the last one.\n\nFilters combine with AND: `status`, `kind`, `customer` (a customer's key, exact), `week` (the expected ISO week, exact) and `source`. Without `source`, items filed on demo installations are left out, as on the portal's board; `source=demo` lists only those.\n\nEach item is the backlog row; `GET /feedback/{number}` adds the report, its context and the thread, and `GET /feedback/{number}/brief` the Markdown a coding session starts from.",
@@ -32746,6 +34534,193 @@
         ]
       }
     },
+    "/services": {
+      "get": {
+        "description": "The services a customer can be entitled to, in display order (`sort_order`, then\n`key`).",
+        "operationId": "services_list",
+        "parameters": [
+          {
+            "description": "Also list retired services (`active` false); omit it for the offered ones only.",
+            "in": "query",
+            "name": "include_inactive",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "Also list retired services (`active` false); omit it for the offered ones only.",
+              "title": "Include Inactive",
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicePage"
+                }
+              }
+            },
+            "description": "One page of the service catalogue.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List services",
+        "tags": [
+          "entitlements"
+        ]
+      }
+    },
     "/tenants": {
       "get": {
         "description": "The tenants of this platform, in `slug` order. The filters are exact and combine:\n`customer_id` (that customer's tenants), `slug`. A tenant-scoped token lists its own\ntenant only; a filter naming another tenant or customer is a 403\n`tenant_scope_violation`.",
@@ -37876,6 +39851,849 @@
         ]
       }
     },
+    "/users/{user_id}/service-grants": {
+      "get": {
+        "description": "Every grant the person holds, under every customer, in `customer_id` then\n`service_key` order.",
+        "operationId": "user_service_grants_list",
+        "parameters": [
+          {
+            "description": "The person's id (`id` on a user).",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "description": "The person's id (`id` on a user).",
+              "title": "User Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Also list revoked grants; omit it for the unrevoked ones only.",
+            "in": "query",
+            "name": "include_revoked",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "Also list revoked grants; omit it for the unrevoked ones only.",
+              "title": "Include Revoked",
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceGrantPage"
+                }
+              }
+            },
+            "description": "One page of grants.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such user (`user_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A person's service grants",
+        "tags": [
+          "entitlements"
+        ]
+      }
+    },
+    "/users/{user_id}/service-grants/{customer_id}/{service_key}": {
+      "delete": {
+        "description": "Revokes the grant. The row is kept, with `revoked_at` (a later `PUT` revives it). Revoking a revoked grant changes nothing and answers 204 again. The person loses access in the service within the platform's reconcile interval. Destroy-class: a token needs `allow_destroy`.",
+        "operationId": "user_service_grants_delete",
+        "parameters": [
+          {
+            "description": "The person's id (`id` on a user).",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "description": "The person's id (`id` on a user).",
+              "title": "User Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The service's key (`key` on a service).",
+            "in": "path",
+            "name": "service_key",
+            "required": true,
+            "schema": {
+              "description": "The service's key (`key` on a service).",
+              "title": "Service Key",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The customer's id (`id` on a customer).",
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Customer Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The grant was revoked.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "A token created without `allow_destroy` (`destroy_not_allowed`). Also: the caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such user (`user_not_found`) or grant (`grant_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Revoke a person's service",
+        "tags": [
+          "entitlements"
+        ]
+      },
+      "get": {
+        "description": "One person's grant of one service under one customer, revoked or not\n(`revoked_at`).",
+        "operationId": "user_service_grants_get",
+        "parameters": [
+          {
+            "description": "The person's id (`id` on a user).",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "description": "The person's id (`id` on a user).",
+              "title": "User Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The service's key (`key` on a service).",
+            "in": "path",
+            "name": "service_key",
+            "required": true,
+            "schema": {
+              "description": "The service's key (`key` on a service).",
+              "title": "Service Key",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The customer's id (`id` on a customer).",
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Customer Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceGrant"
+                }
+              }
+            },
+            "description": "The grant.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such user (`user_not_found`) or grant (`grant_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One service grant",
+        "tags": [
+          "entitlements"
+        ]
+      },
+      "put": {
+        "description": "Grants the person the service under the customer: 201 when they held no grant\n(or only a revoked one, which this revives), 200 when an unrevoked grant was changed.\n\nThe customer must hold the service, and a seat must be free. A grant on an\nentitlement that is not `enabled` is made and answered with `effective` false, the\nreason in `blocked_by` and the warning `grant_not_effective`. The person's access in\nthe service follows within the platform's reconcile interval.",
+        "operationId": "user_service_grants_put",
+        "parameters": [
+          {
+            "description": "The person's id (`id` on a user).",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "description": "The person's id (`id` on a user).",
+              "title": "User Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The service's key (`key` on a service).",
+            "in": "path",
+            "name": "service_key",
+            "required": true,
+            "schema": {
+              "description": "The service's key (`key` on a service).",
+              "title": "Service Key",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The customer's id (`id` on a customer).",
+            "in": "path",
+            "name": "customer_id",
+            "required": true,
+            "schema": {
+              "description": "The customer's id (`id` on a customer).",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Customer Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceGrantPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceGrantWritten"
+                }
+              }
+            },
+            "description": "The grant was changed.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceGrantWritten"
+                }
+              }
+            },
+            "description": "The grant was made.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such user (`user_not_found`), customer (`customer_not_found`) or service (`service_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The customer does not hold the service (`entitlement_not_held`), every seat is taken (`seats_exhausted`), or the platform refused the grant (`grant_refused`, e.g. the person has no access to the customer); `detail` says why.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Grant a person a service",
+        "tags": [
+          "entitlements"
+        ]
+      }
+    },
     "/whoami": {
       "get": {
         "description": "Who is calling and what they may do right now. `scopes` are the EFFECTIVE\npermissions: for a token, its scopes that its owner still holds, so a scope the\nowner has lost is not there; `token.granted_scopes` is what the token was created\nwith. A tenant-scoped token (`scope` `tenant`) keeps its scopes only while its owner\nis the tenant's owner or admin. `expires_at` is when the credential stops working.\nNeeds a credential but no permission.",
@@ -38086,6 +40904,10 @@
     {
       "description": "One-day git tokens and scratch repositories for coding jobs (opencode.hu).",
       "name": "coding-jobs"
+    },
+    {
+      "description": "The service catalogue, the services each customer holds and the people granted them.",
+      "name": "entitlements"
     },
     {
       "description": "Model Context Protocol: every GET operation as a read-only tool.",

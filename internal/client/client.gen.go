@@ -804,6 +804,66 @@ func (e CustomerPatchStatus) Valid() bool {
 	}
 }
 
+// Defines values for CustomerServiceState.
+const (
+	CustomerServiceStateDisabled        CustomerServiceState = "disabled"
+	CustomerServiceStateEnabled         CustomerServiceState = "enabled"
+	CustomerServiceStatePendingApproval CustomerServiceState = "pending_approval"
+)
+
+// Valid indicates whether the value is a known member of the CustomerServiceState enum.
+func (e CustomerServiceState) Valid() bool {
+	switch e {
+	case CustomerServiceStateDisabled:
+		return true
+	case CustomerServiceStateEnabled:
+		return true
+	case CustomerServiceStatePendingApproval:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerServicePutState.
+const (
+	CustomerServicePutStateDisabled CustomerServicePutState = "disabled"
+	CustomerServicePutStateEnabled  CustomerServicePutState = "enabled"
+)
+
+// Valid indicates whether the value is a known member of the CustomerServicePutState enum.
+func (e CustomerServicePutState) Valid() bool {
+	switch e {
+	case CustomerServicePutStateDisabled:
+		return true
+	case CustomerServicePutStateEnabled:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CustomerServiceWrittenState.
+const (
+	CustomerServiceWrittenStateDisabled        CustomerServiceWrittenState = "disabled"
+	CustomerServiceWrittenStateEnabled         CustomerServiceWrittenState = "enabled"
+	CustomerServiceWrittenStatePendingApproval CustomerServiceWrittenState = "pending_approval"
+)
+
+// Valid indicates whether the value is a known member of the CustomerServiceWrittenState enum.
+func (e CustomerServiceWrittenState) Valid() bool {
+	switch e {
+	case CustomerServiceWrittenStateDisabled:
+		return true
+	case CustomerServiceWrittenStateEnabled:
+		return true
+	case CustomerServiceWrittenStatePendingApproval:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GatewayKeyEnv.
 const (
 	GatewayKeyEnvDev  GatewayKeyEnv = "dev"
@@ -2703,6 +2763,78 @@ func (e SecretPathEnv) Valid() bool {
 	case SecretPathEnvDev:
 		return true
 	case SecretPathEnvUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ServiceGrantGrantLevel.
+const (
+	ServiceGrantGrantLevelAdmin ServiceGrantGrantLevel = "admin"
+	ServiceGrantGrantLevelAudit ServiceGrantGrantLevel = "audit"
+	ServiceGrantGrantLevelLogin ServiceGrantGrantLevel = "login"
+	ServiceGrantGrantLevelUser  ServiceGrantGrantLevel = "user"
+)
+
+// Valid indicates whether the value is a known member of the ServiceGrantGrantLevel enum.
+func (e ServiceGrantGrantLevel) Valid() bool {
+	switch e {
+	case ServiceGrantGrantLevelAdmin:
+		return true
+	case ServiceGrantGrantLevelAudit:
+		return true
+	case ServiceGrantGrantLevelLogin:
+		return true
+	case ServiceGrantGrantLevelUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ServiceGrantPutGrantLevel.
+const (
+	ServiceGrantPutGrantLevelAdmin ServiceGrantPutGrantLevel = "admin"
+	ServiceGrantPutGrantLevelAudit ServiceGrantPutGrantLevel = "audit"
+	ServiceGrantPutGrantLevelLogin ServiceGrantPutGrantLevel = "login"
+	ServiceGrantPutGrantLevelUser  ServiceGrantPutGrantLevel = "user"
+)
+
+// Valid indicates whether the value is a known member of the ServiceGrantPutGrantLevel enum.
+func (e ServiceGrantPutGrantLevel) Valid() bool {
+	switch e {
+	case ServiceGrantPutGrantLevelAdmin:
+		return true
+	case ServiceGrantPutGrantLevelAudit:
+		return true
+	case ServiceGrantPutGrantLevelLogin:
+		return true
+	case ServiceGrantPutGrantLevelUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ServiceGrantWrittenGrantLevel.
+const (
+	ServiceGrantWrittenGrantLevelAdmin ServiceGrantWrittenGrantLevel = "admin"
+	ServiceGrantWrittenGrantLevelAudit ServiceGrantWrittenGrantLevel = "audit"
+	ServiceGrantWrittenGrantLevelLogin ServiceGrantWrittenGrantLevel = "login"
+	ServiceGrantWrittenGrantLevelUser  ServiceGrantWrittenGrantLevel = "user"
+)
+
+// Valid indicates whether the value is a known member of the ServiceGrantWrittenGrantLevel enum.
+func (e ServiceGrantWrittenGrantLevel) Valid() bool {
+	switch e {
+	case ServiceGrantWrittenGrantLevelAdmin:
+		return true
+	case ServiceGrantWrittenGrantLevelAudit:
+		return true
+	case ServiceGrantWrittenGrantLevelLogin:
+		return true
+	case ServiceGrantWrittenGrantLevelUser:
 		return true
 	default:
 		return false
@@ -5118,6 +5250,128 @@ type CustomerPatchEdition string
 
 // CustomerPatchStatus defines model for CustomerPatch.Status.
 type CustomerPatchStatus string
+
+// CustomerService A service a customer holds (an entitlement), with its seat use.
+type CustomerService struct {
+	// Approved An operator approved the entitlement in the portal (needed only for a service that `requires_approval`).
+	Approved bool `json:"approved"`
+
+	// ApprovedAt When it was approved; null when not.
+	ApprovedAt *time.Time `json:"approved_at"`
+
+	// CreatedAt When the customer first held the service.
+	CreatedAt time.Time `json:"created_at"`
+
+	// CustomerId The customer's id.
+	CustomerId string `json:"customer_id"`
+
+	// DedicatedUrl The customer's own instance of a `dedicated` service; null until it exists.
+	DedicatedUrl *string `json:"dedicated_url"`
+
+	// Notes Free text.
+	Notes *string `json:"notes"`
+
+	// Seats How many people may hold a grant under it at once; null means no limit.
+	Seats *int `json:"seats"`
+
+	// SeatsUsed How many people hold an unrevoked grant under it.
+	SeatsUsed int `json:"seats_used"`
+
+	// ServiceKey The service's key (`key` on a service).
+	ServiceKey string `json:"service_key"`
+
+	// ServiceName The service's display name.
+	ServiceName string `json:"service_name"`
+
+	// State `enabled` (in force), `pending_approval` (asked for, waiting for an operator's approval in the portal: no grant under it is in force) or `disabled` (withdrawn: no grant under it is in force).
+	State CustomerServiceState `json:"state"`
+
+	// UpdatedAt When the entitlement last changed.
+	UpdatedAt time.Time `json:"updated_at"`
+
+	// Url Where the customer uses the service: `dedicated_url` when set, else the service's own `url`.
+	Url *string `json:"url"`
+}
+
+// CustomerServiceState `enabled` (in force), `pending_approval` (asked for, waiting for an operator's approval in the portal: no grant under it is in force) or `disabled` (withdrawn: no grant under it is in force).
+type CustomerServiceState string
+
+// CustomerServicePage One page of a customer's entitlements, in the catalogue's display order.
+type CustomerServicePage struct {
+	// Items This page's items, in the list's order.
+	Items []CustomerService `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// CustomerServicePut What a customer holds of one service. A full replacement: a member left
+// out is reset to its default. There is no approval member: the API never
+// approves, and an unknown member is a 422.
+type CustomerServicePut struct {
+	// DedicatedUrl The customer's own instance of a `dedicated` service.
+	DedicatedUrl *string `json:"dedicated_url,omitempty"`
+
+	// Notes Free text.
+	Notes *string `json:"notes,omitempty"`
+
+	// Seats How many people may hold a grant under it at once; null or omitted means no limit. A limit below the grants already held refuses no existing grant, only new ones.
+	Seats *int `json:"seats,omitempty"`
+
+	// State `enabled` asks for the service to be in force; for a service that `requires_approval` and is not approved yet, the entitlement is stored as `pending_approval` instead, with the warning `approval_required`. `disabled` withdraws it without revoking the grants under it (the DELETE revokes them).
+	State *CustomerServicePutState `json:"state,omitempty"`
+}
+
+// CustomerServicePutState `enabled` asks for the service to be in force; for a service that `requires_approval` and is not approved yet, the entitlement is stored as `pending_approval` instead, with the warning `approval_required`. `disabled` withdraws it without revoking the grants under it (the DELETE revokes them).
+type CustomerServicePutState string
+
+// CustomerServiceWritten An entitlement after a write.
+type CustomerServiceWritten struct {
+	// Approved An operator approved the entitlement in the portal (needed only for a service that `requires_approval`).
+	Approved bool `json:"approved"`
+
+	// ApprovedAt When it was approved; null when not.
+	ApprovedAt *time.Time `json:"approved_at"`
+
+	// CreatedAt When the customer first held the service.
+	CreatedAt time.Time `json:"created_at"`
+
+	// CustomerId The customer's id.
+	CustomerId string `json:"customer_id"`
+
+	// DedicatedUrl The customer's own instance of a `dedicated` service; null until it exists.
+	DedicatedUrl *string `json:"dedicated_url"`
+
+	// Notes Free text.
+	Notes *string `json:"notes"`
+
+	// Seats How many people may hold a grant under it at once; null means no limit.
+	Seats *int `json:"seats"`
+
+	// SeatsUsed How many people hold an unrevoked grant under it.
+	SeatsUsed int `json:"seats_used"`
+
+	// ServiceKey The service's key (`key` on a service).
+	ServiceKey string `json:"service_key"`
+
+	// ServiceName The service's display name.
+	ServiceName string `json:"service_name"`
+
+	// State `enabled` (in force), `pending_approval` (asked for, waiting for an operator's approval in the portal: no grant under it is in force) or `disabled` (withdrawn: no grant under it is in force).
+	State CustomerServiceWrittenState `json:"state"`
+
+	// UpdatedAt When the entitlement last changed.
+	UpdatedAt time.Time `json:"updated_at"`
+
+	// Url Where the customer uses the service: `dedicated_url` when set, else the service's own `url`.
+	Url *string `json:"url"`
+
+	// Warnings What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person.
+	Warnings *[]ApiWarning `json:"warnings,omitempty"`
+}
+
+// CustomerServiceWrittenState `enabled` (in force), `pending_approval` (asked for, waiting for an operator's approval in the portal: no grant under it is in force) or `disabled` (withdrawn: no grant under it is in force).
+type CustomerServiceWrittenState string
 
 // DgxCluster DGX nodes joined into one serving pool, as recorded. A DGX in no cluster
 // serves on its own.
@@ -8012,6 +8266,149 @@ type SecretPath struct {
 // SecretPathEnv The environment: `dev` or `uat`.
 type SecretPathEnv string
 
+// Service A service a customer can be entitled to: one row of the service catalogue.
+type Service struct {
+	// Active The service is offered. A retired service keeps its entitlements and grants, and none of them is in force.
+	Active bool `json:"active"`
+
+	// Category `shared` (one instance serves every customer) or `dedicated` (each customer gets its own instance, at its entitlement's `dedicated_url`). Other values may appear.
+	Category string `json:"category"`
+
+	// Description What the service is, for a person.
+	Description *string `json:"description"`
+
+	// Enforcement How the platform makes a grant real: `claim` (checked when the person signs in), `role` (an application role), `projection` (a membership written into the service itself, removed again when the grant is revoked), `manual` (an operator applies it) or `network` (network access). Other values may appear.
+	Enforcement string `json:"enforcement"`
+
+	// Key The service's key: lowercase letters, digits and '-', starting with a letter. Entitlements and grants name the service by it.
+	Key string `json:"key"`
+
+	// Name The service's display name.
+	Name string `json:"name"`
+
+	// RequiresApproval Enabling the service for a customer needs an operator's approval in the portal. Until it is approved the entitlement is `pending_approval`, and the API never approves it.
+	RequiresApproval bool `json:"requires_approval"`
+
+	// SortOrder Display order; lower first.
+	SortOrder int `json:"sort_order"`
+
+	// Url Where the service is used: the shared instance, or for a `dedicated` service the reference instance.
+	Url *string `json:"url"`
+}
+
+// ServiceGrant A person's grant of a service under one customer. In force only while the
+// customer's entitlement is `enabled`, the service is active and the grant is not
+// revoked (`effective`).
+type ServiceGrant struct {
+	// BlockedBy Why a grant is not in force: `grant_revoked`, `service_retired`, `customer_pending_approval` or `customer_disabled`; null when it is in force. Other values may appear.
+	BlockedBy *string `json:"blocked_by"`
+
+	// CustomerId The customer the grant is held under.
+	CustomerId string `json:"customer_id"`
+
+	// Effective The grant is in force right now.
+	Effective bool `json:"effective"`
+
+	// GrantLevel What the person may do in the service: `login`, `user`, `admin` or `audit`.
+	GrantLevel ServiceGrantGrantLevel `json:"grant_level"`
+
+	// GrantedAt When it was granted.
+	GrantedAt time.Time `json:"granted_at"`
+
+	// GrantedBy Who granted it (a user id), when recorded.
+	GrantedBy *string `json:"granted_by"`
+
+	// Notes Free text.
+	Notes *string `json:"notes"`
+
+	// RevokedAt When it was revoked; null while it is not.
+	RevokedAt *time.Time `json:"revoked_at"`
+
+	// ServiceKey The service's key.
+	ServiceKey string `json:"service_key"`
+
+	// UserEmail The person's e-mail address.
+	UserEmail *string `json:"user_email"`
+
+	// UserId The person's id.
+	UserId string `json:"user_id"`
+}
+
+// ServiceGrantGrantLevel What the person may do in the service: `login`, `user`, `admin` or `audit`.
+type ServiceGrantGrantLevel string
+
+// ServiceGrantPage One page of service grants.
+type ServiceGrantPage struct {
+	// Items This page's items, in the list's order.
+	Items []ServiceGrant `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// ServiceGrantPut A person's grant of one service under one customer. A full replacement.
+type ServiceGrantPut struct {
+	// GrantLevel What the person may do in the service: `login`, `user` (the default), `admin` or `audit`.
+	GrantLevel *ServiceGrantPutGrantLevel `json:"grant_level,omitempty"`
+
+	// Notes Free text.
+	Notes *string `json:"notes,omitempty"`
+}
+
+// ServiceGrantPutGrantLevel What the person may do in the service: `login`, `user` (the default), `admin` or `audit`.
+type ServiceGrantPutGrantLevel string
+
+// ServiceGrantWritten A grant after a write.
+type ServiceGrantWritten struct {
+	// BlockedBy Why a grant is not in force: `grant_revoked`, `service_retired`, `customer_pending_approval` or `customer_disabled`; null when it is in force. Other values may appear.
+	BlockedBy *string `json:"blocked_by"`
+
+	// CustomerId The customer the grant is held under.
+	CustomerId string `json:"customer_id"`
+
+	// Effective The grant is in force right now.
+	Effective bool `json:"effective"`
+
+	// GrantLevel What the person may do in the service: `login`, `user`, `admin` or `audit`.
+	GrantLevel ServiceGrantWrittenGrantLevel `json:"grant_level"`
+
+	// GrantedAt When it was granted.
+	GrantedAt time.Time `json:"granted_at"`
+
+	// GrantedBy Who granted it (a user id), when recorded.
+	GrantedBy *string `json:"granted_by"`
+
+	// Notes Free text.
+	Notes *string `json:"notes"`
+
+	// RevokedAt When it was revoked; null while it is not.
+	RevokedAt *time.Time `json:"revoked_at"`
+
+	// ServiceKey The service's key.
+	ServiceKey string `json:"service_key"`
+
+	// UserEmail The person's e-mail address.
+	UserEmail *string `json:"user_email"`
+
+	// UserId The person's id.
+	UserId string `json:"user_id"`
+
+	// Warnings What did not go as planned on this request, which still succeeded; empty when everything did. Show these to a person.
+	Warnings *[]ApiWarning `json:"warnings,omitempty"`
+}
+
+// ServiceGrantWrittenGrantLevel What the person may do in the service: `login`, `user`, `admin` or `audit`.
+type ServiceGrantWrittenGrantLevel string
+
+// ServicePage One page of the service catalogue, in display order.
+type ServicePage struct {
+	// Items This page's items, in the list's order.
+	Items []Service `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
 // ServingTier A serving tier: a stable capability name (`general`, `code`, …) that
 // clients call as the model name, backed at any moment by one loaded model:
 // the pinned one, or one assigned automatically from the tier's category.
@@ -9332,6 +9729,27 @@ type CustomersGetParams struct {
 // CustomersGetParamsInclude defines parameters for CustomersGet.
 type CustomersGetParamsInclude string
 
+// CustomerServiceGrantsListParams defines parameters for CustomerServiceGrantsList.
+type CustomerServiceGrantsListParams struct {
+	// IncludeRevoked Also list revoked grants; omit it for the unrevoked ones only.
+	IncludeRevoked *bool `form:"include_revoked,omitempty" json:"include_revoked,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// CustomerServicesListParams defines parameters for CustomerServicesList.
+type CustomerServicesListParams struct {
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
 // FeedbackListParams defines parameters for FeedbackList.
 type FeedbackListParams struct {
 	// Status Only items in this status.
@@ -9631,6 +10049,18 @@ type ScratchJobCreateParams struct {
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
+// ServicesListParams defines parameters for ServicesList.
+type ServicesListParams struct {
+	// IncludeInactive Also list retired services (`active` false); omit it for the offered ones only.
+	IncludeInactive *bool `form:"include_inactive,omitempty" json:"include_inactive,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
 // TenantsListParams defines parameters for TenantsList.
 type TenantsListParams struct {
 	// CustomerId Only this customer's tenants.
@@ -9736,6 +10166,18 @@ type UserRolesListParams struct {
 	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
 
+// UserServiceGrantsListParams defines parameters for UserServiceGrantsList.
+type UserServiceGrantsListParams struct {
+	// IncludeRevoked Also list revoked grants; omit it for the unrevoked ones only.
+	IncludeRevoked *bool `form:"include_revoked,omitempty" json:"include_revoked,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
 // AiModelsCreateJSONRequestBody defines body for AiModelsCreate for application/json ContentType.
 type AiModelsCreateJSONRequestBody = AiModelCreate
 
@@ -9783,6 +10225,9 @@ type CustomersUpdateJSONRequestBody = CustomerPatch
 
 // CustomersUpdateApplicationMergePatchPlusJSONRequestBody defines body for CustomersUpdate for application/merge-patch+json ContentType.
 type CustomersUpdateApplicationMergePatchPlusJSONRequestBody = CustomerPatch
+
+// CustomerServicesPutJSONRequestBody defines body for CustomerServicesPut for application/json ContentType.
+type CustomerServicesPutJSONRequestBody = CustomerServicePut
 
 // LicenceBundlePutJSONRequestBody defines body for LicenceBundlePut for application/json ContentType.
 type LicenceBundlePutJSONRequestBody = LicenceBundlePut
@@ -9840,6 +10285,9 @@ type UsersUpdateJSONRequestBody = UserPatch
 
 // UsersUpdateApplicationMergePatchPlusJSONRequestBody defines body for UsersUpdate for application/merge-patch+json ContentType.
 type UsersUpdateApplicationMergePatchPlusJSONRequestBody = UserPatch
+
+// UserServiceGrantsPutJSONRequestBody defines body for UserServiceGrantsPut for application/json ContentType.
+type UserServiceGrantsPutJSONRequestBody = ServiceGrantPut
 
 // Getter for additional properties for Problem. Returns the specified
 // element and whether it was found
@@ -11326,6 +11774,72 @@ type ClientInterface interface {
 	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 	CustomersUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CustomerServiceGrantsList The service grants under a customer
+	//
+	// Who holds which service under the customer, in `user_id` then `service_key`
+	// order, each with whether it is in force and, when not, why.
+	//
+	// Corresponds with GET /customers/{customer_id}/service-grants (the `CustomerServiceGrantsList` operationId).
+	CustomerServiceGrantsList(ctx context.Context, customerId string, params *CustomerServiceGrantsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomerServicesList A customer's services
+	//
+	// Every service the customer holds, in any state, with its seat use, in the
+	// catalogue's display order. A tenant-scoped token reads its own customer's only.
+	//
+	// Corresponds with GET /customers/{customer_id}/services (the `CustomerServicesList` operationId).
+	CustomerServicesList(ctx context.Context, customerId string, params *CustomerServicesListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomerServicesDelete Withdraw a customer's service
+	//
+	// Withdraws the service from the customer: the entitlement is disabled and every grant under it is revoked, so enabling it again later gives nobody access back. The rows are kept for the record (a later `PUT` re-enables the entitlement, with no grants). People lose access in the service within the platform's reconcile interval. Destroy-class: a token needs `allow_destroy`.
+	//
+	// Corresponds with DELETE /customers/{customer_id}/services/{service_key} (the `CustomerServicesDelete` operationId).
+	CustomerServicesDelete(ctx context.Context, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomerServicesGet One of a customer's services
+	//
+	// What the customer holds of one service, in any state.
+	//
+	// Corresponds with GET /customers/{customer_id}/services/{service_key} (the `CustomerServicesGet` operationId).
+	CustomerServicesGet(ctx context.Context, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomerServicesPutWithBody Set a customer's service
+	//
+	// Sets what the customer holds of one service: 201 when it did not hold it, 200
+	// otherwise. A full replacement of `state`, `seats`, `dedicated_url` and `notes`.
+	//
+	// Never approves. For a service that `requires_approval`, `enabled` without an
+	// operator's approval is stored `pending_approval` and answered with the warning
+	// `approval_required`: no grant under it is in force until an operator approves it in
+	// the portal. An approval already given is kept.
+	//
+	// Disabling with a PUT keeps the grants under it (none of them is in force while it is
+	// disabled, and enabling it again brings them back); `DELETE` revokes them.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /customers/{customer_id}/services/{service_key} (the `CustomerServicesPut` operationId).
+	CustomerServicesPutWithBody(ctx context.Context, customerId string, serviceKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CustomerServicesPut Set a customer's service
+	//
+	// Sets what the customer holds of one service: 201 when it did not hold it, 200
+	// otherwise. A full replacement of `state`, `seats`, `dedicated_url` and `notes`.
+	//
+	// Never approves. For a service that `requires_approval`, `enabled` without an
+	// operator's approval is stored `pending_approval` and answered with the warning
+	// `approval_required`: no grant under it is in force until an operator approves it in
+	// the portal. An approval already given is kept.
+	//
+	// Disabling with a PUT keeps the grants under it (none of them is in force while it is
+	// disabled, and enabling it again brings them back); `DELETE` revokes them.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /customers/{customer_id}/services/{service_key} (the `CustomerServicesPut` operationId).
+	CustomerServicesPut(ctx context.Context, customerId string, serviceKey string, body CustomerServicesPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// FeedbackList List feedback items
 	//
 	// The feedback backlog of every customer: bug reports, change requests and feature requests, highest number (newest) first. Pages are cursor-based: pass `next_cursor` as `cursor` to get the next page; it is null on the last one.
@@ -11779,6 +12293,14 @@ type ClientInterface interface {
 	// Corresponds with DELETE /scratch/jobs/{job_id}/git-token (the `ScratchJobGitTokenDelete` operationId).
 	ScratchJobGitTokenDelete(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ServicesList List services
+	//
+	// The services a customer can be entitled to, in display order (`sort_order`, then
+	// `key`).
+	//
+	// Corresponds with GET /services (the `ServicesList` operationId).
+	ServicesList(ctx context.Context, params *ServicesListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// TenantsList List tenants
 	//
 	// The tenants of this platform, in `slug` order. The filters are exact and combine:
@@ -12094,6 +12616,59 @@ type ClientInterface interface {
 	//
 	// Corresponds with PUT /users/{user_id}/roles/{role} (the `UserRolesPut` operationId).
 	UserRolesPut(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UserServiceGrantsList A person's service grants
+	//
+	// Every grant the person holds, under every customer, in `customer_id` then
+	// `service_key` order.
+	//
+	// Corresponds with GET /users/{user_id}/service-grants (the `UserServiceGrantsList` operationId).
+	UserServiceGrantsList(ctx context.Context, userId string, params *UserServiceGrantsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UserServiceGrantsDelete Revoke a person's service
+	//
+	// Revokes the grant. The row is kept, with `revoked_at` (a later `PUT` revives it). Revoking a revoked grant changes nothing and answers 204 again. The person loses access in the service within the platform's reconcile interval. Destroy-class: a token needs `allow_destroy`.
+	//
+	// Corresponds with DELETE /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsDelete` operationId).
+	UserServiceGrantsDelete(ctx context.Context, userId string, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UserServiceGrantsGet One service grant
+	//
+	// One person's grant of one service under one customer, revoked or not
+	// (`revoked_at`).
+	//
+	// Corresponds with GET /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsGet` operationId).
+	UserServiceGrantsGet(ctx context.Context, userId string, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UserServiceGrantsPutWithBody Grant a person a service
+	//
+	// Grants the person the service under the customer: 201 when they held no grant
+	// (or only a revoked one, which this revives), 200 when an unrevoked grant was changed.
+	//
+	// The customer must hold the service, and a seat must be free. A grant on an
+	// entitlement that is not `enabled` is made and answered with `effective` false, the
+	// reason in `blocked_by` and the warning `grant_not_effective`. The person's access in
+	// the service follows within the platform's reconcile interval.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsPut` operationId).
+	UserServiceGrantsPutWithBody(ctx context.Context, userId string, customerId string, serviceKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UserServiceGrantsPut Grant a person a service
+	//
+	// Grants the person the service under the customer: 201 when they held no grant
+	// (or only a revoked one, which this revives), 200 when an unrevoked grant was changed.
+	//
+	// The customer must hold the service, and a seat must be free. A grant on an
+	// entitlement that is not `enabled` is made and answered with `effective` false, the
+	// reason in `blocked_by` and the warning `grant_not_effective`. The person's access in
+	// the service follows within the platform's reconcile interval.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsPut` operationId).
+	UserServiceGrantsPut(ctx context.Context, userId string, customerId string, serviceKey string, body UserServiceGrantsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// WhoamiGet The calling principal
 	//
@@ -13291,6 +13866,132 @@ func (c *Client) CustomersUpdateWithApplicationMergePatchPlusJSONBody(ctx contex
 	return c.Client.Do(req)
 }
 
+// CustomerServiceGrantsList The service grants under a customer
+//
+// Who holds which service under the customer, in `user_id` then `service_key`
+// order, each with whether it is in force and, when not, why.
+//
+// Corresponds with GET /customers/{customer_id}/service-grants (the `CustomerServiceGrantsList` operationId).
+func (c *Client) CustomerServiceGrantsList(ctx context.Context, customerId string, params *CustomerServiceGrantsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomerServiceGrantsListRequest(c.Server, customerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomerServicesList A customer's services
+//
+// Every service the customer holds, in any state, with its seat use, in the
+// catalogue's display order. A tenant-scoped token reads its own customer's only.
+//
+// Corresponds with GET /customers/{customer_id}/services (the `CustomerServicesList` operationId).
+func (c *Client) CustomerServicesList(ctx context.Context, customerId string, params *CustomerServicesListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomerServicesListRequest(c.Server, customerId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomerServicesDelete Withdraw a customer's service
+//
+// Withdraws the service from the customer: the entitlement is disabled and every grant under it is revoked, so enabling it again later gives nobody access back. The rows are kept for the record (a later `PUT` re-enables the entitlement, with no grants). People lose access in the service within the platform's reconcile interval. Destroy-class: a token needs `allow_destroy`.
+//
+// Corresponds with DELETE /customers/{customer_id}/services/{service_key} (the `CustomerServicesDelete` operationId).
+func (c *Client) CustomerServicesDelete(ctx context.Context, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomerServicesDeleteRequest(c.Server, customerId, serviceKey)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomerServicesGet One of a customer's services
+//
+// What the customer holds of one service, in any state.
+//
+// Corresponds with GET /customers/{customer_id}/services/{service_key} (the `CustomerServicesGet` operationId).
+func (c *Client) CustomerServicesGet(ctx context.Context, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomerServicesGetRequest(c.Server, customerId, serviceKey)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomerServicesPutWithBody Set a customer's service
+//
+// Sets what the customer holds of one service: 201 when it did not hold it, 200
+// otherwise. A full replacement of `state`, `seats`, `dedicated_url` and `notes`.
+//
+// Never approves. For a service that `requires_approval`, `enabled` without an
+// operator's approval is stored `pending_approval` and answered with the warning
+// `approval_required`: no grant under it is in force until an operator approves it in
+// the portal. An approval already given is kept.
+//
+// Disabling with a PUT keeps the grants under it (none of them is in force while it is
+// disabled, and enabling it again brings them back); `DELETE` revokes them.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /customers/{customer_id}/services/{service_key} (the `CustomerServicesPut` operationId).
+func (c *Client) CustomerServicesPutWithBody(ctx context.Context, customerId string, serviceKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomerServicesPutRequestWithBody(c.Server, customerId, serviceKey, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CustomerServicesPut Set a customer's service
+//
+// Sets what the customer holds of one service: 201 when it did not hold it, 200
+// otherwise. A full replacement of `state`, `seats`, `dedicated_url` and `notes`.
+//
+// Never approves. For a service that `requires_approval`, `enabled` without an
+// operator's approval is stored `pending_approval` and answered with the warning
+// `approval_required`: no grant under it is in force until an operator approves it in
+// the portal. An approval already given is kept.
+//
+// Disabling with a PUT keeps the grants under it (none of them is in force while it is
+// disabled, and enabling it again brings them back); `DELETE` revokes them.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /customers/{customer_id}/services/{service_key} (the `CustomerServicesPut` operationId).
+func (c *Client) CustomerServicesPut(ctx context.Context, customerId string, serviceKey string, body CustomerServicesPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCustomerServicesPutRequest(c.Server, customerId, serviceKey, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // FeedbackList List feedback items
 //
 // The feedback backlog of every customer: bug reports, change requests and feature requests, highest number (newest) first. Pages are cursor-based: pass `next_cursor` as `cursor` to get the next page; it is null on the last one.
@@ -14224,6 +14925,24 @@ func (c *Client) ScratchJobGitTokenDelete(ctx context.Context, jobId string, req
 	return c.Client.Do(req)
 }
 
+// ServicesList List services
+//
+// The services a customer can be entitled to, in display order (`sort_order`, then
+// `key`).
+//
+// Corresponds with GET /services (the `ServicesList` operationId).
+func (c *Client) ServicesList(ctx context.Context, params *ServicesListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServicesListRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // TenantsList List tenants
 //
 // The tenants of this platform, in `slug` order. The filters are exact and combine:
@@ -14870,6 +15589,109 @@ func (c *Client) UserRolesGet(ctx context.Context, userId string, role string, r
 // Corresponds with PUT /users/{user_id}/roles/{role} (the `UserRolesPut` operationId).
 func (c *Client) UserRolesPut(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUserRolesPutRequest(c.Server, userId, role)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UserServiceGrantsList A person's service grants
+//
+// Every grant the person holds, under every customer, in `customer_id` then
+// `service_key` order.
+//
+// Corresponds with GET /users/{user_id}/service-grants (the `UserServiceGrantsList` operationId).
+func (c *Client) UserServiceGrantsList(ctx context.Context, userId string, params *UserServiceGrantsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserServiceGrantsListRequest(c.Server, userId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UserServiceGrantsDelete Revoke a person's service
+//
+// Revokes the grant. The row is kept, with `revoked_at` (a later `PUT` revives it). Revoking a revoked grant changes nothing and answers 204 again. The person loses access in the service within the platform's reconcile interval. Destroy-class: a token needs `allow_destroy`.
+//
+// Corresponds with DELETE /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsDelete` operationId).
+func (c *Client) UserServiceGrantsDelete(ctx context.Context, userId string, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserServiceGrantsDeleteRequest(c.Server, userId, customerId, serviceKey)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UserServiceGrantsGet One service grant
+//
+// One person's grant of one service under one customer, revoked or not
+// (`revoked_at`).
+//
+// Corresponds with GET /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsGet` operationId).
+func (c *Client) UserServiceGrantsGet(ctx context.Context, userId string, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserServiceGrantsGetRequest(c.Server, userId, customerId, serviceKey)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UserServiceGrantsPutWithBody Grant a person a service
+//
+// Grants the person the service under the customer: 201 when they held no grant
+// (or only a revoked one, which this revives), 200 when an unrevoked grant was changed.
+//
+// The customer must hold the service, and a seat must be free. A grant on an
+// entitlement that is not `enabled` is made and answered with `effective` false, the
+// reason in `blocked_by` and the warning `grant_not_effective`. The person's access in
+// the service follows within the platform's reconcile interval.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsPut` operationId).
+func (c *Client) UserServiceGrantsPutWithBody(ctx context.Context, userId string, customerId string, serviceKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserServiceGrantsPutRequestWithBody(c.Server, userId, customerId, serviceKey, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// UserServiceGrantsPut Grant a person a service
+//
+// Grants the person the service under the customer: 201 when they held no grant
+// (or only a revoked one, which this revives), 200 when an unrevoked grant was changed.
+//
+// The customer must hold the service, and a seat must be free. A grant on an
+// entitlement that is not `enabled` is made and answered with `effective` false, the
+// reason in `blocked_by` and the warning `grant_not_effective`. The person's access in
+// the service follows within the platform's reconcile interval.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsPut` operationId).
+func (c *Client) UserServiceGrantsPut(ctx context.Context, userId string, customerId string, serviceKey string, body UserServiceGrantsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserServiceGrantsPutRequest(c.Server, userId, customerId, serviceKey, body)
 	if err != nil {
 		return nil, err
 	}
@@ -17576,6 +18398,300 @@ func NewCustomersUpdateRequestWithBody(server string, customerId string, content
 	return req, nil
 }
 
+// NewCustomerServiceGrantsListRequest constructs an http.Request for the CustomerServiceGrantsList method
+func NewCustomerServiceGrantsListRequest(server string, customerId string, params *CustomerServiceGrantsListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/customers/%s/service-grants", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.IncludeRevoked != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_revoked", *params.IncludeRevoked, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCustomerServicesListRequest constructs an http.Request for the CustomerServicesList method
+func NewCustomerServicesListRequest(server string, customerId string, params *CustomerServicesListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/customers/%s/services", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCustomerServicesDeleteRequest constructs an http.Request for the CustomerServicesDelete method
+func NewCustomerServicesDeleteRequest(server string, customerId string, serviceKey string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "service_key", serviceKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/customers/%s/services/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCustomerServicesGetRequest constructs an http.Request for the CustomerServicesGet method
+func NewCustomerServicesGetRequest(server string, customerId string, serviceKey string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "service_key", serviceKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/customers/%s/services/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCustomerServicesPutRequest calls the generic CustomerServicesPut builder with application/json body
+func NewCustomerServicesPutRequest(server string, customerId string, serviceKey string, body CustomerServicesPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCustomerServicesPutRequestWithBody(server, customerId, serviceKey, "application/json", bodyReader)
+}
+
+// NewCustomerServicesPutRequestWithBody constructs an http.Request for the CustomerServicesPut method, with any body, and a specified content type
+func NewCustomerServicesPutRequestWithBody(server string, customerId string, serviceKey string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "service_key", serviceKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/customers/%s/services/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewFeedbackListRequest constructs an http.Request for the FeedbackList method
 func NewFeedbackListRequest(server string, params *FeedbackListParams) (*http.Request, error) {
 	var err error
@@ -19392,6 +20508,84 @@ func NewScratchJobGitTokenDeleteRequest(server string, jobId string) (*http.Requ
 	return req, nil
 }
 
+// NewServicesListRequest constructs an http.Request for the ServicesList method
+func NewServicesListRequest(server string, params *ServicesListParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/services")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.IncludeInactive != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_inactive", *params.IncludeInactive, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewTenantsListRequest constructs an http.Request for the TenantsList method
 func NewTenantsListRequest(server string, params *TenantsListParams) (*http.Request, error) {
 	var err error
@@ -20753,6 +21947,248 @@ func NewUserRolesPutRequest(server string, userId string, role string) (*http.Re
 	return req, nil
 }
 
+// NewUserServiceGrantsListRequest constructs an http.Request for the UserServiceGrantsList method
+func NewUserServiceGrantsListRequest(server string, userId string, params *UserServiceGrantsListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s/service-grants", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.IncludeRevoked != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_revoked", *params.IncludeRevoked, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUserServiceGrantsDeleteRequest constructs an http.Request for the UserServiceGrantsDelete method
+func NewUserServiceGrantsDeleteRequest(server string, userId string, customerId string, serviceKey string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "service_key", serviceKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s/service-grants/%s/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUserServiceGrantsGetRequest constructs an http.Request for the UserServiceGrantsGet method
+func NewUserServiceGrantsGetRequest(server string, userId string, customerId string, serviceKey string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "service_key", serviceKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s/service-grants/%s/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUserServiceGrantsPutRequest calls the generic UserServiceGrantsPut builder with application/json body
+func NewUserServiceGrantsPutRequest(server string, userId string, customerId string, serviceKey string, body UserServiceGrantsPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUserServiceGrantsPutRequestWithBody(server, userId, customerId, serviceKey, "application/json", bodyReader)
+}
+
+// NewUserServiceGrantsPutRequestWithBody constructs an http.Request for the UserServiceGrantsPut method, with any body, and a specified content type
+func NewUserServiceGrantsPutRequestWithBody(server string, userId string, customerId string, serviceKey string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "user_id", userId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "customer_id", customerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "service_key", serviceKey, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/users/%s/service-grants/%s/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewWhoamiGetRequest constructs an http.Request for the WhoamiGet method
 func NewWhoamiGetRequest(server string) (*http.Request, error) {
 	var err error
@@ -21457,6 +22893,80 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PATCH /customers/{customer_id} (the `CustomersUpdate` operationId).
 	CustomersUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, customerId string, body CustomersUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomersUpdateResponse, error)
 
+	// CustomerServiceGrantsListWithResponse The service grants under a customer
+	//
+	// Who holds which service under the customer, in `user_id` then `service_key`
+	// order, each with whether it is in force and, when not, why.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /customers/{customer_id}/service-grants (the `CustomerServiceGrantsList` operationId).
+	CustomerServiceGrantsListWithResponse(ctx context.Context, customerId string, params *CustomerServiceGrantsListParams, reqEditors ...RequestEditorFn) (*CustomerServiceGrantsListResponse, error)
+
+	// CustomerServicesListWithResponse A customer's services
+	//
+	// Every service the customer holds, in any state, with its seat use, in the
+	// catalogue's display order. A tenant-scoped token reads its own customer's only.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /customers/{customer_id}/services (the `CustomerServicesList` operationId).
+	CustomerServicesListWithResponse(ctx context.Context, customerId string, params *CustomerServicesListParams, reqEditors ...RequestEditorFn) (*CustomerServicesListResponse, error)
+
+	// CustomerServicesDeleteWithResponse Withdraw a customer's service
+	//
+	// Withdraws the service from the customer: the entitlement is disabled and every grant under it is revoked, so enabling it again later gives nobody access back. The rows are kept for the record (a later `PUT` re-enables the entitlement, with no grants). People lose access in the service within the platform's reconcile interval. Destroy-class: a token needs `allow_destroy`.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /customers/{customer_id}/services/{service_key} (the `CustomerServicesDelete` operationId).
+	CustomerServicesDeleteWithResponse(ctx context.Context, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*CustomerServicesDeleteResponse, error)
+
+	// CustomerServicesGetWithResponse One of a customer's services
+	//
+	// What the customer holds of one service, in any state.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /customers/{customer_id}/services/{service_key} (the `CustomerServicesGet` operationId).
+	CustomerServicesGetWithResponse(ctx context.Context, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*CustomerServicesGetResponse, error)
+
+	// CustomerServicesPutWithBodyWithResponse Set a customer's service
+	//
+	// Sets what the customer holds of one service: 201 when it did not hold it, 200
+	// otherwise. A full replacement of `state`, `seats`, `dedicated_url` and `notes`.
+	//
+	// Never approves. For a service that `requires_approval`, `enabled` without an
+	// operator's approval is stored `pending_approval` and answered with the warning
+	// `approval_required`: no grant under it is in force until an operator approves it in
+	// the portal. An approval already given is kept.
+	//
+	// Disabling with a PUT keeps the grants under it (none of them is in force while it is
+	// disabled, and enabling it again brings them back); `DELETE` revokes them.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /customers/{customer_id}/services/{service_key} (the `CustomerServicesPut` operationId).
+	CustomerServicesPutWithBodyWithResponse(ctx context.Context, customerId string, serviceKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CustomerServicesPutResponse, error)
+
+	// CustomerServicesPutWithResponse Set a customer's service
+	//
+	// Sets what the customer holds of one service: 201 when it did not hold it, 200
+	// otherwise. A full replacement of `state`, `seats`, `dedicated_url` and `notes`.
+	//
+	// Never approves. For a service that `requires_approval`, `enabled` without an
+	// operator's approval is stored `pending_approval` and answered with the warning
+	// `approval_required`: no grant under it is in force until an operator approves it in
+	// the portal. An approval already given is kept.
+	//
+	// Disabling with a PUT keeps the grants under it (none of them is in force while it is
+	// disabled, and enabling it again brings them back); `DELETE` revokes them.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /customers/{customer_id}/services/{service_key} (the `CustomerServicesPut` operationId).
+	CustomerServicesPutWithResponse(ctx context.Context, customerId string, serviceKey string, body CustomerServicesPutJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomerServicesPutResponse, error)
+
 	// FeedbackListWithResponse List feedback items
 	//
 	// The feedback backlog of every customer: bug reports, change requests and feature requests, highest number (newest) first. Pages are cursor-based: pass `next_cursor` as `cursor` to get the next page; it is null on the last one.
@@ -21970,6 +23480,16 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with DELETE /scratch/jobs/{job_id}/git-token (the `ScratchJobGitTokenDelete` operationId).
 	ScratchJobGitTokenDeleteWithResponse(ctx context.Context, jobId string, reqEditors ...RequestEditorFn) (*ScratchJobGitTokenDeleteResponse, error)
 
+	// ServicesListWithResponse List services
+	//
+	// The services a customer can be entitled to, in display order (`sort_order`, then
+	// `key`).
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /services (the `ServicesList` operationId).
+	ServicesListWithResponse(ctx context.Context, params *ServicesListParams, reqEditors ...RequestEditorFn) (*ServicesListResponse, error)
+
 	// TenantsListWithResponse List tenants
 	//
 	// The tenants of this platform, in `slug` order. The filters are exact and combine:
@@ -22321,6 +23841,65 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PUT /users/{user_id}/roles/{role} (the `UserRolesPut` operationId).
 	UserRolesPutWithResponse(ctx context.Context, userId string, role string, reqEditors ...RequestEditorFn) (*UserRolesPutResponse, error)
+
+	// UserServiceGrantsListWithResponse A person's service grants
+	//
+	// Every grant the person holds, under every customer, in `customer_id` then
+	// `service_key` order.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /users/{user_id}/service-grants (the `UserServiceGrantsList` operationId).
+	UserServiceGrantsListWithResponse(ctx context.Context, userId string, params *UserServiceGrantsListParams, reqEditors ...RequestEditorFn) (*UserServiceGrantsListResponse, error)
+
+	// UserServiceGrantsDeleteWithResponse Revoke a person's service
+	//
+	// Revokes the grant. The row is kept, with `revoked_at` (a later `PUT` revives it). Revoking a revoked grant changes nothing and answers 204 again. The person loses access in the service within the platform's reconcile interval. Destroy-class: a token needs `allow_destroy`.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsDelete` operationId).
+	UserServiceGrantsDeleteWithResponse(ctx context.Context, userId string, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*UserServiceGrantsDeleteResponse, error)
+
+	// UserServiceGrantsGetWithResponse One service grant
+	//
+	// One person's grant of one service under one customer, revoked or not
+	// (`revoked_at`).
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsGet` operationId).
+	UserServiceGrantsGetWithResponse(ctx context.Context, userId string, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*UserServiceGrantsGetResponse, error)
+
+	// UserServiceGrantsPutWithBodyWithResponse Grant a person a service
+	//
+	// Grants the person the service under the customer: 201 when they held no grant
+	// (or only a revoked one, which this revives), 200 when an unrevoked grant was changed.
+	//
+	// The customer must hold the service, and a seat must be free. A grant on an
+	// entitlement that is not `enabled` is made and answered with `effective` false, the
+	// reason in `blocked_by` and the warning `grant_not_effective`. The person's access in
+	// the service follows within the platform's reconcile interval.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsPut` operationId).
+	UserServiceGrantsPutWithBodyWithResponse(ctx context.Context, userId string, customerId string, serviceKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UserServiceGrantsPutResponse, error)
+
+	// UserServiceGrantsPutWithResponse Grant a person a service
+	//
+	// Grants the person the service under the customer: 201 when they held no grant
+	// (or only a revoked one, which this revives), 200 when an unrevoked grant was changed.
+	//
+	// The customer must hold the service, and a seat must be free. A grant on an
+	// entitlement that is not `enabled` is made and answered with `effective` false, the
+	// reason in `blocked_by` and the warning `grant_not_effective`. The person's access in
+	// the service follows within the platform's reconcile interval.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsPut` operationId).
+	UserServiceGrantsPutWithResponse(ctx context.Context, userId string, customerId string, serviceKey string, body UserServiceGrantsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*UserServiceGrantsPutResponse, error)
 
 	// WhoamiGetWithResponse The calling principal
 	//
@@ -31031,6 +32610,919 @@ func (r CustomersUpdateResponse) ContentType() string {
 	return ""
 }
 
+// CustomerServiceGrantsListResponse200Headers the declared response headers of an HTTP 200 response for CustomerServiceGrantsList
+type CustomerServiceGrantsListResponse200Headers struct {
+	XRequestID *string
+}
+
+// CustomerServiceGrantsListResponse401Headers the declared response headers of an HTTP 401 response for CustomerServiceGrantsList
+type CustomerServiceGrantsListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// CustomerServiceGrantsListResponse403Headers the declared response headers of an HTTP 403 response for CustomerServiceGrantsList
+type CustomerServiceGrantsListResponse403Headers struct {
+	XRequestID *string
+}
+
+// CustomerServiceGrantsListResponse404Headers the declared response headers of an HTTP 404 response for CustomerServiceGrantsList
+type CustomerServiceGrantsListResponse404Headers struct {
+	XRequestID *string
+}
+
+// CustomerServiceGrantsListResponse429Headers the declared response headers of an HTTP 429 response for CustomerServiceGrantsList
+type CustomerServiceGrantsListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CustomerServiceGrantsListResponse503Headers the declared response headers of an HTTP 503 response for CustomerServiceGrantsList
+type CustomerServiceGrantsListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CustomerServiceGrantsListResponseDefaultHeaders the declared response headers of an HTTP default response for CustomerServiceGrantsList
+type CustomerServiceGrantsListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type CustomerServiceGrantsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServiceGrantPage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *CustomerServiceGrantsListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *CustomerServiceGrantsListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *CustomerServiceGrantsListResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *CustomerServiceGrantsListResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *CustomerServiceGrantsListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *CustomerServiceGrantsListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CustomerServiceGrantsListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CustomerServiceGrantsListResponse) GetJSON200() *ServiceGrantPage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r CustomerServiceGrantsListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r CustomerServiceGrantsListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r CustomerServiceGrantsListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CustomerServiceGrantsListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r CustomerServiceGrantsListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r CustomerServiceGrantsListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r CustomerServiceGrantsListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r CustomerServiceGrantsListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r CustomerServiceGrantsListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r CustomerServiceGrantsListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CustomerServiceGrantsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CustomerServiceGrantsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CustomerServiceGrantsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CustomerServiceGrantsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CustomerServiceGrantsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CustomerServiceGrantsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CustomerServicesListResponse200Headers the declared response headers of an HTTP 200 response for CustomerServicesList
+type CustomerServicesListResponse200Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesListResponse401Headers the declared response headers of an HTTP 401 response for CustomerServicesList
+type CustomerServicesListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// CustomerServicesListResponse403Headers the declared response headers of an HTTP 403 response for CustomerServicesList
+type CustomerServicesListResponse403Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesListResponse404Headers the declared response headers of an HTTP 404 response for CustomerServicesList
+type CustomerServicesListResponse404Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesListResponse429Headers the declared response headers of an HTTP 429 response for CustomerServicesList
+type CustomerServicesListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CustomerServicesListResponse503Headers the declared response headers of an HTTP 503 response for CustomerServicesList
+type CustomerServicesListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CustomerServicesListResponseDefaultHeaders the declared response headers of an HTTP default response for CustomerServicesList
+type CustomerServicesListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type CustomerServicesListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CustomerServicePage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *CustomerServicesListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *CustomerServicesListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *CustomerServicesListResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *CustomerServicesListResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *CustomerServicesListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *CustomerServicesListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CustomerServicesListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CustomerServicesListResponse) GetJSON200() *CustomerServicePage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r CustomerServicesListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r CustomerServicesListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r CustomerServicesListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CustomerServicesListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r CustomerServicesListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r CustomerServicesListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r CustomerServicesListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r CustomerServicesListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r CustomerServicesListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r CustomerServicesListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CustomerServicesListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CustomerServicesListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CustomerServicesListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CustomerServicesListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CustomerServicesListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CustomerServicesListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CustomerServicesDeleteResponse204Headers the declared response headers of an HTTP 204 response for CustomerServicesDelete
+type CustomerServicesDeleteResponse204Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesDeleteResponse401Headers the declared response headers of an HTTP 401 response for CustomerServicesDelete
+type CustomerServicesDeleteResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// CustomerServicesDeleteResponse403Headers the declared response headers of an HTTP 403 response for CustomerServicesDelete
+type CustomerServicesDeleteResponse403Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesDeleteResponse404Headers the declared response headers of an HTTP 404 response for CustomerServicesDelete
+type CustomerServicesDeleteResponse404Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesDeleteResponse429Headers the declared response headers of an HTTP 429 response for CustomerServicesDelete
+type CustomerServicesDeleteResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CustomerServicesDeleteResponse503Headers the declared response headers of an HTTP 503 response for CustomerServicesDelete
+type CustomerServicesDeleteResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CustomerServicesDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for CustomerServicesDelete
+type CustomerServicesDeleteResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type CustomerServicesDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *CustomerServicesDeleteResponse204Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *CustomerServicesDeleteResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *CustomerServicesDeleteResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *CustomerServicesDeleteResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *CustomerServicesDeleteResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *CustomerServicesDeleteResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CustomerServicesDeleteResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r CustomerServicesDeleteResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r CustomerServicesDeleteResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r CustomerServicesDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CustomerServicesDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r CustomerServicesDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r CustomerServicesDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r CustomerServicesDeleteResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r CustomerServicesDeleteResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r CustomerServicesDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r CustomerServicesDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CustomerServicesDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CustomerServicesDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CustomerServicesDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CustomerServicesDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CustomerServicesDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CustomerServicesDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CustomerServicesGetResponse200Headers the declared response headers of an HTTP 200 response for CustomerServicesGet
+type CustomerServicesGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesGetResponse401Headers the declared response headers of an HTTP 401 response for CustomerServicesGet
+type CustomerServicesGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// CustomerServicesGetResponse403Headers the declared response headers of an HTTP 403 response for CustomerServicesGet
+type CustomerServicesGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesGetResponse404Headers the declared response headers of an HTTP 404 response for CustomerServicesGet
+type CustomerServicesGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesGetResponse429Headers the declared response headers of an HTTP 429 response for CustomerServicesGet
+type CustomerServicesGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CustomerServicesGetResponse503Headers the declared response headers of an HTTP 503 response for CustomerServicesGet
+type CustomerServicesGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CustomerServicesGetResponseDefaultHeaders the declared response headers of an HTTP default response for CustomerServicesGet
+type CustomerServicesGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type CustomerServicesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CustomerService
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *CustomerServicesGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *CustomerServicesGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *CustomerServicesGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *CustomerServicesGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *CustomerServicesGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *CustomerServicesGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CustomerServicesGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CustomerServicesGetResponse) GetJSON200() *CustomerService {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r CustomerServicesGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r CustomerServicesGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r CustomerServicesGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CustomerServicesGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r CustomerServicesGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r CustomerServicesGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r CustomerServicesGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r CustomerServicesGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r CustomerServicesGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r CustomerServicesGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CustomerServicesGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CustomerServicesGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CustomerServicesGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CustomerServicesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CustomerServicesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CustomerServicesGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CustomerServicesPutResponse200Headers the declared response headers of an HTTP 200 response for CustomerServicesPut
+type CustomerServicesPutResponse200Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesPutResponse201Headers the declared response headers of an HTTP 201 response for CustomerServicesPut
+type CustomerServicesPutResponse201Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesPutResponse401Headers the declared response headers of an HTTP 401 response for CustomerServicesPut
+type CustomerServicesPutResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// CustomerServicesPutResponse403Headers the declared response headers of an HTTP 403 response for CustomerServicesPut
+type CustomerServicesPutResponse403Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesPutResponse404Headers the declared response headers of an HTTP 404 response for CustomerServicesPut
+type CustomerServicesPutResponse404Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesPutResponse409Headers the declared response headers of an HTTP 409 response for CustomerServicesPut
+type CustomerServicesPutResponse409Headers struct {
+	XRequestID *string
+}
+
+// CustomerServicesPutResponse429Headers the declared response headers of an HTTP 429 response for CustomerServicesPut
+type CustomerServicesPutResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CustomerServicesPutResponse503Headers the declared response headers of an HTTP 503 response for CustomerServicesPut
+type CustomerServicesPutResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// CustomerServicesPutResponseDefaultHeaders the declared response headers of an HTTP default response for CustomerServicesPut
+type CustomerServicesPutResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type CustomerServicesPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *CustomerServiceWritten
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *CustomerServiceWritten
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *CustomerServicesPutResponse200Headers
+	// Headers201 the parsed response headers for an HTTP 201 response
+	Headers201 *CustomerServicesPutResponse201Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *CustomerServicesPutResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *CustomerServicesPutResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *CustomerServicesPutResponse404Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *CustomerServicesPutResponse409Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *CustomerServicesPutResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *CustomerServicesPutResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *CustomerServicesPutResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r CustomerServicesPutResponse) GetJSON200() *CustomerServiceWritten {
+	return r.JSON200
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CustomerServicesPutResponse) GetJSON201() *CustomerServiceWritten {
+	return r.JSON201
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r CustomerServicesPutResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r CustomerServicesPutResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r CustomerServicesPutResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CustomerServicesPutResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r CustomerServicesPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r CustomerServicesPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r CustomerServicesPutResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r CustomerServicesPutResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r CustomerServicesPutResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r CustomerServicesPutResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r CustomerServicesPutResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r CustomerServicesPutResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r CustomerServicesPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r CustomerServicesPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r CustomerServicesPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CustomerServicesPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CustomerServicesPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CustomerServicesPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // FeedbackListResponse200Headers the declared response headers of an HTTP 200 response for FeedbackList
 type FeedbackListResponse200Headers struct {
 	XRequestID *string
@@ -38105,6 +40597,162 @@ func (r ScratchJobGitTokenDeleteResponse) ContentType() string {
 	return ""
 }
 
+// ServicesListResponse200Headers the declared response headers of an HTTP 200 response for ServicesList
+type ServicesListResponse200Headers struct {
+	XRequestID *string
+}
+
+// ServicesListResponse401Headers the declared response headers of an HTTP 401 response for ServicesList
+type ServicesListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ServicesListResponse403Headers the declared response headers of an HTTP 403 response for ServicesList
+type ServicesListResponse403Headers struct {
+	XRequestID *string
+}
+
+// ServicesListResponse429Headers the declared response headers of an HTTP 429 response for ServicesList
+type ServicesListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServicesListResponse503Headers the declared response headers of an HTTP 503 response for ServicesList
+type ServicesListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ServicesListResponseDefaultHeaders the declared response headers of an HTTP default response for ServicesList
+type ServicesListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ServicesListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServicePage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ServicesListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ServicesListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ServicesListResponse403Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ServicesListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ServicesListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ServicesListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ServicesListResponse) GetJSON200() *ServicePage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ServicesListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ServicesListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ServicesListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ServicesListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ServicesListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ServicesListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ServicesListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ServicesListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ServicesListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ServicesListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ServicesListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ServicesListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ServicesListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ServicesListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // TenantsListResponse200Headers the declared response headers of an HTTP 200 response for TenantsList
 type TenantsListResponse200Headers struct {
 	XRequestID *string
@@ -42819,6 +45467,742 @@ func (r UserRolesPutResponse) ContentType() string {
 	return ""
 }
 
+// UserServiceGrantsListResponse200Headers the declared response headers of an HTTP 200 response for UserServiceGrantsList
+type UserServiceGrantsListResponse200Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsListResponse401Headers the declared response headers of an HTTP 401 response for UserServiceGrantsList
+type UserServiceGrantsListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// UserServiceGrantsListResponse403Headers the declared response headers of an HTTP 403 response for UserServiceGrantsList
+type UserServiceGrantsListResponse403Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsListResponse404Headers the declared response headers of an HTTP 404 response for UserServiceGrantsList
+type UserServiceGrantsListResponse404Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsListResponse429Headers the declared response headers of an HTTP 429 response for UserServiceGrantsList
+type UserServiceGrantsListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// UserServiceGrantsListResponse503Headers the declared response headers of an HTTP 503 response for UserServiceGrantsList
+type UserServiceGrantsListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// UserServiceGrantsListResponseDefaultHeaders the declared response headers of an HTTP default response for UserServiceGrantsList
+type UserServiceGrantsListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type UserServiceGrantsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServiceGrantPage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *UserServiceGrantsListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *UserServiceGrantsListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *UserServiceGrantsListResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *UserServiceGrantsListResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *UserServiceGrantsListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *UserServiceGrantsListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UserServiceGrantsListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UserServiceGrantsListResponse) GetJSON200() *ServiceGrantPage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r UserServiceGrantsListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r UserServiceGrantsListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r UserServiceGrantsListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r UserServiceGrantsListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UserServiceGrantsListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UserServiceGrantsListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r UserServiceGrantsListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r UserServiceGrantsListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r UserServiceGrantsListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r UserServiceGrantsListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UserServiceGrantsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UserServiceGrantsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UserServiceGrantsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UserServiceGrantsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UserServiceGrantsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UserServiceGrantsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UserServiceGrantsDeleteResponse204Headers the declared response headers of an HTTP 204 response for UserServiceGrantsDelete
+type UserServiceGrantsDeleteResponse204Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsDeleteResponse401Headers the declared response headers of an HTTP 401 response for UserServiceGrantsDelete
+type UserServiceGrantsDeleteResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// UserServiceGrantsDeleteResponse403Headers the declared response headers of an HTTP 403 response for UserServiceGrantsDelete
+type UserServiceGrantsDeleteResponse403Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsDeleteResponse404Headers the declared response headers of an HTTP 404 response for UserServiceGrantsDelete
+type UserServiceGrantsDeleteResponse404Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsDeleteResponse429Headers the declared response headers of an HTTP 429 response for UserServiceGrantsDelete
+type UserServiceGrantsDeleteResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// UserServiceGrantsDeleteResponse503Headers the declared response headers of an HTTP 503 response for UserServiceGrantsDelete
+type UserServiceGrantsDeleteResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// UserServiceGrantsDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for UserServiceGrantsDelete
+type UserServiceGrantsDeleteResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type UserServiceGrantsDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *UserServiceGrantsDeleteResponse204Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *UserServiceGrantsDeleteResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *UserServiceGrantsDeleteResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *UserServiceGrantsDeleteResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *UserServiceGrantsDeleteResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *UserServiceGrantsDeleteResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UserServiceGrantsDeleteResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r UserServiceGrantsDeleteResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r UserServiceGrantsDeleteResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r UserServiceGrantsDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r UserServiceGrantsDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UserServiceGrantsDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UserServiceGrantsDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r UserServiceGrantsDeleteResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r UserServiceGrantsDeleteResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r UserServiceGrantsDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r UserServiceGrantsDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UserServiceGrantsDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UserServiceGrantsDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UserServiceGrantsDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UserServiceGrantsDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UserServiceGrantsDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UserServiceGrantsDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UserServiceGrantsGetResponse200Headers the declared response headers of an HTTP 200 response for UserServiceGrantsGet
+type UserServiceGrantsGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsGetResponse401Headers the declared response headers of an HTTP 401 response for UserServiceGrantsGet
+type UserServiceGrantsGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// UserServiceGrantsGetResponse403Headers the declared response headers of an HTTP 403 response for UserServiceGrantsGet
+type UserServiceGrantsGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsGetResponse404Headers the declared response headers of an HTTP 404 response for UserServiceGrantsGet
+type UserServiceGrantsGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsGetResponse429Headers the declared response headers of an HTTP 429 response for UserServiceGrantsGet
+type UserServiceGrantsGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// UserServiceGrantsGetResponse503Headers the declared response headers of an HTTP 503 response for UserServiceGrantsGet
+type UserServiceGrantsGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// UserServiceGrantsGetResponseDefaultHeaders the declared response headers of an HTTP default response for UserServiceGrantsGet
+type UserServiceGrantsGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type UserServiceGrantsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServiceGrant
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *UserServiceGrantsGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *UserServiceGrantsGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *UserServiceGrantsGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *UserServiceGrantsGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *UserServiceGrantsGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *UserServiceGrantsGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UserServiceGrantsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UserServiceGrantsGetResponse) GetJSON200() *ServiceGrant {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r UserServiceGrantsGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r UserServiceGrantsGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r UserServiceGrantsGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r UserServiceGrantsGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UserServiceGrantsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UserServiceGrantsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r UserServiceGrantsGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r UserServiceGrantsGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r UserServiceGrantsGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r UserServiceGrantsGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UserServiceGrantsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UserServiceGrantsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UserServiceGrantsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UserServiceGrantsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UserServiceGrantsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UserServiceGrantsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// UserServiceGrantsPutResponse200Headers the declared response headers of an HTTP 200 response for UserServiceGrantsPut
+type UserServiceGrantsPutResponse200Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsPutResponse201Headers the declared response headers of an HTTP 201 response for UserServiceGrantsPut
+type UserServiceGrantsPutResponse201Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsPutResponse401Headers the declared response headers of an HTTP 401 response for UserServiceGrantsPut
+type UserServiceGrantsPutResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// UserServiceGrantsPutResponse403Headers the declared response headers of an HTTP 403 response for UserServiceGrantsPut
+type UserServiceGrantsPutResponse403Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsPutResponse404Headers the declared response headers of an HTTP 404 response for UserServiceGrantsPut
+type UserServiceGrantsPutResponse404Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsPutResponse409Headers the declared response headers of an HTTP 409 response for UserServiceGrantsPut
+type UserServiceGrantsPutResponse409Headers struct {
+	XRequestID *string
+}
+
+// UserServiceGrantsPutResponse429Headers the declared response headers of an HTTP 429 response for UserServiceGrantsPut
+type UserServiceGrantsPutResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// UserServiceGrantsPutResponse503Headers the declared response headers of an HTTP 503 response for UserServiceGrantsPut
+type UserServiceGrantsPutResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// UserServiceGrantsPutResponseDefaultHeaders the declared response headers of an HTTP default response for UserServiceGrantsPut
+type UserServiceGrantsPutResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type UserServiceGrantsPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ServiceGrantWritten
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *ServiceGrantWritten
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *UserServiceGrantsPutResponse200Headers
+	// Headers201 the parsed response headers for an HTTP 201 response
+	Headers201 *UserServiceGrantsPutResponse201Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *UserServiceGrantsPutResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *UserServiceGrantsPutResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *UserServiceGrantsPutResponse404Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *UserServiceGrantsPutResponse409Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *UserServiceGrantsPutResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *UserServiceGrantsPutResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *UserServiceGrantsPutResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r UserServiceGrantsPutResponse) GetJSON200() *ServiceGrantWritten {
+	return r.JSON200
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r UserServiceGrantsPutResponse) GetJSON201() *ServiceGrantWritten {
+	return r.JSON201
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r UserServiceGrantsPutResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r UserServiceGrantsPutResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r UserServiceGrantsPutResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r UserServiceGrantsPutResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r UserServiceGrantsPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r UserServiceGrantsPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r UserServiceGrantsPutResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r UserServiceGrantsPutResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r UserServiceGrantsPutResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r UserServiceGrantsPutResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r UserServiceGrantsPutResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r UserServiceGrantsPutResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r UserServiceGrantsPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r UserServiceGrantsPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r UserServiceGrantsPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r UserServiceGrantsPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UserServiceGrantsPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r UserServiceGrantsPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // WhoamiGetResponse200Headers the declared response headers of an HTTP 200 response for WhoamiGet
 type WhoamiGetResponse200Headers struct {
 	XRequestID *string
@@ -43980,6 +47364,116 @@ func (c *ClientWithResponses) CustomersUpdateWithApplicationMergePatchPlusJSONBo
 	return ParseCustomersUpdateResponse(rsp)
 }
 
+// CustomerServiceGrantsListWithResponse The service grants under a customer
+//
+// Who holds which service under the customer, in `user_id` then `service_key`
+// order, each with whether it is in force and, when not, why.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /customers/{customer_id}/service-grants (the `CustomerServiceGrantsList` operationId).
+func (c *ClientWithResponses) CustomerServiceGrantsListWithResponse(ctx context.Context, customerId string, params *CustomerServiceGrantsListParams, reqEditors ...RequestEditorFn) (*CustomerServiceGrantsListResponse, error) {
+	rsp, err := c.CustomerServiceGrantsList(ctx, customerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomerServiceGrantsListResponse(rsp)
+}
+
+// CustomerServicesListWithResponse A customer's services
+//
+// Every service the customer holds, in any state, with its seat use, in the
+// catalogue's display order. A tenant-scoped token reads its own customer's only.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /customers/{customer_id}/services (the `CustomerServicesList` operationId).
+func (c *ClientWithResponses) CustomerServicesListWithResponse(ctx context.Context, customerId string, params *CustomerServicesListParams, reqEditors ...RequestEditorFn) (*CustomerServicesListResponse, error) {
+	rsp, err := c.CustomerServicesList(ctx, customerId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomerServicesListResponse(rsp)
+}
+
+// CustomerServicesDeleteWithResponse Withdraw a customer's service
+//
+// Withdraws the service from the customer: the entitlement is disabled and every grant under it is revoked, so enabling it again later gives nobody access back. The rows are kept for the record (a later `PUT` re-enables the entitlement, with no grants). People lose access in the service within the platform's reconcile interval. Destroy-class: a token needs `allow_destroy`.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /customers/{customer_id}/services/{service_key} (the `CustomerServicesDelete` operationId).
+func (c *ClientWithResponses) CustomerServicesDeleteWithResponse(ctx context.Context, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*CustomerServicesDeleteResponse, error) {
+	rsp, err := c.CustomerServicesDelete(ctx, customerId, serviceKey, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomerServicesDeleteResponse(rsp)
+}
+
+// CustomerServicesGetWithResponse One of a customer's services
+//
+// What the customer holds of one service, in any state.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /customers/{customer_id}/services/{service_key} (the `CustomerServicesGet` operationId).
+func (c *ClientWithResponses) CustomerServicesGetWithResponse(ctx context.Context, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*CustomerServicesGetResponse, error) {
+	rsp, err := c.CustomerServicesGet(ctx, customerId, serviceKey, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomerServicesGetResponse(rsp)
+}
+
+// CustomerServicesPutWithBodyWithResponse Set a customer's service
+//
+// Sets what the customer holds of one service: 201 when it did not hold it, 200
+// otherwise. A full replacement of `state`, `seats`, `dedicated_url` and `notes`.
+//
+// Never approves. For a service that `requires_approval`, `enabled` without an
+// operator's approval is stored `pending_approval` and answered with the warning
+// `approval_required`: no grant under it is in force until an operator approves it in
+// the portal. An approval already given is kept.
+//
+// Disabling with a PUT keeps the grants under it (none of them is in force while it is
+// disabled, and enabling it again brings them back); `DELETE` revokes them.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /customers/{customer_id}/services/{service_key} (the `CustomerServicesPut` operationId).
+func (c *ClientWithResponses) CustomerServicesPutWithBodyWithResponse(ctx context.Context, customerId string, serviceKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CustomerServicesPutResponse, error) {
+	rsp, err := c.CustomerServicesPutWithBody(ctx, customerId, serviceKey, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomerServicesPutResponse(rsp)
+}
+
+// CustomerServicesPutWithResponse Set a customer's service
+//
+// Sets what the customer holds of one service: 201 when it did not hold it, 200
+// otherwise. A full replacement of `state`, `seats`, `dedicated_url` and `notes`.
+//
+// Never approves. For a service that `requires_approval`, `enabled` without an
+// operator's approval is stored `pending_approval` and answered with the warning
+// `approval_required`: no grant under it is in force until an operator approves it in
+// the portal. An approval already given is kept.
+//
+// Disabling with a PUT keeps the grants under it (none of them is in force while it is
+// disabled, and enabling it again brings them back); `DELETE` revokes them.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /customers/{customer_id}/services/{service_key} (the `CustomerServicesPut` operationId).
+func (c *ClientWithResponses) CustomerServicesPutWithResponse(ctx context.Context, customerId string, serviceKey string, body CustomerServicesPutJSONRequestBody, reqEditors ...RequestEditorFn) (*CustomerServicesPutResponse, error) {
+	rsp, err := c.CustomerServicesPut(ctx, customerId, serviceKey, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCustomerServicesPutResponse(rsp)
+}
+
 // FeedbackListWithResponse List feedback items
 //
 // The feedback backlog of every customer: bug reports, change requests and feature requests, highest number (newest) first. Pages are cursor-based: pass `next_cursor` as `cursor` to get the next page; it is null on the last one.
@@ -44781,6 +48275,22 @@ func (c *ClientWithResponses) ScratchJobGitTokenDeleteWithResponse(ctx context.C
 	return ParseScratchJobGitTokenDeleteResponse(rsp)
 }
 
+// ServicesListWithResponse List services
+//
+// The services a customer can be entitled to, in display order (`sort_order`, then
+// `key`).
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /services (the `ServicesList` operationId).
+func (c *ClientWithResponses) ServicesListWithResponse(ctx context.Context, params *ServicesListParams, reqEditors ...RequestEditorFn) (*ServicesListResponse, error) {
+	rsp, err := c.ServicesList(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseServicesListResponse(rsp)
+}
+
 // TenantsListWithResponse List tenants
 //
 // The tenants of this platform, in `slug` order. The filters are exact and combine:
@@ -45335,6 +48845,95 @@ func (c *ClientWithResponses) UserRolesPutWithResponse(ctx context.Context, user
 		return nil, err
 	}
 	return ParseUserRolesPutResponse(rsp)
+}
+
+// UserServiceGrantsListWithResponse A person's service grants
+//
+// Every grant the person holds, under every customer, in `customer_id` then
+// `service_key` order.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /users/{user_id}/service-grants (the `UserServiceGrantsList` operationId).
+func (c *ClientWithResponses) UserServiceGrantsListWithResponse(ctx context.Context, userId string, params *UserServiceGrantsListParams, reqEditors ...RequestEditorFn) (*UserServiceGrantsListResponse, error) {
+	rsp, err := c.UserServiceGrantsList(ctx, userId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserServiceGrantsListResponse(rsp)
+}
+
+// UserServiceGrantsDeleteWithResponse Revoke a person's service
+//
+// Revokes the grant. The row is kept, with `revoked_at` (a later `PUT` revives it). Revoking a revoked grant changes nothing and answers 204 again. The person loses access in the service within the platform's reconcile interval. Destroy-class: a token needs `allow_destroy`.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsDelete` operationId).
+func (c *ClientWithResponses) UserServiceGrantsDeleteWithResponse(ctx context.Context, userId string, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*UserServiceGrantsDeleteResponse, error) {
+	rsp, err := c.UserServiceGrantsDelete(ctx, userId, customerId, serviceKey, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserServiceGrantsDeleteResponse(rsp)
+}
+
+// UserServiceGrantsGetWithResponse One service grant
+//
+// One person's grant of one service under one customer, revoked or not
+// (`revoked_at`).
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsGet` operationId).
+func (c *ClientWithResponses) UserServiceGrantsGetWithResponse(ctx context.Context, userId string, customerId string, serviceKey string, reqEditors ...RequestEditorFn) (*UserServiceGrantsGetResponse, error) {
+	rsp, err := c.UserServiceGrantsGet(ctx, userId, customerId, serviceKey, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserServiceGrantsGetResponse(rsp)
+}
+
+// UserServiceGrantsPutWithBodyWithResponse Grant a person a service
+//
+// Grants the person the service under the customer: 201 when they held no grant
+// (or only a revoked one, which this revives), 200 when an unrevoked grant was changed.
+//
+// The customer must hold the service, and a seat must be free. A grant on an
+// entitlement that is not `enabled` is made and answered with `effective` false, the
+// reason in `blocked_by` and the warning `grant_not_effective`. The person's access in
+// the service follows within the platform's reconcile interval.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsPut` operationId).
+func (c *ClientWithResponses) UserServiceGrantsPutWithBodyWithResponse(ctx context.Context, userId string, customerId string, serviceKey string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UserServiceGrantsPutResponse, error) {
+	rsp, err := c.UserServiceGrantsPutWithBody(ctx, userId, customerId, serviceKey, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserServiceGrantsPutResponse(rsp)
+}
+
+// UserServiceGrantsPutWithResponse Grant a person a service
+//
+// Grants the person the service under the customer: 201 when they held no grant
+// (or only a revoked one, which this revives), 200 when an unrevoked grant was changed.
+//
+// The customer must hold the service, and a seat must be free. A grant on an
+// entitlement that is not `enabled` is made and answered with `effective` false, the
+// reason in `blocked_by` and the warning `grant_not_effective`. The person's access in
+// the service follows within the platform's reconcile interval.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /users/{user_id}/service-grants/{customer_id}/{service_key} (the `UserServiceGrantsPut` operationId).
+func (c *ClientWithResponses) UserServiceGrantsPutWithResponse(ctx context.Context, userId string, customerId string, serviceKey string, body UserServiceGrantsPutJSONRequestBody, reqEditors ...RequestEditorFn) (*UserServiceGrantsPutResponse, error) {
+	rsp, err := c.UserServiceGrantsPut(ctx, userId, customerId, serviceKey, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserServiceGrantsPutResponse(rsp)
 }
 
 // WhoamiGetWithResponse The calling principal
@@ -55503,6 +59102,1063 @@ func ParseCustomersUpdateResponse(rsp *http.Response) (*CustomersUpdateResponse,
 	return response, nil
 }
 
+// ParseCustomerServiceGrantsListResponse parses an HTTP response from a CustomerServiceGrantsListWithResponse call
+func ParseCustomerServiceGrantsListResponse(rsp *http.Response) (*CustomerServiceGrantsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CustomerServiceGrantsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServiceGrantPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers CustomerServiceGrantsListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers CustomerServiceGrantsListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers CustomerServiceGrantsListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers CustomerServiceGrantsListResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers CustomerServiceGrantsListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers CustomerServiceGrantsListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers CustomerServiceGrantsListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCustomerServicesListResponse parses an HTTP response from a CustomerServicesListWithResponse call
+func ParseCustomerServicesListResponse(rsp *http.Response) (*CustomerServicesListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CustomerServicesListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CustomerServicePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers CustomerServicesListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers CustomerServicesListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers CustomerServicesListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers CustomerServicesListResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers CustomerServicesListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers CustomerServicesListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers CustomerServicesListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCustomerServicesDeleteResponse parses an HTTP response from a CustomerServicesDeleteWithResponse call
+func ParseCustomerServicesDeleteResponse(rsp *http.Response) (*CustomerServicesDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CustomerServicesDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers CustomerServicesDeleteResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 401:
+		var headers CustomerServicesDeleteResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers CustomerServicesDeleteResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers CustomerServicesDeleteResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers CustomerServicesDeleteResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers CustomerServicesDeleteResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers CustomerServicesDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCustomerServicesGetResponse parses an HTTP response from a CustomerServicesGetWithResponse call
+func ParseCustomerServicesGetResponse(rsp *http.Response) (*CustomerServicesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CustomerServicesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CustomerService
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers CustomerServicesGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers CustomerServicesGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers CustomerServicesGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers CustomerServicesGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers CustomerServicesGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers CustomerServicesGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers CustomerServicesGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCustomerServicesPutResponse parses an HTTP response from a CustomerServicesPutWithResponse call
+func ParseCustomerServicesPutResponse(rsp *http.Response) (*CustomerServicesPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CustomerServicesPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CustomerServiceWritten
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CustomerServiceWritten
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers CustomerServicesPutResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 201:
+		var headers CustomerServicesPutResponse201Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers201 = &headers
+	case rsp.StatusCode == 401:
+		var headers CustomerServicesPutResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers CustomerServicesPutResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers CustomerServicesPutResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 409:
+		var headers CustomerServicesPutResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 429:
+		var headers CustomerServicesPutResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers CustomerServicesPutResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers CustomerServicesPutResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseFeedbackListResponse parses an HTTP response from a FeedbackListWithResponse call
 func ParseFeedbackListResponse(rsp *http.Response) (*FeedbackListResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -63690,6 +68346,186 @@ func ParseScratchJobGitTokenDeleteResponse(rsp *http.Response) (*ScratchJobGitTo
 	return response, nil
 }
 
+// ParseServicesListResponse parses an HTTP response from a ServicesListWithResponse call
+func ParseServicesListResponse(rsp *http.Response) (*ServicesListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ServicesListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServicePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ServicesListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers ServicesListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ServicesListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 429:
+		var headers ServicesListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ServicesListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ServicesListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
 // ParseTenantsListResponse parses an HTTP response from a TenantsListWithResponse call
 func ParseTenantsListResponse(rsp *http.Response) (*TenantsListResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -69144,6 +73980,859 @@ func ParseUserRolesPutResponse(rsp *http.Response) (*UserRolesPutResponse, error
 		response.Headers503 = &headers
 	case true:
 		var headers UserRolesPutResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUserServiceGrantsListResponse parses an HTTP response from a UserServiceGrantsListWithResponse call
+func ParseUserServiceGrantsListResponse(rsp *http.Response) (*UserServiceGrantsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UserServiceGrantsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServiceGrantPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers UserServiceGrantsListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers UserServiceGrantsListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers UserServiceGrantsListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers UserServiceGrantsListResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers UserServiceGrantsListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers UserServiceGrantsListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers UserServiceGrantsListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUserServiceGrantsDeleteResponse parses an HTTP response from a UserServiceGrantsDeleteWithResponse call
+func ParseUserServiceGrantsDeleteResponse(rsp *http.Response) (*UserServiceGrantsDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UserServiceGrantsDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers UserServiceGrantsDeleteResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 401:
+		var headers UserServiceGrantsDeleteResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers UserServiceGrantsDeleteResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers UserServiceGrantsDeleteResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers UserServiceGrantsDeleteResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers UserServiceGrantsDeleteResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers UserServiceGrantsDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUserServiceGrantsGetResponse parses an HTTP response from a UserServiceGrantsGetWithResponse call
+func ParseUserServiceGrantsGetResponse(rsp *http.Response) (*UserServiceGrantsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UserServiceGrantsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServiceGrant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers UserServiceGrantsGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers UserServiceGrantsGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers UserServiceGrantsGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers UserServiceGrantsGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers UserServiceGrantsGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers UserServiceGrantsGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers UserServiceGrantsGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseUserServiceGrantsPutResponse parses an HTTP response from a UserServiceGrantsPutWithResponse call
+func ParseUserServiceGrantsPutResponse(rsp *http.Response) (*UserServiceGrantsPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UserServiceGrantsPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ServiceGrantWritten
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest ServiceGrantWritten
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers UserServiceGrantsPutResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 201:
+		var headers UserServiceGrantsPutResponse201Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers201 = &headers
+	case rsp.StatusCode == 401:
+		var headers UserServiceGrantsPutResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers UserServiceGrantsPutResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers UserServiceGrantsPutResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 409:
+		var headers UserServiceGrantsPutResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 429:
+		var headers UserServiceGrantsPutResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers UserServiceGrantsPutResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers UserServiceGrantsPutResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
