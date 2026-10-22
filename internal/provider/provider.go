@@ -280,6 +280,8 @@ func (p *ataProvider) DataSources(_ context.Context) []func() datasource.DataSou
 		NewAIGatewayUsageDataSource,
 		NewAIRateCardDataSource,
 		NewAIRatePlanDataSource,
+		NewServicesDataSource,
+		NewCustomerEntitlementsDataSource,
 	}
 }
 
@@ -305,6 +307,8 @@ func (p *ataProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewTenantQuotaResource,
 		NewAIRateCardResource,
 		NewAIRatePlanResource,
+		NewServiceEntitlementResource,
+		NewServiceGrantResource,
 	}
 }
 

@@ -329,6 +329,8 @@ Without any network at all, leave the `direct` block out. The configuration keep
 | [`ataila_tenant_quota`](docs/resources/tenant_quota.md) | A tenant's **whole** quota set: per dimension a limit and its policy | Removes every limit (orders then go to approval cards); not gated |
 | [`ataila_ai_rate_card`](docs/resources/ai_rate_card.md) | The list rate of one AI serving tier, EUR per 1M input and output tokens | Forgets only |
 | [`ataila_ai_rate_plan`](docs/resources/ai_rate_plan.md) | A tenant's **whole** AI rate plan: its own rate per tier instead of the list rate | Ends the plan (back to the list rate); not gated |
+| [`ataila_service_entitlement`](docs/resources/service_entitlement.md) | A service a customer holds, with its seats; never approves (that stays in the portal) | Withdraws: disables it and revokes every grant under it; gated |
+| [`ataila_service_grant`](docs/resources/service_grant.md) | A person's grant of a service under one customer | Revokes the grant; gated |
 
 **Destroy is off by default and needs two switches**: `allow_destroy = true` on the provider **and** a token
 minted with destroy allowed. With the provider switch off, destroying a customer or a tenant fails at plan
@@ -441,6 +443,8 @@ Import forms:
 | `ataila_tenant_quota` | the tenant's id |
 | `ataila_ai_rate_card` | the tier |
 | `ataila_ai_rate_plan` | the tenant's id |
+| `ataila_service_entitlement` | `<customer_id>/<service_key>` |
+| `ataila_service_grant` | `<user_id>/<customer_id>/<service_key>` |
 
 ```shell
 tofu import ataila_customer.example short_name:EXAMPLE        # OpenTofu
@@ -486,6 +490,8 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_ai_gateway_usage`](docs/data-sources/ai_gateway_usage.md) | Every tenant's AI usage for a month, rated, and the unattributed keys |
 | [`ataila_ai_rate_card`](docs/data-sources/ai_rate_card.md) | The AI list rate per serving tier: today's, the next scheduled one, the history |
 | [`ataila_ai_rate_plan`](docs/data-sources/ai_rate_plan.md) | A tenant's own AI rates and what each tier costs it today, and why |
+| [`ataila_services`](docs/data-sources/services.md) | The service catalogue: every service a customer can be entitled to |
+| [`ataila_customer_entitlements`](docs/data-sources/customer_entitlements.md) | Every service a customer holds, in any state, with its seat use |
 
 Further resources follow milestone by milestone; each ships with its documentation, examples and tests.
 

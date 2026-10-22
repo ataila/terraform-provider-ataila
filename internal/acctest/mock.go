@@ -84,17 +84,18 @@ type MockAPI struct {
 	requests    []Request
 	seq         int
 
-	idempotent map[string]storedReply
-	tenancy    *tenancyState
-	users      *usersState
-	gateway    *gatewayState
-	projects   *projectsState
-	licence    *licenceState
-	brand      *brandState
-	releases   *releasesState
-	ai         *aiState
-	orders     *ordersState
-	aiBilling  *aiBillingState
+	idempotent   map[string]storedReply
+	tenancy      *tenancyState
+	users        *usersState
+	gateway      *gatewayState
+	projects     *projectsState
+	licence      *licenceState
+	brand        *brandState
+	releases     *releasesState
+	ai           *aiState
+	orders       *ordersState
+	aiBilling    *aiBillingState
+	entitlements *entitlementsState
 }
 
 type storedReply struct {
@@ -132,21 +133,22 @@ type call struct {
 func NewMockAPI(t testing.TB) *MockAPI {
 	t.Helper()
 	m := &MockAPI{
-		meta:       DefaultMeta(),
-		whoami:     DefaultWhoami(),
-		operations: map[string]map[string]any{},
-		refusals:   map[string]map[string]any{},
-		faults:     map[string][]Fault{},
-		idempotent: map[string]storedReply{},
-		tenancy:    newTenancyState(),
-		gateway:    newGatewayState(),
-		projects:   newProjectsState(),
-		licence:    newLicenceState(),
-		brand:      newBrandState(),
-		releases:   newReleasesState(),
-		ai:         newAIState(),
-		orders:     newOrdersState(),
-		aiBilling:  newAIBillingState(),
+		meta:         DefaultMeta(),
+		whoami:       DefaultWhoami(),
+		operations:   map[string]map[string]any{},
+		refusals:     map[string]map[string]any{},
+		faults:       map[string][]Fault{},
+		idempotent:   map[string]storedReply{},
+		tenancy:      newTenancyState(),
+		gateway:      newGatewayState(),
+		projects:     newProjectsState(),
+		licence:      newLicenceState(),
+		brand:        newBrandState(),
+		releases:     newReleasesState(),
+		ai:           newAIState(),
+		orders:       newOrdersState(),
+		aiBilling:    newAIBillingState(),
+		entitlements: newEntitlementsState(),
 	}
 	principal, _ := m.whoami["principal"].(map[string]any)
 	m.users = newUsersState(principal, m.whoami["scopes"].([]string))
@@ -494,6 +496,11 @@ func (m *MockAPI) route(c *call) reply {
 	// A tenant's quotas and orders, the catalogue and orders (orders.go), before
 	// the tenancy routes, which own the rest of /tenants.
 	if rep, handled := m.routeOrders(c); handled {
+		return rep
+	}
+	// Service entitlements and grants (entitlements.go), before the tenancy and
+	// users routes, which own the rest of /customers and /users.
+	if rep, handled := m.routeEntitlements(c); handled {
 		return rep
 	}
 	// AI usage and rates (ai_billing.go), before the tenancy and gateway routes.

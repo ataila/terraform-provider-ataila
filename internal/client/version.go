@@ -49,6 +49,11 @@ const (
 	// /ai/rate-card[/{tier}], GET, PUT and DELETE /tenants/{id}/ai-rate-plan):
 	// ataila_ai_rate_card and ataila_ai_rate_plan, resources and data sources.
 	FeatureAIRates = "ai_rates"
+	// FeatureEntitlements are service entitlements and grants (GET /services,
+	// GET, PUT and DELETE /customers/{id}/services/{key} and
+	// /users/{id}/service-grants/{customer}/{key}): ataila_service_entitlement,
+	// ataila_service_grant, ataila_services, ataila_customer_entitlements.
+	FeatureEntitlements = "entitlements"
 )
 
 // ReleaseQuotasOrders is the platform release whose API serves tenant
@@ -66,14 +71,19 @@ const ReleaseAIBilling = "1.0.237"
 // `global` there — so this names the release in the documentation only.
 const ReleaseTenantTokens = "1.0.372"
 
+// ReleaseEntitlements is the platform release whose API serves service
+// entitlements and grants (FeatureEntitlements).
+const ReleaseEntitlements = "1.0.392"
+
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{
-	FeatureK8sQuota:    "1.0.203",
-	FeatureTenantQuota: ReleaseQuotasOrders,
-	FeatureCatalogue:   ReleaseQuotasOrders,
-	FeatureOrders:      ReleaseQuotasOrders,
-	FeatureAIUsage:     ReleaseAIBilling,
-	FeatureAIRates:     ReleaseAIBilling,
+	FeatureK8sQuota:     "1.0.203",
+	FeatureTenantQuota:  ReleaseQuotasOrders,
+	FeatureCatalogue:    ReleaseQuotasOrders,
+	FeatureOrders:       ReleaseQuotasOrders,
+	FeatureAIUsage:      ReleaseAIBilling,
+	FeatureAIRates:      ReleaseAIBilling,
+	FeatureEntitlements: ReleaseEntitlements,
 }
 
 // FeatureMinimum is the oldest platform release that serves a feature.

@@ -118,10 +118,12 @@ func (m frozenBool) PlanModifyBool(_ context.Context, req planmodifier.BoolReque
 
 // destroyVerb says what destroy does to each destroy-gated object.
 var destroyVerb = map[string]string{
-	"customer": "archive",
-	"tenant":   "delete",
-	"user":     "deactivate",
-	"project":  "retire",
+	"customer":            "archive",
+	"tenant":              "delete",
+	"user":                "deactivate",
+	"project":             "retire",
+	"service entitlement": "withdraw",
+	"service grant":       "revoke",
 }
 
 // destroyRefused is the diagnostic when the provider's allow_destroy is off.
@@ -139,6 +141,12 @@ func destroyRefused(resourceType, object, ident string) diag.Diagnostic {
 			"substrate is touched (no machine, DNS record, secret or repository is removed). A retired " +
 			"project keeps its project_index, short_name and primary_domain reserved for good, so they " +
 			"cannot be used again.",
+		"service entitlement": "For a service entitlement, destroy means withdraw: the customer's " +
+			"entitlement is disabled and every grant under it is revoked, so creating it again gives nobody " +
+			"access back. The rows stay for the record.",
+		"service grant": "For a service grant, destroy means revoke: the person loses the service within " +
+			"the platform's reconcile interval. The row stays for the record, and creating the grant again " +
+			"revives it.",
 	}[object]
 	return diag.NewErrorDiagnostic(
 		fmt.Sprintf("Destroying %s %s is not allowed", article(object), object),

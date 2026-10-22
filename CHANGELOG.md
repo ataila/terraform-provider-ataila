@@ -12,11 +12,24 @@ the 0.x releases before it were never published, and any of them could change wh
   nothing else, writes nothing, and works only while its owner is still the tenant's owner or admin — and
   `global` for every other credential; `tenant_id` names the tenant (null otherwise). A platform older than
   1.0.372 has no tenant-scoped tokens: `scope` is `global` there and nothing is refused.
+- Service entitlements and grants (platform 1.0.392 on; refused at plan time on an older platform, naming
+  the release). `ataila_service_entitlement`: a service a customer holds (`customer_id`, `service_key`,
+  `state` `enabled` or `disabled`, `seats`, `dedicated_url`, `notes`; read back `effective_state`,
+  `approved`, `seats_used`, `url`). **The provider never approves**: a service that needs approval is stored
+  `pending_approval` with a warning and the configuration shows no difference; an operator approves it in the
+  portal, and that approval is kept on every apply. Destroy withdraws the service — the entitlement is
+  disabled and every grant under it revoked — and is destroy-class. `ataila_service_grant`: a person's grant
+  under one customer (`grant_level` `login`, `user`, `admin` or `audit`; read back `effective` and
+  `blocked_by`); a grant revoked outside the configuration is created again on the next apply; destroy
+  revokes it and is destroy-class. Data sources `ataila_services` (the catalogue, optionally with retired
+  services) and `ataila_customer_entitlements`. Needs `entitlements-read-global` / `-admin-global`; a
+  tenant-scoped token reads the catalogue and its own customer's entitlements. Import ids
+  `<customer_id>/<service_key>` and `<user_id>/<customer_id>/<service_key>`.
 
 ### Changed
 
 - Copyright holder is the natural person (Macskásy Attila, ATAILA) until the Kft exists; NOTICE added.
-- The vendored contract moves from platform 1.0.237 to 1.0.372 (`api/openapi-v1.json`, additive only). The
+- The vendored contract moves from platform 1.0.237 to 1.0.392 (`api/openapi-v1.json`, additive only). The
   two coding-job credential operations it now declares (`POST /projects/{id}/jobs/{job}/git-token`,
   `POST /scratch/jobs/{job}`) are never called by the provider: write-only, one-day credentials are not
   Terraform objects.
