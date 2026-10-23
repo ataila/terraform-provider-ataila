@@ -100,6 +100,7 @@ type MockAPI struct {
 	saLinks      map[string][]map[string]any // service account id -> its CI links (service_accounts.go)
 	feedback     *feedbackState
 	auditLog     *auditState
+	backups      backupState
 }
 
 type storedReply struct {
@@ -213,7 +214,8 @@ func DefaultScopes() []string { return defaultScopes() }
 func defaultScopes() []string {
 	return []string{"ai-center-admin-global", "ai-center-read-global", "ai-gateway-admin-global",
 		"ai-gateway-read-global", "ai-models-admin-global", "ai-models-read-global", "brand-center-admin-global",
-		"brand-center-read-global", "licence-admin-global", "licence-read-global", "projects-admin-global",
+		"brand-center-read-global", "licence-admin-global", "licence-read-global",
+		"project-backup-admin-global", "project-backup-read-global", "projects-admin-global",
 		"projects-read-global", "release-manager-admin-global", "release-manager-read-global",
 		"tenancy-admin-global", "tenancy-read-global", "users-admin-global", "users-read-global"}
 }

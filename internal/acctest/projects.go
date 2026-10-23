@@ -520,6 +520,9 @@ func (m *MockAPI) routeProjects(c *call) reply {
 	case len(parts) == 3 && (parts[2] == "release-promotions" || parts[2] == "release-state" ||
 		parts[2] == "release-operations" || parts[2] == "prod-lock"):
 		return m.routeProjectReleases(c, parts[1], parts[2])
+	case len(parts) == 3 && (parts[2] == "backup-plan" || parts[2] == "backup-sets" ||
+		parts[2] == "backup-exports"):
+		return m.routeProjectBackups(c, parts[1], parts[2])
 	case len(parts) == 4 && parts[2] == "members":
 		switch method {
 		case http.MethodGet:

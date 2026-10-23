@@ -295,6 +295,7 @@ bundle binary, verify the platform archive and compare its binary with the bundl
 | [`ataila_project`](docs/resources/project.md) | A project record, its settings and (Kubernetes projects) its namespace quota per environment; provisions nothing | Retires; gated |
 | [`ataila_project_provisioning`](docs/resources/project_provisioning.md) | Runs a project's provisioning and waits until it is converged | Forgets only |
 | [`ataila_project_member`](docs/resources/project_member.md) | A user's role in a project | Removes the membership |
+| [`ataila_project_backup_plan`](docs/resources/project_backup_plan.md) | A project's backup plan: on or off, what each environment's sets carry, the tiers | Back to the default plan; switching backups off is gated |
 | [`ataila_licence_bundle`](docs/resources/licence_bundle.md) | The licence bundle installed on the platform (singleton) | Forgets only |
 | [`ataila_brand`](docs/resources/brand.md) | The platform's brand: name, colour, title, logo (singleton) | Forgets only |
 | [`ataila_brand_asset`](docs/resources/brand_asset.md) | A logo or favicon, content-addressed; readable without signing in | Forgets only |
@@ -411,6 +412,7 @@ Import forms:
 | `ataila_project` | the id, or `short_name:<short_name>` |
 | `ataila_project_provisioning` | the project id |
 | `ataila_project_member` | `<project_id>/<user_id>` |
+| `ataila_project_backup_plan` | the project id |
 | `ataila_licence_bundle` | `current` |
 | `ataila_brand` | `current` |
 | `ataila_brand_asset` | the asset id |
@@ -448,6 +450,8 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_project`](docs/data-sources/project.md) | One project, by id or short name, with its settings, outputs, stale stages and namespace quota |
 | [`ataila_projects`](docs/data-sources/projects.md) | Project summaries filtered by tenant, customer, status or short name (all pages) |
 | [`ataila_project_stages`](docs/data-sources/project_stages.md) | A project's provisioning stages with dependencies and latest runs |
+| [`ataila_project_backup_sets`](docs/data-sources/project_backup_sets.md) | A project's backup sets, newest first, filtered and bounded by `limit` |
+| [`ataila_project_backup_exports`](docs/data-sources/project_backup_exports.md) | A project's exports, newest first (never a download link) |
 | [`ataila_licence`](docs/data-sources/licence.md) | The licence state, tier, modules, term and document digest (never the bundle) |
 | [`ataila_licence_socket_facts`](docs/data-sources/licence_socket_facts.md) | The socket census and whether its hash chain is intact |
 | [`ataila_brand`](docs/data-sources/brand.md) | The platform's brand |

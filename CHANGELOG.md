@@ -17,6 +17,20 @@ the 0.x releases before it were never published, and any of them could change wh
   application inherits everything again. The data source shows what the application renders, resolved, with
   where each value came from (`source`). Needs `brand-center-admin-global` (read: `-read-global`). Import id: the
   application slug.
+- `ataila_project_backup_plan` (platform 1.0.399 on; refused at plan time on an older platform, naming the
+  release): a project's backup plan — whether it is backed up, what each environment's sets carry (code,
+  database, files), and the tiers. Every project has a plan, so **create takes it over** and replaces it with
+  the configuration. `environments` left out is the default (DEV code and database, PROD all three, UAT none);
+  `tiers` left out follows the installation's default tiers as they change, set gives the project its own.
+  Writes name the plan's `version` (If-Match): a change in the portal after the provider's read is a 412,
+  reported, never retried. **`enabled = false` is destroy-class**: it needs `allow_destroy = true` and a token
+  created with destroy allowed (refused at plan time when the provider's switch is off). **Destroy returns the
+  plan to the default** — never off — and needs neither. Needs `project-backup-admin-global`. Import id: the
+  project id.
+- `ataila_project_backup_sets` and `ataila_project_backup_exports` data sources: a project's sets (filtered by
+  environment, tier and status; at most `limit`, 100 when left out, with `more`) and its exports, newest first.
+  Where a set is stored, its manifest and an export's download link stay in the portal. Need
+  `project-backup-read-global`; a tenant-scoped token reads its own tenant's projects.
 - `ataila_audit_events` data source: the platform's audit log, newest first, filtered by action (exact or a `*`
   prefix), actor, how the actor authenticated, token, request, entity, tenant and time. A read keeps at most
   `limit` events (100 when left out, at most 1000) and says whether `more` matched, instead of walking the whole

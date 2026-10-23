@@ -318,6 +318,8 @@ func (p *ataProvider) DataSources(_ context.Context) []func() datasource.DataSou
 		NewFeedbackItemsDataSource,
 		NewFeedbackItemDataSource,
 		NewAuditEventsDataSource,
+		NewBackupSetsDataSource,
+		NewBackupExportsDataSource,
 	}
 }
 
@@ -337,6 +339,7 @@ func (p *ataProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewBrandResource,
 		NewBrandAssetResource,
 		NewBrandAppResource,
+		NewBackupPlanResource,
 		NewReleasePromotionResource,
 		NewProjectProdLockResource,
 		NewAIModelResource,

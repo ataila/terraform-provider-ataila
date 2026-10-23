@@ -65,6 +65,11 @@ const (
 	// DELETE /brand/apps/{slug}, GET /brand/apps/{slug}/resolved):
 	// ataila_brand_app, resource and data source.
 	FeatureBrandApps = "brand_apps"
+	// FeatureBackupPlans are a project's backups (GET, PUT and DELETE
+	// /projects/{id}/backup-plan, GET .../backup-sets and .../backup-exports):
+	// ataila_project_backup_plan, ataila_project_backup_sets,
+	// ataila_project_backup_exports.
+	FeatureBackupPlans = "backup_plans"
 )
 
 // ReleaseQuotasOrders is the platform release whose API serves tenant
@@ -103,8 +108,13 @@ const ReleaseFeedback = "1.0.260"
 // application profiles (FeatureBrandApps).
 const ReleaseBrandApps = "1.0.305"
 
+// ReleaseBackupPlans is the platform release whose API serves a project's
+// backup plan, sets and exports (FeatureBackupPlans).
+const ReleaseBackupPlans = "1.0.399"
+
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{
+	FeatureBackupPlans:     ReleaseBackupPlans,
 	FeatureBrandApps:       ReleaseBrandApps,
 	FeatureFeedback:        ReleaseFeedback,
 	FeatureServiceAccounts: ReleaseServiceAccounts,
