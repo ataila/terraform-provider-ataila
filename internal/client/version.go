@@ -74,6 +74,9 @@ const (
 	// /kubernetes-clusters, /certificates): ataila_vms, ataila_vm_nodes,
 	// ataila_k8s_clusters, ataila_certificates.
 	FeatureFleet = "fleet"
+	// FeatureProjectNetwork is a project's network, read only (GET
+	// /projects/{id}/network): ataila_project_network.
+	FeatureProjectNetwork = "project_network"
 )
 
 // ReleaseQuotasOrders is the platform release whose API serves tenant
@@ -120,10 +123,15 @@ const ReleaseBackupPlans = "1.0.399"
 // (FeatureFleet).
 const ReleaseFleet = "1.0.400"
 
+// ReleaseProjectNetwork is the platform release whose API serves a project's
+// network (FeatureProjectNetwork).
+const ReleaseProjectNetwork = "1.0.401"
+
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{
 	FeatureBackupPlans:     ReleaseBackupPlans,
 	FeatureFleet:           ReleaseFleet,
+	FeatureProjectNetwork:  ReleaseProjectNetwork,
 	FeatureBrandApps:       ReleaseBrandApps,
 	FeatureFeedback:        ReleaseFeedback,
 	FeatureServiceAccounts: ReleaseServiceAccounts,

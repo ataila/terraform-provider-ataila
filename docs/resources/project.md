@@ -3,7 +3,7 @@ page_title: "ataila_project Resource - ATAILA"
 subcategory: ""
 description: |-
   A project: an application (or a network zone) of a tenant, with its settings.
-  Creating a project records it; it provisions nothing and stays planned. Provisioning is a separate resource, ataila_project_provisioning. Changing a setting changes the record and marks the provisioning stages it affects stale (stale_stages); the next provisioning run re-applies them.
+  Creating a project records it; it provisions nothing and stays planned. Provisioning is a separate resource, ataila_project_provisioning. Changing a setting changes the record and marks the provisioning stages it affects stale (stale_stages); the next provisioning run re-applies them. That includes the network: a change of frontend_exposure, api_exposure, app_gateway, the UAT publishing switches or allow_public_https_egress marks the network stages stale, and the network ataila_project_network reads changes only once ataila_project_provisioning has applied them.
   Frozen keys (tenant_id, project_index, short_name, gitlab_repo_slug, primary_domain, deployment_backend, network_only) are set at create and never change. Changing one fails the plan; the provider never replaces a project.
   Settings left out of the configuration get the platform's default at create and keep their current value afterwards. description, github_user and github_repo_url are the exception: leaving them out clears them.
   A Kubernetes project's namespace quota, GPU scheduling included, is k8s_quota: set the keys of an environment and the provider sends them to the platform's quota editor after the project is created or changed (one request per environment; the platform re-applies the project's GitOps stages itself).
@@ -15,7 +15,7 @@ description: |-
 
 A project: an application (or a network zone) of a tenant, with its settings.
 
-Creating a project **records** it; it provisions nothing and stays `planned`. Provisioning is a separate resource, `ataila_project_provisioning`. Changing a setting changes the record and marks the provisioning stages it affects stale (`stale_stages`); the next provisioning run re-applies them.
+Creating a project **records** it; it provisions nothing and stays `planned`. Provisioning is a separate resource, `ataila_project_provisioning`. Changing a setting changes the record and marks the provisioning stages it affects stale (`stale_stages`); the next provisioning run re-applies them. That includes the network: a change of `frontend_exposure`, `api_exposure`, `app_gateway`, the UAT publishing switches or `allow_public_https_egress` marks the network stages stale, and the network `ataila_project_network` reads changes only once `ataila_project_provisioning` has applied them.
 
 **Frozen keys** (`tenant_id`, `project_index`, `short_name`, `gitlab_repo_slug`, `primary_domain`, `deployment_backend`, `network_only`) are set at create and never change. Changing one **fails the plan**; the provider never replaces a project.
 

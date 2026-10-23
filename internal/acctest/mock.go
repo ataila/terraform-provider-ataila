@@ -102,6 +102,7 @@ type MockAPI struct {
 	auditLog     *auditState
 	backups      backupState
 	fleet        fleetState
+	networks     map[string]map[string]any // project id -> its network (project_network.go)
 }
 
 type storedReply struct {

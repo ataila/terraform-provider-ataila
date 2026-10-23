@@ -450,6 +450,7 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_project`](docs/data-sources/project.md) | One project, by id or short name, with its settings, outputs, stale stages and namespace quota |
 | [`ataila_projects`](docs/data-sources/projects.md) | Project summaries filtered by tenant, customer, status or short name (all pages) |
 | [`ataila_project_stages`](docs/data-sources/project_stages.md) | A project's provisioning stages with dependencies and latest runs |
+| [`ataila_project_network`](docs/data-sources/project_network.md) | A project's network: subnets, VLANs, security groups and rules, gateway allows, policies, VPC |
 | [`ataila_project_backup_sets`](docs/data-sources/project_backup_sets.md) | A project's backup sets, newest first, filtered and bounded by `limit` |
 | [`ataila_project_backup_exports`](docs/data-sources/project_backup_exports.md) | A project's exports, newest first (never a download link) |
 | [`ataila_vms`](docs/data-sources/vms.md) | The projects' VMs: name, environment, role, status, size (no addresses) |

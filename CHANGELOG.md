@@ -31,6 +31,13 @@ the 0.x releases before it were never published, and any of them could change wh
   environment, tier and status; at most `limit`, 100 when left out, with `more`) and its exports, newest first.
   Where a set is stored, its manifest and an export's download link stay in the portal. Need
   `project-backup-read-global`; a tenant-scoped token reads its own tenant's projects.
+- `ataila_project_network` data source (platform 1.0.401 on): a project's network as the platform derives and
+  applies it — the zone's subnets, the VLANs, the per-VM security groups with every rule and which VM sits in
+  which (and whether its firewall is applied), the bounded allows on the project's gateways, a Kubernetes
+  project's network policies and a VPC-mode project's VPC (preview). Read only: the network follows the
+  project's settings. `ataila_project`'s documentation now says what a change of its exposure, gateway or
+  egress settings does to the network (it marks the network stages stale; `ataila_project_provisioning` applies
+  them). Needs `networking-read-global`; a tenant-scoped token reads its own tenant's projects.
 - `ataila_vms`, `ataila_vm_nodes`, `ataila_k8s_clusters` and `ataila_certificates` data sources (platform 1.0.400
   on): the fleet inventory, read only. VMs filtered by project, environment, role and status; the platform's own
   VM nodes; the Kubernetes clusters with which environments land where; the domains' certificates filtered by

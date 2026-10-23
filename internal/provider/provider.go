@@ -324,6 +324,7 @@ func (p *ataProvider) DataSources(_ context.Context) []func() datasource.DataSou
 		NewVMNodesDataSource,
 		NewK8sClustersDataSource,
 		NewCertificatesDataSource,
+		NewProjectNetworkDataSource,
 	}
 }
 
