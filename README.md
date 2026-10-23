@@ -452,6 +452,10 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_project_stages`](docs/data-sources/project_stages.md) | A project's provisioning stages with dependencies and latest runs |
 | [`ataila_project_backup_sets`](docs/data-sources/project_backup_sets.md) | A project's backup sets, newest first, filtered and bounded by `limit` |
 | [`ataila_project_backup_exports`](docs/data-sources/project_backup_exports.md) | A project's exports, newest first (never a download link) |
+| [`ataila_vms`](docs/data-sources/vms.md) | The projects' VMs: name, environment, role, status, size (no addresses) |
+| [`ataila_vm_nodes`](docs/data-sources/vm_nodes.md) | The platform's own infrastructure VMs (operators only) |
+| [`ataila_k8s_clusters`](docs/data-sources/k8s_clusters.md) | The Kubernetes clusters projects can run on (operators only) |
+| [`ataila_certificates`](docs/data-sources/certificates.md) | The domains' TLS certificates: host name, issuer, expiry, renewal state |
 | [`ataila_licence`](docs/data-sources/licence.md) | The licence state, tier, modules, term and document digest (never the bundle) |
 | [`ataila_licence_socket_facts`](docs/data-sources/licence_socket_facts.md) | The socket census and whether its hash chain is intact |
 | [`ataila_brand`](docs/data-sources/brand.md) | The platform's brand |

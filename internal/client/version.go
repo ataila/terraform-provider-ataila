@@ -70,6 +70,10 @@ const (
 	// ataila_project_backup_plan, ataila_project_backup_sets,
 	// ataila_project_backup_exports.
 	FeatureBackupPlans = "backup_plans"
+	// FeatureFleet is the fleet inventory, read only (GET /vms, /vm-nodes,
+	// /kubernetes-clusters, /certificates): ataila_vms, ataila_vm_nodes,
+	// ataila_k8s_clusters, ataila_certificates.
+	FeatureFleet = "fleet"
 )
 
 // ReleaseQuotasOrders is the platform release whose API serves tenant
@@ -112,9 +116,14 @@ const ReleaseBrandApps = "1.0.305"
 // backup plan, sets and exports (FeatureBackupPlans).
 const ReleaseBackupPlans = "1.0.399"
 
+// ReleaseFleet is the platform release whose API serves the fleet inventory
+// (FeatureFleet).
+const ReleaseFleet = "1.0.400"
+
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{
 	FeatureBackupPlans:     ReleaseBackupPlans,
+	FeatureFleet:           ReleaseFleet,
 	FeatureBrandApps:       ReleaseBrandApps,
 	FeatureFeedback:        ReleaseFeedback,
 	FeatureServiceAccounts: ReleaseServiceAccounts,

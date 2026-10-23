@@ -31,6 +31,12 @@ the 0.x releases before it were never published, and any of them could change wh
   environment, tier and status; at most `limit`, 100 when left out, with `more`) and its exports, newest first.
   Where a set is stored, its manifest and an export's download link stay in the portal. Need
   `project-backup-read-global`; a tenant-scoped token reads its own tenant's projects.
+- `ataila_vms`, `ataila_vm_nodes`, `ataila_k8s_clusters` and `ataila_certificates` data sources (platform 1.0.400
+  on): the fleet inventory, read only. VMs filtered by project, environment, role and status; the platform's own
+  VM nodes; the Kubernetes clusters with which environments land where; the domains' certificates filtered by
+  project and status. Names, roles, sizes, expiry and state only — no address, host, machine id, endpoint, key or
+  storage. `infrastructure-read-global` reads the first three, `certificates-read-global` the certificates; a
+  tenant-scoped token reads its own tenant's projects' VMs and certificates, never the nodes or the clusters.
 - `ataila_audit_events` data source: the platform's audit log, newest first, filtered by action (exact or a `*`
   prefix), actor, how the actor authenticated, token, request, entity, tenant and time. A read keeps at most
   `limit` events (100 when left out, at most 1000) and says whether `more` matched, instead of walking the whole

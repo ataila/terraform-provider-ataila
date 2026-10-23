@@ -320,6 +320,10 @@ func (p *ataProvider) DataSources(_ context.Context) []func() datasource.DataSou
 		NewAuditEventsDataSource,
 		NewBackupSetsDataSource,
 		NewBackupExportsDataSource,
+		NewVMsDataSource,
+		NewVMNodesDataSource,
+		NewK8sClustersDataSource,
+		NewCertificatesDataSource,
 	}
 }
 

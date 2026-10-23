@@ -101,6 +101,7 @@ type MockAPI struct {
 	feedback     *feedbackState
 	auditLog     *auditState
 	backups      backupState
+	fleet        fleetState
 }
 
 type storedReply struct {
@@ -537,6 +538,10 @@ func (m *MockAPI) route(c *call) reply {
 	}
 	// The audit log (audit.go), read only.
 	if rep, handled := m.routeAudit(c); handled {
+		return rep
+	}
+	// The fleet inventory (fleet.go), read only.
+	if rep, handled := m.routeFleet(c); handled {
 		return rep
 	}
 	switch {
