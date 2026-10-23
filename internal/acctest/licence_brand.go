@@ -71,7 +71,8 @@ type brandState struct {
 	firstParty bool
 	assets     map[string]*mockBrandAsset
 	noStorage  bool
-	bumpOnRead bool // the next read is followed by a change in the portal
+	bumpOnRead bool                     // the next read is followed by a change in the portal
+	apps       map[string]*mockBrandApp // application profiles (brand_apps.go)
 }
 
 func newLicenceState() *licenceState {
@@ -347,6 +348,8 @@ func (m *MockAPI) routeBrand(c *call) reply {
 		return rep
 	case len(parts) == 1 && c.r.Method == http.MethodPut:
 		return m.brandPut(c)
+	case len(parts) >= 2 && parts[1] == "apps":
+		return m.routeBrandApps(c, parts)
 	case len(parts) == 2 && parts[1] == "assets" && c.r.Method == http.MethodGet:
 		return m.brandAssetsList(c)
 	case len(parts) == 2 && parts[1] == "assets" && c.r.Method == http.MethodPost:

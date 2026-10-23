@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"net/http"
 	"net/url"
 	"strconv"
 )
@@ -110,4 +111,72 @@ func (a *API) UploadBrandAsset(ctx context.Context, kind string, content []byte,
 		return rsp.JSON200, false, nil
 	}
 	return nil, false, unexpected("POST /brand/assets", rsp.HTTPResponse)
+}
+
+// Brand Center application profiles (platform 1.0.305 on): one profile per
+// application slug, every field optional (null = inherit this platform's
+// brand). PUT replaces the whole profile; with a version it is conditional
+// (If-Match), without one the last write wins and a missing profile is
+// created.
+
+// GetBrandApp reads GET /brand/apps/{slug}: a 404 *APIError when the
+// application has no profile.
+func (a *API) GetBrandApp(ctx context.Context, slug string) (*BrandAppProfile, error) {
+	rsp, err := a.raw.BrandAppsGetWithResponse(ctx, slug)
+	if err != nil {
+		return nil, err
+	}
+	if rsp.JSON200 == nil {
+		return nil, unexpected("GET /brand/apps/"+url.PathEscape(slug), rsp.HTTPResponse)
+	}
+	return rsp.JSON200, nil
+}
+
+// PutBrandApp sends PUT /brand/apps/{slug}. With version set the replace
+// happens only while the profile is still at that version (412
+// version_mismatch otherwise, never retried); without it the profile is
+// created or replaced unconditionally.
+func (a *API) PutBrandApp(ctx context.Context, slug string, body BrandAppPut, version *int) (*BrandAppProfile, error) {
+	params := &BrandAppsPutParams{}
+	if version != nil {
+		etag := `"` + strconv.Itoa(*version) + `"`
+		params.IfMatch = &etag
+	}
+	rsp, err := a.raw.BrandAppsPutWithResponse(ctx, slug, params, body)
+	if err != nil {
+		return nil, err
+	}
+	switch {
+	case rsp.JSON201 != nil:
+		return rsp.JSON201, nil
+	case rsp.JSON200 != nil:
+		return rsp.JSON200, nil
+	}
+	return nil, unexpected("PUT /brand/apps/"+url.PathEscape(slug), rsp.HTTPResponse)
+}
+
+// DeleteBrandApp sends DELETE /brand/apps/{slug}: the application inherits
+// this platform's brand again. A 404 *APIError when it had no profile.
+func (a *API) DeleteBrandApp(ctx context.Context, slug string) error {
+	rsp, err := a.raw.BrandAppsDeleteWithResponse(ctx, slug)
+	if err != nil {
+		return err
+	}
+	if rsp.StatusCode() != http.StatusNoContent {
+		return unexpected("DELETE /brand/apps/"+url.PathEscape(slug), rsp.HTTPResponse)
+	}
+	return nil
+}
+
+// GetResolvedBrandApp reads GET /brand/apps/{slug}/resolved: what the
+// application renders, with or without a profile.
+func (a *API) GetResolvedBrandApp(ctx context.Context, slug string) (*ResolvedAppBrand, error) {
+	rsp, err := a.raw.BrandAppsResolvedWithResponse(ctx, slug)
+	if err != nil {
+		return nil, err
+	}
+	if rsp.JSON200 == nil {
+		return nil, unexpected("GET /brand/apps/"+url.PathEscape(slug)+"/resolved", rsp.HTTPResponse)
+	}
+	return rsp.JSON200, nil
 }

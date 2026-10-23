@@ -99,6 +99,7 @@ type MockAPI struct {
 	ci           *ciState
 	saLinks      map[string][]map[string]any // service account id -> its CI links (service_accounts.go)
 	feedback     *feedbackState
+	auditLog     *auditState
 }
 
 type storedReply struct {
@@ -530,6 +531,10 @@ func (m *MockAPI) route(c *call) reply {
 	}
 	// The feedback backlog (feedback.go), read only.
 	if rep, handled := m.routeFeedback(c); handled {
+		return rep
+	}
+	// The audit log (audit.go), read only.
+	if rep, handled := m.routeAudit(c); handled {
 		return rep
 	}
 	switch {

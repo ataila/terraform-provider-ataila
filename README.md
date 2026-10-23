@@ -298,6 +298,7 @@ bundle binary, verify the platform archive and compare its binary with the bundl
 | [`ataila_licence_bundle`](docs/resources/licence_bundle.md) | The licence bundle installed on the platform (singleton) | Forgets only |
 | [`ataila_brand`](docs/resources/brand.md) | The platform's brand: name, colour, title, logo (singleton) | Forgets only |
 | [`ataila_brand_asset`](docs/resources/brand_asset.md) | A logo or favicon, content-addressed; readable without signing in | Forgets only |
+| [`ataila_brand_app`](docs/resources/brand_app.md) | An application's brand profile; fields left out are inherited | Deletes the profile (inherits again) |
 | [`ataila_release_promotion`](docs/resources/release_promotion.md) | A promotion request of a Kubernetes project's component into dev, uat or prod | Forgets only |
 | [`ataila_project_prod_lock`](docs/resources/project_prod_lock.md) | A project's PROD data lock | Forgets only |
 | [`ataila_ai_model`](docs/resources/ai_model.md) | An AI model catalogue row (no weights) | Removes the row; refused while weights exist; not gated |
@@ -413,6 +414,7 @@ Import forms:
 | `ataila_licence_bundle` | `current` |
 | `ataila_brand` | `current` |
 | `ataila_brand_asset` | the asset id |
+| `ataila_brand_app` | the application slug |
 | `ataila_release_promotion` | the release operation id |
 | `ataila_project_prod_lock` | the project id |
 | `ataila_ai_model` | the id, or `repo:<org/name>` |
@@ -450,6 +452,7 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_licence_socket_facts`](docs/data-sources/licence_socket_facts.md) | The socket census and whether its hash chain is intact |
 | [`ataila_brand`](docs/data-sources/brand.md) | The platform's brand |
 | [`ataila_brand_asset`](docs/data-sources/brand_asset.md) | One brand asset, by id or sha256 |
+| [`ataila_brand_app`](docs/data-sources/brand_app.md) | What an application shows, resolved, with where each value came from |
 | [`ataila_release_state`](docs/data-sources/release_state.md) | Last reported versions per environment, the PROD data lock, open operations |
 | [`ataila_release_operation`](docs/data-sources/release_operation.md) | One release operation (a promotion or a data copy) |
 | [`ataila_ai_model`](docs/data-sources/ai_model.md) | One AI model, by id or repo |
@@ -473,6 +476,7 @@ terraform import ataila_customer.example short_name:EXAMPLE   # Terraform
 | [`ataila_service_account`](docs/data-sources/service_account.md) | One service account by id or name: owner, roles, live tokens, linked GitLab projects |
 | [`ataila_feedback_items`](docs/data-sources/feedback_items.md) | The Feedback & Roadmap backlog, filtered (on the release origin) |
 | [`ataila_feedback_item`](docs/data-sources/feedback_item.md) | One feedback item in full, with its thread; never fetches the brief |
+| [`ataila_audit_events`](docs/data-sources/audit_events.md) | The audit log, newest first, filtered and bounded by `limit` |
 
 Further resources follow milestone by milestone; each ships with its documentation, examples and tests.
 

@@ -61,6 +61,10 @@ const (
 	// FeatureFeedback is the Feedback & Roadmap backlog, read only (GET
 	// /feedback, GET /feedback/{n}): ataila_feedback_items, ataila_feedback_item.
 	FeatureFeedback = "feedback"
+	// FeatureBrandApps are Brand Center application profiles (GET, PUT and
+	// DELETE /brand/apps/{slug}, GET /brand/apps/{slug}/resolved):
+	// ataila_brand_app, resource and data source.
+	FeatureBrandApps = "brand_apps"
 )
 
 // ReleaseQuotasOrders is the platform release whose API serves tenant
@@ -95,8 +99,13 @@ const ReleaseServiceAccounts = "1.0.397"
 // backlog reads (FeatureFeedback).
 const ReleaseFeedback = "1.0.260"
 
+// ReleaseBrandApps is the platform release whose API serves Brand Center
+// application profiles (FeatureBrandApps).
+const ReleaseBrandApps = "1.0.305"
+
 // featureMinimum is the platform release that brought each feature.
 var featureMinimum = map[string]string{
+	FeatureBrandApps:       ReleaseBrandApps,
 	FeatureFeedback:        ReleaseFeedback,
 	FeatureServiceAccounts: ReleaseServiceAccounts,
 	FeatureK8sQuota:        "1.0.203",

@@ -92,6 +92,14 @@ func (s recordingServer) PlanResourceChange(ctx context.Context, req *tfprotov6.
 	return resp, err
 }
 
+func (s recordingServer) ReadDataSource(ctx context.Context, req *tfprotov6.ReadDataSourceRequest) (*tfprotov6.ReadDataSourceResponse, error) {
+	resp, err := s.ProviderServer.ReadDataSource(ctx, req)
+	if resp != nil {
+		s.rec.add(resp.Diagnostics)
+	}
+	return resp, err
+}
+
 // recordingProvider serves the provider like protoV6 and records its diagnostics.
 func recordingProvider() (map[string]func() (tfprotov6.ProviderServer, error), *diagRecorder) {
 	rec := &diagRecorder{}

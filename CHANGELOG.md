@@ -5,6 +5,24 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ## Unreleased
 
+### Added
+
+- `ataila_brand_app`, resource and data source (platform 1.0.305 on; refused at plan time on an older platform,
+  naming the release): an application's Brand Center profile — name and accent, colours, header logo, favicon,
+  social card, font, footer text and links, partner line, default language, legal links. Every field is optional
+  and a field left out is **inherited** from the platform's own brand; the resource manages them all, so a field
+  set in the portal and left out here goes back to inherited. Updates name the profile's `version` (If-Match): a
+  change made outside the configuration after the provider's read is a 412, reported, never retried. **Create
+  refuses an application that already has a profile** (import it instead); destroy deletes the profile and the
+  application inherits everything again. The data source shows what the application renders, resolved, with
+  where each value came from (`source`). Needs `brand-center-admin-global` (read: `-read-global`). Import id: the
+  application slug.
+- `ataila_audit_events` data source: the platform's audit log, newest first, filtered by action (exact or a `*`
+  prefix), actor, how the actor authenticated, token, request, entity, tenant and time. A read keeps at most
+  `limit` events (100 when left out, at most 1000) and says whether `more` matched, instead of walking the whole
+  log; each event's before and after states are kept only with `include_states`. Needs `audit-read-global`; a
+  tenant-scoped token reads its own tenant's events.
+
 ## 1.3.0 (2026-10-23) — contract of platform release 1.0.397
 
 A minor release: additions only, under the stability promise of 1.0.0. A configuration and a state of 1.2.0

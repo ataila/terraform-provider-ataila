@@ -16,7 +16,7 @@
 set -euo pipefail
 
 declare -A DOMAINS=(
-  [tenancy]='^TestAcc(Customer|Tenant|Timestamp|Provider|Meta|Whoami|Catalogue|Order|Service)'
+  [tenancy]='^TestAcc(Customer|Tenant|Timestamp|Provider|Meta|Whoami|Catalogue|Order|Service|Audit)'
   [users-gateway]='^TestAcc(User|Gateway|Serving)'
   [projects-releases]='^TestAcc(Project|Release|Feedback)'
   [ai-licence-brand]='^TestAcc(AI|Licence|Brand)'
