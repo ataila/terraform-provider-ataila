@@ -726,6 +726,12 @@ A release is a commit and an annotated tag on it:
    succeeded) and `publish:github` (the release on GitHub with every file and the bundle).
 6. Check the GitHub release's assets against `SHA256SUMS`, and the signature against `docs/signing-key.asc`.
 
+The `release` job hands every archive to `publish:github` as one artifact: 102 MB at 1.2.0, 105 MB at 1.3.0.
+The instance caps artifacts at 100 MB by default, which stopped the first 1.3.0 run after the files were built
+and signed (`413 Request Entity Too Large`, nothing published); since 2026-10-23 this project's **Maximum
+artifacts size** (Settings → CI/CD → General pipelines, set by an administrator) is 250 MB. If it is ever hit
+again, raise it and retry `release`: `mirror:github:tag` and `publish:github` then run as usual.
+
 Registering the provider, once, after the first published release (1.0.0):
 
 - **Terraform Registry**: sign in at registry.terraform.io with a GitHub account that is an owner of the
