@@ -4498,6 +4498,136 @@
         "title": "CatalogueItemPage",
         "type": "object"
       },
+      "Certificate": {
+        "description": "One TLS certificate of a domain. Never a key.",
+        "properties": {
+          "auto_rotate": {
+            "description": "True when the platform renews it before it expires.",
+            "title": "Auto Rotate",
+            "type": "boolean"
+          },
+          "challenge_type": {
+            "description": "How the issuer checks the domain: `dns-01` or `http-01`.",
+            "title": "Challenge Type",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "When it was recorded.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "expires_at": {
+            "description": "When it expires.",
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "fqdn": {
+            "description": "The host name it covers, e.g. `shop.example.com` or `*.example.com`.",
+            "title": "Fqdn",
+            "type": "string"
+          },
+          "id": {
+            "description": "The certificate's id.",
+            "title": "Id",
+            "type": "string"
+          },
+          "issued_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it was issued.",
+            "title": "Issued At"
+          },
+          "issuer": {
+            "description": "`letsencrypt`, `zerossl`, `self-signed` or `commercial`.",
+            "title": "Issuer",
+            "type": "string"
+          },
+          "last_renewal_attempt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When a renewal was last tried.",
+            "title": "Last Renewal Attempt"
+          },
+          "project_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The project whose domain it covers; `null` for a domain no project owns.",
+            "title": "Project Id"
+          },
+          "status": {
+            "description": "`valid`, `expiring`, `expired`, `rotation_failed` or `revoked`.",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "fqdn",
+          "issuer",
+          "challenge_type",
+          "issued_at",
+          "expires_at",
+          "auto_rotate",
+          "last_renewal_attempt",
+          "status",
+          "created_at"
+        ],
+        "title": "Certificate",
+        "type": "object"
+      },
+      "CertificatePage": {
+        "description": "One page of certificates, in id order. `next_cursor` reads the next page.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/Certificate"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "CertificatePage",
+        "type": "object"
+      },
       "CiToken": {
         "description": "A one-hour API token for the pipeline's service account.",
         "properties": {
@@ -7566,6 +7696,96 @@
           "primary"
         ],
         "title": "GitLabRepository",
+        "type": "object"
+      },
+      "KubernetesCluster": {
+        "description": "One Kubernetes cluster projects can run on.",
+        "properties": {
+          "default_for_envs": {
+            "description": "The environments a project that names no cluster runs here.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Default For Envs",
+            "type": "array"
+          },
+          "enabled": {
+            "description": "False while projects may not use it.",
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "is_default_home": {
+            "description": "True for the cluster a project lands on when it names none.",
+            "title": "Is Default Home",
+            "type": "boolean"
+          },
+          "name": {
+            "description": "The cluster's name: what a Kubernetes project names as its target.",
+            "title": "Name",
+            "type": "string"
+          },
+          "single_node": {
+            "description": "True for a one-node cluster.",
+            "title": "Single Node",
+            "type": "boolean"
+          },
+          "targetable": {
+            "description": "True when a project may be homed here.",
+            "title": "Targetable",
+            "type": "boolean"
+          },
+          "tenant_gpu_cards": {
+            "description": "GPU cards the cluster offers to tenants' workloads.",
+            "title": "Tenant Gpu Cards",
+            "type": "integer"
+          },
+          "whole_project": {
+            "description": "True when a project targeted at this cluster has every environment on it.",
+            "title": "Whole Project",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "enabled",
+          "single_node",
+          "tenant_gpu_cards",
+          "default_for_envs",
+          "whole_project",
+          "is_default_home",
+          "targetable"
+        ],
+        "title": "KubernetesCluster",
+        "type": "object"
+      },
+      "KubernetesClusterPage": {
+        "description": "The clusters, by name. `next_cursor` is always `null`: the list is one page.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/KubernetesCluster"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "KubernetesClusterPage",
         "type": "object"
       },
       "KubernetesNamespace": {
@@ -17227,6 +17447,294 @@
         "title": "UserPatch",
         "type": "object"
       },
+      "Vm": {
+        "description": "One virtual machine of a project.",
+        "properties": {
+          "cpu": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Virtual CPUs.",
+            "title": "Cpu"
+          },
+          "created_at": {
+            "description": "When the VM was recorded.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "disk_class": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`N` (local NVMe or SSD, replicated by the software on it) or `C` (network SSD: the VM restarts on another host when its host fails); `null` for a VM with no disk.",
+            "title": "Disk Class"
+          },
+          "disk_gb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Disk in GB.",
+            "title": "Disk Gb"
+          },
+          "environment": {
+            "description": "`dev`, `uat` or `prod`.",
+            "title": "Environment",
+            "type": "string"
+          },
+          "id": {
+            "description": "The VM's id.",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "The VM's host name, e.g. `prod-shop-db-01`.",
+            "title": "Name",
+            "type": "string"
+          },
+          "pending_hardware": {
+            "description": "True while the VM waits for its disk hardware.",
+            "title": "Pending Hardware",
+            "type": "boolean"
+          },
+          "project_id": {
+            "description": "The project it belongs to.",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "ram_gb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Memory in GB.",
+            "title": "Ram Gb"
+          },
+          "role": {
+            "description": "What it runs, e.g. `db` or `docker-apps`.",
+            "title": "Role",
+            "type": "string"
+          },
+          "status": {
+            "description": "`planned`, `provisioning`, `running`, `stopped`, `failed` or `retired`.",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "name",
+          "environment",
+          "role",
+          "status",
+          "cpu",
+          "ram_gb",
+          "disk_gb",
+          "disk_class",
+          "pending_hardware",
+          "created_at"
+        ],
+        "title": "Vm",
+        "type": "object"
+      },
+      "VmNode": {
+        "description": "One infrastructure VM: the platform's own machines, not a project's.",
+        "properties": {
+          "cpu": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Virtual CPUs.",
+            "title": "Cpu"
+          },
+          "created_at": {
+            "description": "When it was recorded.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What it is for.",
+            "title": "Description"
+          },
+          "disk_gb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Disk in GB.",
+            "title": "Disk Gb"
+          },
+          "environment": {
+            "description": "Its environment, as the inventory names it.",
+            "title": "Environment",
+            "type": "string"
+          },
+          "id": {
+            "description": "The node's id.",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Its host name.",
+            "title": "Name",
+            "type": "string"
+          },
+          "os": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its operating system.",
+            "title": "Os"
+          },
+          "ram_gb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Memory in GB.",
+            "title": "Ram Gb"
+          },
+          "role": {
+            "description": "What it runs.",
+            "title": "Role",
+            "type": "string"
+          },
+          "status": {
+            "description": "Its state in the inventory, e.g. `running`.",
+            "title": "Status",
+            "type": "string"
+          },
+          "updated_at": {
+            "description": "When its record last changed.",
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "role",
+          "environment",
+          "status",
+          "os",
+          "cpu",
+          "ram_gb",
+          "disk_gb",
+          "description",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "VmNode",
+        "type": "object"
+      },
+      "VmNodePage": {
+        "description": "One page of infrastructure VM nodes, in id order. `next_cursor` reads the next\npage.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/VmNode"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "VmNodePage",
+        "type": "object"
+      },
+      "VmPage": {
+        "description": "One page of VMs, in id order. `next_cursor` reads the next page.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/Vm"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "VmPage",
+        "type": "object"
+      },
       "WeeklyTier": {
         "additionalProperties": false,
         "description": "The weekly tier.",
@@ -26216,6 +26724,400 @@
         ]
       }
     },
+    "/certificates": {
+      "get": {
+        "description": "The TLS certificates of the domains, in id order. Filters combine with AND. A tenant-scoped token sees its own tenant's projects' certificates only. Never a key.",
+        "operationId": "certificates_list",
+        "parameters": [
+          {
+            "description": "Only this project's.",
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^[1-9][0-9]{0,8}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only this project's.",
+              "title": "Project Id"
+            }
+          },
+          {
+            "description": "Only certificates in this status.",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "valid",
+                    "expiring",
+                    "expired",
+                    "rotation_failed",
+                    "revoked"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only certificates in this status.",
+              "title": "Status"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificatePage"
+                }
+              }
+            },
+            "description": "One page of certificates.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Certificates",
+        "tags": [
+          "inventory"
+        ]
+      }
+    },
+    "/certificates/{cert_id}": {
+      "get": {
+        "description": "One certificate, as the list shows it.",
+        "operationId": "certificates_get",
+        "parameters": [
+          {
+            "description": "The certificate's id.",
+            "in": "path",
+            "name": "cert_id",
+            "required": true,
+            "schema": {
+              "description": "The certificate's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Cert Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Certificate"
+                }
+              }
+            },
+            "description": "The certificate.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such certificate, or not one the caller may read (`certificate_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One certificate",
+        "tags": [
+          "inventory"
+        ]
+      }
+    },
     "/customers": {
       "get": {
         "description": "The customers of this platform, in `id` order, archived ones included. The filters\nare exact and combine: `short_name`, `gitlab_group`, `status`. A list never contacts\nGitLab; read one customer with `include=gitlab_status` for its group's live state.",
@@ -28920,6 +29822,147 @@
         "summary": "The brief of a feedback item",
         "tags": [
           "feedback"
+        ]
+      }
+    },
+    "/kubernetes-clusters": {
+      "get": {
+        "description": "The Kubernetes clusters projects can run on, by name, the disabled ones included: one page. Not for tenant-scoped tokens. No endpoint or address is returned.",
+        "operationId": "kubernetes_clusters_list",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KubernetesClusterPage"
+                }
+              }
+            },
+            "description": "The clusters.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Kubernetes clusters",
+        "tags": [
+          "inventory"
         ]
       }
     },
@@ -44720,6 +45763,794 @@
         ]
       }
     },
+    "/vm-nodes": {
+      "get": {
+        "description": "The platform's own virtual machines, in id order. Not for tenant-scoped tokens. No address, host or machine id is returned.",
+        "operationId": "vm_nodes_list",
+        "parameters": [
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VmNodePage"
+                }
+              }
+            },
+            "description": "One page of nodes.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Infrastructure VM nodes",
+        "tags": [
+          "inventory"
+        ]
+      }
+    },
+    "/vm-nodes/{node_id}": {
+      "get": {
+        "description": "One node, as the list shows it.",
+        "operationId": "vm_nodes_get",
+        "parameters": [
+          {
+            "description": "The node's id.",
+            "in": "path",
+            "name": "node_id",
+            "required": true,
+            "schema": {
+              "description": "The node's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Node Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VmNode"
+                }
+              }
+            },
+            "description": "The node.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such node (`vm_node_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One infrastructure VM node",
+        "tags": [
+          "inventory"
+        ]
+      }
+    },
+    "/vms": {
+      "get": {
+        "description": "The projects' virtual machines, in id order. Filters combine with AND. A tenant-scoped token sees its own tenant's projects' VMs only. No address, host or machine id is returned.",
+        "operationId": "vms_list",
+        "parameters": [
+          {
+            "description": "Only this project's.",
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^[1-9][0-9]{0,8}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only this project's.",
+              "title": "Project Id"
+            }
+          },
+          {
+            "description": "Only this environment's.",
+            "in": "query",
+            "name": "environment",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "dev",
+                    "uat",
+                    "prod"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only this environment's.",
+              "title": "Environment"
+            }
+          },
+          {
+            "description": "Only VMs of this role.",
+            "in": "query",
+            "name": "role",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 80,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only VMs of this role.",
+              "title": "Role"
+            }
+          },
+          {
+            "description": "Only VMs in this status.",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "planned",
+                    "provisioning",
+                    "running",
+                    "stopped",
+                    "failed",
+                    "retired"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only VMs in this status.",
+              "title": "Status"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VmPage"
+                }
+              }
+            },
+            "description": "One page of VMs.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Virtual machines",
+        "tags": [
+          "inventory"
+        ]
+      }
+    },
+    "/vms/{vm_id}": {
+      "get": {
+        "description": "One VM, as the list shows it.",
+        "operationId": "vms_get",
+        "parameters": [
+          {
+            "description": "The VM's id.",
+            "in": "path",
+            "name": "vm_id",
+            "required": true,
+            "schema": {
+              "description": "The VM's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Vm Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vm"
+                }
+              }
+            },
+            "description": "The VM.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such VM, or not one the caller may read (`vm_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One virtual machine",
+        "tags": [
+          "inventory"
+        ]
+      }
+    },
     "/whoami": {
       "get": {
         "description": "Who is calling and what they may do right now. `scopes` are the EFFECTIVE\npermissions: for a token, its scopes that its owner still holds, so a scope the\nowner has lost is not there; `token.granted_scopes` is what the token was created\nwith. A tenant-scoped token (`scope` `tenant`) keeps its scopes only while its owner\nis the tenant's owner or admin. `expires_at` is when the credential stops working.\nNeeds a credential but no permission.",
@@ -44894,6 +46725,10 @@
     {
       "description": "A project's backup plan, and its sets, exports and restores (read-only).",
       "name": "backups"
+    },
+    {
+      "description": "Virtual machines, infrastructure VM nodes, Kubernetes clusters and certificates (read-only).",
+      "name": "inventory"
     },
     {
       "description": "AI gateway virtual keys and serving tiers.",
