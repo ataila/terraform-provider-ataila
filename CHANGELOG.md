@@ -5,6 +5,13 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ## Unreleased
 
+## 1.3.0 (2026-10-23) — contract of platform release 1.0.397
+
+A minor release: additions only, under the stability promise of 1.0.0. A configuration and a state of 1.2.0
+plan with no changes. Proven end to end against a platform installation on 2026-10-23: a tenant-scoped token,
+entitlements and a service account under OpenTofu and Terraform, and a GitLab CI pipeline exchanging its ID
+token.
+
 ### Added
 
 - `ataila_whoami` gains `scope` and `tenant_id` (platform 1.0.372 on): `scope` is `tenant` for a
