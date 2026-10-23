@@ -2278,6 +2278,710 @@
         "title": "AuditEventPage",
         "type": "object"
       },
+      "BackupComponents": {
+        "additionalProperties": false,
+        "description": "What one environment's sets carry.",
+        "properties": {
+          "code": {
+            "description": "The code: every repository as a git bundle (on PROD, the released tag) and the environment's deployment files, secrets as names only.",
+            "title": "Code",
+            "type": "boolean"
+          },
+          "database": {
+            "description": "The environment's database.",
+            "title": "Database",
+            "type": "boolean"
+          },
+          "files": {
+            "description": "The environment's object storage buckets.",
+            "title": "Files",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "database",
+          "files"
+        ],
+        "title": "BackupComponents",
+        "type": "object"
+      },
+      "BackupEnvironments": {
+        "additionalProperties": false,
+        "description": "The components backed up per environment. An environment with none is not\nbacked up; an environment that is not deployed is skipped whatever it says.",
+        "properties": {
+          "dev": {
+            "$ref": "#/components/schemas/BackupComponents",
+            "description": "DEV."
+          },
+          "prod": {
+            "$ref": "#/components/schemas/BackupComponents",
+            "description": "PROD."
+          },
+          "uat": {
+            "$ref": "#/components/schemas/BackupComponents",
+            "description": "UAT."
+          }
+        },
+        "required": [
+          "dev",
+          "uat",
+          "prod"
+        ],
+        "title": "BackupEnvironments",
+        "type": "object"
+      },
+      "BackupExport": {
+        "description": "One export: a downloadable package of the project, built from its sets.",
+        "properties": {
+          "bytes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The package's size in bytes, once it finished.",
+            "title": "Bytes"
+          },
+          "contents": {
+            "description": "What is inside the package, one line per part.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Contents",
+            "type": "array"
+          },
+          "created_at": {
+            "description": "When the export was requested.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "database": {
+            "description": "What it carries of each database: `schema`, `data` (schema and data) or `both` (those and a full dump).",
+            "title": "Database",
+            "type": "string"
+          },
+          "environments": {
+            "description": "The environments it carries.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Environments",
+            "type": "array"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why it failed, as the run reported it.",
+            "title": "Error"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When the download window closes.",
+            "title": "Expires At"
+          },
+          "files": {
+            "description": "Whether it carries the object storage buckets.",
+            "title": "Files",
+            "type": "boolean"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When its run finished.",
+            "title": "Finished At"
+          },
+          "id": {
+            "description": "The export's id (a UUID).",
+            "title": "Id",
+            "type": "string"
+          },
+          "project_id": {
+            "description": "The project.",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The package's SHA-256, once it finished.",
+            "title": "Sha256"
+          },
+          "source_set_ids": {
+            "description": "The sets it was built from.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Set Ids",
+            "type": "array"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When its run started.",
+            "title": "Started At"
+          },
+          "status": {
+            "description": "`queued`, `running`, `success`, `failed`, or `expired` (its download window has passed). The package is downloaded from the portal only.",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "status",
+          "environments",
+          "database",
+          "files",
+          "source_set_ids",
+          "contents",
+          "bytes",
+          "sha256",
+          "expires_at",
+          "created_at",
+          "started_at",
+          "finished_at",
+          "error"
+        ],
+        "title": "BackupExport",
+        "type": "object"
+      },
+      "BackupExportPage": {
+        "description": "One page of a project's exports, newest first. `next_cursor` reads the next\npage.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/BackupExport"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "BackupExportPage",
+        "type": "object"
+      },
+      "BackupPlan": {
+        "description": "A project's backup plan as it is in force. Every project has one: a new\nproject gets the default plan. `PUT` replaces it as a whole; `DELETE` returns\nit to the default.",
+        "properties": {
+          "default_environments": {
+            "$ref": "#/components/schemas/BackupEnvironments",
+            "description": "The default environments, which a new project's plan and `DELETE` set."
+          },
+          "default_tiers": {
+            "$ref": "#/components/schemas/BackupTiers",
+            "description": "The installation's default tiers now."
+          },
+          "enabled": {
+            "description": "Whether the project is backed up at all. False stops every scheduled set; the sets already made are kept until they expire.",
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "environments": {
+            "$ref": "#/components/schemas/BackupEnvironments",
+            "description": "What each environment's sets carry."
+          },
+          "is_default": {
+            "description": "True while the plan is the default: enabled, the default environments, and the installation's default tiers followed.",
+            "title": "Is Default",
+            "type": "boolean"
+          },
+          "project_id": {
+            "description": "The project.",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "tiers": {
+            "$ref": "#/components/schemas/BackupTiers",
+            "description": "The tiers in force: this project's own while `tiers_overridden`, otherwise the installation's default."
+          },
+          "tiers_overridden": {
+            "description": "True when this project has its own tiers. False while it follows the installation's default tiers (`default_tiers`), which then apply as they change.",
+            "title": "Tiers Overridden",
+            "type": "boolean"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When the plan was last written; `null` while the project has no stored plan.",
+            "title": "Updated At"
+          },
+          "version": {
+            "description": "Bumped by every change of the plan, from the portal or this API; 0 while the project has no stored plan. Send it back in `If-Match`.",
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "project_id",
+          "enabled",
+          "environments",
+          "default_environments",
+          "tiers_overridden",
+          "tiers",
+          "default_tiers",
+          "is_default",
+          "version",
+          "updated_at"
+        ],
+        "title": "BackupPlan",
+        "type": "object"
+      },
+      "BackupPlanPut": {
+        "additionalProperties": false,
+        "description": "The whole plan. Every member is required.",
+        "properties": {
+          "enabled": {
+            "description": "Whether the project is backed up. Switching a plan from true to false is destroy-class: an API token needs `allow_destroy` for it.",
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "environments": {
+            "$ref": "#/components/schemas/BackupEnvironments",
+            "description": "What each environment's sets carry."
+          },
+          "tiers": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BackupTiers"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "This project's own tiers, which stop following the installation's default (`tiers_overridden` becomes true, even when they equal it); `null` follows the installation's default."
+          }
+        },
+        "required": [
+          "enabled",
+          "environments",
+          "tiers"
+        ],
+        "title": "BackupPlanPut",
+        "type": "object"
+      },
+      "BackupRestore": {
+        "description": "One restore of a set into an environment. Restores are requested, approved\nand rejected in the portal only.",
+        "properties": {
+          "approval_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The approver's note on a PROD restore, as written.",
+            "title": "Approval Note"
+          },
+          "approved_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When a PROD restore was approved or rejected.",
+            "title": "Approved At"
+          },
+          "components": {
+            "description": "What is restored: `code`, `database`, `files`.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "created_at": {
+            "description": "When the restore was requested.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why it failed, as the run reported it.",
+            "title": "Error"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When its run finished.",
+            "title": "Finished At"
+          },
+          "id": {
+            "description": "The restore's id (a UUID).",
+            "title": "Id",
+            "type": "string"
+          },
+          "project_id": {
+            "description": "The project.",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why it was requested, as the requester wrote it.",
+            "title": "Reason"
+          },
+          "set_id": {
+            "description": "The set restored.",
+            "title": "Set Id",
+            "type": "string"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When its run started.",
+            "title": "Started At"
+          },
+          "status": {
+            "description": "`pending` (a restore into PROD waiting for its approval), `queued`, `running`, `success`, `failed`, or `rejected`.",
+            "title": "Status",
+            "type": "string"
+          },
+          "target_environment": {
+            "description": "The environment restored into.",
+            "title": "Target Environment",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "set_id",
+          "target_environment",
+          "components",
+          "status",
+          "reason",
+          "approval_note",
+          "approved_at",
+          "created_at",
+          "started_at",
+          "finished_at",
+          "error"
+        ],
+        "title": "BackupRestore",
+        "type": "object"
+      },
+      "BackupRestorePage": {
+        "description": "One page of a project's restores, newest first. `next_cursor` reads the next\npage.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/BackupRestore"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "BackupRestorePage",
+        "type": "object"
+      },
+      "BackupSet": {
+        "description": "One backup set: what one run copied of one environment.",
+        "properties": {
+          "attempt": {
+            "description": "The run's attempt number: above 1 after a retry.",
+            "title": "Attempt",
+            "type": "integer"
+          },
+          "bytes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The set's size in bytes, once it finished.",
+            "title": "Bytes"
+          },
+          "components": {
+            "description": "What it carries: `code`, `database`, `files`.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "created_at": {
+            "description": "When the set was requested.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "environment": {
+            "description": "`dev`, `uat` or `prod`.",
+            "title": "Environment",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why it failed, as the run reported it.",
+            "title": "Error"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When its run finished.",
+            "title": "Finished At"
+          },
+          "has_checksums": {
+            "description": "True when the set was completed with its checksum list, which the engine writes last: a set without one is not complete.",
+            "title": "Has Checksums",
+            "type": "boolean"
+          },
+          "id": {
+            "description": "The set's id (a UUID).",
+            "title": "Id",
+            "type": "string"
+          },
+          "project_id": {
+            "description": "The project.",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "pruned_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When retention removed it.",
+            "title": "Pruned At"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When its run started.",
+            "title": "Started At"
+          },
+          "status": {
+            "description": "`queued`, `running`, `success`, `failed`, or `pruned` (a success removed by retention).",
+            "title": "Status",
+            "type": "string"
+          },
+          "tier": {
+            "description": "The tier that made it: `daily`, `weekly`, `monthly`, `yearly`, or `manual` (Back up now in the portal).",
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "environment",
+          "tier",
+          "components",
+          "status",
+          "attempt",
+          "bytes",
+          "has_checksums",
+          "created_at",
+          "started_at",
+          "finished_at",
+          "pruned_at",
+          "error"
+        ],
+        "title": "BackupSet",
+        "type": "object"
+      },
+      "BackupSetPage": {
+        "description": "One page of a project's backup sets, newest first. `next_cursor` reads the\nnext page.",
+        "properties": {
+          "items": {
+            "description": "This page's items, in the list's order.",
+            "items": {
+              "$ref": "#/components/schemas/BackupSet"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.",
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "BackupSetPage",
+        "type": "object"
+      },
+      "BackupTiers": {
+        "additionalProperties": false,
+        "description": "The four scheduled tiers. A set made by one tier counts against that tier's\n`keep` only.",
+        "properties": {
+          "daily": {
+            "$ref": "#/components/schemas/DailyTier",
+            "description": "Every day."
+          },
+          "monthly": {
+            "$ref": "#/components/schemas/MonthlyTier",
+            "description": "Once a month."
+          },
+          "weekly": {
+            "$ref": "#/components/schemas/WeeklyTier",
+            "description": "Once a week."
+          },
+          "yearly": {
+            "$ref": "#/components/schemas/YearlyTier",
+            "description": "Once a year, on 1 January."
+          }
+        },
+        "required": [
+          "daily",
+          "weekly",
+          "monthly",
+          "yearly"
+        ],
+        "title": "BackupTiers",
+        "type": "object"
+      },
       "Brand": {
         "description": "The brand as stored. `PUT /brand` replaces every field of this object\nexcept the read-only `first_party`, `attribution`, `version` and\n`updated_at`: to change one field, send all of them back as read here.",
         "properties": {
@@ -4899,6 +5603,37 @@
           "updated_at"
         ],
         "title": "CustomerServiceWritten",
+        "type": "object"
+      },
+      "DailyTier": {
+        "additionalProperties": false,
+        "description": "The daily tier.",
+        "properties": {
+          "at": {
+            "description": "When it runs: HH:MM, 00:00-23:59, in the platform's backup time zone.",
+            "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$",
+            "title": "At",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "Whether the tier runs.",
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "keep": {
+            "description": "How many successful sets of the tier are kept per environment: 1-366.",
+            "maximum": 366.0,
+            "minimum": 1.0,
+            "title": "Keep",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "enabled",
+          "keep",
+          "at"
+        ],
+        "title": "DailyTier",
         "type": "object"
       },
       "DgxCluster": {
@@ -8420,6 +9155,52 @@
           "simulate_stage_seconds"
         ],
         "title": "Meta",
+        "type": "object"
+      },
+      "MonthlyTier": {
+        "additionalProperties": false,
+        "description": "The monthly tier.",
+        "properties": {
+          "at": {
+            "anyOf": [
+              {
+                "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it runs: HH:MM, 00:00-23:59, in the platform's backup time zone. `null` runs it at the daily tier's time.",
+            "title": "At"
+          },
+          "day": {
+            "description": "The day of the month it runs: 1-28, so that every month has it.",
+            "maximum": 28.0,
+            "minimum": 1.0,
+            "title": "Day",
+            "type": "integer"
+          },
+          "enabled": {
+            "description": "Whether the tier runs.",
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "keep": {
+            "description": "How many successful sets of the tier are kept per environment: 1-120.",
+            "maximum": 120.0,
+            "minimum": 1.0,
+            "title": "Keep",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "enabled",
+          "keep",
+          "day",
+          "at"
+        ],
+        "title": "MonthlyTier",
         "type": "object"
       },
       "NodeCache": {
@@ -16446,6 +17227,59 @@
         "title": "UserPatch",
         "type": "object"
       },
+      "WeeklyTier": {
+        "additionalProperties": false,
+        "description": "The weekly tier.",
+        "properties": {
+          "at": {
+            "anyOf": [
+              {
+                "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it runs: HH:MM, 00:00-23:59, in the platform's backup time zone. `null` runs it at the daily tier's time.",
+            "title": "At"
+          },
+          "day": {
+            "description": "The day of the week it runs: `mon` … `sun`.",
+            "enum": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "title": "Day",
+            "type": "string"
+          },
+          "enabled": {
+            "description": "Whether the tier runs.",
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "keep": {
+            "description": "How many successful sets of the tier are kept per environment: 1-104.",
+            "maximum": 104.0,
+            "minimum": 1.0,
+            "title": "Keep",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "enabled",
+          "keep",
+          "day",
+          "at"
+        ],
+        "title": "WeeklyTier",
+        "type": "object"
+      },
       "Whoami": {
         "description": "Who is calling, how, and what they may do right now.",
         "properties": {
@@ -16591,6 +17425,44 @@
         ],
         "title": "WhoamiToken",
         "type": "object"
+      },
+      "YearlyTier": {
+        "additionalProperties": false,
+        "description": "The yearly tier: always on 1 January.",
+        "properties": {
+          "at": {
+            "anyOf": [
+              {
+                "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When it runs on 1 January: HH:MM, 00:00-23:59, in the platform's backup time zone. `null` runs it at the daily tier's time.",
+            "title": "At"
+          },
+          "enabled": {
+            "description": "Whether the tier runs.",
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "keep": {
+            "description": "How many successful sets of the tier are kept per environment: 1-30.",
+            "maximum": 30.0,
+            "minimum": 1.0,
+            "title": "Keep",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "enabled",
+          "keep",
+          "at"
+        ],
+        "title": "YearlyTier",
+        "type": "object"
       }
     },
     "securitySchemes": {
@@ -16603,7 +17475,7 @@
     }
   },
   "info": {
-    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. A personal token may be tenant-scoped: minted in the portal by a tenant's owner or admin, it reads that tenant only, writes nothing, and works only while its owner is still the tenant's owner or admin. A GitLab CI job needs no stored token: it exchanges its ID token at `POST /auth/ci-token` for a one-hour `ataila_cit_…` token of the service account an operator linked to its project. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code` (Errors, below). Timestamps are RFC 3339 in UTC. Every POST that creates or starts something (all of them except `POST /mcp`, which only reads, and `POST /auth/ci-token`, whose answer is a fresh secret) and the node-cache `PUT` and `DELETE` accept an `Idempotency-Key` header, declared on each: for 24 hours the same key with the same request replays the stored response (`Idempotent-Replayed: true`), with a different request it is a 409 `idempotency_key_reused`, and while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. PATCH bodies are JSON Merge Patch (RFC 7396). Limit: 600 requests per minute per token (429 `rate_limited` with `Retry-After`). Every response carries `X-Request-ID`.\n\n**Treat every API token as an operator credential.** A token is a remote handle on this portal, and the portal holds the credentials the platform itself runs on: whoever holds a token can do, through this API, everything its scopes allow on this installation. Give each token one purpose, only the scopes that purpose needs and the shortest lifetime that works; keep it in a secret store or a protected CI variable, never in a repository or a configuration file; create it with `allow_destroy` only when it is meant to remove things; and revoke it when its job is done.\n\n**Errors.** Every error is a problem document with these members: `type`, `urn:ataila:api:problem:<code>`, an identifier rather than a link; `title`, the HTTP status phrase; `status`, the HTTP status again; `detail`, what went wrong this time, for a person, worded freely; `code`, the stable reason to branch on; `instance`, the request path; and `request_id`, the same as the `X-Request-ID` header. Some codes add members, named below; ignore any member you do not know. Each operation names its own codes in its responses. These come from the layers every request passes through, so any operation can answer them:\n\n* 401 `not_authenticated`: no `Authorization` header, or not `Bearer <token>`. 401 `token_invalid`: the token is malformed or unknown, or a session token does not verify (an expired one included). 401 `token_expired` and `token_revoked`: the API token has expired or was revoked. 401 `principal_disabled`: the account behind the token or session is deactivated. 401 `token_ip_not_allowed`: the token's address allowlist does not include the caller. A 401 carries `WWW-Authenticate: Bearer`; retrying with the same credential does not help.\n* 403 `forbidden`: the operation needs a permission the caller lacks; `required` lists the permission keys, any one of which would do. A token holds only those of its scopes its owner still holds. 403 `destroy_not_allowed`: a destroy (archive, delete, deactivate, retire) with a token created without `allow_destroy`. 403 `tenant_scope_violation`: a tenant-scoped token (`scope` `tenant` on `GET /whoami`) used an operation it cannot use (it reads its own tenant and writes nothing), or named another tenant in the path or in a `tenant_id` / `organization_id` filter. Another tenant's object read by its id is that operation's ordinary 404, as if it did not exist.\n* 403 `licence_locked`: the licence has expired or was revoked, so every change is refused except installing a licence (`PUT /licence/bundle`). 403 `licence_restricted`: this platform is not licensed yet, so nothing that grows it (customers, tenants, projects, releases, AI) can be added or changed. 403 `licence_required`: the licence lacks a module the operation needs, named in `entitlement`. 403 `licence_refused`: any other licence refusal. Each carries `state` (the licence state), `state_reason`, `remedy` (what an operator must do) and `remedy_url`. A read is never refused for a licence reason. Never retry a `licence_*` code: only a licence change alters the answer.\n* 400 `invalid_idempotency_key`: the `Idempotency-Key` is not 1-255 printable ASCII characters without spaces. 409 `idempotency_key_reused`: the key was used for a different request (method, path, query or body) in the last 24 hours. 429 `idempotency_request_in_progress`: the first request with the key is still running.\n* 400 `invalid_cursor`: the `cursor` is not one this list issued.\n* 422 `validation_failed`: the request does not match the schema; `errors` lists each failure (`loc`, `msg`, `type`) and `field` names the first offending member. 422 `immutable_field`: a change to a field that is frozen once created; `field` names it.\n* 429 `rate_limited`: more than 600 requests in a minute with this token.\n* 503 `unavailable`: the platform cannot answer right now. 503 `api_tokens_unconfigured`: API tokens are not configured on this platform; an operator must act, and retrying does not help.\n* 404 `not_found`: every path, this document and the interactive reference included, while the public API is switched off on this platform; and any path that does not exist. 405 `method_not_allowed`: the path exists, the method does not. 500 `internal_error`: an unexpected failure, with no detail; `request_id` finds it in the server log.\n\n**Warnings.** A write that succeeded can still carry `warnings`, each with a stable `code`; each operation names the ones it can give. One can come with any write: `audit_not_recorded`, the change was made but its row in the audit log was not written.\n\nA 429 and a 503 carry `Retry-After` (seconds) when a retry can succeed: wait that long, then send the same request again. When no specific code applies, `code` is the one for the status: `bad_request` (400), `not_authenticated` (401), `forbidden` (403), `not_found` (404), `method_not_allowed` (405), `conflict` (409), `gone` (410), `precondition_failed` (412), `unsupported_media_type` (415), `validation_failed` (422), `rate_limited` (429), `internal_error` (500), `bad_gateway` (502), `unavailable` (503) and `gateway_timeout` (504).",
+    "description": "The versioned API of the ATAILA Cloud Platform. Authenticate with `Authorization: Bearer <token>` using a personal (`ataila_pat_…`) or service-account (`ataila_sat_…`) API token. A personal token may be tenant-scoped: minted in the portal by a tenant's owner or admin, it reads that tenant only, writes nothing, and works only while its owner is still the tenant's owner or admin. A GitLab CI job needs no stored token: it exchanges its ID token at `POST /auth/ci-token` for a one-hour `ataila_cit_…` token of the service account an operator linked to its project. Errors are RFC 9457 problem details (`application/problem+json`) with a stable `code` (Errors, below). Timestamps are RFC 3339 in UTC. Every POST that creates or starts something (all of them except `POST /mcp`, which only reads, and `POST /auth/ci-token`, whose answer is a fresh secret) and the node-cache `PUT` and `DELETE` accept an `Idempotency-Key` header, declared on each: for 24 hours the same key with the same request replays the stored response (`Idempotent-Replayed: true`), with a different request it is a 409 `idempotency_key_reused`, and while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. PATCH bodies are JSON Merge Patch (RFC 7396). Limit: 600 requests per minute per token (429 `rate_limited` with `Retry-After`). Every response carries `X-Request-ID`.\n\n**Treat every API token as an operator credential.** A token is a remote handle on this portal, and the portal holds the credentials the platform itself runs on: whoever holds a token can do, through this API, everything its scopes allow on this installation. Give each token one purpose, only the scopes that purpose needs and the shortest lifetime that works; keep it in a secret store or a protected CI variable, never in a repository or a configuration file; create it with `allow_destroy` only when it is meant to remove things; and revoke it when its job is done.\n\n**Errors.** Every error is a problem document with these members: `type`, `urn:ataila:api:problem:<code>`, an identifier rather than a link; `title`, the HTTP status phrase; `status`, the HTTP status again; `detail`, what went wrong this time, for a person, worded freely; `code`, the stable reason to branch on; `instance`, the request path; and `request_id`, the same as the `X-Request-ID` header. Some codes add members, named below; ignore any member you do not know. Each operation names its own codes in its responses. These come from the layers every request passes through, so any operation can answer them:\n\n* 401 `not_authenticated`: no `Authorization` header, or not `Bearer <token>`. 401 `token_invalid`: the token is malformed or unknown, or a session token does not verify (an expired one included). 401 `token_expired` and `token_revoked`: the API token has expired or was revoked. 401 `principal_disabled`: the account behind the token or session is deactivated. 401 `token_ip_not_allowed`: the token's address allowlist does not include the caller. A 401 carries `WWW-Authenticate: Bearer`; retrying with the same credential does not help.\n* 403 `forbidden`: the operation needs a permission the caller lacks; `required` lists the permission keys, any one of which would do. A token holds only those of its scopes its owner still holds. 403 `destroy_not_allowed`: a destroy (archive, delete, deactivate, retire) with a token created without `allow_destroy`. 403 `tenant_scope_violation`: a tenant-scoped token (`scope` `tenant` on `GET /whoami`) used an operation it cannot use (it reads its own tenant and writes nothing), or named another tenant in the path or in a `tenant_id` / `organization_id` filter. Another tenant's object read by its id is that operation's ordinary 404, as if it did not exist.\n* 403 `licence_locked`: the licence has expired or was revoked, so every change is refused except installing a licence (`PUT /licence/bundle`). 403 `licence_restricted`: this platform is not licensed yet, so nothing that grows it (customers, tenants, projects, releases, AI) can be added or changed. 403 `licence_required`: the licence lacks a module the operation needs, named in `entitlement`. 403 `licence_refused`: any other licence refusal. Each carries `state` (the licence state), `state_reason`, `remedy` (what an operator must do) and `remedy_url`. A read is never refused for a licence reason. Never retry a `licence_*` code: only a licence change alters the answer.\n* 400 `invalid_idempotency_key`: the `Idempotency-Key` is not 1-255 printable ASCII characters without spaces. 409 `idempotency_key_reused`: the key was used for a different request (method, path, query or body) in the last 24 hours. 429 `idempotency_request_in_progress`: the first request with the key is still running.\n* 400 `invalid_cursor`: the `cursor` is not one this list issued.\n* 400 `invalid_if_match`: the `If-Match` header is neither a version as an entity tag (`\"7\"`) nor `*`.\n* 422 `validation_failed`: the request does not match the schema; `errors` lists each failure (`loc`, `msg`, `type`) and `field` names the first offending member. 422 `immutable_field`: a change to a field that is frozen once created; `field` names it.\n* 429 `rate_limited`: more than 600 requests in a minute with this token.\n* 503 `unavailable`: the platform cannot answer right now. 503 `api_tokens_unconfigured`: API tokens are not configured on this platform; an operator must act, and retrying does not help.\n* 404 `not_found`: every path, this document and the interactive reference included, while the public API is switched off on this platform; and any path that does not exist. 405 `method_not_allowed`: the path exists, the method does not. 500 `internal_error`: an unexpected failure, with no detail; `request_id` finds it in the server log.\n\n**Warnings.** A write that succeeded can still carry `warnings`, each with a stable `code`; each operation names the ones it can give. One can come with any write: `audit_not_recorded`, the change was made but its row in the audit log was not written.\n\nA 429 and a 503 carry `Retry-After` (seconds) when a retry can succeed: wait that long, then send the same request again. When no specific code applies, `code` is the one for the status: `bad_request` (400), `not_authenticated` (401), `forbidden` (403), `not_found` (404), `method_not_allowed` (405), `conflict` (409), `gone` (410), `precondition_failed` (412), `unsupported_media_type` (415), `validation_failed` (422), `rate_limited` (429), `internal_error` (500), `bad_gateway` (502), `unavailable` (503) and `gateway_timeout` (504).",
     "title": "ATAILA Cloud Platform API",
     "version": "1.0.0"
   },
@@ -30888,6 +31760,1565 @@
         ]
       }
     },
+    "/projects/{project_id}/backup-exports": {
+      "get": {
+        "description": "Newest first. An export is requested, and its package downloaded, in the portal only: no answer here carries a download link.",
+        "operationId": "project_backup_exports_list",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only the exports in this status.",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "queued",
+                    "running",
+                    "success",
+                    "failed",
+                    "expired"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only the exports in this status.",
+              "title": "Status"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupExportPage"
+                }
+              }
+            },
+            "description": "One page of exports.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or not one the caller may read (`project_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A project's exports",
+        "tags": [
+          "backups"
+        ]
+      }
+    },
+    "/projects/{project_id}/backup-plan": {
+      "delete": {
+        "description": "Back to the defaults, as the portal's button: enabled, the default environments, the installation's default tiers followed. The plan itself is never removed, and this never switches backups off, so it is not destroy-class. On a retired project it changes nothing.",
+        "operationId": "project_backup_plan_delete",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The plan is the default.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or not one the caller may read (`project_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Return a project's backup plan to the default",
+        "tags": [
+          "backups"
+        ]
+      },
+      "get": {
+        "description": "Every project has a plan: a new project gets the default (enabled, DEV code and database, PROD code, database and files, UAT none, the installation's default tiers). The `ETag` response header carries `version` for `If-Match`. `PUT` replaces the plan as a whole; `DELETE` returns it to the default.",
+        "operationId": "project_backup_plan_get",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupPlan"
+                }
+              }
+            },
+            "description": "The plan in force.",
+            "headers": {
+              "ETag": {
+                "$ref": "#/components/headers/ETag"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or not one the caller may read (`project_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A project's backup plan",
+        "tags": [
+          "backups"
+        ]
+      },
+      "put": {
+        "description": "Replaces the whole plan: a FULL replacement, never a partial update. `tiers` `null` follows the installation's default tiers; an object gives the project its own (`tiers_overridden` true). Switching a plan from enabled to disabled stops every scheduled set and is destroy-class: an API token needs `allow_destroy`. With `If-Match: \"<version>\"` the replace happens only while the plan is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the plan as it is: `version` is not bumped and no audit row is written. Back up now, exports and restores are not here: they are requested in the portal.",
+        "operationId": "project_backup_plan_put",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The `version` last read, as an entity tag (`\"3\"`); `*` matches any.",
+            "in": "header",
+            "name": "If-Match",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The `version` last read, as an entity tag (`\"3\"`); `*` matches any.",
+              "title": "If-Match"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackupPlanPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupPlan"
+                }
+              }
+            },
+            "description": "The plan after the replace.",
+            "headers": {
+              "ETag": {
+                "$ref": "#/components/headers/ETag"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "`If-Match` is not a version (`invalid_if_match`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Switching the plan off with an API token created without `allow_destroy` (`destroy_not_allowed`). Also: the caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or not one the caller may read (`project_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The project is retired (`project_retired`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "412": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "`If-Match` names another version (`version_mismatch`); `current_version` is the stored one (0 for none).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The body is invalid (`validation_failed`, `field` naming the first offending member), or the plan is refused (`bad_plan`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Replace a project's backup plan",
+        "tags": [
+          "backups"
+        ]
+      }
+    },
+    "/projects/{project_id}/backup-restores": {
+      "get": {
+        "description": "Newest first. A restore is requested, and a PROD restore approved or rejected, in the portal only.",
+        "operationId": "project_backup_restores_list",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only the restores in this status.",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "pending",
+                    "queued",
+                    "running",
+                    "success",
+                    "failed",
+                    "rejected"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only the restores in this status.",
+              "title": "Status"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupRestorePage"
+                }
+              }
+            },
+            "description": "One page of restores.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or not one the caller may read (`project_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A project's restores",
+        "tags": [
+          "backups"
+        ]
+      }
+    },
+    "/projects/{project_id}/backup-sets": {
+      "get": {
+        "description": "Newest first. A set is what one run copied of one environment. Filters combine with AND. Where a set is stored and its manifest stay in the portal.",
+        "operationId": "project_backup_sets_list",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Only this environment's sets.",
+            "in": "query",
+            "name": "environment",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "dev",
+                    "uat",
+                    "prod"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only this environment's sets.",
+              "title": "Environment"
+            }
+          },
+          {
+            "description": "Only the sets of this tier.",
+            "in": "query",
+            "name": "tier",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "daily",
+                    "weekly",
+                    "monthly",
+                    "yearly",
+                    "manual"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only the sets of this tier.",
+              "title": "Tier"
+            }
+          },
+          {
+            "description": "Only the sets in this status.",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "queued",
+                    "running",
+                    "success",
+                    "failed",
+                    "pruned"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only the sets in this status.",
+              "title": "Status"
+            }
+          },
+          {
+            "description": "Page size.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "description": "Page size.",
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupSetPage"
+                }
+              }
+            },
+            "description": "One page of sets.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or not one the caller may read (`project_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A project's backup sets",
+        "tags": [
+          "backups"
+        ]
+      }
+    },
+    "/projects/{project_id}/backup-sets/{set_id}": {
+      "get": {
+        "description": "One set of the project, as the list shows it.",
+        "operationId": "project_backup_sets_get",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The set's id (a UUID).",
+            "in": "path",
+            "name": "set_id",
+            "required": true,
+            "schema": {
+              "description": "The set's id (a UUID).",
+              "title": "Set Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupSet"
+                }
+              }
+            },
+            "description": "The set.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project or set (`project_not_found`, `backup_set_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "One backup set",
+        "tags": [
+          "backups"
+        ]
+      }
+    },
     "/projects/{project_id}/jobs/{job_id}/git-token": {
       "delete": {
         "description": "Revokes every live job token this platform minted for the job on the project. Idempotent: nothing to revoke is still a 204.",
@@ -42459,6 +44890,10 @@
     {
       "description": "Release promotions, release state and the PROD lock.",
       "name": "releases"
+    },
+    {
+      "description": "A project's backup plan, and its sets, exports and restores (read-only).",
+      "name": "backups"
     },
     {
       "description": "AI gateway virtual keys and serving tiers.",

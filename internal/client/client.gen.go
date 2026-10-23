@@ -3303,6 +3303,39 @@ func (e UserPatchLocale) Valid() bool {
 	}
 }
 
+// Defines values for WeeklyTierDay.
+const (
+	Fri WeeklyTierDay = "fri"
+	Mon WeeklyTierDay = "mon"
+	Sat WeeklyTierDay = "sat"
+	Sun WeeklyTierDay = "sun"
+	Thu WeeklyTierDay = "thu"
+	Tue WeeklyTierDay = "tue"
+	Wed WeeklyTierDay = "wed"
+)
+
+// Valid indicates whether the value is a known member of the WeeklyTierDay enum.
+func (e WeeklyTierDay) Valid() bool {
+	switch e {
+	case Fri:
+		return true
+	case Mon:
+		return true
+	case Sat:
+		return true
+	case Sun:
+		return true
+	case Thu:
+		return true
+	case Tue:
+		return true
+	case Wed:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AiGatewayKeysListParamsEnv.
 const (
 	AiGatewayKeysListParamsEnvDev  AiGatewayKeysListParamsEnv = "dev"
@@ -3630,6 +3663,138 @@ func (e ProjectsListParamsStatus) Valid() bool {
 	case ProjectsListParamsStatusProvisioning:
 		return true
 	case ProjectsListParamsStatusRetired:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectBackupExportsListParamsStatus.
+const (
+	ProjectBackupExportsListParamsStatusExpired ProjectBackupExportsListParamsStatus = "expired"
+	ProjectBackupExportsListParamsStatusFailed  ProjectBackupExportsListParamsStatus = "failed"
+	ProjectBackupExportsListParamsStatusQueued  ProjectBackupExportsListParamsStatus = "queued"
+	ProjectBackupExportsListParamsStatusRunning ProjectBackupExportsListParamsStatus = "running"
+	ProjectBackupExportsListParamsStatusSuccess ProjectBackupExportsListParamsStatus = "success"
+)
+
+// Valid indicates whether the value is a known member of the ProjectBackupExportsListParamsStatus enum.
+func (e ProjectBackupExportsListParamsStatus) Valid() bool {
+	switch e {
+	case ProjectBackupExportsListParamsStatusExpired:
+		return true
+	case ProjectBackupExportsListParamsStatusFailed:
+		return true
+	case ProjectBackupExportsListParamsStatusQueued:
+		return true
+	case ProjectBackupExportsListParamsStatusRunning:
+		return true
+	case ProjectBackupExportsListParamsStatusSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectBackupRestoresListParamsStatus.
+const (
+	ProjectBackupRestoresListParamsStatusFailed   ProjectBackupRestoresListParamsStatus = "failed"
+	ProjectBackupRestoresListParamsStatusPending  ProjectBackupRestoresListParamsStatus = "pending"
+	ProjectBackupRestoresListParamsStatusQueued   ProjectBackupRestoresListParamsStatus = "queued"
+	ProjectBackupRestoresListParamsStatusRejected ProjectBackupRestoresListParamsStatus = "rejected"
+	ProjectBackupRestoresListParamsStatusRunning  ProjectBackupRestoresListParamsStatus = "running"
+	ProjectBackupRestoresListParamsStatusSuccess  ProjectBackupRestoresListParamsStatus = "success"
+)
+
+// Valid indicates whether the value is a known member of the ProjectBackupRestoresListParamsStatus enum.
+func (e ProjectBackupRestoresListParamsStatus) Valid() bool {
+	switch e {
+	case ProjectBackupRestoresListParamsStatusFailed:
+		return true
+	case ProjectBackupRestoresListParamsStatusPending:
+		return true
+	case ProjectBackupRestoresListParamsStatusQueued:
+		return true
+	case ProjectBackupRestoresListParamsStatusRejected:
+		return true
+	case ProjectBackupRestoresListParamsStatusRunning:
+		return true
+	case ProjectBackupRestoresListParamsStatusSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectBackupSetsListParamsEnvironment.
+const (
+	ProjectBackupSetsListParamsEnvironmentDev  ProjectBackupSetsListParamsEnvironment = "dev"
+	ProjectBackupSetsListParamsEnvironmentProd ProjectBackupSetsListParamsEnvironment = "prod"
+	ProjectBackupSetsListParamsEnvironmentUat  ProjectBackupSetsListParamsEnvironment = "uat"
+)
+
+// Valid indicates whether the value is a known member of the ProjectBackupSetsListParamsEnvironment enum.
+func (e ProjectBackupSetsListParamsEnvironment) Valid() bool {
+	switch e {
+	case ProjectBackupSetsListParamsEnvironmentDev:
+		return true
+	case ProjectBackupSetsListParamsEnvironmentProd:
+		return true
+	case ProjectBackupSetsListParamsEnvironmentUat:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectBackupSetsListParamsTier.
+const (
+	ProjectBackupSetsListParamsTierDaily   ProjectBackupSetsListParamsTier = "daily"
+	ProjectBackupSetsListParamsTierManual  ProjectBackupSetsListParamsTier = "manual"
+	ProjectBackupSetsListParamsTierMonthly ProjectBackupSetsListParamsTier = "monthly"
+	ProjectBackupSetsListParamsTierWeekly  ProjectBackupSetsListParamsTier = "weekly"
+	ProjectBackupSetsListParamsTierYearly  ProjectBackupSetsListParamsTier = "yearly"
+)
+
+// Valid indicates whether the value is a known member of the ProjectBackupSetsListParamsTier enum.
+func (e ProjectBackupSetsListParamsTier) Valid() bool {
+	switch e {
+	case ProjectBackupSetsListParamsTierDaily:
+		return true
+	case ProjectBackupSetsListParamsTierManual:
+		return true
+	case ProjectBackupSetsListParamsTierMonthly:
+		return true
+	case ProjectBackupSetsListParamsTierWeekly:
+		return true
+	case ProjectBackupSetsListParamsTierYearly:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectBackupSetsListParamsStatus.
+const (
+	ProjectBackupSetsListParamsStatusFailed  ProjectBackupSetsListParamsStatus = "failed"
+	ProjectBackupSetsListParamsStatusPruned  ProjectBackupSetsListParamsStatus = "pruned"
+	ProjectBackupSetsListParamsStatusQueued  ProjectBackupSetsListParamsStatus = "queued"
+	ProjectBackupSetsListParamsStatusRunning ProjectBackupSetsListParamsStatus = "running"
+	ProjectBackupSetsListParamsStatusSuccess ProjectBackupSetsListParamsStatus = "success"
+)
+
+// Valid indicates whether the value is a known member of the ProjectBackupSetsListParamsStatus enum.
+func (e ProjectBackupSetsListParamsStatus) Valid() bool {
+	switch e {
+	case ProjectBackupSetsListParamsStatusFailed:
+		return true
+	case ProjectBackupSetsListParamsStatusPruned:
+		return true
+	case ProjectBackupSetsListParamsStatusQueued:
+		return true
+	case ProjectBackupSetsListParamsStatusRunning:
+		return true
+	case ProjectBackupSetsListParamsStatusSuccess:
 		return true
 	default:
 		return false
@@ -4498,6 +4663,260 @@ type AuditEventPage struct {
 
 	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
 	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// BackupComponents What one environment's sets carry.
+type BackupComponents struct {
+	// Code The code: every repository as a git bundle (on PROD, the released tag) and the environment's deployment files, secrets as names only.
+	Code bool `json:"code"`
+
+	// Database The environment's database.
+	Database bool `json:"database"`
+
+	// Files The environment's object storage buckets.
+	Files bool `json:"files"`
+}
+
+// BackupEnvironments The components backed up per environment. An environment with none is not
+// backed up; an environment that is not deployed is skipped whatever it says.
+type BackupEnvironments struct {
+	// Dev DEV.
+	Dev BackupComponents `json:"dev"`
+
+	// Prod PROD.
+	Prod BackupComponents `json:"prod"`
+
+	// Uat UAT.
+	Uat BackupComponents `json:"uat"`
+}
+
+// BackupExport One export: a downloadable package of the project, built from its sets.
+type BackupExport struct {
+	// Bytes The package's size in bytes, once it finished.
+	Bytes *int `json:"bytes"`
+
+	// Contents What is inside the package, one line per part.
+	Contents []string `json:"contents"`
+
+	// CreatedAt When the export was requested.
+	CreatedAt time.Time `json:"created_at"`
+
+	// Database What it carries of each database: `schema`, `data` (schema and data) or `both` (those and a full dump).
+	Database string `json:"database"`
+
+	// Environments The environments it carries.
+	Environments []string `json:"environments"`
+
+	// Error Why it failed, as the run reported it.
+	Error *string `json:"error"`
+
+	// ExpiresAt When the download window closes.
+	ExpiresAt *time.Time `json:"expires_at"`
+
+	// Files Whether it carries the object storage buckets.
+	Files bool `json:"files"`
+
+	// FinishedAt When its run finished.
+	FinishedAt *time.Time `json:"finished_at"`
+
+	// Id The export's id (a UUID).
+	Id string `json:"id"`
+
+	// ProjectId The project.
+	ProjectId string `json:"project_id"`
+
+	// Sha256 The package's SHA-256, once it finished.
+	Sha256 *string `json:"sha256"`
+
+	// SourceSetIds The sets it was built from.
+	SourceSetIds []string `json:"source_set_ids"`
+
+	// StartedAt When its run started.
+	StartedAt *time.Time `json:"started_at"`
+
+	// Status `queued`, `running`, `success`, `failed`, or `expired` (its download window has passed). The package is downloaded from the portal only.
+	Status string `json:"status"`
+}
+
+// BackupExportPage One page of a project's exports, newest first. `next_cursor` reads the next
+// page.
+type BackupExportPage struct {
+	// Items This page's items, in the list's order.
+	Items []BackupExport `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// BackupPlan A project's backup plan as it is in force. Every project has one: a new
+// project gets the default plan. `PUT` replaces it as a whole; `DELETE` returns
+// it to the default.
+type BackupPlan struct {
+	// DefaultEnvironments The default environments, which a new project's plan and `DELETE` set.
+	DefaultEnvironments BackupEnvironments `json:"default_environments"`
+
+	// DefaultTiers The installation's default tiers now.
+	DefaultTiers BackupTiers `json:"default_tiers"`
+
+	// Enabled Whether the project is backed up at all. False stops every scheduled set; the sets already made are kept until they expire.
+	Enabled bool `json:"enabled"`
+
+	// Environments What each environment's sets carry.
+	Environments BackupEnvironments `json:"environments"`
+
+	// IsDefault True while the plan is the default: enabled, the default environments, and the installation's default tiers followed.
+	IsDefault bool `json:"is_default"`
+
+	// ProjectId The project.
+	ProjectId string `json:"project_id"`
+
+	// Tiers The tiers in force: this project's own while `tiers_overridden`, otherwise the installation's default.
+	Tiers BackupTiers `json:"tiers"`
+
+	// TiersOverridden True when this project has its own tiers. False while it follows the installation's default tiers (`default_tiers`), which then apply as they change.
+	TiersOverridden bool `json:"tiers_overridden"`
+
+	// UpdatedAt When the plan was last written; `null` while the project has no stored plan.
+	UpdatedAt *time.Time `json:"updated_at"`
+
+	// Version Bumped by every change of the plan, from the portal or this API; 0 while the project has no stored plan. Send it back in `If-Match`.
+	Version int `json:"version"`
+}
+
+// BackupPlanPut The whole plan. Every member is required.
+type BackupPlanPut struct {
+	// Enabled Whether the project is backed up. Switching a plan from true to false is destroy-class: an API token needs `allow_destroy` for it.
+	Enabled bool `json:"enabled"`
+
+	// Environments What each environment's sets carry.
+	Environments BackupEnvironments `json:"environments"`
+
+	// Tiers This project's own tiers, which stop following the installation's default (`tiers_overridden` becomes true, even when they equal it); `null` follows the installation's default.
+	Tiers *BackupTiers `json:"tiers"`
+}
+
+// BackupRestore One restore of a set into an environment. Restores are requested, approved
+// and rejected in the portal only.
+type BackupRestore struct {
+	// ApprovalNote The approver's note on a PROD restore, as written.
+	ApprovalNote *string `json:"approval_note"`
+
+	// ApprovedAt When a PROD restore was approved or rejected.
+	ApprovedAt *time.Time `json:"approved_at"`
+
+	// Components What is restored: `code`, `database`, `files`.
+	Components []string `json:"components"`
+
+	// CreatedAt When the restore was requested.
+	CreatedAt time.Time `json:"created_at"`
+
+	// Error Why it failed, as the run reported it.
+	Error *string `json:"error"`
+
+	// FinishedAt When its run finished.
+	FinishedAt *time.Time `json:"finished_at"`
+
+	// Id The restore's id (a UUID).
+	Id string `json:"id"`
+
+	// ProjectId The project.
+	ProjectId string `json:"project_id"`
+
+	// Reason Why it was requested, as the requester wrote it.
+	Reason *string `json:"reason"`
+
+	// SetId The set restored.
+	SetId string `json:"set_id"`
+
+	// StartedAt When its run started.
+	StartedAt *time.Time `json:"started_at"`
+
+	// Status `pending` (a restore into PROD waiting for its approval), `queued`, `running`, `success`, `failed`, or `rejected`.
+	Status string `json:"status"`
+
+	// TargetEnvironment The environment restored into.
+	TargetEnvironment string `json:"target_environment"`
+}
+
+// BackupRestorePage One page of a project's restores, newest first. `next_cursor` reads the next
+// page.
+type BackupRestorePage struct {
+	// Items This page's items, in the list's order.
+	Items []BackupRestore `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// BackupSet One backup set: what one run copied of one environment.
+type BackupSet struct {
+	// Attempt The run's attempt number: above 1 after a retry.
+	Attempt int `json:"attempt"`
+
+	// Bytes The set's size in bytes, once it finished.
+	Bytes *int `json:"bytes"`
+
+	// Components What it carries: `code`, `database`, `files`.
+	Components []string `json:"components"`
+
+	// CreatedAt When the set was requested.
+	CreatedAt time.Time `json:"created_at"`
+
+	// Environment `dev`, `uat` or `prod`.
+	Environment string `json:"environment"`
+
+	// Error Why it failed, as the run reported it.
+	Error *string `json:"error"`
+
+	// FinishedAt When its run finished.
+	FinishedAt *time.Time `json:"finished_at"`
+
+	// HasChecksums True when the set was completed with its checksum list, which the engine writes last: a set without one is not complete.
+	HasChecksums bool `json:"has_checksums"`
+
+	// Id The set's id (a UUID).
+	Id string `json:"id"`
+
+	// ProjectId The project.
+	ProjectId string `json:"project_id"`
+
+	// PrunedAt When retention removed it.
+	PrunedAt *time.Time `json:"pruned_at"`
+
+	// StartedAt When its run started.
+	StartedAt *time.Time `json:"started_at"`
+
+	// Status `queued`, `running`, `success`, `failed`, or `pruned` (a success removed by retention).
+	Status string `json:"status"`
+
+	// Tier The tier that made it: `daily`, `weekly`, `monthly`, `yearly`, or `manual` (Back up now in the portal).
+	Tier string `json:"tier"`
+}
+
+// BackupSetPage One page of a project's backup sets, newest first. `next_cursor` reads the
+// next page.
+type BackupSetPage struct {
+	// Items This page's items, in the list's order.
+	Items []BackupSet `json:"items"`
+
+	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// BackupTiers The four scheduled tiers. A set made by one tier counts against that tier's
+// `keep` only.
+type BackupTiers struct {
+	// Daily Every day.
+	Daily DailyTier `json:"daily"`
+
+	// Monthly Once a month.
+	Monthly MonthlyTier `json:"monthly"`
+
+	// Weekly Once a week.
+	Weekly WeeklyTier `json:"weekly"`
+
+	// Yearly Once a year, on 1 January.
+	Yearly YearlyTier `json:"yearly"`
 }
 
 // Brand The brand as stored. `PUT /brand` replaces every field of this object
@@ -5441,6 +5860,18 @@ type CustomerServiceWritten struct {
 
 // CustomerServiceWrittenState `enabled` (in force), `pending_approval` (asked for, waiting for an operator's approval in the portal: no grant under it is in force) or `disabled` (withdrawn: no grant under it is in force).
 type CustomerServiceWrittenState string
+
+// DailyTier The daily tier.
+type DailyTier struct {
+	// At When it runs: HH:MM, 00:00-23:59, in the platform's backup time zone.
+	At string `json:"at"`
+
+	// Enabled Whether the tier runs.
+	Enabled bool `json:"enabled"`
+
+	// Keep How many successful sets of the tier are kept per environment: 1-366.
+	Keep int `json:"keep"`
+}
 
 // DgxCluster DGX nodes joined into one serving pool, as recorded. A DGX in no cluster
 // serves on its own.
@@ -6637,6 +7068,21 @@ type Meta struct {
 
 // MetaDispatchModeEffective What pipeline dispatch does on this platform, as `/api/version` reports it. `live`: work runs. `dryrun`: the dispatch is faked, nothing is executed, and provisioning or a release never completes. `simulate`: provisioning stages are marked done without running (`simulate_stage_seconds` each) and every other dispatch behaves as `dryrun`. Read it before booking work, to fail fast on a platform that will not carry it out.
 type MetaDispatchModeEffective string
+
+// MonthlyTier The monthly tier.
+type MonthlyTier struct {
+	// At When it runs: HH:MM, 00:00-23:59, in the platform's backup time zone. `null` runs it at the daily tier's time.
+	At *string `json:"at"`
+
+	// Day The day of the month it runs: 1-28, so that every month has it.
+	Day int `json:"day"`
+
+	// Enabled Whether the tier runs.
+	Enabled bool `json:"enabled"`
+
+	// Keep How many successful sets of the tier are kept per environment: 1-120.
+	Keep int `json:"keep"`
+}
 
 // NodeCache A copy of a model's weights on one AI node's local disk: the fast,
 // offline-ready serving copy, made from the central store by a cache run.
@@ -9556,6 +10002,24 @@ type UserPatch struct {
 // UserPatchLocale defines model for UserPatch.Locale.
 type UserPatchLocale string
 
+// WeeklyTier The weekly tier.
+type WeeklyTier struct {
+	// At When it runs: HH:MM, 00:00-23:59, in the platform's backup time zone. `null` runs it at the daily tier's time.
+	At *string `json:"at"`
+
+	// Day The day of the week it runs: `mon` … `sun`.
+	Day WeeklyTierDay `json:"day"`
+
+	// Enabled Whether the tier runs.
+	Enabled bool `json:"enabled"`
+
+	// Keep How many successful sets of the tier are kept per environment: 1-104.
+	Keep int `json:"keep"`
+}
+
+// WeeklyTierDay The day of the week it runs: `mon` … `sun`.
+type WeeklyTierDay string
+
 // Whoami Who is calling, how, and what they may do right now.
 type Whoami struct {
 	// AuthKind How the caller authenticated: `session` (signed in to the portal), `pat` (a personal API token), `service_account` (a service-account token) or `ci` (a service-account token exchanged from a GitLab CI ID token at `POST /auth/ci-token`). Other values may appear.
@@ -9611,6 +10075,18 @@ type WhoamiToken struct {
 
 	// Prefix The token's public prefix, which the portal shows to tell tokens apart. Never the secret part.
 	Prefix string `json:"prefix"`
+}
+
+// YearlyTier The yearly tier: always on 1 January.
+type YearlyTier struct {
+	// At When it runs on 1 January: HH:MM, 00:00-23:59, in the platform's backup time zone. `null` runs it at the daily tier's time.
+	At *string `json:"at"`
+
+	// Enabled Whether the tier runs.
+	Enabled bool `json:"enabled"`
+
+	// Keep How many successful sets of the tier are kept per environment: 1-30.
+	Keep int `json:"keep"`
 }
 
 // AiModelsListParams defines parameters for AiModelsList.
@@ -10161,6 +10637,69 @@ type ProjectsCreateParams struct {
 	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
 }
 
+// ProjectBackupExportsListParams defines parameters for ProjectBackupExportsList.
+type ProjectBackupExportsListParams struct {
+	// Status Only the exports in this status.
+	Status *ProjectBackupExportsListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// ProjectBackupExportsListParamsStatus defines parameters for ProjectBackupExportsList.
+type ProjectBackupExportsListParamsStatus string
+
+// ProjectBackupPlanPutParams defines parameters for ProjectBackupPlanPut.
+type ProjectBackupPlanPutParams struct {
+	// IfMatch The `version` last read, as an entity tag (`"3"`); `*` matches any.
+	IfMatch *string `json:"If-Match,omitempty"`
+}
+
+// ProjectBackupRestoresListParams defines parameters for ProjectBackupRestoresList.
+type ProjectBackupRestoresListParams struct {
+	// Status Only the restores in this status.
+	Status *ProjectBackupRestoresListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// ProjectBackupRestoresListParamsStatus defines parameters for ProjectBackupRestoresList.
+type ProjectBackupRestoresListParamsStatus string
+
+// ProjectBackupSetsListParams defines parameters for ProjectBackupSetsList.
+type ProjectBackupSetsListParams struct {
+	// Environment Only this environment's sets.
+	Environment *ProjectBackupSetsListParamsEnvironment `form:"environment,omitempty" json:"environment,omitempty"`
+
+	// Tier Only the sets of this tier.
+	Tier *ProjectBackupSetsListParamsTier `form:"tier,omitempty" json:"tier,omitempty"`
+
+	// Status Only the sets in this status.
+	Status *ProjectBackupSetsListParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Limit Page size.
+	Limit *int `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Cursor `next_cursor` from the previous page; omit it for the first page. A cursor this list did not issue is a 400 `invalid_cursor`.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+}
+
+// ProjectBackupSetsListParamsEnvironment defines parameters for ProjectBackupSetsList.
+type ProjectBackupSetsListParamsEnvironment string
+
+// ProjectBackupSetsListParamsTier defines parameters for ProjectBackupSetsList.
+type ProjectBackupSetsListParamsTier string
+
+// ProjectBackupSetsListParamsStatus defines parameters for ProjectBackupSetsList.
+type ProjectBackupSetsListParamsStatus string
+
 // CodingJobGitTokenCreateParams defines parameters for CodingJobGitTokenCreate.
 type CodingJobGitTokenCreateParams struct {
 	// IdempotencyKey Makes a retry safe: for 24 hours, the same key with the same request (method, path, query and body) answers with the stored response (`Idempotent-Replayed: true`) instead of doing the work again. The same key with a different request is a 409 `idempotency_key_reused`; while the first request is still running it is a 429 `idempotency_request_in_progress` with `Retry-After`. 1-255 printable ASCII characters, no spaces (400 `invalid_idempotency_key` otherwise); a UUID is a good key. Keys are scoped to the calling account.
@@ -10445,6 +10984,9 @@ type ProjectsUpdateJSONRequestBody = ProjectPatch
 
 // ProjectsUpdateApplicationMergePatchPlusJSONRequestBody defines body for ProjectsUpdate for application/merge-patch+json ContentType.
 type ProjectsUpdateApplicationMergePatchPlusJSONRequestBody = ProjectPatch
+
+// ProjectBackupPlanPutJSONRequestBody defines body for ProjectBackupPlanPut for application/json ContentType.
+type ProjectBackupPlanPutJSONRequestBody = BackupPlanPut
 
 // ProjectK8sQuotaUpdateJSONRequestBody defines body for ProjectK8sQuotaUpdate for application/json ContentType.
 type ProjectK8sQuotaUpdateJSONRequestBody = KubernetesQuotaPatch
@@ -12295,6 +12837,66 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
 	ProjectsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectBackupExportsList A project's exports
+	//
+	// Newest first. An export is requested, and its package downloaded, in the portal only: no answer here carries a download link.
+	//
+	// Corresponds with GET /projects/{project_id}/backup-exports (the `ProjectBackupExportsList` operationId).
+	ProjectBackupExportsList(ctx context.Context, projectId string, params *ProjectBackupExportsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectBackupPlanDelete Return a project's backup plan to the default
+	//
+	// Back to the defaults, as the portal's button: enabled, the default environments, the installation's default tiers followed. The plan itself is never removed, and this never switches backups off, so it is not destroy-class. On a retired project it changes nothing.
+	//
+	// Corresponds with DELETE /projects/{project_id}/backup-plan (the `ProjectBackupPlanDelete` operationId).
+	ProjectBackupPlanDelete(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectBackupPlanGet A project's backup plan
+	//
+	// Every project has a plan: a new project gets the default (enabled, DEV code and database, PROD code, database and files, UAT none, the installation's default tiers). The `ETag` response header carries `version` for `If-Match`. `PUT` replaces the plan as a whole; `DELETE` returns it to the default.
+	//
+	// Corresponds with GET /projects/{project_id}/backup-plan (the `ProjectBackupPlanGet` operationId).
+	ProjectBackupPlanGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectBackupPlanPutWithBody Replace a project's backup plan
+	//
+	// Replaces the whole plan: a FULL replacement, never a partial update. `tiers` `null` follows the installation's default tiers; an object gives the project its own (`tiers_overridden` true). Switching a plan from enabled to disabled stops every scheduled set and is destroy-class: an API token needs `allow_destroy`. With `If-Match: "<version>"` the replace happens only while the plan is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the plan as it is: `version` is not bumped and no audit row is written. Back up now, exports and restores are not here: they are requested in the portal.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/backup-plan (the `ProjectBackupPlanPut` operationId).
+	ProjectBackupPlanPutWithBody(ctx context.Context, projectId string, params *ProjectBackupPlanPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectBackupPlanPut Replace a project's backup plan
+	//
+	// Replaces the whole plan: a FULL replacement, never a partial update. `tiers` `null` follows the installation's default tiers; an object gives the project its own (`tiers_overridden` true). Switching a plan from enabled to disabled stops every scheduled set and is destroy-class: an API token needs `allow_destroy`. With `If-Match: "<version>"` the replace happens only while the plan is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the plan as it is: `version` is not bumped and no audit row is written. Back up now, exports and restores are not here: they are requested in the portal.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/backup-plan (the `ProjectBackupPlanPut` operationId).
+	ProjectBackupPlanPut(ctx context.Context, projectId string, params *ProjectBackupPlanPutParams, body ProjectBackupPlanPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectBackupRestoresList A project's restores
+	//
+	// Newest first. A restore is requested, and a PROD restore approved or rejected, in the portal only.
+	//
+	// Corresponds with GET /projects/{project_id}/backup-restores (the `ProjectBackupRestoresList` operationId).
+	ProjectBackupRestoresList(ctx context.Context, projectId string, params *ProjectBackupRestoresListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectBackupSetsList A project's backup sets
+	//
+	// Newest first. A set is what one run copied of one environment. Filters combine with AND. Where a set is stored and its manifest stay in the portal.
+	//
+	// Corresponds with GET /projects/{project_id}/backup-sets (the `ProjectBackupSetsList` operationId).
+	ProjectBackupSetsList(ctx context.Context, projectId string, params *ProjectBackupSetsListParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ProjectBackupSetsGet One backup set
+	//
+	// One set of the project, as the list shows it.
+	//
+	// Corresponds with GET /projects/{project_id}/backup-sets/{set_id} (the `ProjectBackupSetsGet` operationId).
+	ProjectBackupSetsGet(ctx context.Context, projectId string, setId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CodingJobGitTokenDelete Revoke a coding job's git token
 	//
@@ -14779,6 +15381,146 @@ func (c *Client) ProjectsUpdate(ctx context.Context, projectId string, body Proj
 // Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
 func (c *Client) ProjectsUpdateWithApplicationMergePatchPlusJSONBody(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewProjectsUpdateRequestWithApplicationMergePatchPlusJSONBody(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectBackupExportsList A project's exports
+//
+// Newest first. An export is requested, and its package downloaded, in the portal only: no answer here carries a download link.
+//
+// Corresponds with GET /projects/{project_id}/backup-exports (the `ProjectBackupExportsList` operationId).
+func (c *Client) ProjectBackupExportsList(ctx context.Context, projectId string, params *ProjectBackupExportsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectBackupExportsListRequest(c.Server, projectId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectBackupPlanDelete Return a project's backup plan to the default
+//
+// Back to the defaults, as the portal's button: enabled, the default environments, the installation's default tiers followed. The plan itself is never removed, and this never switches backups off, so it is not destroy-class. On a retired project it changes nothing.
+//
+// Corresponds with DELETE /projects/{project_id}/backup-plan (the `ProjectBackupPlanDelete` operationId).
+func (c *Client) ProjectBackupPlanDelete(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectBackupPlanDeleteRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectBackupPlanGet A project's backup plan
+//
+// Every project has a plan: a new project gets the default (enabled, DEV code and database, PROD code, database and files, UAT none, the installation's default tiers). The `ETag` response header carries `version` for `If-Match`. `PUT` replaces the plan as a whole; `DELETE` returns it to the default.
+//
+// Corresponds with GET /projects/{project_id}/backup-plan (the `ProjectBackupPlanGet` operationId).
+func (c *Client) ProjectBackupPlanGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectBackupPlanGetRequest(c.Server, projectId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectBackupPlanPutWithBody Replace a project's backup plan
+//
+// Replaces the whole plan: a FULL replacement, never a partial update. `tiers` `null` follows the installation's default tiers; an object gives the project its own (`tiers_overridden` true). Switching a plan from enabled to disabled stops every scheduled set and is destroy-class: an API token needs `allow_destroy`. With `If-Match: "<version>"` the replace happens only while the plan is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the plan as it is: `version` is not bumped and no audit row is written. Back up now, exports and restores are not here: they are requested in the portal.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /projects/{project_id}/backup-plan (the `ProjectBackupPlanPut` operationId).
+func (c *Client) ProjectBackupPlanPutWithBody(ctx context.Context, projectId string, params *ProjectBackupPlanPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectBackupPlanPutRequestWithBody(c.Server, projectId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectBackupPlanPut Replace a project's backup plan
+//
+// Replaces the whole plan: a FULL replacement, never a partial update. `tiers` `null` follows the installation's default tiers; an object gives the project its own (`tiers_overridden` true). Switching a plan from enabled to disabled stops every scheduled set and is destroy-class: an API token needs `allow_destroy`. With `If-Match: "<version>"` the replace happens only while the plan is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the plan as it is: `version` is not bumped and no audit row is written. Back up now, exports and restores are not here: they are requested in the portal.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /projects/{project_id}/backup-plan (the `ProjectBackupPlanPut` operationId).
+func (c *Client) ProjectBackupPlanPut(ctx context.Context, projectId string, params *ProjectBackupPlanPutParams, body ProjectBackupPlanPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectBackupPlanPutRequest(c.Server, projectId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectBackupRestoresList A project's restores
+//
+// Newest first. A restore is requested, and a PROD restore approved or rejected, in the portal only.
+//
+// Corresponds with GET /projects/{project_id}/backup-restores (the `ProjectBackupRestoresList` operationId).
+func (c *Client) ProjectBackupRestoresList(ctx context.Context, projectId string, params *ProjectBackupRestoresListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectBackupRestoresListRequest(c.Server, projectId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectBackupSetsList A project's backup sets
+//
+// Newest first. A set is what one run copied of one environment. Filters combine with AND. Where a set is stored and its manifest stay in the portal.
+//
+// Corresponds with GET /projects/{project_id}/backup-sets (the `ProjectBackupSetsList` operationId).
+func (c *Client) ProjectBackupSetsList(ctx context.Context, projectId string, params *ProjectBackupSetsListParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectBackupSetsListRequest(c.Server, projectId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectBackupSetsGet One backup set
+//
+// One set of the project, as the list shows it.
+//
+// Corresponds with GET /projects/{project_id}/backup-sets/{set_id} (the `ProjectBackupSetsGet` operationId).
+func (c *Client) ProjectBackupSetsGet(ctx context.Context, projectId string, setId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectBackupSetsGetRequest(c.Server, projectId, setId)
 	if err != nil {
 		return nil, err
 	}
@@ -20075,6 +20817,456 @@ func NewProjectsUpdateRequestWithBody(server string, projectId string, contentTy
 	return req, nil
 }
 
+// NewProjectBackupExportsListRequest constructs an http.Request for the ProjectBackupExportsList method
+func NewProjectBackupExportsListRequest(server string, projectId string, params *ProjectBackupExportsListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/backup-exports", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectBackupPlanDeleteRequest constructs an http.Request for the ProjectBackupPlanDelete method
+func NewProjectBackupPlanDeleteRequest(server string, projectId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/backup-plan", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectBackupPlanGetRequest constructs an http.Request for the ProjectBackupPlanGet method
+func NewProjectBackupPlanGetRequest(server string, projectId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/backup-plan", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectBackupPlanPutRequest calls the generic ProjectBackupPlanPut builder with application/json body
+func NewProjectBackupPlanPutRequest(server string, projectId string, params *ProjectBackupPlanPutParams, body ProjectBackupPlanPutJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewProjectBackupPlanPutRequestWithBody(server, projectId, params, "application/json", bodyReader)
+}
+
+// NewProjectBackupPlanPutRequestWithBody constructs an http.Request for the ProjectBackupPlanPut method, with any body, and a specified content type
+func NewProjectBackupPlanPutRequestWithBody(server string, projectId string, params *ProjectBackupPlanPutParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/backup-plan", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IfMatch != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "If-Match", *params.IfMatch, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("If-Match", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewProjectBackupRestoresListRequest constructs an http.Request for the ProjectBackupRestoresList method
+func NewProjectBackupRestoresListRequest(server string, projectId string, params *ProjectBackupRestoresListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/backup-restores", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectBackupSetsListRequest constructs an http.Request for the ProjectBackupSetsList method
+func NewProjectBackupSetsListRequest(server string, projectId string, params *ProjectBackupSetsListParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/backup-sets", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Environment != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "environment", *params.Environment, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Tier != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tier", *params.Tier, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "status", *params.Status, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewProjectBackupSetsGetRequest constructs an http.Request for the ProjectBackupSetsGet method
+func NewProjectBackupSetsGetRequest(server string, projectId string, setId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "set_id", setId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/backup-sets/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCodingJobGitTokenDeleteRequest constructs an http.Request for the CodingJobGitTokenDelete method
 func NewCodingJobGitTokenDeleteRequest(server string, projectId string, jobId string) (*http.Request, error) {
 	var err error
@@ -24043,6 +25235,78 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /projects/{project_id} (the `ProjectsUpdate` operationId).
 	ProjectsUpdateWithApplicationMergePatchPlusJSONBodyWithResponse(ctx context.Context, projectId string, body ProjectsUpdateApplicationMergePatchPlusJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectsUpdateResponse, error)
+
+	// ProjectBackupExportsListWithResponse A project's exports
+	//
+	// Newest first. An export is requested, and its package downloaded, in the portal only: no answer here carries a download link.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/backup-exports (the `ProjectBackupExportsList` operationId).
+	ProjectBackupExportsListWithResponse(ctx context.Context, projectId string, params *ProjectBackupExportsListParams, reqEditors ...RequestEditorFn) (*ProjectBackupExportsListResponse, error)
+
+	// ProjectBackupPlanDeleteWithResponse Return a project's backup plan to the default
+	//
+	// Back to the defaults, as the portal's button: enabled, the default environments, the installation's default tiers followed. The plan itself is never removed, and this never switches backups off, so it is not destroy-class. On a retired project it changes nothing.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /projects/{project_id}/backup-plan (the `ProjectBackupPlanDelete` operationId).
+	ProjectBackupPlanDeleteWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectBackupPlanDeleteResponse, error)
+
+	// ProjectBackupPlanGetWithResponse A project's backup plan
+	//
+	// Every project has a plan: a new project gets the default (enabled, DEV code and database, PROD code, database and files, UAT none, the installation's default tiers). The `ETag` response header carries `version` for `If-Match`. `PUT` replaces the plan as a whole; `DELETE` returns it to the default.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/backup-plan (the `ProjectBackupPlanGet` operationId).
+	ProjectBackupPlanGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectBackupPlanGetResponse, error)
+
+	// ProjectBackupPlanPutWithBodyWithResponse Replace a project's backup plan
+	//
+	// Replaces the whole plan: a FULL replacement, never a partial update. `tiers` `null` follows the installation's default tiers; an object gives the project its own (`tiers_overridden` true). Switching a plan from enabled to disabled stops every scheduled set and is destroy-class: an API token needs `allow_destroy`. With `If-Match: "<version>"` the replace happens only while the plan is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the plan as it is: `version` is not bumped and no audit row is written. Back up now, exports and restores are not here: they are requested in the portal.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/backup-plan (the `ProjectBackupPlanPut` operationId).
+	ProjectBackupPlanPutWithBodyWithResponse(ctx context.Context, projectId string, params *ProjectBackupPlanPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProjectBackupPlanPutResponse, error)
+
+	// ProjectBackupPlanPutWithResponse Replace a project's backup plan
+	//
+	// Replaces the whole plan: a FULL replacement, never a partial update. `tiers` `null` follows the installation's default tiers; an object gives the project its own (`tiers_overridden` true). Switching a plan from enabled to disabled stops every scheduled set and is destroy-class: an API token needs `allow_destroy`. With `If-Match: "<version>"` the replace happens only while the plan is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the plan as it is: `version` is not bumped and no audit row is written. Back up now, exports and restores are not here: they are requested in the portal.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/backup-plan (the `ProjectBackupPlanPut` operationId).
+	ProjectBackupPlanPutWithResponse(ctx context.Context, projectId string, params *ProjectBackupPlanPutParams, body ProjectBackupPlanPutJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectBackupPlanPutResponse, error)
+
+	// ProjectBackupRestoresListWithResponse A project's restores
+	//
+	// Newest first. A restore is requested, and a PROD restore approved or rejected, in the portal only.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/backup-restores (the `ProjectBackupRestoresList` operationId).
+	ProjectBackupRestoresListWithResponse(ctx context.Context, projectId string, params *ProjectBackupRestoresListParams, reqEditors ...RequestEditorFn) (*ProjectBackupRestoresListResponse, error)
+
+	// ProjectBackupSetsListWithResponse A project's backup sets
+	//
+	// Newest first. A set is what one run copied of one environment. Filters combine with AND. Where a set is stored and its manifest stay in the portal.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/backup-sets (the `ProjectBackupSetsList` operationId).
+	ProjectBackupSetsListWithResponse(ctx context.Context, projectId string, params *ProjectBackupSetsListParams, reqEditors ...RequestEditorFn) (*ProjectBackupSetsListResponse, error)
+
+	// ProjectBackupSetsGetWithResponse One backup set
+	//
+	// One set of the project, as the list shows it.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/backup-sets/{set_id} (the `ProjectBackupSetsGet` operationId).
+	ProjectBackupSetsGetWithResponse(ctx context.Context, projectId string, setId string, reqEditors ...RequestEditorFn) (*ProjectBackupSetsGetResponse, error)
 
 	// CodingJobGitTokenDeleteWithResponse Revoke a coding job's git token
 	//
@@ -37688,6 +38952,1324 @@ func (r ProjectsUpdateResponse) ContentType() string {
 	return ""
 }
 
+// ProjectBackupExportsListResponse200Headers the declared response headers of an HTTP 200 response for ProjectBackupExportsList
+type ProjectBackupExportsListResponse200Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupExportsListResponse401Headers the declared response headers of an HTTP 401 response for ProjectBackupExportsList
+type ProjectBackupExportsListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ProjectBackupExportsListResponse403Headers the declared response headers of an HTTP 403 response for ProjectBackupExportsList
+type ProjectBackupExportsListResponse403Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupExportsListResponse404Headers the declared response headers of an HTTP 404 response for ProjectBackupExportsList
+type ProjectBackupExportsListResponse404Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupExportsListResponse429Headers the declared response headers of an HTTP 429 response for ProjectBackupExportsList
+type ProjectBackupExportsListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupExportsListResponse503Headers the declared response headers of an HTTP 503 response for ProjectBackupExportsList
+type ProjectBackupExportsListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupExportsListResponseDefaultHeaders the declared response headers of an HTTP default response for ProjectBackupExportsList
+type ProjectBackupExportsListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ProjectBackupExportsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BackupExportPage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ProjectBackupExportsListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ProjectBackupExportsListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ProjectBackupExportsListResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ProjectBackupExportsListResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ProjectBackupExportsListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ProjectBackupExportsListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ProjectBackupExportsListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectBackupExportsListResponse) GetJSON200() *BackupExportPage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ProjectBackupExportsListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ProjectBackupExportsListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectBackupExportsListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectBackupExportsListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectBackupExportsListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectBackupExportsListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ProjectBackupExportsListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ProjectBackupExportsListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ProjectBackupExportsListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ProjectBackupExportsListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectBackupExportsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectBackupExportsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectBackupExportsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectBackupExportsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectBackupExportsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectBackupExportsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ProjectBackupPlanDeleteResponse204Headers the declared response headers of an HTTP 204 response for ProjectBackupPlanDelete
+type ProjectBackupPlanDeleteResponse204Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanDeleteResponse401Headers the declared response headers of an HTTP 401 response for ProjectBackupPlanDelete
+type ProjectBackupPlanDeleteResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ProjectBackupPlanDeleteResponse403Headers the declared response headers of an HTTP 403 response for ProjectBackupPlanDelete
+type ProjectBackupPlanDeleteResponse403Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanDeleteResponse404Headers the declared response headers of an HTTP 404 response for ProjectBackupPlanDelete
+type ProjectBackupPlanDeleteResponse404Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanDeleteResponse429Headers the declared response headers of an HTTP 429 response for ProjectBackupPlanDelete
+type ProjectBackupPlanDeleteResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupPlanDeleteResponse503Headers the declared response headers of an HTTP 503 response for ProjectBackupPlanDelete
+type ProjectBackupPlanDeleteResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupPlanDeleteResponseDefaultHeaders the declared response headers of an HTTP default response for ProjectBackupPlanDelete
+type ProjectBackupPlanDeleteResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ProjectBackupPlanDeleteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers204 the parsed response headers for an HTTP 204 response
+	Headers204 *ProjectBackupPlanDeleteResponse204Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ProjectBackupPlanDeleteResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ProjectBackupPlanDeleteResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ProjectBackupPlanDeleteResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ProjectBackupPlanDeleteResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ProjectBackupPlanDeleteResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ProjectBackupPlanDeleteResponseDefaultHeaders
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ProjectBackupPlanDeleteResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ProjectBackupPlanDeleteResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectBackupPlanDeleteResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectBackupPlanDeleteResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectBackupPlanDeleteResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectBackupPlanDeleteResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ProjectBackupPlanDeleteResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ProjectBackupPlanDeleteResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ProjectBackupPlanDeleteResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ProjectBackupPlanDeleteResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectBackupPlanDeleteResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectBackupPlanDeleteResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectBackupPlanDeleteResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectBackupPlanDeleteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectBackupPlanDeleteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectBackupPlanDeleteResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ProjectBackupPlanGetResponse200Headers the declared response headers of an HTTP 200 response for ProjectBackupPlanGet
+type ProjectBackupPlanGetResponse200Headers struct {
+	ETag       *string
+	XRequestID *string
+}
+
+// ProjectBackupPlanGetResponse401Headers the declared response headers of an HTTP 401 response for ProjectBackupPlanGet
+type ProjectBackupPlanGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ProjectBackupPlanGetResponse403Headers the declared response headers of an HTTP 403 response for ProjectBackupPlanGet
+type ProjectBackupPlanGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanGetResponse404Headers the declared response headers of an HTTP 404 response for ProjectBackupPlanGet
+type ProjectBackupPlanGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanGetResponse429Headers the declared response headers of an HTTP 429 response for ProjectBackupPlanGet
+type ProjectBackupPlanGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupPlanGetResponse503Headers the declared response headers of an HTTP 503 response for ProjectBackupPlanGet
+type ProjectBackupPlanGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupPlanGetResponseDefaultHeaders the declared response headers of an HTTP default response for ProjectBackupPlanGet
+type ProjectBackupPlanGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ProjectBackupPlanGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BackupPlan
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ProjectBackupPlanGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ProjectBackupPlanGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ProjectBackupPlanGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ProjectBackupPlanGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ProjectBackupPlanGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ProjectBackupPlanGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ProjectBackupPlanGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectBackupPlanGetResponse) GetJSON200() *BackupPlan {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ProjectBackupPlanGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ProjectBackupPlanGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectBackupPlanGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectBackupPlanGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectBackupPlanGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectBackupPlanGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ProjectBackupPlanGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ProjectBackupPlanGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ProjectBackupPlanGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ProjectBackupPlanGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectBackupPlanGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectBackupPlanGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectBackupPlanGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectBackupPlanGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectBackupPlanGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectBackupPlanGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ProjectBackupPlanPutResponse200Headers the declared response headers of an HTTP 200 response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponse200Headers struct {
+	ETag       *string
+	XRequestID *string
+}
+
+// ProjectBackupPlanPutResponse400Headers the declared response headers of an HTTP 400 response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponse400Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanPutResponse401Headers the declared response headers of an HTTP 401 response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ProjectBackupPlanPutResponse403Headers the declared response headers of an HTTP 403 response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponse403Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanPutResponse404Headers the declared response headers of an HTTP 404 response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponse404Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanPutResponse409Headers the declared response headers of an HTTP 409 response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponse409Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanPutResponse412Headers the declared response headers of an HTTP 412 response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponse412Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanPutResponse422Headers the declared response headers of an HTTP 422 response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponse422Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupPlanPutResponse429Headers the declared response headers of an HTTP 429 response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupPlanPutResponse503Headers the declared response headers of an HTTP 503 response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupPlanPutResponseDefaultHeaders the declared response headers of an HTTP default response for ProjectBackupPlanPut
+type ProjectBackupPlanPutResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ProjectBackupPlanPutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BackupPlan
+	// JSON400 the response for an HTTP 400 `application/json` response
+	JSON400 *Problem
+	// ApplicationproblemJSON400 the response for an HTTP 400 `application/problem+json` response
+	ApplicationproblemJSON400 *Problem
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON409 the response for an HTTP 409 `application/json` response
+	JSON409 *Problem
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Problem
+	// JSON412 the response for an HTTP 412 `application/json` response
+	JSON412 *Problem
+	// ApplicationproblemJSON412 the response for an HTTP 412 `application/problem+json` response
+	ApplicationproblemJSON412 *Problem
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *Problem
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ProjectBackupPlanPutResponse200Headers
+	// Headers400 the parsed response headers for an HTTP 400 response
+	Headers400 *ProjectBackupPlanPutResponse400Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ProjectBackupPlanPutResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ProjectBackupPlanPutResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ProjectBackupPlanPutResponse404Headers
+	// Headers409 the parsed response headers for an HTTP 409 response
+	Headers409 *ProjectBackupPlanPutResponse409Headers
+	// Headers412 the parsed response headers for an HTTP 412 response
+	Headers412 *ProjectBackupPlanPutResponse412Headers
+	// Headers422 the parsed response headers for an HTTP 422 response
+	Headers422 *ProjectBackupPlanPutResponse422Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ProjectBackupPlanPutResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ProjectBackupPlanPutResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ProjectBackupPlanPutResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSON200() *BackupPlan {
+	return r.JSON200
+}
+
+// GetJSON400 returns the response for an HTTP 400 `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSON400() *Problem {
+	return r.JSON400
+}
+
+// GetApplicationproblemJSON400 returns the response for an HTTP 400 `application/problem+json` response
+func (r ProjectBackupPlanPutResponse) GetApplicationproblemJSON400() *Problem {
+	return r.ApplicationproblemJSON400
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ProjectBackupPlanPutResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectBackupPlanPutResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectBackupPlanPutResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON409 returns the response for an HTTP 409 `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSON409() *Problem {
+	return r.JSON409
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ProjectBackupPlanPutResponse) GetApplicationproblemJSON409() *Problem {
+	return r.ApplicationproblemJSON409
+}
+
+// GetJSON412 returns the response for an HTTP 412 `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSON412() *Problem {
+	return r.JSON412
+}
+
+// GetApplicationproblemJSON412 returns the response for an HTTP 412 `application/problem+json` response
+func (r ProjectBackupPlanPutResponse) GetApplicationproblemJSON412() *Problem {
+	return r.ApplicationproblemJSON412
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSON422() *Problem {
+	return r.JSON422
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ProjectBackupPlanPutResponse) GetApplicationproblemJSON422() *Problem {
+	return r.ApplicationproblemJSON422
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ProjectBackupPlanPutResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ProjectBackupPlanPutResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectBackupPlanPutResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectBackupPlanPutResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectBackupPlanPutResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectBackupPlanPutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectBackupPlanPutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectBackupPlanPutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ProjectBackupRestoresListResponse200Headers the declared response headers of an HTTP 200 response for ProjectBackupRestoresList
+type ProjectBackupRestoresListResponse200Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupRestoresListResponse401Headers the declared response headers of an HTTP 401 response for ProjectBackupRestoresList
+type ProjectBackupRestoresListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ProjectBackupRestoresListResponse403Headers the declared response headers of an HTTP 403 response for ProjectBackupRestoresList
+type ProjectBackupRestoresListResponse403Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupRestoresListResponse404Headers the declared response headers of an HTTP 404 response for ProjectBackupRestoresList
+type ProjectBackupRestoresListResponse404Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupRestoresListResponse429Headers the declared response headers of an HTTP 429 response for ProjectBackupRestoresList
+type ProjectBackupRestoresListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupRestoresListResponse503Headers the declared response headers of an HTTP 503 response for ProjectBackupRestoresList
+type ProjectBackupRestoresListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupRestoresListResponseDefaultHeaders the declared response headers of an HTTP default response for ProjectBackupRestoresList
+type ProjectBackupRestoresListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ProjectBackupRestoresListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BackupRestorePage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ProjectBackupRestoresListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ProjectBackupRestoresListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ProjectBackupRestoresListResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ProjectBackupRestoresListResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ProjectBackupRestoresListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ProjectBackupRestoresListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ProjectBackupRestoresListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectBackupRestoresListResponse) GetJSON200() *BackupRestorePage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ProjectBackupRestoresListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ProjectBackupRestoresListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectBackupRestoresListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectBackupRestoresListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectBackupRestoresListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectBackupRestoresListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ProjectBackupRestoresListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ProjectBackupRestoresListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ProjectBackupRestoresListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ProjectBackupRestoresListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectBackupRestoresListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectBackupRestoresListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectBackupRestoresListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectBackupRestoresListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectBackupRestoresListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectBackupRestoresListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ProjectBackupSetsListResponse200Headers the declared response headers of an HTTP 200 response for ProjectBackupSetsList
+type ProjectBackupSetsListResponse200Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupSetsListResponse401Headers the declared response headers of an HTTP 401 response for ProjectBackupSetsList
+type ProjectBackupSetsListResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ProjectBackupSetsListResponse403Headers the declared response headers of an HTTP 403 response for ProjectBackupSetsList
+type ProjectBackupSetsListResponse403Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupSetsListResponse404Headers the declared response headers of an HTTP 404 response for ProjectBackupSetsList
+type ProjectBackupSetsListResponse404Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupSetsListResponse429Headers the declared response headers of an HTTP 429 response for ProjectBackupSetsList
+type ProjectBackupSetsListResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupSetsListResponse503Headers the declared response headers of an HTTP 503 response for ProjectBackupSetsList
+type ProjectBackupSetsListResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupSetsListResponseDefaultHeaders the declared response headers of an HTTP default response for ProjectBackupSetsList
+type ProjectBackupSetsListResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ProjectBackupSetsListResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BackupSetPage
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ProjectBackupSetsListResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ProjectBackupSetsListResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ProjectBackupSetsListResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ProjectBackupSetsListResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ProjectBackupSetsListResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ProjectBackupSetsListResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ProjectBackupSetsListResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectBackupSetsListResponse) GetJSON200() *BackupSetPage {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ProjectBackupSetsListResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ProjectBackupSetsListResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectBackupSetsListResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectBackupSetsListResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectBackupSetsListResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectBackupSetsListResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ProjectBackupSetsListResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ProjectBackupSetsListResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ProjectBackupSetsListResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ProjectBackupSetsListResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectBackupSetsListResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectBackupSetsListResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectBackupSetsListResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectBackupSetsListResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectBackupSetsListResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectBackupSetsListResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ProjectBackupSetsGetResponse200Headers the declared response headers of an HTTP 200 response for ProjectBackupSetsGet
+type ProjectBackupSetsGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupSetsGetResponse401Headers the declared response headers of an HTTP 401 response for ProjectBackupSetsGet
+type ProjectBackupSetsGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ProjectBackupSetsGetResponse403Headers the declared response headers of an HTTP 403 response for ProjectBackupSetsGet
+type ProjectBackupSetsGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupSetsGetResponse404Headers the declared response headers of an HTTP 404 response for ProjectBackupSetsGet
+type ProjectBackupSetsGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// ProjectBackupSetsGetResponse429Headers the declared response headers of an HTTP 429 response for ProjectBackupSetsGet
+type ProjectBackupSetsGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupSetsGetResponse503Headers the declared response headers of an HTTP 503 response for ProjectBackupSetsGet
+type ProjectBackupSetsGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectBackupSetsGetResponseDefaultHeaders the declared response headers of an HTTP default response for ProjectBackupSetsGet
+type ProjectBackupSetsGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ProjectBackupSetsGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *BackupSet
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ProjectBackupSetsGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ProjectBackupSetsGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ProjectBackupSetsGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ProjectBackupSetsGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ProjectBackupSetsGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ProjectBackupSetsGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ProjectBackupSetsGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectBackupSetsGetResponse) GetJSON200() *BackupSet {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ProjectBackupSetsGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ProjectBackupSetsGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectBackupSetsGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectBackupSetsGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectBackupSetsGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectBackupSetsGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ProjectBackupSetsGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ProjectBackupSetsGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ProjectBackupSetsGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ProjectBackupSetsGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectBackupSetsGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectBackupSetsGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectBackupSetsGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectBackupSetsGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectBackupSetsGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectBackupSetsGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // CodingJobGitTokenDeleteResponse204Headers the declared response headers of an HTTP 204 response for CodingJobGitTokenDelete
 type CodingJobGitTokenDeleteResponse204Headers struct {
 	XRequestID *string
@@ -49915,6 +52497,126 @@ func (c *ClientWithResponses) ProjectsUpdateWithApplicationMergePatchPlusJSONBod
 		return nil, err
 	}
 	return ParseProjectsUpdateResponse(rsp)
+}
+
+// ProjectBackupExportsListWithResponse A project's exports
+//
+// Newest first. An export is requested, and its package downloaded, in the portal only: no answer here carries a download link.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/backup-exports (the `ProjectBackupExportsList` operationId).
+func (c *ClientWithResponses) ProjectBackupExportsListWithResponse(ctx context.Context, projectId string, params *ProjectBackupExportsListParams, reqEditors ...RequestEditorFn) (*ProjectBackupExportsListResponse, error) {
+	rsp, err := c.ProjectBackupExportsList(ctx, projectId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectBackupExportsListResponse(rsp)
+}
+
+// ProjectBackupPlanDeleteWithResponse Return a project's backup plan to the default
+//
+// Back to the defaults, as the portal's button: enabled, the default environments, the installation's default tiers followed. The plan itself is never removed, and this never switches backups off, so it is not destroy-class. On a retired project it changes nothing.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /projects/{project_id}/backup-plan (the `ProjectBackupPlanDelete` operationId).
+func (c *ClientWithResponses) ProjectBackupPlanDeleteWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectBackupPlanDeleteResponse, error) {
+	rsp, err := c.ProjectBackupPlanDelete(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectBackupPlanDeleteResponse(rsp)
+}
+
+// ProjectBackupPlanGetWithResponse A project's backup plan
+//
+// Every project has a plan: a new project gets the default (enabled, DEV code and database, PROD code, database and files, UAT none, the installation's default tiers). The `ETag` response header carries `version` for `If-Match`. `PUT` replaces the plan as a whole; `DELETE` returns it to the default.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/backup-plan (the `ProjectBackupPlanGet` operationId).
+func (c *ClientWithResponses) ProjectBackupPlanGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectBackupPlanGetResponse, error) {
+	rsp, err := c.ProjectBackupPlanGet(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectBackupPlanGetResponse(rsp)
+}
+
+// ProjectBackupPlanPutWithBodyWithResponse Replace a project's backup plan
+//
+// Replaces the whole plan: a FULL replacement, never a partial update. `tiers` `null` follows the installation's default tiers; an object gives the project its own (`tiers_overridden` true). Switching a plan from enabled to disabled stops every scheduled set and is destroy-class: an API token needs `allow_destroy`. With `If-Match: "<version>"` the replace happens only while the plan is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the plan as it is: `version` is not bumped and no audit row is written. Back up now, exports and restores are not here: they are requested in the portal.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/backup-plan (the `ProjectBackupPlanPut` operationId).
+func (c *ClientWithResponses) ProjectBackupPlanPutWithBodyWithResponse(ctx context.Context, projectId string, params *ProjectBackupPlanPutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ProjectBackupPlanPutResponse, error) {
+	rsp, err := c.ProjectBackupPlanPutWithBody(ctx, projectId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectBackupPlanPutResponse(rsp)
+}
+
+// ProjectBackupPlanPutWithResponse Replace a project's backup plan
+//
+// Replaces the whole plan: a FULL replacement, never a partial update. `tiers` `null` follows the installation's default tiers; an object gives the project its own (`tiers_overridden` true). Switching a plan from enabled to disabled stops every scheduled set and is destroy-class: an API token needs `allow_destroy`. With `If-Match: "<version>"` the replace happens only while the plan is still at that version (412 `version_mismatch` otherwise); without it the last write wins. A replace that changes nothing returns the plan as it is: `version` is not bumped and no audit row is written. Back up now, exports and restores are not here: they are requested in the portal.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/backup-plan (the `ProjectBackupPlanPut` operationId).
+func (c *ClientWithResponses) ProjectBackupPlanPutWithResponse(ctx context.Context, projectId string, params *ProjectBackupPlanPutParams, body ProjectBackupPlanPutJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectBackupPlanPutResponse, error) {
+	rsp, err := c.ProjectBackupPlanPut(ctx, projectId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectBackupPlanPutResponse(rsp)
+}
+
+// ProjectBackupRestoresListWithResponse A project's restores
+//
+// Newest first. A restore is requested, and a PROD restore approved or rejected, in the portal only.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/backup-restores (the `ProjectBackupRestoresList` operationId).
+func (c *ClientWithResponses) ProjectBackupRestoresListWithResponse(ctx context.Context, projectId string, params *ProjectBackupRestoresListParams, reqEditors ...RequestEditorFn) (*ProjectBackupRestoresListResponse, error) {
+	rsp, err := c.ProjectBackupRestoresList(ctx, projectId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectBackupRestoresListResponse(rsp)
+}
+
+// ProjectBackupSetsListWithResponse A project's backup sets
+//
+// Newest first. A set is what one run copied of one environment. Filters combine with AND. Where a set is stored and its manifest stay in the portal.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/backup-sets (the `ProjectBackupSetsList` operationId).
+func (c *ClientWithResponses) ProjectBackupSetsListWithResponse(ctx context.Context, projectId string, params *ProjectBackupSetsListParams, reqEditors ...RequestEditorFn) (*ProjectBackupSetsListResponse, error) {
+	rsp, err := c.ProjectBackupSetsList(ctx, projectId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectBackupSetsListResponse(rsp)
+}
+
+// ProjectBackupSetsGetWithResponse One backup set
+//
+// One set of the project, as the list shows it.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/backup-sets/{set_id} (the `ProjectBackupSetsGet` operationId).
+func (c *ClientWithResponses) ProjectBackupSetsGetWithResponse(ctx context.Context, projectId string, setId string, reqEditors ...RequestEditorFn) (*ProjectBackupSetsGetResponse, error) {
+	rsp, err := c.ProjectBackupSetsGet(ctx, projectId, setId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectBackupSetsGetResponse(rsp)
 }
 
 // CodingJobGitTokenDeleteWithResponse Revoke a coding job's git token
@@ -66067,6 +68769,1540 @@ func ParseProjectsUpdateResponse(rsp *http.Response) (*ProjectsUpdateResponse, e
 		response.Headers503 = &headers
 	case true:
 		var headers ProjectsUpdateResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseProjectBackupExportsListResponse parses an HTTP response from a ProjectBackupExportsListWithResponse call
+func ParseProjectBackupExportsListResponse(rsp *http.Response) (*ProjectBackupExportsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectBackupExportsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BackupExportPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ProjectBackupExportsListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers ProjectBackupExportsListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ProjectBackupExportsListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ProjectBackupExportsListResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers ProjectBackupExportsListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ProjectBackupExportsListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ProjectBackupExportsListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseProjectBackupPlanDeleteResponse parses an HTTP response from a ProjectBackupPlanDeleteWithResponse call
+func ParseProjectBackupPlanDeleteResponse(rsp *http.Response) (*ProjectBackupPlanDeleteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectBackupPlanDeleteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		var headers ProjectBackupPlanDeleteResponse204Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers204 = &headers
+	case rsp.StatusCode == 401:
+		var headers ProjectBackupPlanDeleteResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ProjectBackupPlanDeleteResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ProjectBackupPlanDeleteResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers ProjectBackupPlanDeleteResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ProjectBackupPlanDeleteResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ProjectBackupPlanDeleteResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseProjectBackupPlanGetResponse parses an HTTP response from a ProjectBackupPlanGetWithResponse call
+func ParseProjectBackupPlanGetResponse(rsp *http.Response) (*ProjectBackupPlanGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectBackupPlanGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BackupPlan
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ProjectBackupPlanGetResponse200Headers
+		if values := rsp.Header.Values("ETag"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "ETag", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.ETag = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers ProjectBackupPlanGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ProjectBackupPlanGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ProjectBackupPlanGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers ProjectBackupPlanGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ProjectBackupPlanGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ProjectBackupPlanGetResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseProjectBackupPlanPutResponse parses an HTTP response from a ProjectBackupPlanPutWithResponse call
+func ParseProjectBackupPlanPutResponse(rsp *http.Response) (*ProjectBackupPlanPutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectBackupPlanPutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BackupPlan
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 400:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON400 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 409:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 412:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON412 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 412:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON412 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 422:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ProjectBackupPlanPutResponse200Headers
+		if values := rsp.Header.Values("ETag"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "ETag", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.ETag = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 400:
+		var headers ProjectBackupPlanPutResponse400Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers400 = &headers
+	case rsp.StatusCode == 401:
+		var headers ProjectBackupPlanPutResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ProjectBackupPlanPutResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ProjectBackupPlanPutResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 409:
+		var headers ProjectBackupPlanPutResponse409Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers409 = &headers
+	case rsp.StatusCode == 412:
+		var headers ProjectBackupPlanPutResponse412Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers412 = &headers
+	case rsp.StatusCode == 422:
+		var headers ProjectBackupPlanPutResponse422Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers422 = &headers
+	case rsp.StatusCode == 429:
+		var headers ProjectBackupPlanPutResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ProjectBackupPlanPutResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ProjectBackupPlanPutResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseProjectBackupRestoresListResponse parses an HTTP response from a ProjectBackupRestoresListWithResponse call
+func ParseProjectBackupRestoresListResponse(rsp *http.Response) (*ProjectBackupRestoresListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectBackupRestoresListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BackupRestorePage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ProjectBackupRestoresListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers ProjectBackupRestoresListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ProjectBackupRestoresListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ProjectBackupRestoresListResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers ProjectBackupRestoresListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ProjectBackupRestoresListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ProjectBackupRestoresListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseProjectBackupSetsListResponse parses an HTTP response from a ProjectBackupSetsListWithResponse call
+func ParseProjectBackupSetsListResponse(rsp *http.Response) (*ProjectBackupSetsListResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectBackupSetsListResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BackupSetPage
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ProjectBackupSetsListResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers ProjectBackupSetsListResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ProjectBackupSetsListResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ProjectBackupSetsListResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers ProjectBackupSetsListResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ProjectBackupSetsListResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ProjectBackupSetsListResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseProjectBackupSetsGetResponse parses an HTTP response from a ProjectBackupSetsGetWithResponse call
+func ParseProjectBackupSetsGetResponse(rsp *http.Response) (*ProjectBackupSetsGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectBackupSetsGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BackupSet
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ProjectBackupSetsGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers ProjectBackupSetsGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ProjectBackupSetsGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ProjectBackupSetsGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers ProjectBackupSetsGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ProjectBackupSetsGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ProjectBackupSetsGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
