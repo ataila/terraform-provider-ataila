@@ -6337,6 +6337,31 @@ type GatewayAiUsage struct {
 	UnratedTiers *[]string `json:"unrated_tiers,omitempty"`
 }
 
+// GatewayAllow One bounded allow on the project's gateways: what may reach the project, or
+// leave it, past the gateways' default drop.
+type GatewayAllow struct {
+	// Action What the rule does, e.g. `accept`.
+	Action string `json:"action"`
+
+	// Chain `forward`, `input` or `output`.
+	Chain string `json:"chain"`
+
+	// Comment What the rule is for.
+	Comment *string `json:"comment"`
+
+	// Destination Where it goes; `null` for anywhere.
+	Destination *string `json:"destination"`
+
+	// Ports The ports; `null` for any.
+	Ports *string `json:"ports"`
+
+	// Protocol The protocol; `null` for any.
+	Protocol *string `json:"protocol"`
+
+	// Source Where the traffic comes from; `null` for anywhere.
+	Source *string `json:"source"`
+}
+
 // GatewayKey An AI gateway virtual key: what one application of one tenant calls the
 // gateway with, the tiers it may call and its limits. The key's value is
 // never returned after the request that made it (`secret`).
@@ -6663,6 +6688,15 @@ type KubernetesNamespace struct {
 
 	// Namespace The namespace's name.
 	Namespace string `json:"namespace"`
+}
+
+// KubernetesNetwork A Kubernetes project's network policies: deny by default, then the allows.
+type KubernetesNetwork struct {
+	// Namespace The project's first namespace.
+	Namespace *string `json:"namespace"`
+
+	// Policies The policies, per namespace.
+	Policies []NetworkPolicy `json:"policies"`
 }
 
 // KubernetesQuota One environment's namespace quota on the Kubernetes backend: the EFFECTIVE
@@ -7241,6 +7275,69 @@ type MonthlyTier struct {
 
 	// Keep How many successful sets of the tier are kept per environment: 1-120.
 	Keep int `json:"keep"`
+}
+
+// NetworkPolicy One Kubernetes network policy of the project.
+type NetworkPolicy struct {
+	// Detail What it allows or denies.
+	Detail *string `json:"detail"`
+
+	// Egress For an egress allow: the dependencies it lets the pods reach.
+	Egress []string `json:"egress"`
+
+	// Name The policy's name.
+	Name string `json:"name"`
+
+	// Namespace The namespace it applies in.
+	Namespace string `json:"namespace"`
+}
+
+// NetworkSubnet One subnet of the project's zone (VM projects).
+type NetworkSubnet struct {
+	// Cidr The subnet.
+	Cidr *string `json:"cidr"`
+
+	// Environments The environments in it.
+	Environments []string `json:"environments"`
+
+	// Site The site it is on.
+	Site *string `json:"site"`
+}
+
+// NetworkVlan One VLAN of the project.
+type NetworkVlan struct {
+	// Cidr Its subnet, e.g. `192.0.2.0/24`.
+	Cidr *string `json:"cidr"`
+
+	// Gateway The project's gateway address on it.
+	Gateway *string `json:"gateway"`
+
+	// Name Its name.
+	Name *string `json:"name"`
+
+	// Site The site it is on.
+	Site *string `json:"site"`
+
+	// VlanId The VLAN id.
+	VlanId int `json:"vlan_id"`
+}
+
+// NetworkVm One VM's place in the micro-segmentation.
+type NetworkVm struct {
+	// Applied True once the platform has applied it.
+	Applied bool `json:"applied"`
+
+	// Enabled True when its firewall is on.
+	Enabled bool `json:"enabled"`
+
+	// Environment Its environment.
+	Environment *string `json:"environment"`
+
+	// Group The security group it sits in.
+	Group *string `json:"group"`
+
+	// Name The VM's host name.
+	Name string `json:"name"`
 }
 
 // NodeCache A copy of a model's weights on one AI node's local disk: the fast,
@@ -8154,6 +8251,39 @@ type ProjectMemberPutGitlabRole string
 // ProjectMemberPutRole `owner`, `admin`, `developer` (default), `member` or `viewer`.
 type ProjectMemberPutRole string
 
+// ProjectNetwork A project's network as the platform derives and applies it.
+type ProjectNetwork struct {
+	// DeploymentBackend `vm` or `k8s`.
+	DeploymentBackend string `json:"deployment_backend"`
+
+	// GatewayAllows The bounded allows on the project's gateways, as applied, each once.
+	GatewayAllows []GatewayAllow `json:"gateway_allows"`
+
+	// Kubernetes A Kubernetes project's network policies; `null` for a VM project.
+	Kubernetes *KubernetesNetwork `json:"kubernetes"`
+
+	// NetworkMode `vlan`, or `vpc` for a VPC-mode project (preview).
+	NetworkMode string `json:"network_mode"`
+
+	// ProjectId The project.
+	ProjectId string `json:"project_id"`
+
+	// SecurityGroups The per-VM security groups, as applied.
+	SecurityGroups []SecurityGroup `json:"security_groups"`
+
+	// Subnets The zone's subnets (VM projects).
+	Subnets []NetworkSubnet `json:"subnets"`
+
+	// Vlans The project's VLANs, as applied.
+	Vlans []NetworkVlan `json:"vlans"`
+
+	// Vms Each VM's group and firewall state.
+	Vms []NetworkVm `json:"vms"`
+
+	// Vpc A VPC-mode project's VPC; `null` otherwise.
+	Vpc *Vpc `json:"vpc"`
+}
+
 // ProjectOutputs What the project's compiled manifest names, curated: never an internal
 // address, a machine's host name or a production secrets store path.
 type ProjectOutputs struct {
@@ -8939,6 +9069,51 @@ type SecretPath struct {
 
 // SecretPathEnv The environment: `dev` or `uat`.
 type SecretPathEnv string
+
+// SecurityGroup One per-VM security group of the project (micro-segmentation).
+type SecurityGroup struct {
+	// Cluster The cluster it is applied on.
+	Cluster *string `json:"cluster"`
+
+	// Comment What the group is for.
+	Comment *string `json:"comment"`
+
+	// Environment The environment it serves.
+	Environment *string `json:"environment"`
+
+	// Name The group's name.
+	Name string `json:"name"`
+
+	// Rules Its rules, in order.
+	Rules []SecurityGroupRule `json:"rules"`
+}
+
+// SecurityGroupRule One rule of a security group, in order.
+type SecurityGroupRule struct {
+	// Action `ACCEPT`, `DROP` or `REJECT`.
+	Action *string `json:"action"`
+
+	// Comment What the rule is for.
+	Comment *string `json:"comment"`
+
+	// Destination Where it goes; `null` for anywhere.
+	Destination *string `json:"destination"`
+
+	// Direction `in` or `out`.
+	Direction *string `json:"direction"`
+
+	// Port The destination port or range; `null` for any.
+	Port *string `json:"port"`
+
+	// Position Its place in the group (first match wins).
+	Position *int `json:"position"`
+
+	// Protocol The protocol, e.g. `tcp`; `null` for any.
+	Protocol *string `json:"protocol"`
+
+	// Source Where the traffic comes from; `null` for anywhere.
+	Source *string `json:"source"`
+}
 
 // Service A service a customer can be entitled to: one row of the service catalogue.
 type Service struct {
@@ -10256,6 +10431,60 @@ type VmPage struct {
 
 	// NextCursor Send it as `cursor` to read the next page; null on the last page. Opaque: never build or change one.
 	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// Vnet One VNet of the project's VPC.
+type Vnet struct {
+	// Applied True once the platform has applied it on its cluster.
+	Applied bool `json:"applied"`
+
+	// Cidr Its subnet.
+	Cidr *string `json:"cidr"`
+
+	// Environment The environment it serves.
+	Environment *string `json:"environment"`
+
+	// Gateway Its gateway address.
+	Gateway *string `json:"gateway"`
+
+	// GatewayApplied True once its gateway is applied.
+	GatewayApplied bool `json:"gateway_applied"`
+
+	// Id The VNet's id.
+	Id string `json:"id"`
+
+	// Vms The VMs on it.
+	Vms []VnetVm `json:"vms"`
+
+	// Vni Its VXLAN network identifier.
+	Vni *int `json:"vni"`
+}
+
+// VnetVm One VM on a VNet.
+type VnetVm struct {
+	// Address Its address on the VNet.
+	Address *string `json:"address"`
+
+	// Environment Its environment.
+	Environment *string `json:"environment"`
+
+	// Name The VM's host name.
+	Name *string `json:"name"`
+}
+
+// Vpc A VPC-mode project's VPC (preview).
+type Vpc struct {
+	// Name The VPC's name.
+	Name *string `json:"name"`
+
+	// PoolCidr The address pool its VNets are cut from.
+	PoolCidr *string `json:"pool_cidr"`
+
+	// Site The site it is on.
+	Site *string `json:"site"`
+
+	// Vnets Its VNets.
+	Vnets []Vnet `json:"vnets"`
 }
 
 // WeeklyTier The weekly tier.
@@ -13330,6 +13559,13 @@ type ClientInterface interface {
 	// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
 	ProjectMembersPut(ctx context.Context, projectId string, userId string, body ProjectMembersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ProjectNetworkGet A project's network
+	//
+	// The project's network as the platform derives and applies it: the zone's subnets, the VLANs, the per-VM security groups with every rule and which VM sits in which, the bounded allows on the project's gateways, a Kubernetes project's network policies and a VPC-mode project's VPC. Read only: the network follows the project's settings. A change of them through `PATCH /projects/{id}` marks the network stages stale, and `POST /projects/{id}/provisioning` applies them; until then the applied parts here show the network as it was.
+	//
+	// Corresponds with GET /projects/{project_id}/network (the `ProjectNetworkGet` operationId).
+	ProjectNetworkGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ProdLockGet The PROD data lock
 	//
 	// While `locked`, no data copy may target PROD. Code promotion is not affected.
@@ -16142,6 +16378,23 @@ func (c *Client) ProjectMembersPutWithBody(ctx context.Context, projectId string
 // Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
 func (c *Client) ProjectMembersPut(ctx context.Context, projectId string, userId string, body ProjectMembersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewProjectMembersPutRequest(c.Server, projectId, userId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ProjectNetworkGet A project's network
+//
+// The project's network as the platform derives and applies it: the zone's subnets, the VLANs, the per-VM security groups with every rule and which VM sits in which, the bounded allows on the project's gateways, a Kubernetes project's network policies and a VPC-mode project's VPC. Read only: the network follows the project's settings. A change of them through `PATCH /projects/{id}` marks the network stages stale, and `POST /projects/{id}/provisioning` applies them; until then the applied parts here show the network as it was.
+//
+// Corresponds with GET /projects/{project_id}/network (the `ProjectNetworkGet` operationId).
+func (c *Client) ProjectNetworkGet(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewProjectNetworkGetRequest(c.Server, projectId)
 	if err != nil {
 		return nil, err
 	}
@@ -22308,6 +22561,40 @@ func NewProjectMembersPutRequestWithBody(server string, projectId string, userId
 	return req, nil
 }
 
+// NewProjectNetworkGetRequest constructs an http.Request for the ProjectNetworkGet method
+func NewProjectNetworkGetRequest(server string, projectId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/network", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewProdLockGetRequest constructs an http.Request for the ProdLockGet method
 func NewProdLockGetRequest(server string, projectId string) (*http.Request, error) {
 	var err error
@@ -26324,6 +26611,15 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PUT /projects/{project_id}/members/{user_id} (the `ProjectMembersPut` operationId).
 	ProjectMembersPutWithResponse(ctx context.Context, projectId string, userId string, body ProjectMembersPutJSONRequestBody, reqEditors ...RequestEditorFn) (*ProjectMembersPutResponse, error)
+
+	// ProjectNetworkGetWithResponse A project's network
+	//
+	// The project's network as the platform derives and applies it: the zone's subnets, the VLANs, the per-VM security groups with every rule and which VM sits in which, the bounded allows on the project's gateways, a Kubernetes project's network policies and a VPC-mode project's VPC. Read only: the network follows the project's settings. A change of them through `PATCH /projects/{id}` marks the network stages stale, and `POST /projects/{id}/provisioning` applies them; until then the applied parts here show the network as it was.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/network (the `ProjectNetworkGet` operationId).
+	ProjectNetworkGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectNetworkGetResponse, error)
 
 	// ProdLockGetWithResponse The PROD data lock
 	//
@@ -43361,6 +43657,183 @@ func (r ProjectMembersPutResponse) ContentType() string {
 	return ""
 }
 
+// ProjectNetworkGetResponse200Headers the declared response headers of an HTTP 200 response for ProjectNetworkGet
+type ProjectNetworkGetResponse200Headers struct {
+	XRequestID *string
+}
+
+// ProjectNetworkGetResponse401Headers the declared response headers of an HTTP 401 response for ProjectNetworkGet
+type ProjectNetworkGetResponse401Headers struct {
+	WWWAuthenticate *string
+	XRequestID      *string
+}
+
+// ProjectNetworkGetResponse403Headers the declared response headers of an HTTP 403 response for ProjectNetworkGet
+type ProjectNetworkGetResponse403Headers struct {
+	XRequestID *string
+}
+
+// ProjectNetworkGetResponse404Headers the declared response headers of an HTTP 404 response for ProjectNetworkGet
+type ProjectNetworkGetResponse404Headers struct {
+	XRequestID *string
+}
+
+// ProjectNetworkGetResponse429Headers the declared response headers of an HTTP 429 response for ProjectNetworkGet
+type ProjectNetworkGetResponse429Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectNetworkGetResponse503Headers the declared response headers of an HTTP 503 response for ProjectNetworkGet
+type ProjectNetworkGetResponse503Headers struct {
+	RetryAfter *int
+	XRequestID *string
+}
+
+// ProjectNetworkGetResponseDefaultHeaders the declared response headers of an HTTP default response for ProjectNetworkGet
+type ProjectNetworkGetResponseDefaultHeaders struct {
+	XRequestID *string
+}
+
+type ProjectNetworkGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ProjectNetwork
+	// JSON401 the response for an HTTP 401 `application/json` response
+	JSON401 *Problem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Problem
+	// JSON403 the response for an HTTP 403 `application/json` response
+	JSON403 *Problem
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Problem
+	// JSON404 the response for an HTTP 404 `application/json` response
+	JSON404 *Problem
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *Problem
+	// JSON429 the response for an HTTP 429 `application/json` response
+	JSON429 *Problem
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *Problem
+	// JSON503 the response for an HTTP 503 `application/json` response
+	JSON503 *Problem
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Problem
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *Problem
+	// ApplicationproblemJSONDefault the response for an HTTP default `application/problem+json` response
+	ApplicationproblemJSONDefault *Problem
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *ProjectNetworkGetResponse200Headers
+	// Headers401 the parsed response headers for an HTTP 401 response
+	Headers401 *ProjectNetworkGetResponse401Headers
+	// Headers403 the parsed response headers for an HTTP 403 response
+	Headers403 *ProjectNetworkGetResponse403Headers
+	// Headers404 the parsed response headers for an HTTP 404 response
+	Headers404 *ProjectNetworkGetResponse404Headers
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ProjectNetworkGetResponse429Headers
+	// Headers503 the parsed response headers for an HTTP 503 response
+	Headers503 *ProjectNetworkGetResponse503Headers
+	// HeadersDefault the parsed response headers for an HTTP default response
+	HeadersDefault *ProjectNetworkGetResponseDefaultHeaders
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ProjectNetworkGetResponse) GetJSON200() *ProjectNetwork {
+	return r.JSON200
+}
+
+// GetJSON401 returns the response for an HTTP 401 `application/json` response
+func (r ProjectNetworkGetResponse) GetJSON401() *Problem {
+	return r.JSON401
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ProjectNetworkGetResponse) GetApplicationproblemJSON401() *Problem {
+	return r.ApplicationproblemJSON401
+}
+
+// GetJSON403 returns the response for an HTTP 403 `application/json` response
+func (r ProjectNetworkGetResponse) GetJSON403() *Problem {
+	return r.JSON403
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ProjectNetworkGetResponse) GetApplicationproblemJSON403() *Problem {
+	return r.ApplicationproblemJSON403
+}
+
+// GetJSON404 returns the response for an HTTP 404 `application/json` response
+func (r ProjectNetworkGetResponse) GetJSON404() *Problem {
+	return r.JSON404
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ProjectNetworkGetResponse) GetApplicationproblemJSON404() *Problem {
+	return r.ApplicationproblemJSON404
+}
+
+// GetJSON429 returns the response for an HTTP 429 `application/json` response
+func (r ProjectNetworkGetResponse) GetJSON429() *Problem {
+	return r.JSON429
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ProjectNetworkGetResponse) GetApplicationproblemJSON429() *Problem {
+	return r.ApplicationproblemJSON429
+}
+
+// GetJSON503 returns the response for an HTTP 503 `application/json` response
+func (r ProjectNetworkGetResponse) GetJSON503() *Problem {
+	return r.JSON503
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ProjectNetworkGetResponse) GetApplicationproblemJSON503() *Problem {
+	return r.ApplicationproblemJSON503
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r ProjectNetworkGetResponse) GetJSONDefault() *Problem {
+	return r.JSONDefault
+}
+
+// GetApplicationproblemJSONDefault returns the response for an HTTP default `application/problem+json` response
+func (r ProjectNetworkGetResponse) GetApplicationproblemJSONDefault() *Problem {
+	return r.ApplicationproblemJSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r ProjectNetworkGetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ProjectNetworkGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ProjectNetworkGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ProjectNetworkGetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // ProdLockGetResponse200Headers the declared response headers of an HTTP 200 response for ProdLockGet
 type ProdLockGetResponse200Headers struct {
 	XRequestID *string
@@ -54936,6 +55409,21 @@ func (c *ClientWithResponses) ProjectMembersPutWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseProjectMembersPutResponse(rsp)
+}
+
+// ProjectNetworkGetWithResponse A project's network
+//
+// The project's network as the platform derives and applies it: the zone's subnets, the VLANs, the per-VM security groups with every rule and which VM sits in which, the bounded allows on the project's gateways, a Kubernetes project's network policies and a VPC-mode project's VPC. Read only: the network follows the project's settings. A change of them through `PATCH /projects/{id}` marks the network stages stale, and `POST /projects/{id}/provisioning` applies them; until then the applied parts here show the network as it was.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/network (the `ProjectNetworkGet` operationId).
+func (c *ClientWithResponses) ProjectNetworkGetWithResponse(ctx context.Context, projectId string, reqEditors ...RequestEditorFn) (*ProjectNetworkGetResponse, error) {
+	rsp, err := c.ProjectNetworkGet(ctx, projectId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseProjectNetworkGetResponse(rsp)
 }
 
 // ProdLockGetWithResponse The PROD data lock
@@ -74999,6 +75487,210 @@ func ParseProjectMembersPutResponse(rsp *http.Response) (*ProjectMembersPutRespo
 		response.Headers503 = &headers
 	case true:
 		var headers ProjectMembersPutResponseDefaultHeaders
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.HeadersDefault = &headers
+	}
+
+	return response, nil
+}
+
+// ParseProjectNetworkGetResponse parses an HTTP response from a ProjectNetworkGetWithResponse call
+func ParseProjectNetworkGetResponse(rsp *http.Response) (*ProjectNetworkGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ProjectNetworkGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProjectNetwork
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 401:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 403:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 404:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 429:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && rsp.StatusCode == 503:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	case rsp.Header.Get("Content-Type") == "application/problem+json" && true:
+		var dest Problem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers ProjectNetworkGetResponse200Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers200 = &headers
+	case rsp.StatusCode == 401:
+		var headers ProjectNetworkGetResponse401Headers
+		if values := rsp.Header.Values("WWW-Authenticate"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "WWW-Authenticate", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.WWWAuthenticate = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers401 = &headers
+	case rsp.StatusCode == 403:
+		var headers ProjectNetworkGetResponse403Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers403 = &headers
+	case rsp.StatusCode == 404:
+		var headers ProjectNetworkGetResponse404Headers
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers404 = &headers
+	case rsp.StatusCode == 429:
+		var headers ProjectNetworkGetResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers429 = &headers
+	case rsp.StatusCode == 503:
+		var headers ProjectNetworkGetResponse503Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XRequestID = &value
+		}
+		response.Headers503 = &headers
+	case true:
+		var headers ProjectNetworkGetResponseDefaultHeaders
 		if values := rsp.Header.Values("X-Request-ID"); len(values) > 0 {
 			var value string
 			if err := runtime.BindStyledParameterWithOptions("simple", "X-Request-ID", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {

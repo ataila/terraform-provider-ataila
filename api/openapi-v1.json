@@ -6842,6 +6842,92 @@
         "title": "GatewayAiUsage",
         "type": "object"
       },
+      "GatewayAllow": {
+        "description": "One bounded allow on the project's gateways: what may reach the project, or\nleave it, past the gateways' default drop.",
+        "properties": {
+          "action": {
+            "description": "What the rule does, e.g. `accept`.",
+            "title": "Action",
+            "type": "string"
+          },
+          "chain": {
+            "description": "`forward`, `input` or `output`.",
+            "title": "Chain",
+            "type": "string"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What the rule is for.",
+            "title": "Comment"
+          },
+          "destination": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Where it goes; `null` for anywhere.",
+            "title": "Destination"
+          },
+          "ports": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The ports; `null` for any.",
+            "title": "Ports"
+          },
+          "protocol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The protocol; `null` for any.",
+            "title": "Protocol"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Where the traffic comes from; `null` for anywhere.",
+            "title": "Source"
+          }
+        },
+        "required": [
+          "chain",
+          "action",
+          "source",
+          "destination",
+          "protocol",
+          "ports",
+          "comment"
+        ],
+        "title": "GatewayAllow",
+        "type": "object"
+      },
       "GatewayKey": {
         "description": "An AI gateway virtual key: what one application of one tenant calls the\ngateway with, the tiers it may call and its limits. The key's value is\nnever returned after the request that made it (`secret`).",
         "properties": {
@@ -7807,6 +7893,37 @@
           "namespace"
         ],
         "title": "KubernetesNamespace",
+        "type": "object"
+      },
+      "KubernetesNetwork": {
+        "description": "A Kubernetes project's network policies: deny by default, then the allows.",
+        "properties": {
+          "namespace": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The project's first namespace.",
+            "title": "Namespace"
+          },
+          "policies": {
+            "description": "The policies, per namespace.",
+            "items": {
+              "$ref": "#/components/schemas/NetworkPolicy"
+            },
+            "title": "Policies",
+            "type": "array"
+          }
+        },
+        "required": [
+          "namespace",
+          "policies"
+        ],
+        "title": "KubernetesNetwork",
         "type": "object"
       },
       "KubernetesQuota": {
@@ -9421,6 +9538,213 @@
           "at"
         ],
         "title": "MonthlyTier",
+        "type": "object"
+      },
+      "NetworkPolicy": {
+        "description": "One Kubernetes network policy of the project.",
+        "properties": {
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What it allows or denies.",
+            "title": "Detail"
+          },
+          "egress": {
+            "description": "For an egress allow: the dependencies it lets the pods reach.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Egress",
+            "type": "array"
+          },
+          "name": {
+            "description": "The policy's name.",
+            "title": "Name",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "The namespace it applies in.",
+            "title": "Namespace",
+            "type": "string"
+          }
+        },
+        "required": [
+          "namespace",
+          "name",
+          "detail",
+          "egress"
+        ],
+        "title": "NetworkPolicy",
+        "type": "object"
+      },
+      "NetworkSubnet": {
+        "description": "One subnet of the project's zone (VM projects).",
+        "properties": {
+          "cidr": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The subnet.",
+            "title": "Cidr"
+          },
+          "environments": {
+            "description": "The environments in it.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Environments",
+            "type": "array"
+          },
+          "site": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The site it is on.",
+            "title": "Site"
+          }
+        },
+        "required": [
+          "cidr",
+          "site",
+          "environments"
+        ],
+        "title": "NetworkSubnet",
+        "type": "object"
+      },
+      "NetworkVlan": {
+        "description": "One VLAN of the project.",
+        "properties": {
+          "cidr": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its subnet, e.g. `192.0.2.0/24`.",
+            "title": "Cidr"
+          },
+          "gateway": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The project's gateway address on it.",
+            "title": "Gateway"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its name.",
+            "title": "Name"
+          },
+          "site": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The site it is on.",
+            "title": "Site"
+          },
+          "vlan_id": {
+            "description": "The VLAN id.",
+            "title": "Vlan Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "vlan_id",
+          "name",
+          "cidr",
+          "gateway",
+          "site"
+        ],
+        "title": "NetworkVlan",
+        "type": "object"
+      },
+      "NetworkVm": {
+        "description": "One VM's place in the micro-segmentation.",
+        "properties": {
+          "applied": {
+            "description": "True once the platform has applied it.",
+            "title": "Applied",
+            "type": "boolean"
+          },
+          "enabled": {
+            "description": "True when its firewall is on.",
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "environment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its environment.",
+            "title": "Environment"
+          },
+          "group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The security group it sits in.",
+            "title": "Group"
+          },
+          "name": {
+            "description": "The VM's host name.",
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "environment",
+          "group",
+          "enabled",
+          "applied"
+        ],
+        "title": "NetworkVm",
         "type": "object"
       },
       "NodeCache": {
@@ -11925,6 +12249,102 @@
         "title": "ProjectMemberPut",
         "type": "object"
       },
+      "ProjectNetwork": {
+        "description": "A project's network as the platform derives and applies it.",
+        "properties": {
+          "deployment_backend": {
+            "description": "`vm` or `k8s`.",
+            "title": "Deployment Backend",
+            "type": "string"
+          },
+          "gateway_allows": {
+            "description": "The bounded allows on the project's gateways, as applied, each once.",
+            "items": {
+              "$ref": "#/components/schemas/GatewayAllow"
+            },
+            "title": "Gateway Allows",
+            "type": "array"
+          },
+          "kubernetes": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/KubernetesNetwork"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A Kubernetes project's network policies; `null` for a VM project."
+          },
+          "network_mode": {
+            "description": "`vlan`, or `vpc` for a VPC-mode project (preview).",
+            "title": "Network Mode",
+            "type": "string"
+          },
+          "project_id": {
+            "description": "The project.",
+            "title": "Project Id",
+            "type": "string"
+          },
+          "security_groups": {
+            "description": "The per-VM security groups, as applied.",
+            "items": {
+              "$ref": "#/components/schemas/SecurityGroup"
+            },
+            "title": "Security Groups",
+            "type": "array"
+          },
+          "subnets": {
+            "description": "The zone's subnets (VM projects).",
+            "items": {
+              "$ref": "#/components/schemas/NetworkSubnet"
+            },
+            "title": "Subnets",
+            "type": "array"
+          },
+          "vlans": {
+            "description": "The project's VLANs, as applied.",
+            "items": {
+              "$ref": "#/components/schemas/NetworkVlan"
+            },
+            "title": "Vlans",
+            "type": "array"
+          },
+          "vms": {
+            "description": "Each VM's group and firewall state.",
+            "items": {
+              "$ref": "#/components/schemas/NetworkVm"
+            },
+            "title": "Vms",
+            "type": "array"
+          },
+          "vpc": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Vpc"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A VPC-mode project's VPC; `null` otherwise."
+          }
+        },
+        "required": [
+          "project_id",
+          "deployment_backend",
+          "network_mode",
+          "subnets",
+          "vlans",
+          "security_groups",
+          "vms",
+          "gateway_allows",
+          "kubernetes",
+          "vpc"
+        ],
+        "title": "ProjectNetwork",
+        "type": "object"
+      },
       "ProjectOutputs": {
         "description": "What the project's compiled manifest names, curated: never an internal\naddress, a machine's host name or a production secrets store path.",
         "properties": {
@@ -14001,6 +14421,182 @@
           "path"
         ],
         "title": "SecretPath",
+        "type": "object"
+      },
+      "SecurityGroup": {
+        "description": "One per-VM security group of the project (micro-segmentation).",
+        "properties": {
+          "cluster": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The cluster it is applied on.",
+            "title": "Cluster"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What the group is for.",
+            "title": "Comment"
+          },
+          "environment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The environment it serves.",
+            "title": "Environment"
+          },
+          "name": {
+            "description": "The group's name.",
+            "title": "Name",
+            "type": "string"
+          },
+          "rules": {
+            "description": "Its rules, in order.",
+            "items": {
+              "$ref": "#/components/schemas/SecurityGroupRule"
+            },
+            "title": "Rules",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "environment",
+          "cluster",
+          "comment",
+          "rules"
+        ],
+        "title": "SecurityGroup",
+        "type": "object"
+      },
+      "SecurityGroupRule": {
+        "description": "One rule of a security group, in order.",
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`ACCEPT`, `DROP` or `REJECT`.",
+            "title": "Action"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What the rule is for.",
+            "title": "Comment"
+          },
+          "destination": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Where it goes; `null` for anywhere.",
+            "title": "Destination"
+          },
+          "direction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`in` or `out`.",
+            "title": "Direction"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The destination port or range; `null` for any.",
+            "title": "Port"
+          },
+          "position": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its place in the group (first match wins).",
+            "title": "Position"
+          },
+          "protocol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The protocol, e.g. `tcp`; `null` for any.",
+            "title": "Protocol"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Where the traffic comes from; `null` for anywhere.",
+            "title": "Source"
+          }
+        },
+        "required": [
+          "position",
+          "direction",
+          "action",
+          "source",
+          "destination",
+          "protocol",
+          "port",
+          "comment"
+        ],
+        "title": "SecurityGroupRule",
         "type": "object"
       },
       "Service": {
@@ -17733,6 +18329,199 @@
           "items"
         ],
         "title": "VmPage",
+        "type": "object"
+      },
+      "Vnet": {
+        "description": "One VNet of the project's VPC.",
+        "properties": {
+          "applied": {
+            "description": "True once the platform has applied it on its cluster.",
+            "title": "Applied",
+            "type": "boolean"
+          },
+          "cidr": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its subnet.",
+            "title": "Cidr"
+          },
+          "environment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The environment it serves.",
+            "title": "Environment"
+          },
+          "gateway": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its gateway address.",
+            "title": "Gateway"
+          },
+          "gateway_applied": {
+            "description": "True once its gateway is applied.",
+            "title": "Gateway Applied",
+            "type": "boolean"
+          },
+          "id": {
+            "description": "The VNet's id.",
+            "title": "Id",
+            "type": "string"
+          },
+          "vms": {
+            "description": "The VMs on it.",
+            "items": {
+              "$ref": "#/components/schemas/VnetVm"
+            },
+            "title": "Vms",
+            "type": "array"
+          },
+          "vni": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its VXLAN network identifier.",
+            "title": "Vni"
+          }
+        },
+        "required": [
+          "id",
+          "environment",
+          "vni",
+          "cidr",
+          "gateway",
+          "applied",
+          "gateway_applied",
+          "vms"
+        ],
+        "title": "Vnet",
+        "type": "object"
+      },
+      "VnetVm": {
+        "description": "One VM on a VNet.",
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its address on the VNet.",
+            "title": "Address"
+          },
+          "environment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Its environment.",
+            "title": "Environment"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The VM's host name.",
+            "title": "Name"
+          }
+        },
+        "required": [
+          "name",
+          "environment",
+          "address"
+        ],
+        "title": "VnetVm",
+        "type": "object"
+      },
+      "Vpc": {
+        "description": "A VPC-mode project's VPC (preview).",
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The VPC's name.",
+            "title": "Name"
+          },
+          "pool_cidr": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The address pool its VNets are cut from.",
+            "title": "Pool Cidr"
+          },
+          "site": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The site it is on.",
+            "title": "Site"
+          },
+          "vnets": {
+            "description": "Its VNets.",
+            "items": {
+              "$ref": "#/components/schemas/Vnet"
+            },
+            "title": "Vnets",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "site",
+          "pool_cidr",
+          "vnets"
+        ],
+        "title": "Vpc",
         "type": "object"
       },
       "WeeklyTier": {
@@ -36147,6 +36936,181 @@
         ]
       }
     },
+    "/projects/{project_id}/network": {
+      "get": {
+        "description": "The project's network as the platform derives and applies it: the zone's subnets, the VLANs, the per-VM security groups with every rule and which VM sits in which, the bounded allows on the project's gateways, a Kubernetes project's network policies and a VPC-mode project's VPC. Read only: the network follows the project's settings. A change of them through `PATCH /projects/{id}` marks the network stages stale, and `POST /projects/{id}/provisioning` applies them; until then the applied parts here show the network as it was.",
+        "operationId": "project_network_get",
+        "parameters": [
+          {
+            "description": "The project's id.",
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "description": "The project's id.",
+              "pattern": "^[1-9][0-9]{0,8}$",
+              "title": "Project Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectNetwork"
+                }
+              }
+            },
+            "description": "The project's network.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not authenticated: no `Authorization: Bearer` header (`not_authenticated`), or the credential is refused (`token_invalid`, `token_expired`, `token_revoked`, `principal_disabled`, `token_ip_not_allowed`).",
+            "headers": {
+              "WWW-Authenticate": {
+                "$ref": "#/components/headers/WWW-Authenticate"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The caller lacks a permission the operation needs (`forbidden`; `required` lists the keys, any one of which would do), or the licence refuses a change (`licence_locked`, `licence_restricted`, `licence_required`, with `state` and `remedy`; never retry a `licence_*` code).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No such project, or not one the caller may read (`project_not_found`).",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "More than 600 requests in a minute with this token (`rate_limited`), or the first request with this `Idempotency-Key` is still running (`idempotency_request_in_progress`). Retry after `Retry-After`.",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The platform cannot answer right now (`unavailable`; retry after `Retry-After`), or API tokens are not configured on it (`api_tokens_unconfigured`; an operator must act).",
+            "headers": {
+              "Retry-After": {
+                "$ref": "#/components/headers/Retry-After"
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "A project's network",
+        "tags": [
+          "network"
+        ]
+      }
+    },
     "/projects/{project_id}/prod-lock": {
       "get": {
         "description": "While `locked`, no data copy may target PROD. Code promotion is not affected.",
@@ -46729,6 +47693,10 @@
     {
       "description": "Virtual machines, infrastructure VM nodes, Kubernetes clusters and certificates (read-only).",
       "name": "inventory"
+    },
+    {
+      "description": "A project's network as the platform derives and applies it (read-only).",
+      "name": "network"
     },
     {
       "description": "AI gateway virtual keys and serving tiers.",
