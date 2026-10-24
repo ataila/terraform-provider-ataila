@@ -5,6 +5,14 @@ the 0.x releases before it were never published, and any of them could change wh
 
 ## Unreleased
 
+## 1.4.0 (2026-10-24) — contract of platform release 1.0.402
+
+A minor release: additions only, under the stability promise of 1.0.0. A configuration and a state of 1.3.0
+plan with no changes. Proven end to end against a platform installation on 2026-10-24 under OpenTofu and
+Terraform: a project's network; its backup plan taken over, overridden, returned to the default and destroyed;
+the fleet and certificate reads; the audit events of the run itself; an application brand profile; and a VM
+project's release request, refused before booking where the installation had no tested version to promote.
+
 ### Added
 
 - `ataila_brand_app`, resource and data source (platform 1.0.305 on; refused at plan time on an older platform,

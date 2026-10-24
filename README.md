@@ -137,6 +137,17 @@ terraform init && terraform plan
 Both `replace-provider` commands ask for confirmation; `-auto-approve` skips it. A remote backend is changed in
 place, so switch once, not back and forth in parallel runs.
 
+### Upgrading from 1.3.x to 1.4.0
+
+Nothing changes in a configuration or a state, and `~> 1.0` already takes 1.4.0. 1.4.0 adds application brand
+profiles (`ataila_brand_app`, resource and data source; platform release 1.0.305 or later); the audit log
+(`ataila_audit_events`); project backup plans and the backup reads (`ataila_project_backup_plan`,
+`ataila_project_backup_sets`, `ataila_project_backup_exports`; 1.0.399 or later); the fleet inventory
+(`ataila_vms`, `ataila_vm_nodes`, `ataila_k8s_clusters`, `ataila_certificates`; 1.0.400 or later); a project's
+network (`ataila_project_network`; 1.0.401 or later); and VM projects in `ataila_release_promotion`, pinned to the
+tested commit, with a computed `commit_sha` on it and on the release data sources (1.0.402 or later). The provider
+refuses each, at plan time and before any request, only where it is used on an older platform.
+
 ### Upgrading from 1.2.x to 1.3.0
 
 Nothing changes in a configuration or a state, and `~> 1.0` already takes 1.3.0. 1.3.0 adds `scope` and
@@ -237,8 +248,8 @@ to check. Check the platform archives against the release's signed `SHA256SUMS` 
 
 ```shell
 gpg --import signing-key.asc
-gpg --verify terraform-provider-ataila_1.3.0_SHA256SUMS.sig terraform-provider-ataila_1.3.0_SHA256SUMS
-sha256sum --ignore-missing -c terraform-provider-ataila_1.3.0_SHA256SUMS
+gpg --verify terraform-provider-ataila_1.4.0_SHA256SUMS.sig terraform-provider-ataila_1.4.0_SHA256SUMS
+sha256sum --ignore-missing -c terraform-provider-ataila_1.4.0_SHA256SUMS
 ```
 
 The second must say `Good signature from "ATAILA Kft. (Budapest) <support@ataila.com>"`, primary key
@@ -246,7 +257,7 @@ fingerprint `9997 D23D 2222 0320 3B02  B5EE 5174 0425 A2D9 15F8` (its warning th
 a trusted signature means only that you have not certified the key yourself); the third must print `OK` for each
 archive. `SHA256SUMS` lists the platform archives, not the bundle, whose `.sha256` is not signed: to check a
 bundle binary, verify the platform archive and compare its binary with the bundle's `SHA256SUMS`
-(`unzip -p terraform-provider-ataila_1.3.0_linux_amd64.zip terraform-provider-ataila_v1.3.0 | sha256sum`).
+(`unzip -p terraform-provider-ataila_1.4.0_linux_amd64.zip terraform-provider-ataila_v1.4.0 | sha256sum`).
 
 ### Provider configuration
 
