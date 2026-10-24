@@ -13721,6 +13721,18 @@
             "description": "The requester's reason and the approver's note, as recorded.",
             "title": "Approval Reason"
           },
+          "commit_sha": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A VM project's promotion: the commit it deploys, the one the source environment reported running. Null for a Kubernetes project (its release deploys the reported image) and for a promotion booked in the portal without one.",
+            "title": "Commit Sha"
+          },
           "completed_at": {
             "anyOf": [
               {
@@ -14031,7 +14043,7 @@
         "description": "Where a project's releases stand: what each environment last reported\nrunning, the PROD data lock, and the release operations still open.",
         "properties": {
           "deployment_backend": {
-            "description": "Only `k8s` projects accept promotion requests through the API.",
+            "description": "`k8s` or `vm`. A `vm` project accepts promotion requests for its application into `uat` and `prod` only, pinned to the tested commit.",
             "enum": [
               "k8s",
               "vm"
@@ -14119,6 +14131,18 @@
       "ReportedVersion": {
         "description": "What a release pipeline LAST REPORTED for one environment and component.\nNot a live probe: the portal records it when a deploy reports success.",
         "properties": {
+          "commit_sha": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The commit the deploy ran, when its pipeline reported one: what a VM project's next promotion out of this environment is pinned to.",
+            "title": "Commit Sha"
+          },
           "component": {
             "description": "`app-api` (the application and its API), `www` (the web site), `worker` (the background worker) or `database`.",
             "enum": [
@@ -38176,7 +38200,7 @@
     },
     "/projects/{project_id}/release-promotions": {
       "post": {
-        "description": "Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.\n\n* `dev` and `uat` start at once.\n* `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).\n* `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.\n\nKubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.",
+        "description": "Books a promotion of one component into one environment and answers `202` with an operation (`release:<id>`) and its `Location`. Poll `GET /operations/{id}` until `succeeded` or `failed`.\n\n* `dev` and `uat` start at once.\n* `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).\n* `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.\n\nThe version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). A VM project's application can be promoted into `uat` and `prod`: the promotion is pinned to the commit the environment below reported running (`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Send an `Idempotency-Key`: a retried request then never books a second deployment.",
         "operationId": "release_promotions_create",
         "parameters": [
           {
@@ -38332,7 +38356,7 @@
                 }
               }
             },
-            "description": "A VM project (`vm_projects_unsupported`); the component does not exist (`component_not_enabled`); the version is not what the source environment last reported, or it reports none (`version_not_at_source`); a `dev` promotion without a version (`version_required`).",
+            "description": "The component does not exist (`component_not_enabled`); the version is not what the source environment last reported, or it reports none (`version_not_at_source`); a `dev` promotion without a version (`version_required`). For a VM project: a component other than `app-api` (`vm_component_unsupported`), a target other than `uat` or `prod` (`vm_target_unsupported`), or a source environment whose last deploy reported no commit to pin to (`version_not_pinnable`).",
             "headers": {
               "X-Request-ID": {
                 "$ref": "#/components/headers/X-Request-ID"

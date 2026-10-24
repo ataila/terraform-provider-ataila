@@ -8780,6 +8780,9 @@ type ReleaseOperation struct {
 	// ApprovalReason The requester's reason and the approver's note, as recorded.
 	ApprovalReason *string `json:"approval_reason,omitempty"`
 
+	// CommitSha A VM project's promotion: the commit it deploys, the one the source environment reported running. Null for a Kubernetes project (its release deploys the reported image) and for a promotion booked in the portal without one.
+	CommitSha *string `json:"commit_sha,omitempty"`
+
 	// CompletedAt When it ended (`succeeded` or `failed`); null until then.
 	CompletedAt *time.Time `json:"completed_at,omitempty"`
 
@@ -8898,7 +8901,7 @@ type ReleasePromotionCreateTargetEnv string
 // ReleaseState Where a project's releases stand: what each environment last reported
 // running, the PROD data lock, and the release operations still open.
 type ReleaseState struct {
-	// DeploymentBackend Only `k8s` projects accept promotion requests through the API.
+	// DeploymentBackend `k8s` or `vm`. A `vm` project accepts promotion requests for its application into `uat` and `prod` only, pinned to the tested commit.
 	DeploymentBackend ReleaseStateDeploymentBackend `json:"deployment_backend"`
 
 	// InFlightOperationIds `release:<id>` of every operation approved or running.
@@ -8926,12 +8929,15 @@ type ReleaseState struct {
 	Versions []ReportedVersion `json:"versions"`
 }
 
-// ReleaseStateDeploymentBackend Only `k8s` projects accept promotion requests through the API.
+// ReleaseStateDeploymentBackend `k8s` or `vm`. A `vm` project accepts promotion requests for its application into `uat` and `prod` only, pinned to the tested commit.
 type ReleaseStateDeploymentBackend string
 
 // ReportedVersion What a release pipeline LAST REPORTED for one environment and component.
 // Not a live probe: the portal records it when a deploy reports success.
 type ReportedVersion struct {
+	// CommitSha The commit the deploy ran, when its pipeline reported one: what a VM project's next promotion out of this environment is pinned to.
+	CommitSha *string `json:"commit_sha,omitempty"`
+
 	// Component `app-api` (the application and its API), `www` (the web site), `worker` (the background worker) or `database`.
 	Component ReportedVersionComponent `json:"component"`
 
@@ -13624,7 +13630,7 @@ type ClientInterface interface {
 	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
 	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 	//
-	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+	// The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). A VM project's application can be promoted into `uat` and `prod`: the promotion is pinned to the commit the environment below reported running (`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Send an `Idempotency-Key`: a retried request then never books a second deployment.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -13639,7 +13645,7 @@ type ClientInterface interface {
 	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
 	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 	//
-	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+	// The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). A VM project's application can be promoted into `uat` and `prod`: the promotion is pinned to the commit the environment below reported running (`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Send an `Idempotency-Key`: a retried request then never books a second deployment.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -16523,7 +16529,7 @@ func (c *Client) ReleaseOperationsList(ctx context.Context, projectId string, pa
 // * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
 // * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 //
-// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+// The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). A VM project's application can be promoted into `uat` and `prod`: the promotion is pinned to the commit the environment below reported running (`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Send an `Idempotency-Key`: a retried request then never books a second deployment.
 //
 // Takes any type of body and a specified content type.
 //
@@ -16548,7 +16554,7 @@ func (c *Client) ReleasePromotionsCreateWithBody(ctx context.Context, projectId 
 // * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
 // * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 //
-// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+// The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). A VM project's application can be promoted into `uat` and `prod`: the promotion is pinned to the commit the environment below reported running (`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Send an `Idempotency-Key`: a retried request then never books a second deployment.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -26687,7 +26693,7 @@ type ClientWithResponsesInterface interface {
 	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
 	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 	//
-	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+	// The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). A VM project's application can be promoted into `uat` and `prod`: the promotion is pinned to the commit the environment below reported running (`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Send an `Idempotency-Key`: a retried request then never books a second deployment.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -26702,7 +26708,7 @@ type ClientWithResponsesInterface interface {
 	// * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
 	// * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 	//
-	// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+	// The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). A VM project's application can be promoted into `uat` and `prod`: the promotion is pinned to the commit the environment below reported running (`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Send an `Idempotency-Key`: a retried request then never books a second deployment.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -55528,7 +55534,7 @@ func (c *ClientWithResponses) ReleaseOperationsListWithResponse(ctx context.Cont
 // * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
 // * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 //
-// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+// The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). A VM project's application can be promoted into `uat` and `prod`: the promotion is pinned to the commit the environment below reported running (`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Send an `Idempotency-Key`: a retried request then never books a second deployment.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -55549,7 +55555,7 @@ func (c *ClientWithResponses) ReleasePromotionsCreateWithBodyWithResponse(ctx co
 // * `dev` promotions deploy a named build; the API cannot verify it exists before dispatch. Its `version` is required and is not checked against any reported version (DEV has no environment below it).
 // * `prod` is a REQUEST: the operation stays `awaiting_approval` until a person approves or rejects it in the portal's release management. This API cannot approve, reject, release express or copy data. A rejection ends it as `failed` with the reason. Approval needs no second person when the approver writes a note; a request made with a token counts as made by the token's owner and by whoever minted it.
 //
-// Kubernetes projects only. The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). Send an `Idempotency-Key`: a retried request then never books a second deployment.
+// The version promoted into `uat` or `prod` is the one the environment below last reported (`dev` for `uat`, `uat` for `prod`). A VM project's application can be promoted into `uat` and `prod`: the promotion is pinned to the commit the environment below reported running (`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Send an `Idempotency-Key`: a retried request then never books a second deployment.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
