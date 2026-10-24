@@ -300,7 +300,7 @@ bundle binary, verify the platform archive and compare its binary with the bundl
 | [`ataila_brand`](docs/resources/brand.md) | The platform's brand: name, colour, title, logo (singleton) | Forgets only |
 | [`ataila_brand_asset`](docs/resources/brand_asset.md) | A logo or favicon, content-addressed; readable without signing in | Forgets only |
 | [`ataila_brand_app`](docs/resources/brand_app.md) | An application's brand profile; fields left out are inherited | Deletes the profile (inherits again) |
-| [`ataila_release_promotion`](docs/resources/release_promotion.md) | A promotion request of a Kubernetes project's component into dev, uat or prod | Forgets only |
+| [`ataila_release_promotion`](docs/resources/release_promotion.md) | A promotion request of a project's component into dev, uat or prod (a VM project's application into uat or prod, pinned to the tested commit) | Forgets only |
 | [`ataila_project_prod_lock`](docs/resources/project_prod_lock.md) | A project's PROD data lock | Forgets only |
 | [`ataila_ai_model`](docs/resources/ai_model.md) | An AI model catalogue row (no weights) | Removes the row; refused while weights exist; not gated |
 | [`ataila_ai_model_node_cache`](docs/resources/ai_model_node_cache.md) | A cached copy of a model's weights on an AI node | Removes the node's copy |

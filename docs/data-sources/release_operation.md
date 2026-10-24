@@ -32,6 +32,7 @@ output "prod_request_status" {
 ### Read-Only
 
 - `approval_reason` (String) The reason and the approver's note; addresses and digests masked.
+- `commit_sha` (String) A VM project's promotion: the commit it deploys; null for a Kubernetes project.
 - `completed_at` (String) When it ended. RFC 3339 in UTC.
 - `component` (String) `app-api` or `www`; null for a data copy.
 - `decided_at` (String) When it was decided. RFC 3339 in UTC.

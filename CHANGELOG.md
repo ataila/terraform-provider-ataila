@@ -31,6 +31,12 @@ the 0.x releases before it were never published, and any of them could change wh
   environment, tier and status; at most `limit`, 100 when left out, with `more`) and its exports, newest first.
   Where a set is stored, its manifest and an export's download link stay in the portal. Need
   `project-backup-read-global`; a tenant-scoped token reads its own tenant's projects.
+- `ataila_release_promotion` takes **VM projects** (platform 1.0.402 on): a VM project's application
+  (`app-api`) into `uat` and `prod`, pinned to the commit the environment below reported running, so the tested
+  build is the one deployed whatever has been merged since (the platform and the shared CI template do the
+  pinning). Its web site, its `dev`, and a source environment whose last deploy reported no commit are refused,
+  each with what to do; an older platform's refusal now names release 1.0.402. New computed `commit_sha` on the
+  resource and on `ataila_release_operation`, and on each version of `ataila_release_state`.
 - `ataila_project_network` data source (platform 1.0.401 on): a project's network as the platform derives and
   applies it — the zone's subnets, the VLANs, the per-VM security groups with every rule and which VM sits in
   which (and whether its firewall is applied), the bounded allows on the project's gateways, a Kubernetes

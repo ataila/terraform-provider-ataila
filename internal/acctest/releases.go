@@ -17,10 +17,13 @@ import (
 //   - a promotion is a REQUEST: into prod it waits (awaiting_approval) until a
 //     person decides in the portal (ApproveRelease / RejectRelease here); into
 //     dev and uat it starts at once. The API cannot approve.
-//   - Kubernetes projects only (422 vm_projects_unsupported); the component
-//     must exist (422 component_not_enabled); dev needs a version (422
-//     version_required); uat and prod take what the environment below last
-//     reported (422 version_not_at_source).
+//   - before platform 1.0.402 Kubernetes projects only (422
+//     vm_projects_unsupported); from it a VM project's app-api into uat and
+//     prod, pinned to the commit the source reported (422
+//     vm_component_unsupported, vm_target_unsupported, version_not_pinnable);
+//     the component must exist (422 component_not_enabled); dev needs a version
+//     (422 version_required); uat and prod take what the environment below
+//     last reported (422 version_not_at_source).
 //   - the mock moves a started promotion one step per poll of its operation
 //     (approved → running → succeeded); under dispatch mode dryrun it never
 //     completes, as on every estate that fakes dispatch.
@@ -41,6 +44,7 @@ type mockReleaseOp struct {
 	startedAt, completedAt, errorMsg string
 	reaped                           bool
 	pipeline                         string
+	commit                           string // a VM promotion's pinned commit (platform 1.0.402)
 }
 
 type mockLock struct{ at, by string }
@@ -49,6 +53,7 @@ type releasesState struct {
 	ops      map[int]*mockReleaseOp
 	next     int
 	reported map[int]map[string]map[string]string // project -> env -> component -> version
+	commits  map[int]map[string]map[string]string // project -> env -> component -> commit (or "")
 	locks    map[int]mockLock
 	dispatch string // "live" or "dryrun"
 	failNext bool
@@ -60,7 +65,7 @@ type releasesState struct {
 
 func newReleasesState() *releasesState {
 	return &releasesState{ops: map[int]*mockReleaseOp{}, next: 1, reported: map[int]map[string]map[string]string{},
-		locks: map[int]mockLock{}, dispatch: "live"}
+		commits: map[int]map[string]map[string]string{}, locks: map[int]mockLock{}, dispatch: "live"}
 }
 
 // ── test helpers ─────────────────────────────────────────────────────────────
@@ -82,21 +87,47 @@ func (m *MockAPI) FailNextRelease() {
 
 // ReportVersion records what an environment runs, as a release pipeline does.
 func (m *MockAPI) ReportVersion(projectID, env, component, version string) {
+	m.ReportVersionAt(projectID, env, component, version, "")
+}
+
+// ReportVersionAt records what an environment's pipeline reported running, with
+// the commit it ran ("" for a report that named none, as before 1.0.402).
+func (m *MockAPI) ReportVersionAt(projectID, env, component, version, commit string) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	n, _ := strconv.Atoi(projectID)
-	m.report(n, env, component, version)
+	m.report(n, env, component, version, commit)
 }
 
-func (m *MockAPI) report(project int, env, component, version string) {
-	r := m.releases.reported
-	if r[project] == nil {
-		r[project] = map[string]map[string]string{}
+func (m *MockAPI) report(project int, env, component, version, commit string) {
+	for _, r := range []map[int]map[string]map[string]string{m.releases.reported, m.releases.commits} {
+		if r[project] == nil {
+			r[project] = map[string]map[string]string{}
+		}
+		if r[project][env] == nil {
+			r[project][env] = map[string]string{}
+		}
 	}
-	if r[project][env] == nil {
-		r[project][env] = map[string]string{}
+	m.releases.reported[project][env][component] = version
+	m.releases.commits[project][env][component] = commit // every report sets it, "" clears it
+}
+
+// platformAtLeast compares the mock's /meta platform_version with want
+// (dotted numbers).
+func (m *MockAPI) platformAtLeast(want string) bool {
+	have, _ := m.meta["platform_version"].(string)
+	h, w := strings.Split(have, "."), strings.Split(want, ".")
+	for i := 0; i < len(w); i++ {
+		var a, b int
+		if i < len(h) {
+			a, _ = strconv.Atoi(h[i])
+		}
+		b, _ = strconv.Atoi(w[i])
+		if a != b {
+			return a > b
+		}
 	}
-	r[project][env][component] = version
+	return true
 }
 
 // ApproveRelease approves a request in the portal (it then runs).
@@ -184,7 +215,7 @@ func releaseOpWire(o *mockReleaseOp) map[string]any {
 		"requested_token_id": nullStr(o.requestedToken), "decided_by": nullStr(o.decidedBy),
 		"decided_at": nullStr(o.decidedAt), "approval_reason": nullStr(o.reason),
 		"started_at": nullStr(o.startedAt), "completed_at": nullStr(o.completedAt),
-		"error_reason": errReason, "pipeline_url": nullStr(o.pipeline),
+		"error_reason": errReason, "pipeline_url": nullStr(o.pipeline), "commit_sha": nullStr(o.commit),
 	}
 }
 
@@ -258,7 +289,7 @@ func (m *MockAPI) advanceRelease(o *mockReleaseOp) {
 			return
 		}
 		o.status, o.completedAt = "succeeded", ts
-		m.report(o.project, o.target, o.component, o.version)
+		m.report(o.project, o.target, o.component, o.version, o.commit) // a pinned deploy reports its commit
 	}
 }
 
@@ -306,9 +337,19 @@ func (m *MockAPI) releasePromote(c *call, raw string) reply {
 	if bad != nil {
 		return *bad
 	}
-	if p.backend != "k8s" {
+	if p.backend != "k8s" && !m.platformAtLeast("1.0.402") {
 		return c.problem(http.StatusUnprocessableEntity, "vm_projects_unsupported",
 			p.short+" is a VM project. Releases of VM projects cannot be requested through the API.", nil)
+	}
+	if p.backend != "k8s" && *component != "app-api" {
+		return c.problem(http.StatusUnprocessableEntity, "vm_component_unsupported",
+			p.short+" is a VM project: only its application (app-api) can be promoted through the API.",
+			map[string]any{"component": *component})
+	}
+	if p.backend != "k8s" && *target == "dev" {
+		return c.problem(http.StatusUnprocessableEntity, "vm_target_unsupported",
+			p.short+" is a VM project: its dev runs what main's own pipeline deploys.",
+			map[string]any{"target_env": *target})
 	}
 	flag := map[string]string{"app-api": "enable_fullstack_app", "www": "enable_static_site"}[*component]
 	if on, _ := p.settings[flag].(bool); !on {
@@ -338,6 +379,15 @@ func (m *MockAPI) releasePromote(c *call, raw string) reply {
 		}
 		resolved = at
 	}
+	commit := ""
+	if p.backend != "k8s" {
+		commit = m.releases.commits[p.id][source][*component]
+		if commit == "" {
+			return c.problem(http.StatusUnprocessableEntity, "version_not_pinnable",
+				fmt.Sprintf("%s reported %s without the commit it ran, so the promotion cannot be pinned.",
+					source, resolved), map[string]any{"source_env": source, "reported_version": resolved})
+		}
+	}
 	principal, _ := m.whoami["principal"].(map[string]any)
 	email, _ := principal["email"].(string)
 	via, tokenID := "session", ""
@@ -349,7 +399,7 @@ func (m *MockAPI) releasePromote(c *call, raw string) reply {
 	}
 	o := &mockReleaseOp{id: m.releases.next, project: p.id, operation: "promote_build", component: *component,
 		source: source, target: *target, version: resolved, status: "approved", requestedBy: email,
-		requestedAt: now(), requestedVia: via, requestedToken: tokenID}
+		requestedAt: now(), requestedVia: via, requestedToken: tokenID, commit: commit}
 	if *target == "prod" {
 		o.status = "pending"
 		o.reason = "Requested through the API."
@@ -417,7 +467,8 @@ func (m *MockAPI) releaseStateGet(c *call, raw string) reply {
 			}
 			versions = append(versions, map[string]any{"env": env, "component": comp,
 				"last_reported_version": m.releases.reported[p.id][env][comp], "last_reported_at": now(),
-				"last_reported_by": "pipeline:4242", "source_env": src})
+				"last_reported_by": "pipeline:4242", "source_env": src,
+				"commit_sha": nullStr(m.releases.commits[p.id][env][comp])})
 		}
 	}
 	pending, inFlight := []string{}, []string{}

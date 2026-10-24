@@ -2,7 +2,8 @@
 page_title: "ataila_release_promotion Resource - ATAILA"
 subcategory: ""
 description: |-
-  A request to promote one component of a Kubernetes project into one environment (the platform's Release Manager). It records the request; it never decides a go-live.
+  A request to promote one component of a project into one environment (the platform's Release Manager). It records the request; it never decides a go-live.
+  A VM project (platform release 1.0.402 or later) can promote its application (app-api) into uat and prod: the promotion is pinned to the commit the environment below reported running (commit_sha), so the build that was tested is the one deployed, whatever has been merged since. Its web site and its dev are refused, and so is a source environment whose last deploy reported no commit (deploy it once more first).
   dev deploys a named build: version is required, and the platform cannot check that the build exists before it dispatches.uat and prod promote what the environment below last reported running (dev for uat, uat for prod): leave version out to take it, or give it and it must be that version.prod is a request that waits for a person to approve it in the portal. With wait_for_approval = false (the default) create ends at once with status = awaiting_approval and a warning; with true it waits for the decision, up to timeouts.create.
   Create waits until the operation succeeds. A failed operation (rejected, failed, or timed out on the platform) fails the apply and taints the resource, so the next apply requests again. On a platform that fakes dispatch (dryrun, or simulate) nothing is executed and the operation never completes: create then ends with the status it saw and a warning naming the mode. When timeouts.create passes, create ends the same way, with a warning: the operation goes on, and a refresh follows it. Tainting it would book a second deployment.
   All arguments are frozen: a change fails the plan; declare a new resource for a new promotion. Destroy only removes the resource from the state: the history stays, and a pending PROD request stays pending in the portal. Import by the release operation's id (a data copy is refused).
@@ -10,7 +11,9 @@ description: |-
 
 # ataila_release_promotion (Resource)
 
-A request to promote one component of a Kubernetes project into one environment (the platform's Release Manager). It records the request; it never decides a go-live.
+A request to promote one component of a project into one environment (the platform's Release Manager). It records the request; it never decides a go-live.
+
+A **VM project** (platform release 1.0.402 or later) can promote its application (`app-api`) into `uat` and `prod`: the promotion is pinned to the commit the environment below reported running (`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Its web site and its `dev` are refused, and so is a source environment whose last deploy reported no commit (deploy it once more first).
 
 * `dev` deploys a named build: `version` is required, and the platform cannot check that the build exists before it dispatches.
 * `uat` and `prod` promote what the environment below **last reported** running (`dev` for `uat`, `uat` for `prod`): leave `version` out to take it, or give it and it must be that version.
@@ -61,7 +64,7 @@ resource "ataila_release_promotion" "api_prod" {
 ### Required
 
 - `component` (String) `app-api` or `www`. **Frozen.**
-- `project_id` (String) Id of the project (Kubernetes projects only). **Frozen.**
+- `project_id` (String) Id of the project. **Frozen.**
 - `target_env` (String) `dev`, `uat` or `prod`. **Frozen.**
 
 ### Optional
@@ -73,6 +76,7 @@ resource "ataila_release_promotion" "api_prod" {
 ### Read-Only
 
 - `approval_reason` (String) The reason and the approver's note, as recorded; addresses and digests masked.
+- `commit_sha` (String) A VM project's promotion: the commit it deploys, the one the source environment reported running. Null for a Kubernetes project.
 - `completed_at` (String) When it ended. RFC 3339 in UTC.
 - `decided_at` (String) When it was decided. RFC 3339 in UTC.
 - `decided_by` (String) Who approved or rejected it.

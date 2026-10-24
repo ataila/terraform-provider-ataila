@@ -13,10 +13,19 @@ import (
 
 // Codes the release resources branch on.
 const (
-	CodeVMProjectsUnsupported = "vm_projects_unsupported"
-	CodeVersionNotAtSource    = "version_not_at_source"
-	CodeUnlockNotConfirmed    = "unlock_not_confirmed"
+	CodeVMProjectsUnsupported  = "vm_projects_unsupported"
+	CodeVersionNotAtSource     = "version_not_at_source"
+	CodeUnlockNotConfirmed     = "unlock_not_confirmed"
+	CodeVMComponentUnsupported = "vm_component_unsupported"
+	CodeVMTargetUnsupported    = "vm_target_unsupported"
+	CodeVersionNotPinnable     = "version_not_pinnable"
 )
+
+// ReleaseVMPromotions is the platform release whose API promotes a VM
+// project's application into uat and prod, pinned to the tested commit. An
+// older platform refuses every VM project (CodeVMProjectsUnsupported), and the
+// provider names this release; the project's backend is not known at plan time.
+const ReleaseVMPromotions = "1.0.402"
 
 // listPages reads every page of a cursor-paged list. get fetches one page
 // for a cursor (nil for the first) and returns the answer's body.

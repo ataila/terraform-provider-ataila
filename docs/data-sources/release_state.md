@@ -31,7 +31,7 @@ output "shop_versions" {
 
 ### Read-Only
 
-- `deployment_backend` (String) `k8s` or `vm`; only `k8s` projects take promotions through the API.
+- `deployment_backend` (String) `k8s` or `vm`. A `vm` project takes promotions of its application into `uat` and `prod` only (platform 1.0.402 or later).
 - `in_flight_operation_ids` (List of String) `release:<id>` of every operation approved or running.
 - `pending_operation_ids` (List of String) `release:<id>` of every operation awaiting approval.
 - `prior_prod_data_copies` (Number) Succeeded data copies into PROD, all time.
@@ -45,6 +45,7 @@ output "shop_versions" {
 
 Read-Only:
 
+- `commit_sha` (String) The commit the deploy ran, when its pipeline reported one: what a VM project's next promotion out of this environment is pinned to.
 - `component` (String) `app-api` (the application and its API), `www` (the web site), `worker` (the background worker) or `database`.
 - `env` (String) The environment.
 - `last_reported_at` (String) When it reported it.

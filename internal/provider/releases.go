@@ -83,6 +83,7 @@ type promotionModel struct {
 	CompletedAt      TimestampValue `tfsdk:"completed_at"`
 	ErrorReason      types.String   `tfsdk:"error_reason"`
 	PipelineURL      types.String   `tfsdk:"pipeline_url"`
+	CommitSHA        types.String   `tfsdk:"commit_sha"`
 	Timeouts         timeouts.Value `tfsdk:"timeouts"`
 }
 
@@ -116,6 +117,7 @@ func (m *promotionModel) fromAPI(o *client.ReleaseOperation) {
 	m.CompletedAt = NewTimestampPointer(o.CompletedAt)
 	m.ErrorReason = stringOrNull(o.ErrorReason)
 	m.PipelineURL = stringOrNull(o.PipelineUrl)
+	m.CommitSHA = stringOrNull(o.CommitSha)
 }
 
 func (m *promotionModel) ident() string {
@@ -135,8 +137,13 @@ func (r *promotionResource) Schema(ctx context.Context, _ resource.SchemaRequest
 		return schema.StringAttribute{MarkdownDescription: doc + " RFC 3339 in UTC.", CustomType: TimestampType{}, Computed: true}
 	}
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "A request to promote one component of a Kubernetes project into one environment " +
-			"(the platform's Release Manager). It records the request; it never decides a go-live.\n\n" +
+		MarkdownDescription: "A request to promote one component of a project into one environment (the " +
+			"platform's Release Manager). It records the request; it never decides a go-live.\n\n" +
+			"A **VM project** (platform release 1.0.402 or later) can promote its application (`app-api`) into " +
+			"`uat` and `prod`: the promotion is pinned to the commit the environment below reported running " +
+			"(`commit_sha`), so the build that was tested is the one deployed, whatever has been merged since. Its " +
+			"web site and its `dev` are refused, and so is a source environment whose last deploy reported no " +
+			"commit (deploy it once more first).\n\n" +
 			"* `dev` deploys a named build: `version` is required, and the platform cannot check that the build " +
 			"exists before it dispatches.\n" +
 			"* `uat` and `prod` promote what the environment below **last reported** running (`dev` for `uat`, " +
@@ -160,7 +167,7 @@ func (r *promotionResource) Schema(ctx context.Context, _ resource.SchemaRequest
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"project_id": schema.StringAttribute{
-				MarkdownDescription: "Id of the project (Kubernetes projects only). **Frozen.**",
+				MarkdownDescription: "Id of the project. **Frozen.**",
 				Required:            true,
 				Validators:          []validator.String{stringvalidator.RegexMatches(rxIntID, "must be a project id")},
 				PlanModifiers:       []planmodifier.String{promotionFrozen.forString()},
@@ -213,6 +220,8 @@ func (r *promotionResource) Schema(ctx context.Context, _ resource.SchemaRequest
 			"completed_at":       ts("When it ended."),
 			"error_reason":       c("Why it failed or was rejected; addresses and digests masked."),
 			"pipeline_url":       c("The pipeline carrying it out, once known."),
+			"commit_sha": c("A VM project's promotion: the commit it deploys, the one the source environment " +
+				"reported running. Null for a Kubernetes project."),
 		},
 		Blocks: map[string]schema.Block{
 			"timeouts": timeouts.Block(ctx, timeouts.Opts{Create: true}),
@@ -340,8 +349,15 @@ func promotionError(ident string, err error) diag.Diagnostic {
 	var apiErr *client.APIError
 	if errors.As(err, &apiErr) && apiErr.StatusCode == 422 {
 		hint := map[string]string{
-			client.CodeVMProjectsUnsupported: "Releases of VM projects cannot be requested through the API: " +
-				"their deploy ships the head of main and ignores the requested version. Use the portal's Release Manager.",
+			client.CodeVMProjectsUnsupported: "This platform release cannot promote VM projects through the API: " +
+				"pinning a VM project's promotion to the tested commit came with platform release " +
+				client.ReleaseVMPromotions + ". Upgrade the platform, or use the portal's Release Manager.",
+			client.CodeVMComponentUnsupported: "Only a VM project's application (app-api) can be promoted through " +
+				"the API. Promote its web site in the portal's Release Manager.",
+			client.CodeVMTargetUnsupported: "A VM project's dev runs what main's own pipeline deploys: only uat " +
+				"and prod can be requested.",
+			client.CodeVersionNotPinnable: "The source environment's last deploy reported no commit, so the " +
+				"promotion cannot be pinned to the tested build. Deploy that environment once more, then apply again.",
 			client.CodeVersionNotAtSource: "UAT and PROD take only the version the environment below last reported. " +
 				"Leave version out to take it, or promote into the environment below first.",
 			"component_not_enabled": "The project does not have this component.",
@@ -614,7 +630,7 @@ type releaseStateDataSource struct {
 
 var reportedVersionTypes = map[string]attr.Type{"env": types.StringType, "component": types.StringType,
 	"last_reported_version": types.StringType, "last_reported_at": types.StringType,
-	"last_reported_by": types.StringType, "source_env": types.StringType}
+	"last_reported_by": types.StringType, "source_env": types.StringType, "commit_sha": types.StringType}
 
 type releaseStateModel struct {
 	ProjectID            types.String   `tfsdk:"project_id"`
@@ -643,7 +659,7 @@ func (d *releaseStateDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				Required:            true,
 				Validators:          []validator.String{stringvalidator.RegexMatches(rxIntID, "must be a project id")},
 			},
-			"deployment_backend": dschema.StringAttribute{MarkdownDescription: "`k8s` or `vm`; only `k8s` projects take promotions through the API.", Computed: true},
+			"deployment_backend": dschema.StringAttribute{MarkdownDescription: "`k8s` or `vm`. A `vm` project takes promotions of its application into `uat` and `prod` only (platform 1.0.402 or later).", Computed: true},
 			"versions": dataNestedList("Last reported versions, per environment and component.", reportedVersionTypes,
 				contractDoc("ReportedVersion")),
 			"prod_data_locked":        dschema.BoolAttribute{MarkdownDescription: "The PROD data lock.", Computed: true},
@@ -689,6 +705,7 @@ func (d *releaseStateDataSource) Read(ctx context.Context, req datasource.ReadRe
 			"last_reported_version": types.StringValue(v.LastReportedVersion),
 			"last_reported_at":      types.StringValue(FormatTimestamp(v.LastReportedAt)),
 			"last_reported_by":      types.StringValue(v.LastReportedBy), "source_env": src,
+			"commit_sha": stringOrNull(v.CommitSha),
 		}))
 	}
 	cfg.DeploymentBackend = types.StringValue(string(s.DeploymentBackend))
@@ -732,6 +749,7 @@ type releaseOperationModel struct {
 	CompletedAt      TimestampValue `tfsdk:"completed_at"`
 	ErrorReason      types.String   `tfsdk:"error_reason"`
 	PipelineURL      types.String   `tfsdk:"pipeline_url"`
+	CommitSHA        types.String   `tfsdk:"commit_sha"`
 }
 
 func (d *releaseOperationDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -773,6 +791,7 @@ func (d *releaseOperationDataSource) Schema(_ context.Context, _ datasource.Sche
 			"completed_at":       ts("When it ended."),
 			"error_reason":       s("Why it failed or was rejected; addresses and digests masked."),
 			"pipeline_url":       s("The pipeline carrying it out, once known."),
+			"commit_sha":         s("A VM project's promotion: the commit it deploys; null for a Kubernetes project."),
 		},
 	}
 }
@@ -805,7 +824,7 @@ func (d *releaseOperationDataSource) Read(ctx context.Context, req datasource.Re
 		RequestedBy: p.RequestedBy, RequestedAt: p.RequestedAt, RequestedVia: p.RequestedVia,
 		RequestedTokenID: p.RequestedTokenID, DecidedBy: p.DecidedBy, DecidedAt: p.DecidedAt,
 		ApprovalReason: p.ApprovalReason, StartedAt: p.StartedAt, CompletedAt: p.CompletedAt,
-		ErrorReason: p.ErrorReason, PipelineURL: p.PipelineURL}
+		ErrorReason: p.ErrorReason, PipelineURL: p.PipelineURL, CommitSHA: p.CommitSHA}
 	if o.Component != nil {
 		out.Component = types.StringValue(string(*o.Component))
 	}

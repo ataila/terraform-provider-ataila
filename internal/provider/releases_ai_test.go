@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 
 	"github.com/ataila/terraform-provider-ataila/internal/acctest"
+	"github.com/ataila/terraform-provider-ataila/internal/client"
 )
 
 const (
@@ -216,6 +217,46 @@ func TestAccReleasePromotion_Prod(t *testing.T) {
 	})
 }
 
+const vmDevCommit = "9a96a411800a9cd77c10b04d9d792b2f087406ac"
+
+// A VM project on a platform that pins its promotions (1.0.402 on): its
+// application into uat is booked with the commit dev reported, and the release
+// state then shows uat at that commit; its web site, its dev and a dev report
+// without a commit are refused, each naming what to do.
+func TestAccReleasePromotion_VMProject(t *testing.T) {
+	m, _ := releaseProject(t)
+	m.SetMeta(func(meta map[string]any) { meta["platform_version"] = client.ReleaseVMPromotions })
+	_, tenant := m.AddCustomer("VMS", "vms")
+	vm := m.AddTestProject(tenant, "legacy", "vm")
+	m.ReportVersion(vm, "dev", "app-api", "v1.0.401") // a report from before commits were recorded
+	state := fmt.Sprintf(`
+data "ataila_release_state" "vm" {
+  project_id = %q
+  depends_on = [ataila_release_promotion.test]
+}
+`, vm)
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: protoV6,
+		Steps: []resource.TestStep{
+			{Config: promotionHCL(vm, "www", "uat"), ExpectError: words("vm_component_unsupported")},
+			{Config: promotionHCL(vm, "app-api", "dev", `version = "1.0.0"`), ExpectError: words("vm_target_unsupported")},
+			{Config: promotionHCL(vm, "app-api", "uat"), ExpectError: words("Deploy that environment once more")},
+			{
+				PreConfig: func() { m.ReportVersionAt(vm, "dev", "app-api", "v1.0.401", vmDevCommit) },
+				Config:    promotionHCL(vm, "app-api", "uat") + state,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(promotionAddr, "status", "succeeded"),
+					resource.TestCheckResourceAttr(promotionAddr, "version", "v1.0.401"),
+					resource.TestCheckResourceAttr(promotionAddr, "commit_sha", vmDevCommit),
+					resource.TestCheckResourceAttr("data.ataila_release_state.vm", "deployment_backend", "vm"),
+					resource.TestCheckTypeSetElemNestedAttrs("data.ataila_release_state.vm", "versions.*",
+						map[string]string{"env": "uat", "component": "app-api", "commit_sha": vmDevCommit}),
+				),
+			},
+		},
+	})
+}
+
 func TestAccReleasePromotion_Refusals(t *testing.T) {
 	m, project := releaseProject(t)
 	_, tenant := m.AddCustomer("VMS", "vms")
@@ -225,7 +266,8 @@ func TestAccReleasePromotion_Refusals(t *testing.T) {
 		ProtoV6ProviderFactories: protoV6,
 		Steps: []resource.TestStep{
 			{Config: promotionHCL(project, "app-api", "dev"), ExpectError: words("A promotion into dev needs a version")},
-			{Config: promotionHCL(vm, "app-api", "dev", `version = "1.0.0"`), ExpectError: words("vm_projects_unsupported")},
+			// An older platform refuses every VM project; the provider names the release that takes them.
+			{Config: promotionHCL(vm, "app-api", "dev", `version = "1.0.0"`), ExpectError: words("platform release 1.0.402")},
 			{Config: promotionHCL(project, "app-api", "prod"), ExpectError: words("version_not_at_source")},
 			{
 				PreConfig:   func() { m.ReportVersion(project, "dev", "app-api", "3.0.0") },
